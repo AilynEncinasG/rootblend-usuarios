@@ -1,5 +1,77 @@
+# ========================
+# Python / Django
+# ========================
+# Entorno virtual
 venv/
+
+# Caches de Python
 __pycache__/
+*.py[cod]
+*$py.class
+
+# Base de datos
 db.sqlite3
-*.pyc
+
+# Configuración de entorno
 .env
+
+# Archivos de migraciones compiladas (opcional)
+*.pyc
+*.pyo
+
+# ========================
+# Django media / static
+# ========================
+# Archivos subidos por usuarios
+media/
+staticfiles/
+# Si usas collectstatic
+static/
+
+# ========================
+# Node / React / Vite
+# ========================
+# Dependencias
+node_modules/
+
+# Archivos de build
+dist/
+build/
+
+# Vite cache
+.vite/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# ========================
+# Sistema / IDE
+# ========================
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# macOS
+.DS_Store
+
+# VS Code
+.vscode/
+*.code-workspace
+
+# JetBrains / PyCharm
+.idea/
+
+# ========================
+# Normalización de finales de línea
+# ========================
+# Evita problemas LF/CRLF
+*.js text
+*.ts text
+*.tsx text
+*.css text
+*.json text
+*.md text
+* text=auto
