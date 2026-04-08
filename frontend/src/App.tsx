@@ -2,7 +2,7 @@ import React from "react";
 import { BrowserRouter as Router, Routes, Route, Link, useLocation } from "react-router-dom";
 import styled, { createGlobalStyle, keyframes } from "styled-components";
 import { FiUser, FiLock, FiUserPlus, FiChevronRight } from "react-icons/fi";
-
+import fondoImage from "./assets/Fondo.png"; 
 // 1. Tipado
 interface NavItemProps {
   $active?: boolean;
@@ -16,23 +16,18 @@ const GlobalStyle = createGlobalStyle`
     box-sizing: border-box;
   }
 
-  /* Forzamos a que ningún contenedor padre tenga scroll o márgenes */
   html, body, #root {
     width: 100%;
-    max-width: 100vw;
     height: 100%;
-    overflow-x: hidden; 
-    background-color: #03040a;
+    margin: 0;
+    padding: 0;
   }
 
   body {
     font-family: 'Plus Jakarta Sans', sans-serif;
     color: #ffffff;
-    /* Fondo con luces suaves */
-    background-image: 
-      radial-gradient(circle at 20% 30%, rgba(0, 242, 254, 0.1) 0%, transparent 50%),
-      radial-gradient(circle at 80% 70%, rgba(255, 0, 255, 0.1) 0%, transparent 50%);
-    background-attachment: fixed;
+    /* Quitamos el fondo negro fijo para que no tape nada */
+    background: #000; 
   }
 `;
 
@@ -43,7 +38,6 @@ const float = keyframes`
 
 // 3. COMPONENTES
 const MainWrapper = styled.main`
-  /* Centrado absoluto */
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -51,15 +45,30 @@ const MainWrapper = styled.main`
   min-height: 100vh;
   width: 100%;
   padding: 20px;
-  /* Esto asegura que si algo se sale, no empuje el borde */
-  position: relative; 
+  position: relative;
+
+  /* AGREGAMOS LA IMAGEN AQUÍ */
+  background-image: url(${fondoImage});
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+
+  /* Opcional: una capa oscura para que el texto resalte más */
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0, 0, 0, 0.4); 
+    z-index: 0;
+  }
 `;
 
 const LogoContainer = styled.div`
   text-align: center;
   margin-bottom: 40px;
   animation: ${float} 5s ease-in-out infinite;
-  z-index: 10;
+  z-index: 1;
 `;
 
 const LogoText = styled.h1`
@@ -76,7 +85,7 @@ const LogoText = styled.h1`
 `;
 
 const Subtitle = styled.p`
-  color: #ff00ff;
+  color: #04ff58;
   font-size: 0.75rem;
   font-weight: 800;
   letter-spacing: 5px;
