@@ -1,19 +1,27 @@
-import React from "react";
+import LoginForm from "../components/login/LoginForm";
 
-const LoginForm: React.FC = () => {
+const LoginPage = () => {
   return (
-    <form>
-      <div>
-        <label>Email:</label>
-        <input type="email" placeholder="Ingresa tu email" />
+    <div
+      style={{
+        backgroundImage: "url('/fondo.jpg')",
+        backgroundSize: "120%",
+        backgroundPosition: "center",
+        height: "100vh",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center"
+      }}
+    >
+      <div style={{
+        backgroundColor: "rgba(255,255,255,0.9)",
+        padding: 30,
+        borderRadius: 10
+      }}>
+        <LoginForm />
       </div>
-      <div>
-        <label>Password:</label>
-        <input type="password" placeholder="Ingresa tu contraseña" />
-      </div>
-      <button type="submit">Login</button>
-    </form>
+    </div>
   );
 };
 
-export default LoginForm;
+export default LoginPage;

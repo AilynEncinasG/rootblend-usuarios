@@ -23,42 +23,38 @@ const RegisterForm = () => {
       if (response.ok) {
         setMessage("Usuario creado correctamente!");
       } else {
-        setError(data.error || "Error al registrar usuario");
+        setError(data.error || "Error al registrar");
       }
-    } catch (err) {
-      setError("Error de conexión al servidor");
+    } catch {
+      setError("Error de conexión");
     }
   };
 
   return (
-    <div style={{ maxWidth: 400, margin: "0 auto", padding: 20 }}>
+    <div style={{ width: 350 }}>
       <h2>Registro</h2>
+
       {error && <p style={{ color: "red" }}>{error}</p>}
       {message && <p style={{ color: "green" }}>{message}</p>}
+
       <form onSubmit={handleRegister}>
-        <div style={{ marginBottom: 10 }}>
-          <label>Username:</label>
-          <input
-            type="text"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            required
-            style={{ width: "100%", padding: 8 }}
-          />
-        </div>
-        <div style={{ marginBottom: 10 }}>
-          <label>Password:</label>
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-            style={{ width: "100%", padding: 8 }}
-          />
-        </div>
-        <button type="submit" style={{ padding: 10, width: "100%" }}>
-          Registrarse
-        </button>
+        <input
+          type="text"
+          placeholder="Usuario"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+          required
+        />
+
+        <input
+          type="password"
+          placeholder="Contraseña"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+        />
+
+        <button type="submit">Registrarse</button>
       </form>
     </div>
   );

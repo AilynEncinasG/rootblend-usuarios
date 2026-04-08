@@ -1,23 +1,27 @@
-import React from "react";
+import RegisterForm from "../components/login/RegisterForm";
 
-const RegisterForm: React.FC = () => {
+const RegisterPage = () => {
   return (
-    <form>
-      <div>
-        <label>Nombre:</label>
-        <input type="text" placeholder="Ingresa tu nombre" />
+    <div
+      style={{
+        backgroundImage: "url('/fondo.jpg')",
+        backgroundSize: "120%",
+        backgroundPosition: "center",
+        height: "100vh",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center"
+      }}
+    >
+      <div style={{
+        backgroundColor: "rgba(255,255,255,0.9)",
+        padding: 30,
+        borderRadius: 10
+      }}>
+        <RegisterForm />
       </div>
-      <div>
-        <label>Email:</label>
-        <input type="email" placeholder="Ingresa tu email" />
-      </div>
-      <div>
-        <label>Password:</label>
-        <input type="password" placeholder="Crea una contraseña" />
-      </div>
-      <button type="submit">Register</button>
-    </form>
+    </div>
   );
 };
 
-export default RegisterForm;
+export default RegisterPage;
