@@ -208,7 +208,7 @@ const AppContent = () => {
           <Card>
             <InputGroup>
               <FiUser style={{ position: 'absolute', left: 15, top: 18, color: '#00f2fe' }} />
-              <Input type="text" placeholder="Nombre completo" />
+              <Input type="text" placeholder="Email" />
             </InputGroup>
             <InputGroup>
               <FiLock style={{ position: 'absolute', left: 15, top: 18, color: '#00f2fe' }} />
