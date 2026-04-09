@@ -125,3 +125,118 @@ export const Button = styled.button`
     transition: 0.3s;
     &:hover { transform: translateY(-2px); filter: brightness(1.1); box-shadow: 0 10px 25px rgba(0, 242, 254, 0.3); }
 `;
+
+export const DashboardLayout = styled.div`
+  display: grid;
+  grid-template-areas: 
+    "nav nav"
+    "sidebar main";
+  grid-template-columns: 260px 1fr;
+  grid-template-rows: 70px 1fr;
+  height: 100vh;
+  background: #0a0a0f;
+  color: white;
+`;
+
+export const StyledNavbar = styled.nav`
+  grid-area: nav;
+  background: #0f0f1a;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  z-index: 10;
+`;
+export const LogoImage = styled.img`
+  height: 40px; /* Ajusta la altura según lo necesites para que quepa bien en la Navbar */
+  width: auto;  /* Mantiene la relación de aspecto de la imagen */
+  display: block; /* Elimina espacio en blanco no deseado debajo de la imagen */
+  cursor: pointer;
+  
+  /* Opcional: añade un ligero filtro o efecto si quieres que resalte */
+  /* filter: drop-shadow(0 0 5px rgba(0, 242, 254, 0.5)); */
+`;
+export const StyledSidebar = styled.aside`
+  grid-area: sidebar;
+  background: #12121e;
+  padding: 20px;
+  border-right: 1px solid rgba(255, 255, 255, 0.05);
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  overflow-y: auto;
+`;
+
+export const ChannelItem = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.2s;
+  &:hover { background: rgba(255, 255, 255, 0.05); }
+`;
+
+export const Avatar = styled.div<{ $online?: boolean }>`
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  background: #2a2a40;
+  position: relative;
+  border: 2px solid ${props => props.$online ? '#04ff58' : 'transparent'};
+`;
+
+export const StreamGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+  padding: 20px;
+`;
+
+export const SearchBar = styled.div`
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 8px 15px;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 400px;
+  input {
+    background: transparent; border: none; color: white; outline: none; width: 100%;
+  }
+`;
+
+export const Thumbnail = styled.div`
+  width: 100%;
+  aspect-ratio: 16/9;
+  background: linear-gradient(45deg, #1a1a2e, #00f2fe33);
+  border-radius: 12px;
+  margin-bottom: 12px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  transition: 0.3s ease;
+
+  &:hover {
+    border-color: #00f2fe;
+    transform: scale(1.02);
+  }
+
+  &::after {
+    content: 'LIVE';
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: #ff4b4b;
+    color: white;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.65rem;
+    font-weight: 900;
+  }
+`;
