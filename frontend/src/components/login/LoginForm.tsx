@@ -6,7 +6,7 @@ export const LoginForm = () => (
   <Card>
     <InputGroup>
       <FiUser style={{ position: 'absolute', left: 15, top: 18, color: '#00f2fe' }} />
-      <Input type="text" placeholder="Email o Usuario" />
+      <Input type="text" placeholder="Email" />
     </InputGroup>
     <InputGroup>
       <FiLock style={{ position: 'absolute', left: 15, top: 18, color: '#00f2fe' }} />
