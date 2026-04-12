@@ -12,8 +12,7 @@ __pycache__/
 # Base de datos
 db.sqlite3
 
-# Configuración de entorno
-.env
+
 
 # Archivos de migraciones compiladas (opcional)
 *.pyc
