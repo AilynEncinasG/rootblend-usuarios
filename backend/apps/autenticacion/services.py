@@ -131,6 +131,9 @@ def change_user_password(usuario, password_actual, password_nueva):
     if actual_hash != credencial.password_hash:
         return {"password_actual": ["La contraseña actual es incorrecta."]}
 
+    if password_actual == password_nueva:
+        return {"password_nueva": ["La nueva contraseña no puede ser igual a la actual."]}
+
     password_errors = validate_password_strength(password_nueva)
     if password_errors:
         return {"password_nueva": password_errors}

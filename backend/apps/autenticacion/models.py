@@ -3,6 +3,7 @@ from apps.usuarios.models import Usuario
 from django.utils import timezone
 import uuid
 
+
 class Credencial(models.Model):
     id_credencial = models.AutoField(primary_key=True)
     usuario = models.OneToOneField(Usuario, on_delete=models.CASCADE)
@@ -10,6 +11,7 @@ class Credencial(models.Model):
     password_salt = models.CharField(max_length=255)
     intentos_fallidos = models.IntegerField(default=0)
     fecha_actualizacion = models.DateTimeField(default=timezone.now)
+
 
 class Sesion(models.Model):
     id_sesion = models.AutoField(primary_key=True)
@@ -19,3 +21,12 @@ class Sesion(models.Model):
     inicio = models.DateTimeField(default=timezone.now)
     fin = models.DateTimeField(null=True, blank=True)
     activa = models.BooleanField(default=True)
+
+
+class RecuperacionPassword(models.Model):
+    id_recuperacion = models.AutoField(primary_key=True)
+    usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
+    token = models.CharField(max_length=255, unique=True, default=uuid.uuid4)
+    expiracion = models.DateTimeField()
+    usado = models.BooleanField(default=False)
+    fecha_solicitud = models.DateTimeField(default=timezone.now)

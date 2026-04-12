@@ -1,9 +1,8 @@
 from django.views import View
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
-
+from apps.common.auth import get_token_from_request, get_authenticated_user
 from apps.common.responses import success_response, error_response
-from apps.common.auth import get_token_from_request
 from .serializers import (
     RegisterSerializer,
     LoginSerializer,
@@ -15,6 +14,7 @@ from .services import (
     register_user,
     login_user,
     logout_user,
+    change_user_password,
 )
 
 
@@ -129,10 +129,44 @@ class LogoutView(View):
 @method_decorator(csrf_exempt, name="dispatch")
 class ChangePasswordView(View):
     def post(self, request):
-        return error_response(
-            message="Endpoint aun no implementado.",
-            errors={},
-            status=501,
+        usuario = get_authenticated_user(request)
+
+        if not usuario:
+            return error_response(
+                message="Usuario no autenticado.",
+                errors={"auth": ["Debes iniciar sesion para cambiar tu contraseña."]},
+                status=401,
+            )
+
+        serializer = ChangePasswordSerializer(request.body)
+
+        if not serializer.is_valid():
+            return error_response(
+                message="Datos invalidos para cambiar contraseña.",
+                errors=serializer.errors,
+                status=400,
+            )
+
+        password_actual = serializer.data["password_actual"]
+        password_nueva = serializer.data["password_nueva"]
+
+        errors = change_user_password(
+            usuario=usuario,
+            password_actual=password_actual,
+            password_nueva=password_nueva,
+        )
+
+        if errors:
+            return error_response(
+                message="No se pudo cambiar la contraseña.",
+                errors=errors,
+                status=400,
+            )
+
+        return success_response(
+            message="Contraseña actualizada correctamente.",
+            data={},
+            status=200,
         )
 
 
