@@ -15,8 +15,9 @@ from .services import (
     login_user,
     logout_user,
     change_user_password,
+    forgot_password,
+    reset_password,
 )
-
 
 @method_decorator(csrf_exempt, name="dispatch")
 class RegisterView(View):
@@ -173,18 +174,65 @@ class ChangePasswordView(View):
 @method_decorator(csrf_exempt, name="dispatch")
 class ForgotPasswordView(View):
     def post(self, request):
-        return error_response(
-            message="Endpoint aun no implementado.",
-            errors={},
-            status=501,
+        serializer = ForgotPasswordSerializer(request.body)
+
+        if not serializer.is_valid():
+            return error_response(
+                message="Datos invalidos para recuperar contraseña.",
+                errors=serializer.errors,
+                status=400,
+            )
+
+        correo = serializer.data["correo"]
+
+        recuperacion, errors = forgot_password(correo=correo)
+
+        if errors:
+            return error_response(
+                message="No se pudo iniciar la recuperacion de contraseña.",
+                errors=errors,
+                status=400,
+            )
+
+        return success_response(
+            message="Solicitud de recuperacion creada correctamente.",
+            data={
+                "token_recuperacion": recuperacion.token,
+                "expiracion": recuperacion.expiracion.isoformat(),
+            },
+            status=200,
         )
 
 
 @method_decorator(csrf_exempt, name="dispatch")
 class ResetPasswordView(View):
     def post(self, request):
-        return error_response(
-            message="Endpoint aun no implementado.",
-            errors={},
-            status=501,
+        serializer = ResetPasswordSerializer(request.body)
+
+        if not serializer.is_valid():
+            return error_response(
+                message="Datos invalidos para restablecer contraseña.",
+                errors=serializer.errors,
+                status=400,
+            )
+
+        token = serializer.data["token"]
+        password_nueva = serializer.data["password_nueva"]
+
+        errors = reset_password(
+            token=token,
+            password_nueva=password_nueva,
+        )
+
+        if errors:
+            return error_response(
+                message="No se pudo restablecer la contraseña.",
+                errors=errors,
+                status=400,
+            )
+
+        return success_response(
+            message="Contraseña restablecida correctamente.",
+            data={},
+            status=200,
         )

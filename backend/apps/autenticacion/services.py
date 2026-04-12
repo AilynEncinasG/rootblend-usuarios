@@ -5,7 +5,7 @@ from django.utils import timezone
 
 from apps.usuarios.models import Usuario, PerfilUsuario
 from apps.preferencias.models import PreferenciaUsuario
-from apps.autenticacion.models import Credencial, Sesion
+from apps.autenticacion.models import Credencial, Sesion, RecuperacionPassword
 from .validators import validate_email_format, validate_password_strength
 
 
@@ -145,5 +145,60 @@ def change_user_password(usuario, password_actual, password_nueva):
     credencial.password_hash = new_hash
     credencial.fecha_actualizacion = timezone.now()
     credencial.save(update_fields=["password_salt", "password_hash", "fecha_actualizacion"])
+
+    return {}
+
+def forgot_password(correo):
+    correo = correo.lower().strip()
+
+    try:
+        usuario = Usuario.objects.get(correo=correo)
+    except Usuario.DoesNotExist:
+        return None, {"correo": ["No existe una cuenta registrada con este correo."]}
+
+    token = secrets.token_urlsafe(32)
+    expiracion = timezone.now() + timezone.timedelta(minutes=30)
+
+    recuperacion = RecuperacionPassword.objects.create(
+        usuario=usuario,
+        token=token,
+        expiracion=expiracion,
+        usado=False,
+    )
+
+    return recuperacion, {}
+
+
+def reset_password(token, password_nueva):
+    try:
+        recuperacion = RecuperacionPassword.objects.get(token=token)
+    except RecuperacionPassword.DoesNotExist:
+        return {"token": ["El token de recuperacion no es valido."]}
+
+    if recuperacion.usado:
+        return {"token": ["Este token ya fue utilizado."]}
+
+    if recuperacion.expiracion < timezone.now():
+        return {"token": ["El token de recuperacion ha expirado."]}
+
+    password_errors = validate_password_strength(password_nueva)
+    if password_errors:
+        return {"password_nueva": password_errors}
+
+    try:
+        credencial = Credencial.objects.get(usuario=recuperacion.usuario)
+    except Credencial.DoesNotExist:
+        return {"credencial": ["No se encontraron credenciales para este usuario."]}
+
+    new_salt = generate_salt()
+    new_hash = hash_password(password_nueva, new_salt)
+
+    credencial.password_salt = new_salt
+    credencial.password_hash = new_hash
+    credencial.fecha_actualizacion = timezone.now()
+    credencial.save(update_fields=["password_salt", "password_hash", "fecha_actualizacion"])
+
+    recuperacion.usado = True
+    recuperacion.save(update_fields=["usado"])
 
     return {}
