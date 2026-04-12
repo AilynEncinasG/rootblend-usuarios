@@ -1,10 +1,15 @@
 import os
 from pathlib import Path
+from dotenv import load_dotenv
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = "django-local-rootblend-practica"
 DEBUG = True
+
+load_dotenv()
+
+MYSQL_PASSWORD = os.getenv("MYSQL_PASSWORD")
 
 ALLOWED_HOSTS = ["127.0.0.1", "localhost"]
 
@@ -60,7 +65,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'railway',
         'USER': 'root',
-        'PASSWORD': os.environ.get('MYSQL_PASSWORD', ''),
+        'PASSWORD': os.getenv('MYSQL_PASSWORD'),
         'HOST': 'junction.proxy.rlwy.net',
         'PORT': '46380',
         'OPTIONS': {
