@@ -1,4 +1,3 @@
-// frontend/src/App.tsx
 import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
 import {
   GlobalStyle,
@@ -12,6 +11,10 @@ import {
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import HomePage from "./pages/HomePage";
+import ProfilePage from "./pages/ProfilePage";
+import SettingsPage from "./pages/SettingsPage";
+import ChangePasswordPage from "./pages/ChangePasswordPage";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 const AppContent = () => {
   const location = useLocation();
@@ -23,6 +26,30 @@ const AppContent = () => {
     return (
       <Routes>
         <Route path="/" element={<HomePage />} />
+        <Route
+          path="/profile"
+          element={
+            <ProtectedRoute>
+              <ProfilePage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/settings"
+          element={
+            <ProtectedRoute>
+              <SettingsPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/change-password"
+          element={
+            <ProtectedRoute>
+              <ChangePasswordPage />
+            </ProtectedRoute>
+          }
+        />
       </Routes>
     );
   }

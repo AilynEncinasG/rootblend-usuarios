@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { FiUser, FiSettings, FiLogOut, FiHome } from "react-icons/fi";
+import { FiUser, FiSettings, FiLogOut, FiHome, FiLock } from "react-icons/fi";
 import { getCurrentUser, logoutUser } from "../services/userService";
 import { getToken } from "../services/authService";
 
@@ -85,6 +85,11 @@ const UserMenu = () => {
 
   const correo = userData?.usuario?.correo || "Sin correo";
 
+  const goTo = (path: string) => {
+    setOpen(false);
+    navigate(path);
+  };
+
   return (
     <div style={{ position: "relative" }} ref={menuRef}>
       <button
@@ -156,22 +161,20 @@ const UserMenu = () => {
           </div>
 
           <div style={{ display: "grid", gap: "6px" }}>
-            <button onClick={() => navigate("/")} style={menuButtonStyle}>
+            <button onClick={() => goTo("/")} style={menuButtonStyle}>
               <FiHome size={16} /> Inicio
             </button>
 
-            <button
-              onClick={() => alert("Perfil próximamente")}
-              style={menuButtonStyle}
-            >
+            <button onClick={() => goTo("/profile")} style={menuButtonStyle}>
               <FiUser size={16} /> Perfil
             </button>
 
-            <button
-              onClick={() => alert("Configuración próximamente")}
-              style={menuButtonStyle}
-            >
+            <button onClick={() => goTo("/settings")} style={menuButtonStyle}>
               <FiSettings size={16} /> Configuración
+            </button>
+
+            <button onClick={() => goTo("/change-password")} style={menuButtonStyle}>
+              <FiLock size={16} /> Cambiar contraseña
             </button>
 
             <button
