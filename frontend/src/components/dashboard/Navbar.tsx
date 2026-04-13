@@ -1,10 +1,10 @@
 // frontend/src/components/dashboard/Navbar.tsx
 import styled from 'styled-components';
-import { FiSearch, FiBell, FiUser } from 'react-icons/fi';
-// 1. IMPORTA LogoImage DESDE GlobalStyles
-import { StyledNavbar, LogoImage } from '../../styles/GlobalStyles'; 
+import { FiSearch, FiBell } from 'react-icons/fi';
+import { StyledNavbar, LogoImage } from '../../styles/GlobalStyles';
 import Logo from '../../assets/Logo.png';
 import { Link } from 'react-router-dom';
+import UserMenu from '../UserMenu';
 
 const SearchBar = styled.div`
   background: rgba(255, 255, 255, 0.05);
@@ -15,15 +15,22 @@ const SearchBar = styled.div`
   align-items: center;
   gap: 10px;
   width: 400px;
+
   input {
-    background: transparent; border: none; color: white; outline: none; width: 100%;
-    &::placeholder { color: rgba(255,255,255,0.5); }
+    background: transparent;
+    border: none;
+    color: white;
+    outline: none;
+    width: 100%;
+
+    &::placeholder {
+      color: rgba(255,255,255,0.5);
+    }
   }
 `;
 
 export const Navbar = () => (
   <StyledNavbar>
-    {/* 2. REEMPLAZA LogoText POR LogoImage DENTRO DEL Link */}
     <Link to="/" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center' }}>
       <LogoImage src={Logo} alt="RootBlend Logo" />
     </Link>
@@ -35,10 +42,7 @@ export const Navbar = () => (
 
     <div style={{ display: 'flex', gap: '20px', alignItems: 'center' }}>
       <FiBell size={20} style={{ cursor: 'pointer', color: 'rgba(255,255,255,0.7)' }} />
-      
-      <Link to="/login" style={{ color: 'inherit', display: 'flex', textDecoration: 'none' }}>
-        <FiUser size={25} style={{ color: '#00f2fe', cursor: 'pointer' }} />
-      </Link>
+      <UserMenu />
     </div>
   </StyledNavbar>
 );

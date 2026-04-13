@@ -16,8 +16,7 @@ export async function registerUser(correo: string, password: string): Promise<Ap
     body: JSON.stringify({ correo, password }),
   });
 
-  const data = await response.json();
-  return data;
+  return await response.json();
 }
 
 export async function loginUser(correo: string, password: string): Promise<ApiResponse> {
@@ -29,8 +28,7 @@ export async function loginUser(correo: string, password: string): Promise<ApiRe
     body: JSON.stringify({ correo, password }),
   });
 
-  const data = await response.json();
-  return data;
+  return await response.json();
 }
 
 export function saveToken(token: string) {

@@ -100,7 +100,7 @@ export const RegisterForm = () => {
       )}
 
       <Button onClick={handleSubmit} disabled={loading}>
-        {loading ? "CARGANDO..." : "REGISTRARSE"} <FiUserPlus />
+        {loading ? "CARGANDO..." : "REGISTRADOR"} <FiUserPlus />
       </Button>
     </Card>
   );

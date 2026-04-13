@@ -19,10 +19,9 @@ const HomePage = () => {
       <Navbar />
       <Sidebar />
       <main style={{ gridArea: 'main', overflowY: 'auto', padding: '30px' }}>
-        
         <StreamGrid>
           {MOCK_STREAMS.map((stream) => (
-            <StreamCard 
+            <StreamCard
               key={stream.id}
               title={stream.title}
               user={stream.user}
