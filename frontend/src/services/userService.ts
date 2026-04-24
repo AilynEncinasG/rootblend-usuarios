@@ -1,6 +1,10 @@
-import { getToken, removeToken } from "./authService";
-
-const API_BASE = "http://127.0.0.1:8000/api";
+import {
+  API_BASE,
+  getAccessToken,
+  getRefreshToken,
+  refreshAccessToken,
+  clearAuthSession,
+} from "./authService";
 
 type ApiResponse<T = any> = {
   success: boolean;
@@ -9,19 +13,56 @@ type ApiResponse<T = any> = {
   errors?: any;
 };
 
-function getAuthHeaders() {
-  const token = getToken();
+async function fetchWithAuth(
+  url: string,
+  options: RequestInit = {}
+): Promise<Response> {
+  const accessToken = getAccessToken();
 
-  return {
+  const headers: Record<string, string> = {
     "Content-Type": "application/json",
-    Authorization: `Bearer ${token}`,
+    ...((options.headers as Record<string, string>) || {}),
   };
+
+  if (accessToken) {
+    headers["Authorization"] = `Bearer ${accessToken}`;
+  }
+
+  let response = await fetch(url, {
+    ...options,
+    headers,
+  });
+
+  if (response.status === 401 && getRefreshToken()) {
+    const refreshed = await refreshAccessToken();
+
+    if (refreshed) {
+      const newAccessToken = getAccessToken();
+
+      const retryHeaders: Record<string, string> = {
+        "Content-Type": "application/json",
+        ...((options.headers as Record<string, string>) || {}),
+      };
+
+      if (newAccessToken) {
+        retryHeaders["Authorization"] = `Bearer ${newAccessToken}`;
+      }
+
+      response = await fetch(url, {
+        ...options,
+        headers: retryHeaders,
+      });
+    } else {
+      clearAuthSession();
+    }
+  }
+
+  return response;
 }
 
 export async function getCurrentUser(): Promise<ApiResponse> {
-  const response = await fetch(`${API_BASE}/users/me/`, {
+  const response = await fetchWithAuth(`${API_BASE}/users/me/`, {
     method: "GET",
-    headers: getAuthHeaders(),
   });
 
   return await response.json();
@@ -33,9 +74,8 @@ export async function updateProfile(payload: {
   biografia?: string;
   fecha_nacimiento?: string;
 }): Promise<ApiResponse> {
-  const response = await fetch(`${API_BASE}/users/me/profile/`, {
+  const response = await fetchWithAuth(`${API_BASE}/users/me/profile/`, {
     method: "PUT",
-    headers: getAuthHeaders(),
     body: JSON.stringify(payload),
   });
 
@@ -43,9 +83,8 @@ export async function updateProfile(payload: {
 }
 
 export async function getPreferences(): Promise<ApiResponse> {
-  const response = await fetch(`${API_BASE}/preferences/me/`, {
+  const response = await fetchWithAuth(`${API_BASE}/preferences/me/`, {
     method: "GET",
-    headers: getAuthHeaders(),
   });
 
   return await response.json();
@@ -57,9 +96,8 @@ export async function updatePreferences(payload: {
   autoplay?: boolean;
   recibir_notificaciones?: boolean;
 }): Promise<ApiResponse> {
-  const response = await fetch(`${API_BASE}/preferences/me/update/`, {
+  const response = await fetchWithAuth(`${API_BASE}/preferences/me/update/`, {
     method: "PUT",
-    headers: getAuthHeaders(),
     body: JSON.stringify(payload),
   });
 
@@ -70,9 +108,8 @@ export async function changePassword(payload: {
   password_actual: string;
   password_nueva: string;
 }): Promise<ApiResponse> {
-  const response = await fetch(`${API_BASE}/auth/change-password/`, {
+  const response = await fetchWithAuth(`${API_BASE}/auth/change-password/`, {
     method: "POST",
-    headers: getAuthHeaders(),
     body: JSON.stringify(payload),
   });
 
@@ -80,17 +117,19 @@ export async function changePassword(payload: {
 }
 
 export async function logoutUser(): Promise<ApiResponse> {
-  const token = getToken();
+  const refreshToken = getRefreshToken();
 
   const response = await fetch(`${API_BASE}/auth/logout/`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
     },
+    body: JSON.stringify({
+      refresh_token: refreshToken,
+    }),
   });
 
   const data = await response.json();
-  removeToken();
+  clearAuthSession();
   return data;
 }

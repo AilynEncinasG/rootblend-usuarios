@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FiUser, FiLock, FiChevronRight } from "react-icons/fi";
 import { Card, InputGroup, Input, Button } from "../../styles/GlobalStyles";
-import { loginUser, saveToken } from "../../services/authService";
+import { loginUser, saveAuthSession } from "../../services/authService";
 
 export const LoginForm = () => {
   const navigate = useNavigate();
@@ -30,19 +30,14 @@ export const LoginForm = () => {
         return;
       }
 
-      const token =
-        result.data?.token ||
-        result.data?.token_sesion ||
-        result.data?.access_token;
-
-      if (!token) {
-        setError("No llegó el token desde el servidor.");
+      if (!result.data?.access_token || !result.data?.refresh_token) {
+        setError("No llegaron los tokens desde el servidor.");
         return;
       }
 
-      saveToken(token);
+      saveAuthSession(result.data);
       navigate("/");
-    } catch (err) {
+    } catch {
       setError("Error de conexión con el servidor.");
     } finally {
       setLoading(false);

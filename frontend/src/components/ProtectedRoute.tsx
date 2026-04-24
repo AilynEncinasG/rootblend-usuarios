@@ -1,14 +1,44 @@
+import { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
-import { getToken } from "../services/authService";
+import { getAccessToken, hasSession, refreshAccessToken } from "../services/authService";
 
 type Props = {
   children: React.ReactNode;
 };
 
 const ProtectedRoute = ({ children }: Props) => {
-  const token = getToken();
+  const [checking, setChecking] = useState(true);
+  const [allowed, setAllowed] = useState(false);
 
-  if (!token) {
+  useEffect(() => {
+    const validateSession = async () => {
+      if (!hasSession()) {
+        setAllowed(false);
+        setChecking(false);
+        return;
+      }
+
+      const accessToken = getAccessToken();
+
+      if (accessToken) {
+        setAllowed(true);
+        setChecking(false);
+        return;
+      }
+
+      const refreshed = await refreshAccessToken();
+      setAllowed(refreshed);
+      setChecking(false);
+    };
+
+    validateSession();
+  }, []);
+
+  if (checking) {
+    return <p style={{ color: "white", padding: "20px" }}>Validando sesión...</p>;
+  }
+
+  if (!allowed) {
     return <Navigate to="/login" replace />;
   }
 

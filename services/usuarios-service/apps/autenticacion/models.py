@@ -17,6 +17,7 @@ class Sesion(models.Model):
     id_sesion = models.AutoField(primary_key=True)
     usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
     token_sesion = models.CharField(max_length=255, unique=True, default=uuid.uuid4)
+    refresh_token = models.CharField(max_length=255, null=True, blank=True, unique=True)
     ip = models.CharField(max_length=45, null=True, blank=True)
     inicio = models.DateTimeField(default=timezone.now)
     fin = models.DateTimeField(null=True, blank=True)

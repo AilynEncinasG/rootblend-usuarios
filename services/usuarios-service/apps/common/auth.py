@@ -1,30 +1,29 @@
-from apps.autenticacion.models import Sesion
+from apps.usuarios.models import Usuario
+from apps.common.jwt_utils import decode_access_token
 
 
 def get_token_from_request(request):
     auth_header = request.headers.get("Authorization", "")
     if auth_header.startswith("Bearer "):
         return auth_header.replace("Bearer ", "").strip()
+    return ""
 
-    return request.headers.get("X-Session-Token", "").strip()
 
-
-def get_active_session(request):
+def get_authenticated_user(request):
     token = get_token_from_request(request)
     if not token:
         return None
 
     try:
-        return Sesion.objects.select_related("usuario").get(
-            token_sesion=token,
-            activa=True,
-        )
-    except Sesion.DoesNotExist:
+        payload = decode_access_token(token)
+    except Exception:
         return None
 
-
-def get_authenticated_user(request):
-    session = get_active_session(request)
-    if not session:
+    user_id = payload.get("sub")
+    if not user_id:
         return None
-    return session.usuario
+
+    try:
+        return Usuario.objects.get(id_usuario=user_id, estado="activo")
+    except Usuario.DoesNotExist:
+        return None

@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FiUser, FiSettings, FiLogOut, FiHome, FiLock } from "react-icons/fi";
 import { getCurrentUser, logoutUser } from "../services/userService";
-import { getToken } from "../services/authService";
+import { hasSession } from "../services/authService";
 
 type UserData = {
   usuario?: {
@@ -18,15 +18,14 @@ const UserMenu = () => {
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const [userData, setUserData] = useState<UserData | null>(null);
-  const [hasSession, setHasSession] = useState(false);
+  const [loggedIn, setLoggedIn] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const token = getToken();
-    const loggedIn = !!token;
-    setHasSession(loggedIn);
+    const activeSession = hasSession();
+    setLoggedIn(activeSession);
 
-    if (!loggedIn) {
+    if (!activeSession) {
       setUserData(null);
       return;
     }
@@ -57,7 +56,7 @@ const UserMenu = () => {
   }, []);
 
   const handleUserClick = () => {
-    if (!hasSession) {
+    if (!loggedIn) {
       navigate("/login");
       return;
     }
@@ -72,7 +71,7 @@ const UserMenu = () => {
       console.error("Error cerrando sesión", error);
     } finally {
       setOpen(false);
-      setHasSession(false);
+      setLoggedIn(false);
       setUserData(null);
       navigate("/");
     }
@@ -107,12 +106,12 @@ const UserMenu = () => {
           justifyContent: "center",
           padding: 0,
         }}
-        title={hasSession ? "Abrir menú de usuario" : "Ir a iniciar sesión"}
+        title={loggedIn ? "Abrir menú de usuario" : "Ir a iniciar sesión"}
       >
         <FiUser size={25} style={{ color: "#00f2fe" }} />
       </button>
 
-      {hasSession && open && (
+      {loggedIn && open && (
         <div
           style={{
             position: "absolute",

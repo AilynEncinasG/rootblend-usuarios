@@ -6,6 +6,11 @@ from django.utils import timezone
 from apps.usuarios.models import Usuario, PerfilUsuario
 from apps.preferencias.models import PreferenciaUsuario
 from apps.autenticacion.models import Credencial, Sesion, RecuperacionPassword
+from apps.common.jwt_utils import (
+    create_access_token,
+    create_refresh_token,
+    decode_refresh_token,
+)
 from .validators import validate_email_format, validate_password_strength
 
 
@@ -51,9 +56,7 @@ def register_user(correo, password):
             nombre_visible=correo.split("@")[0],
         )
 
-        PreferenciaUsuario.objects.create(
-            usuario=usuario
-        )
+        PreferenciaUsuario.objects.create(usuario=usuario)
 
         salt = generate_salt()
         password_hash = hash_password(password, salt)
@@ -75,19 +78,19 @@ def login_user(correo, password, ip=None):
     try:
         usuario = Usuario.objects.get(correo=correo)
     except Usuario.DoesNotExist:
-        return None, None, {"credenciales": ["Correo o contraseña incorrectos."]}
+        return None, None, None, {"credenciales": ["Correo o contraseña incorrectos."]}
 
     try:
         credencial = Credencial.objects.get(usuario=usuario)
     except Credencial.DoesNotExist:
-        return None, None, {"credenciales": ["La cuenta no tiene credenciales configuradas."]}
+        return None, None, None, {"credenciales": ["La cuenta no tiene credenciales configuradas."]}
 
     password_hash = hash_password(password, credencial.password_salt)
 
     if password_hash != credencial.password_hash:
         credencial.intentos_fallidos += 1
         credencial.save(update_fields=["intentos_fallidos"])
-        return None, None, {"credenciales": ["Correo o contraseña incorrectos."]}
+        return None, None, None, {"credenciales": ["Correo o contraseña incorrectos."]}
 
     credencial.intentos_fallidos = 0
     credencial.save(update_fields=["intentos_fallidos"])
@@ -95,23 +98,60 @@ def login_user(correo, password, ip=None):
     usuario.ultimo_acceso = timezone.now()
     usuario.save(update_fields=["ultimo_acceso"])
 
-    token = generate_session_token()
     sesion = Sesion.objects.create(
         usuario=usuario,
-        token_sesion=token,
+        token_sesion=generate_session_token(),
         ip=ip,
         activa=True,
     )
 
-    return usuario, sesion, errors
+    access_token, access_exp = create_access_token(usuario)
+    refresh_token, _ = create_refresh_token(usuario, session_id=sesion.id_sesion)
+
+    sesion.refresh_token = refresh_token
+    sesion.save(update_fields=["refresh_token"])
+
+    return usuario, access_token, refresh_token, {
+        "expires_in": int((access_exp - timezone.now()).total_seconds())
+    }
 
 
-def logout_user(token):
-    if not token:
+def refresh_access_token(refresh_token):
+    try:
+        payload = decode_refresh_token(refresh_token)
+    except Exception:
+        return None, {"refresh_token": ["Refresh token invalido o expirado."]}
+
+    session_id = payload.get("sid")
+    user_id = payload.get("sub")
+
+    if not session_id or not user_id:
+        return None, {"refresh_token": ["Refresh token invalido."]}
+
+    try:
+        sesion = Sesion.objects.select_related("usuario").get(
+            id_sesion=session_id,
+            refresh_token=refresh_token,
+            activa=True,
+        )
+    except Sesion.DoesNotExist:
+        return None, {"refresh_token": ["La sesion no existe o ya fue cerrada."]}
+
+    access_token, access_exp = create_access_token(sesion.usuario)
+
+    return {
+        "access_token": access_token,
+        "token_type": "Bearer",
+        "expires_in": int((access_exp - timezone.now()).total_seconds()),
+    }, {}
+
+
+def logout_user(refresh_token):
+    if not refresh_token:
         return False
 
     try:
-        sesion = Sesion.objects.get(token_sesion=token, activa=True)
+        sesion = Sesion.objects.get(refresh_token=refresh_token, activa=True)
     except Sesion.DoesNotExist:
         return False
 
@@ -147,6 +187,7 @@ def change_user_password(usuario, password_actual, password_nueva):
     credencial.save(update_fields=["password_salt", "password_hash", "fecha_actualizacion"])
 
     return {}
+
 
 def forgot_password(correo):
     correo = correo.lower().strip()

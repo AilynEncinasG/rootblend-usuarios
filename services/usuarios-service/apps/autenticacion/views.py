@@ -1,7 +1,7 @@
 from django.views import View
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
-from apps.common.auth import get_token_from_request, get_authenticated_user
+from apps.common.auth import get_authenticated_user
 from apps.common.responses import success_response, error_response
 from .serializers import (
     RegisterSerializer,
@@ -17,7 +17,10 @@ from .services import (
     change_user_password,
     forgot_password,
     reset_password,
+    refresh_access_token,
 )
+import json
+
 
 @method_decorator(csrf_exempt, name="dispatch")
 class RegisterView(View):
@@ -72,23 +75,26 @@ class LoginView(View):
         password = serializer.data["password"]
         ip = request.META.get("REMOTE_ADDR")
 
-        usuario, sesion, errors = login_user(
+        usuario, access_token, refresh_token, result = login_user(
             correo=correo,
             password=password,
             ip=ip,
         )
 
-        if errors:
+        if isinstance(result, dict) and "expires_in" not in result:
             return error_response(
                 message="No se pudo iniciar sesion.",
-                errors=errors,
+                errors=result,
                 status=400,
             )
 
         return success_response(
             message="Inicio de sesion exitoso.",
             data={
-                "token": sesion.token_sesion,
+                "access_token": access_token,
+                "refresh_token": refresh_token,
+                "token_type": "Bearer",
+                "expires_in": result["expires_in"],
                 "usuario": {
                     "id_usuario": usuario.id_usuario,
                     "correo": usuario.correo,
@@ -100,23 +106,61 @@ class LoginView(View):
 
 
 @method_decorator(csrf_exempt, name="dispatch")
-class LogoutView(View):
+class RefreshTokenView(View):
     def post(self, request):
-        token = get_token_from_request(request)
+        try:
+            body = json.loads(request.body.decode("utf-8"))
+        except Exception:
+            body = {}
 
-        if not token:
+        refresh_token = body.get("refresh_token", "").strip()
+
+        if not refresh_token:
             return error_response(
-                message="Token de sesion no proporcionado.",
-                errors={"token": ["Debes enviar un token de sesion."]},
+                message="Refresh token no proporcionado.",
+                errors={"refresh_token": ["Debes enviar un refresh token."]},
+                status=400,
+            )
+
+        data, errors = refresh_access_token(refresh_token)
+
+        if errors:
+            return error_response(
+                message="No se pudo refrescar la sesion.",
+                errors=errors,
                 status=401,
             )
 
-        result = logout_user(token)
+        return success_response(
+            message="Token refrescado correctamente.",
+            data=data,
+            status=200,
+        )
+
+
+@method_decorator(csrf_exempt, name="dispatch")
+class LogoutView(View):
+    def post(self, request):
+        try:
+            body = json.loads(request.body.decode("utf-8"))
+        except Exception:
+            body = {}
+
+        refresh_token = body.get("refresh_token", "").strip()
+
+        if not refresh_token:
+            return error_response(
+                message="Refresh token no proporcionado.",
+                errors={"refresh_token": ["Debes enviar un refresh token."]},
+                status=400,
+            )
+
+        result = logout_user(refresh_token)
 
         if not result:
             return error_response(
                 message="No se pudo cerrar sesion.",
-                errors={"token": ["La sesion no existe o ya fue cerrada."]},
+                errors={"refresh_token": ["La sesion no existe o ya fue cerrada."]},
                 status=400,
             )
 
