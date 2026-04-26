@@ -214,8 +214,6 @@ VITE_FIREBASE_MESSAGING_SENDER_ID=
 VITE_FIREBASE_APP_ID=
 ```
 
-> ⚠️ **Importante:** no subir credenciales reales a repositorios públicos.
-
 ---
 
 # 7. 🚀 Cómo levantar el proyecto
@@ -252,7 +250,7 @@ Esto levantará:
 - `interacciones-service`
 - `gateway`
 - `rabbitmq`
-- `frontend` si ya está incluido en Compose
+- `frontend`
 
 ## Paso 5 — revisar estado
 
