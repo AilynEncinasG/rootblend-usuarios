@@ -15,6 +15,7 @@ import ProfilePage from "./pages/ProfilePage";
 import SettingsPage from "./pages/SettingsPage";
 import ChangePasswordPage from "./pages/ChangePasswordPage";
 import ProtectedRoute from "./components/ProtectedRoute";
+import FirebaseChatTest from "./components/FirebaseChatTest";
 
 const AppContent = () => {
   const location = useLocation();
@@ -26,6 +27,7 @@ const AppContent = () => {
     return (
       <Routes>
         <Route path="/" element={<HomePage />} />
+        <Route path="/chat-test" element={<FirebaseChatTest />} />
         <Route
           path="/profile"
           element={

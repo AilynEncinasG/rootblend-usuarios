@@ -1,0 +1,115 @@
+services:
+  rabbitmq:
+    build:
+      context: ./infra/rabbitmq
+    container_name: rootblend-rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "-q", "ping"]
+      interval: 20s
+      timeout: 10s
+      retries: 5
+      start_period: 20s
+    restart: unless-stopped
+
+  usuarios-service:
+    build:
+      context: ./services/usuarios-service
+    container_name: rootblend-usuarios-service
+    env_file:
+      - ./services/usuarios-service/.env
+    ports:
+      - "8000:8000"
+    healthcheck:
+      test: ["CMD-SHELL", "python -c \"import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/api/health/')\""]
+      interval: 20s
+      timeout: 10s
+      retries: 5
+      start_period: 20s
+    restart: unless-stopped
+
+  canales-streaming-service:
+    build:
+      context: ./services/canales-streaming-service
+    container_name: rootblend-canales-streaming-service
+    env_file:
+      - ./services/canales-streaming-service/.env
+    ports:
+      - "8001:8001"
+    healthcheck:
+      test: ["CMD-SHELL", "python -c \"import urllib.request; urllib.request.urlopen('http://127.0.0.1:8001/api/health/')\""]
+      interval: 20s
+      timeout: 10s
+      retries: 5
+      start_period: 20s
+    restart: unless-stopped
+
+  estadisticas-service:
+    build:
+      context: ./services/estadisticas-service
+    container_name: rootblend-estadisticas-service
+    env_file:
+      - ./services/estadisticas-service/.env
+    ports:
+      - "8002:8002"
+    healthcheck:
+      test: ["CMD-SHELL", "python -c \"import urllib.request; urllib.request.urlopen('http://127.0.0.1:8002/api/health/')\""]
+      interval: 20s
+      timeout: 10s
+      retries: 5
+      start_period: 20s
+    restart: unless-stopped
+
+  podcasts-service:
+    build:
+      context: ./services/podcasts-service
+    container_name: rootblend-podcasts-service
+    env_file:
+      - ./services/podcasts-service/.env
+    ports:
+      - "8003:8003"
+    healthcheck:
+      test: ["CMD-SHELL", "php -r \"$c=@file_get_contents('http://127.0.0.1:8003/api/health'); exit($c===false?1:0);\""]
+      interval: 20s
+      timeout: 10s
+      retries: 5
+      start_period: 20s
+    restart: unless-stopped
+
+  interacciones-service:
+    build:
+      context: ./services/interacciones-service
+    container_name: rootblend-interacciones-service
+    env_file:
+      - ./services/interacciones-service/.env
+    ports:
+      - "8004:8004"
+    healthcheck:
+      test: ["CMD-SHELL", "php -r \"$c=@file_get_contents('http://127.0.0.1:8004/api/health'); exit($c===false?1:0);\""]
+      interval: 20s
+      timeout: 10s
+      retries: 5
+      start_period: 20s
+    restart: unless-stopped
+
+  gateway:
+    build:
+      context: ./gateway
+    container_name: rootblend-gateway
+    ports:
+      - "8080:80"
+    depends_on:
+      - usuarios-service
+      - canales-streaming-service
+      - estadisticas-service
+      - podcasts-service
+      - interacciones-service
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1/api/usuarios-health/ >/dev/null 2>&1 || exit 1"]
+      interval: 20s
+      timeout: 10s
+      retries: 5
+      start_period: 20s
+    restart: unless-stopped

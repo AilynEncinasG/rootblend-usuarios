@@ -1,0 +1,93 @@
+# =========================
+# GENERAL
+# =========================
+.DS_Store
+Thumbs.db
+*.log
+*.tmp
+*.swp
+*.swo
+
+# =========================
+# ENV / SECRETOS
+# =========================
+
+
+# =========================
+# NODE / FRONTEND
+# =========================
+frontend/node_modules/
+frontend/dist/
+frontend/.vite/
+frontend/npm-debug.log*
+frontend/yarn-debug.log*
+frontend/yarn-error.log*
+frontend/pnpm-debug.log*
+
+# =========================
+# PYTHON / DJANGO
+# =========================
+**/__pycache__/
+**/*.py[cod]
+**/*.pyo
+**/*.pyd
+**/.Python
+**/.pytest_cache/
+**/.mypy_cache/
+**/.ruff_cache/
+**/.venv/
+**/venv/
+**/env/
+**/ENV/
+
+# SQLite por si aparece en pruebas locales
+**/*.sqlite3
+**/db.sqlite3
+**/database.sqlite
+
+# Archivos de Django recolectados localmente
+**/staticfiles/
+
+# =========================
+# PHP / LARAVEL
+# =========================
+**/vendor/
+**/bootstrap/cache/*.php
+**/bootstrap/cache/packages.php
+**/bootstrap/cache/services.php
+**/storage/*.key
+**/storage/logs/
+**/storage/framework/cache/
+**/storage/framework/sessions/
+**/storage/framework/views/
+**/public/storage
+
+# =========================
+# DOCKER
+# =========================
+**/.docker/
+docker-compose.override.yml
+
+# =========================
+# IDE / EDITOR
+# =========================
+.vscode/
+.idea/
+*.iml
+
+# =========================
+# OS / WINDOWS
+# =========================
+Desktop.ini
+
+# =========================
+# ARCHIVOS PERSONALES
+# =========================
+*.zip
+*.rar
+*.7z
+
+# =========================
+# SUBIDAS QUE NO DEBEN IR
+# =========================
+Pegado text.txt

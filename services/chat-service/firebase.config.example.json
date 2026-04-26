@@ -1,0 +1,9 @@
+{
+  "apiKey": "AIzaSyDZCi1ifDzhH2ZmfaJo71TBjXghIFHOR14",
+  "authDomain": "rootblend-chat.firebaseapp.com",
+  "databaseURL": "https://rootblend-chat-default-rtdb.firebaseio.com",
+  "projectId": "rootblend-chat",
+  "storageBucket": "rootblend-chat.firebasestorage.app",
+  "messagingSenderId": "830838473930",
+  "appId": "1:830838473930:web:2a00681f9fa7408e52a033"
+}
