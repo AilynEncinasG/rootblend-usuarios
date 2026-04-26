@@ -71,7 +71,7 @@ services:
     ports:
       - "8003:8003"
     healthcheck:
-      test: ["CMD-SHELL", "php -r \"$c=@file_get_contents('http://127.0.0.1:8003/api/health'); exit($c===false?1:0);\""]
+      test: ["CMD-SHELL", "php -r \"$$c=@file_get_contents('http://127.0.0.1:8003/api/health'); exit($$c===false?1:0);\""]
       interval: 20s
       timeout: 10s
       retries: 5
@@ -87,7 +87,7 @@ services:
     ports:
       - "8004:8004"
     healthcheck:
-      test: ["CMD-SHELL", "php -r \"$c=@file_get_contents('http://127.0.0.1:8004/api/health'); exit($c===false?1:0);\""]
+      test: ["CMD-SHELL", "php -r \"$$c=@file_get_contents('http://127.0.0.1:8004/api/health'); exit($$c===false?1:0);\""]
       interval: 20s
       timeout: 10s
       retries: 5
