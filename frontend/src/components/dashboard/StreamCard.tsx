@@ -1,39 +1,58 @@
-import React from 'react';
-import {Thumbnail } from '../../styles/GlobalStyles';
+// frontend/src/components/dashboard/StreamCard.tsx
+import type { Stream } from "../../services/streamsService";
+import {
+  StreamCardWrapper,
+  StreamThumb,
+  ThumbCenterText,
+  LiveBadge,
+  FeaturedBadge,
+  StreamBody,
+  StreamTitle,
+  StreamChannel,
+  StreamCategory,
+  StreamDescription,
+  StreamMetaRow,
+  MetaChip,
+} from "../../styles/DashboardStyles";
 
-interface StreamProps {
-  title: string;
-  user: string;
-  category: string;
-  viewers: string;
-}
-
-export const StreamCard: React.FC<StreamProps> = ({ title, user, category, viewers }) => {
-  return (
-    <div style={{ cursor: 'pointer' }}>
-      <Thumbnail>
-        <span style={{ opacity: 0.4, fontSize: '0.8rem' }}>{viewers} viewers</span>
-      </Thumbnail>
-      <h4 style={{ 
-        fontSize: '0.95rem', 
-        fontWeight: '700',
-        marginBottom: '4px',
-        whiteSpace: 'nowrap',
-        overflow: 'hidden',
-        textOverflow: 'ellipsis' 
-      }}>
-        {title}
-      </h4>
-      <p style={{ fontSize: '0.8rem', opacity: 0.6 }}>{user}</p>
-      <div style={{ display: 'flex', gap: '5px', marginTop: '8px' }}>
-        <span style={{ 
-          fontSize: '0.7rem',
-          fontWeight: '600',
-          color: '#00f2fe'
-        }}>
-          {category}
-        </span>
-      </div>
-    </div>
-  );
+type StreamCardProps = {
+  stream: Stream;
 };
+
+export default function StreamCard({ stream }: StreamCardProps) {
+  const isLive = stream.estado === "en_vivo";
+
+  return (
+    <StreamCardWrapper>
+      <StreamThumb>
+        <ThumbCenterText>{stream.categoria?.nombre || "ROOTBLEND"}</ThumbCenterText>
+
+        {isLive && <LiveBadge>LIVE</LiveBadge>}
+
+        {stream.destacado && <FeaturedBadge>DESTACADO</FeaturedBadge>}
+      </StreamThumb>
+
+      <StreamBody>
+        <StreamTitle>{stream.titulo}</StreamTitle>
+
+        <StreamChannel>
+          {stream.canal?.nombre_canal || "Canal desconocido"}
+        </StreamChannel>
+
+        <StreamCategory>
+          {stream.categoria?.nombre || "Sin categoría"}
+        </StreamCategory>
+
+        <StreamDescription>
+          {stream.descripcion || "Transmisión en vivo disponible en ROOTBLEND."}
+        </StreamDescription>
+
+        <StreamMetaRow>
+          <MetaChip>{stream.calidad_actual || "720p"}</MetaChip>
+          <MetaChip>{stream.configuracion?.latencia_modo || "normal"}</MetaChip>
+          <MetaChip>{isLive ? "En vivo" : "Offline"}</MetaChip>
+        </StreamMetaRow>
+      </StreamBody>
+    </StreamCardWrapper>
+  );
+}

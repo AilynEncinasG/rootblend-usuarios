@@ -1,35 +1,93 @@
 // frontend/src/components/dashboard/Sidebar.tsx
-import { StyledSidebar } from '../../styles/GlobalStyles';
-import { ChannelCard } from './ChannelCard';
+import { useEffect, useState } from "react";
+import type { Canal } from "../../services/streamsService";
+import { getActiveChannels } from "../../services/streamsService";
+import {
+  SidebarWrapper,
+  SidebarSectionTitle,
+  SidebarList,
+  ChannelItemRow,
+  ChannelAvatar,
+  ChannelText,
+  ChannelName,
+  ChannelSubtitle,
+} from "../../styles/DashboardStyles";
 
-// Pruebiras
-const MOCK_CHANNELS = [
-  { id: 1, name: 'CyberPunk_2077', game: 'Night City Live', online: true },
-  { id: 2, name: 'GamerX', game: 'Valorant Ranked', online: false },
-  { id: 3, name: 'DevMaster', game: 'TypeScript Tips', online: true },
-];
+export default function Sidebar() {
+  const [channels, setChannels] = useState<Canal[]>([]);
+  const [loading, setLoading] = useState(true);
 
-export const Sidebar = () => {
+  useEffect(() => {
+    let mounted = true;
+
+    async function loadChannels() {
+      try {
+        const data = await getActiveChannels();
+
+        if (mounted) {
+          setChannels(data);
+        }
+      } catch (error) {
+        console.error("Error cargando canales activos:", error);
+
+        if (mounted) {
+          setChannels([]);
+        }
+      } finally {
+        if (mounted) {
+          setLoading(false);
+        }
+      }
+    }
+
+    loadChannels();
+
+    return () => {
+      mounted = false;
+    };
+  }, []);
+
   return (
-    <StyledSidebar>
-      <h4 style={{ 
-        fontSize: '0.75rem', 
-        opacity: 0.5, 
-        textTransform: 'uppercase', 
-        letterSpacing: '1px',
-        marginBottom: '10px' 
-      }}>
-        Canales Recomendados
-      </h4>
-      
-      {MOCK_CHANNELS.map((channel) => (
-        <ChannelCard 
-          key={channel.id}
-          name={channel.name}
-          game={channel.game}
-          isOnline={channel.online}
-        />
-      ))}
-    </StyledSidebar>
+    <SidebarWrapper>
+      <SidebarSectionTitle>Canales recomendados</SidebarSectionTitle>
+
+      <SidebarList>
+        {loading && (
+          <ChannelItemRow>
+            <ChannelText>
+              <ChannelName>Cargando...</ChannelName>
+              <ChannelSubtitle>Obteniendo canales</ChannelSubtitle>
+            </ChannelText>
+          </ChannelItemRow>
+        )}
+
+        {!loading && channels.length === 0 && (
+          <ChannelItemRow>
+            <ChannelText>
+              <ChannelName>Sin canales</ChannelName>
+              <ChannelSubtitle>No hay canales activos</ChannelSubtitle>
+            </ChannelText>
+          </ChannelItemRow>
+        )}
+
+        {!loading &&
+          channels.map((channel) => (
+            <ChannelItemRow key={channel.id_canal}>
+              <ChannelAvatar>
+                {channel.nombre_canal.charAt(0).toUpperCase()}
+              </ChannelAvatar>
+
+              <ChannelText>
+                <ChannelName>{channel.nombre_canal}</ChannelName>
+                <ChannelSubtitle>
+                  {channel.tipo_canal.nombre_tipo === "streamer"
+                    ? "Canal en vivo"
+                    : "Canal podcast"}
+                </ChannelSubtitle>
+              </ChannelText>
+            </ChannelItemRow>
+          ))}
+      </SidebarList>
+    </SidebarWrapper>
   );
-};
+}

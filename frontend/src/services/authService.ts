@@ -1,4 +1,4 @@
-const API_BASE = import.meta.env.VITE_API_BASE || "http://127.0.0.1:8000/api";
+const API_BASE = import.meta.env.VITE_API_BASE || "http://localhost:8080/api";
 
 type ApiResponse<T = any> = {
   success: boolean;
@@ -16,6 +16,7 @@ type LoginData = {
     id_usuario: number;
     correo: string;
     estado: string;
+    nombre_visible?: string;
   };
 };
 
@@ -23,7 +24,10 @@ const ACCESS_TOKEN_KEY = "access_token";
 const REFRESH_TOKEN_KEY = "refresh_token";
 const USER_KEY = "auth_user";
 
-export async function registerUser(correo: string, password: string): Promise<ApiResponse> {
+export async function registerUser(
+  correo: string,
+  password: string
+): Promise<ApiResponse> {
   const response = await fetch(`${API_BASE}/auth/register/`, {
     method: "POST",
     headers: {
@@ -35,7 +39,10 @@ export async function registerUser(correo: string, password: string): Promise<Ap
   return await response.json();
 }
 
-export async function loginUser(correo: string, password: string): Promise<ApiResponse<LoginData>> {
+export async function loginUser(
+  correo: string,
+  password: string
+): Promise<ApiResponse<LoginData>> {
   const response = await fetch(`${API_BASE}/auth/login/`, {
     method: "POST",
     headers: {
@@ -80,10 +87,13 @@ export function saveAuthSession(data: LoginData) {
   localStorage.setItem(ACCESS_TOKEN_KEY, data.access_token);
   localStorage.setItem(REFRESH_TOKEN_KEY, data.refresh_token);
   localStorage.setItem(USER_KEY, JSON.stringify(data.usuario));
+
+  window.dispatchEvent(new Event("auth-changed"));
 }
 
 export function saveAccessToken(token: string) {
   localStorage.setItem(ACCESS_TOKEN_KEY, token);
+  window.dispatchEvent(new Event("auth-changed"));
 }
 
 export function getAccessToken() {
@@ -106,13 +116,15 @@ export function getStoredUser() {
 }
 
 export function hasSession() {
-  return !!getAccessToken() && !!getRefreshToken();
+  return Boolean(getAccessToken());
 }
 
 export function clearAuthSession() {
   localStorage.removeItem(ACCESS_TOKEN_KEY);
   localStorage.removeItem(REFRESH_TOKEN_KEY);
   localStorage.removeItem(USER_KEY);
+
+  window.dispatchEvent(new Event("auth-changed"));
 }
 
 export { API_BASE };

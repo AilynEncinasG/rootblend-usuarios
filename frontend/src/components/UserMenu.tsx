@@ -1,206 +1,270 @@
 import { useEffect, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { FiUser, FiSettings, FiLogOut, FiHome, FiLock } from "react-icons/fi";
-import { getCurrentUser, logoutUser } from "../services/userService";
-import { hasSession } from "../services/authService";
+import { Link, useNavigate } from "react-router-dom";
+import styled from "styled-components";
+import {
+  FiUser,
+  FiSettings,
+  FiLogOut,
+  FiLock,
+  FiHome,
+  FiRadio,
+  FiGrid,
+} from "react-icons/fi";
+import {
+  clearAuthStorage,
+  getStoredUser,
+  isAuthenticated,
+} from "../utils/authStorage";
 
-type UserData = {
-  usuario?: {
-    correo?: string;
-  };
-  perfil?: {
-    nombre_visible?: string;
-    biografia?: string | null;
-  };
-};
+const MenuWrapper = styled.div`
+  position: relative;
+`;
 
-const UserMenu = () => {
+const AvatarButton = styled.button`
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: none;
+  background: linear-gradient(135deg, #00e5ff, #00ff99);
+  color: #071016;
+  font-weight: 900;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const Dropdown = styled.div`
+  position: absolute;
+  top: 44px;
+  right: 0;
+  width: 260px;
+  background: #2c2c38;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  padding: 12px;
+  z-index: 1000;
+  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.35);
+`;
+
+const UserHeader = styled.div`
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  padding: 6px 6px 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  margin-bottom: 8px;
+`;
+
+const HeaderAvatar = styled.div`
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: #ffd166;
+  color: #171720;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 900;
+`;
+
+const UserInfo = styled.div`
+  min-width: 0;
+
+  strong {
+    display: block;
+    color: #ffffff;
+    font-size: 14px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  span {
+    display: block;
+    color: rgba(255, 255, 255, 0.55);
+    font-size: 12px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+`;
+
+const MenuList = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+const MenuLink = styled(Link)`
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #ffffff;
+  text-decoration: none;
+  padding: 10px 8px;
+  border-radius: 8px;
+  font-size: 14px;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.07);
+  }
+
+  svg {
+    color: rgba(255, 255, 255, 0.75);
+  }
+`;
+
+const LogoutButton = styled.button`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #ff7b85;
+  background: transparent;
+  border: none;
+  padding: 10px 8px;
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
+  text-align: left;
+
+  &:hover {
+    background: rgba(255, 79, 94, 0.1);
+  }
+
+  svg {
+    color: #ff7b85;
+  }
+`;
+
+export default function UserMenu() {
   const navigate = useNavigate();
+  const wrapperRef = useRef<HTMLDivElement | null>(null);
+
   const [open, setOpen] = useState(false);
-  const [userData, setUserData] = useState<UserData | null>(null);
-  const [loggedIn, setLoggedIn] = useState(false);
-  const menuRef = useRef<HTMLDivElement>(null);
+  const [loggedIn, setLoggedIn] = useState(isAuthenticated());
 
-  useEffect(() => {
-    const activeSession = hasSession();
-    setLoggedIn(activeSession);
+  const user = loggedIn ? getStoredUser() : null;
 
-    if (!activeSession) {
-      setUserData(null);
-      return;
-    }
-
-    const loadUser = async () => {
-      try {
-        const result = await getCurrentUser();
-        if (result.success) {
-          setUserData(result.data || null);
-        }
-      } catch (error) {
-        console.error("Error cargando usuario", error);
-      }
-    };
-
-    loadUser();
-  }, []);
-
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
-        setOpen(false);
-      }
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
-
-  const handleUserClick = () => {
-    if (!loggedIn) {
-      navigate("/login");
-      return;
-    }
-
-    setOpen(!open);
-  };
-
-  const handleLogout = async () => {
-    try {
-      await logoutUser();
-    } catch (error) {
-      console.error("Error cerrando sesión", error);
-    } finally {
-      setOpen(false);
-      setLoggedIn(false);
-      setUserData(null);
-      navigate("/");
-    }
-  };
-
-  const nombre =
-    userData?.perfil?.nombre_visible ||
-    userData?.usuario?.correo?.split("@")[0] ||
+  const displayName =
+    user?.nombre_visible ||
+    user?.nombre ||
+    user?.username ||
+    user?.correo ||
     "Usuario";
 
-  const correo = userData?.usuario?.correo || "Sin correo";
+  const email = user?.correo || user?.email || "Cuenta ROOTBLEND";
+  const initial = String(displayName).charAt(0).toUpperCase();
 
-  const goTo = (path: string) => {
+  function refreshAuthState() {
+    const sessionState = isAuthenticated();
+    setLoggedIn(sessionState);
+
+    if (!sessionState) {
+      setOpen(false);
+    }
+  }
+
+  function handleLogout() {
+    clearAuthStorage();
+    setLoggedIn(false);
     setOpen(false);
-    navigate(path);
-  };
+
+    navigate("/", { replace: true });
+  }
+
+  useEffect(() => {
+    refreshAuthState();
+
+    function handleClickOutside(event: MouseEvent) {
+      if (
+        wrapperRef.current &&
+        !wrapperRef.current.contains(event.target as Node)
+      ) {
+        setOpen(false);
+      }
+    }
+
+    function handleStorageChange() {
+      refreshAuthState();
+    }
+
+    window.addEventListener("storage", handleStorageChange);
+    window.addEventListener("auth-changed", handleStorageChange);
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      window.removeEventListener("storage", handleStorageChange);
+      window.removeEventListener("auth-changed", handleStorageChange);
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  if (!loggedIn) {
+    return null;
+  }
 
   return (
-    <div style={{ position: "relative" }} ref={menuRef}>
-      <button
-        onClick={handleUserClick}
-        style={{
-          width: "36px",
-          height: "36px",
-          borderRadius: "50%",
-          border: "none",
-          background: "transparent",
-          color: "#00f2fe",
-          cursor: "pointer",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          padding: 0,
+    <MenuWrapper ref={wrapperRef}>
+      <AvatarButton
+        type="button"
+        onClick={() => {
+          refreshAuthState();
+          setOpen((value) => !value);
         }}
-        title={loggedIn ? "Abrir menú de usuario" : "Ir a iniciar sesión"}
       >
-        <FiUser size={25} style={{ color: "#00f2fe" }} />
-      </button>
+        {initial}
+      </AvatarButton>
 
-      {loggedIn && open && (
-        <div
-          style={{
-            position: "absolute",
-            top: "42px",
-            right: 0,
-            width: "280px",
-            background: "#2b2b35",
-            color: "white",
-            borderRadius: "12px",
-            padding: "16px",
-            boxShadow: "0 12px 30px rgba(0,0,0,0.35)",
-            zIndex: 999,
-            border: "1px solid rgba(255,255,255,0.08)",
-          }}
-        >
-          <div
-            style={{
-              marginBottom: "14px",
-              paddingBottom: "12px",
-              borderBottom: "1px solid #3a3a4a",
-              display: "flex",
-              gap: "12px",
-              alignItems: "center",
-            }}
-          >
-            <div
-              style={{
-                width: "42px",
-                height: "42px",
-                borderRadius: "50%",
-                background: "#f4c95d",
-                color: "#111",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                fontWeight: 700,
-              }}
-            >
-              {nombre.charAt(0).toUpperCase()}
-            </div>
+      {open && (
+        <Dropdown>
+          <UserHeader>
+            <HeaderAvatar>{initial}</HeaderAvatar>
 
-            <div>
-              <div style={{ fontWeight: 700, fontSize: "1rem" }}>{nombre}</div>
-              <div style={{ fontSize: "0.85rem", opacity: 0.8 }}>{correo}</div>
-            </div>
-          </div>
+            <UserInfo>
+              <strong>{displayName}</strong>
+              <span>{email}</span>
+            </UserInfo>
+          </UserHeader>
 
-          <div style={{ display: "grid", gap: "6px" }}>
-            <button onClick={() => goTo("/")} style={menuButtonStyle}>
-              <FiHome size={16} /> Inicio
-            </button>
+          <MenuList>
+            <MenuLink to="/" onClick={() => setOpen(false)}>
+              <FiHome />
+              Inicio
+            </MenuLink>
 
-            <button onClick={() => goTo("/profile")} style={menuButtonStyle}>
-              <FiUser size={16} /> Perfil
-            </button>
+            <MenuLink to="/profile" onClick={() => setOpen(false)}>
+              <FiUser />
+              Perfil
+            </MenuLink>
 
-            <button onClick={() => goTo("/settings")} style={menuButtonStyle}>
-              <FiSettings size={16} /> Configuración
-            </button>
+            <MenuLink to="/creator/activate" onClick={() => setOpen(false)}>
+              <FiRadio />
+              Activar canal de creador
+            </MenuLink>
 
-            <button onClick={() => goTo("/change-password")} style={menuButtonStyle}>
-              <FiLock size={16} /> Cambiar contraseña
-            </button>
+            <MenuLink to="/creator/dashboard" onClick={() => setOpen(false)}>
+              <FiGrid />
+              Panel de creador
+            </MenuLink>
 
-            <button
-              onClick={handleLogout}
-              style={{ ...menuButtonStyle, color: "#ff7b7b" }}
-            >
-              <FiLogOut size={16} /> Cerrar sesión
-            </button>
-          </div>
-        </div>
+            <MenuLink to="/settings" onClick={() => setOpen(false)}>
+              <FiSettings />
+              Configuración
+            </MenuLink>
+
+            <MenuLink to="/change-password" onClick={() => setOpen(false)}>
+              <FiLock />
+              Cambiar contraseña
+            </MenuLink>
+
+            <LogoutButton type="button" onClick={handleLogout}>
+              <FiLogOut />
+              Cerrar sesión
+            </LogoutButton>
+          </MenuList>
+        </Dropdown>
       )}
-    </div>
+    </MenuWrapper>
   );
-};
-
-const menuButtonStyle: React.CSSProperties = {
-  background: "transparent",
-  border: "none",
-  color: "white",
-  textAlign: "left",
-  padding: "10px 8px",
-  borderRadius: "8px",
-  cursor: "pointer",
-  fontSize: "0.95rem",
-  display: "flex",
-  alignItems: "center",
-  gap: "10px",
-};
-
-export default UserMenu;
+}

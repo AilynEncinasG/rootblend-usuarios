@@ -24,7 +24,10 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "corsheaders",
-    "core",
+    "apps.canales",
+    "apps.categorias",
+    "apps.streams",
+    "apps.momentos",
 ]
 
 MIDDLEWARE = [
