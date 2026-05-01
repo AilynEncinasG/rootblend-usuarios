@@ -9,6 +9,12 @@ import {
   FiHome,
   FiRadio,
   FiGrid,
+  FiBell,
+  FiHeart,
+  FiCreditCard,
+  FiActivity,
+  FiShield,
+  FiMic,
 } from "react-icons/fi";
 import {
   clearAuthStorage,
@@ -38,10 +44,10 @@ const Dropdown = styled.div`
   position: absolute;
   top: 44px;
   right: 0;
-  width: 260px;
+  width: 310px;
   background: #2c2c38;
   border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 10px;
+  border-radius: 14px;
   padding: 12px;
   z-index: 1000;
   box-shadow: 0 18px 45px rgba(0, 0, 0, 0.35);
@@ -88,6 +94,30 @@ const UserInfo = styled.div`
     overflow: hidden;
     text-overflow: ellipsis;
   }
+`;
+
+const RoleNotice = styled.div`
+  margin: 8px 0;
+  padding: 10px;
+  border-radius: 12px;
+  background: rgba(0, 229, 255, 0.08);
+  border: 1px solid rgba(0, 229, 255, 0.14);
+  color: rgba(255, 255, 255, 0.82);
+  font-size: 12px;
+  line-height: 1.45;
+
+  strong {
+    color: #00e5ff;
+  }
+`;
+
+const MenuSectionTitle = styled.div`
+  padding: 10px 8px 5px;
+  color: rgba(255, 255, 255, 0.42);
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 `;
 
 const MenuList = styled.div`
@@ -137,12 +167,45 @@ const LogoutButton = styled.button`
   }
 `;
 
+function getCreatorRole() {
+  return localStorage.getItem("creator_role");
+}
+
+function getCreatorPanelPath() {
+  const role = getCreatorRole();
+
+  if (role === "podcaster") {
+    return "/creator/podcaster";
+  }
+
+  if (role === "streamer") {
+    return "/creator/streamer";
+  }
+
+  return "/creator/activate";
+}
+
+function getCreatorLabel() {
+  const role = getCreatorRole();
+
+  if (role === "podcaster") {
+    return "Panel podcaster";
+  }
+
+  if (role === "streamer") {
+    return "Panel streamer";
+  }
+
+  return "Activar canal";
+}
+
 export default function UserMenu() {
   const navigate = useNavigate();
   const wrapperRef = useRef<HTMLDivElement | null>(null);
 
   const [open, setOpen] = useState(false);
   const [loggedIn, setLoggedIn] = useState(isAuthenticated());
+  const [creatorRole, setCreatorRole] = useState(getCreatorRole());
 
   const user = loggedIn ? getStoredUser() : null;
 
@@ -159,14 +222,20 @@ export default function UserMenu() {
   function refreshAuthState() {
     const sessionState = isAuthenticated();
     setLoggedIn(sessionState);
+    setCreatorRole(getCreatorRole());
 
     if (!sessionState) {
       setOpen(false);
     }
   }
 
+  function closeMenu() {
+    setOpen(false);
+  }
+
   function handleLogout() {
     clearAuthStorage();
+    localStorage.removeItem("creator_role");
     setLoggedIn(false);
     setOpen(false);
 
@@ -189,11 +258,13 @@ export default function UserMenu() {
 
     window.addEventListener("storage", handleStorageChange);
     window.addEventListener("auth-changed", handleStorageChange);
+    window.addEventListener("creator-role-changed", handleStorageChange);
     document.addEventListener("mousedown", handleClickOutside);
 
     return () => {
       window.removeEventListener("storage", handleStorageChange);
       window.removeEventListener("auth-changed", handleStorageChange);
+      window.removeEventListener("creator-role-changed", handleStorageChange);
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
@@ -225,33 +296,81 @@ export default function UserMenu() {
             </UserInfo>
           </UserHeader>
 
+          <RoleNotice>
+            Canal activo:{" "}
+            <strong>
+              {creatorRole === "streamer"
+                ? "Streamer"
+                : creatorRole === "podcaster"
+                  ? "Podcaster"
+                  : "Sin canal"}
+            </strong>
+            <br />
+            Una cuenta solo puede operar como streamer o podcaster, no ambos.
+          </RoleNotice>
+
           <MenuList>
-            <MenuLink to="/" onClick={() => setOpen(false)}>
+            <MenuSectionTitle>Principal</MenuSectionTitle>
+
+            <MenuLink to="/" onClick={closeMenu}>
               <FiHome />
               Inicio
             </MenuLink>
 
-            <MenuLink to="/profile" onClick={() => setOpen(false)}>
+            <MenuLink to="/profile" onClick={closeMenu}>
               <FiUser />
-              Perfil
+              Ver mi perfil
             </MenuLink>
 
-            <MenuLink to="/creator/activate" onClick={() => setOpen(false)}>
-              <FiRadio />
-              Activar canal de creador
+            <MenuLink to="/notifications" onClick={closeMenu}>
+              <FiBell />
+              Notificaciones
             </MenuLink>
 
-            <MenuLink to="/creator/dashboard" onClick={() => setOpen(false)}>
-              <FiGrid />
-              Panel de creador
+            <MenuLink to="/following" onClick={closeMenu}>
+              <FiHeart />
+              Seguidos
             </MenuLink>
 
-            <MenuLink to="/settings" onClick={() => setOpen(false)}>
+            <MenuLink to="/subscriptions" onClick={closeMenu}>
+              <FiCreditCard />
+              Suscripciones
+            </MenuLink>
+
+            <MenuSectionTitle>Creador</MenuSectionTitle>
+
+            <MenuLink to={getCreatorPanelPath()} onClick={closeMenu}>
+              {creatorRole === "podcaster" ? <FiMic /> : <FiRadio />}
+              {getCreatorLabel()}
+            </MenuLink>
+
+            <MenuLink to="/stats" onClick={closeMenu}>
+              <FiActivity />
+              Estadísticas
+            </MenuLink>
+
+            {creatorRole === "streamer" && (
+              <MenuLink to="/moderation/moderators" onClick={closeMenu}>
+                <FiShield />
+                Moderadores de mi chat
+              </MenuLink>
+            )}
+
+            {!creatorRole && (
+              <MenuLink to="/creator/activate" onClick={closeMenu}>
+                <FiGrid />
+                Activar canal de creador
+              </MenuLink>
+            )}
+
+            <MenuSectionTitle>Cuenta</MenuSectionTitle>
+
+            <MenuLink to="/settings" onClick={closeMenu}>
               <FiSettings />
               Configuración
             </MenuLink>
 
-            <MenuLink to="/change-password" onClick={() => setOpen(false)}>
+            <MenuLink to="/change-password" onClick={closeMenu}>
               <FiLock />
               Cambiar contraseña
             </MenuLink>

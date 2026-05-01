@@ -128,6 +128,7 @@ function getCreatorRole(): CreatorRole | null {
 
 function setCreatorRole(role: CreatorRole) {
   localStorage.setItem(CREATOR_ROLE_KEY, role);
+  window.dispatchEvent(new Event("creator-role-changed"));
 }
 
 function getModerators() {
@@ -1500,6 +1501,7 @@ export function CreatorActivatePage() {
 
   function resetDemoRole() {
     localStorage.removeItem(CREATOR_ROLE_KEY);
+    window.dispatchEvent(new Event("creator-role-changed"));
     setRole("streamer");
   }
 
@@ -1659,9 +1661,13 @@ export function PodcasterDashboardPage() {
         <StatCard label="Duracion promedio" value="48m 32s" trend="+6%" />
       </MetricGrid>
       <QuickActions>
+      <QuickActions>
         <PrimaryLink to="/creator/podcaster/create-podcast"><FiPlus /> Crear podcast</PrimaryLink>
         <GhostLink to="/creator/podcaster/episodes/new"><FiUpload /> Subir episodio</GhostLink>
         <GhostLink to="/creator/podcaster/episodes"><FiHeadphones /> Episodios</GhostLink>
+        <GhostLink to="/creator/podcaster/stats"><FiActivity /> Estadisticas</GhostLink>
+        <GhostLink to="/creator/podcaster/history"><FiClock /> Historial</GhostLink>
+      </QuickActions>
       </QuickActions>
     </CreatorScreen>
   );
