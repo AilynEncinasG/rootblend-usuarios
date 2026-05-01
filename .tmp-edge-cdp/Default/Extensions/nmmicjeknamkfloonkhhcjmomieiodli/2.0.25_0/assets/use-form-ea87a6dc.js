@@ -1,1 +1,0 @@
-import{r as t,s as C}from"./jsx-runtime-4286988b.js";import{b as c}from"./check-user-limit-8cb4cccc.js";const u=()=>{const{userConfig:n,onChangeUserConfig:o}=c(),e=t.useCallback(async(s,a)=>{await C(s,a),o(r=>({...r,[s]:a}))},[o]);return{userConfig:n,onChange:e}};export{u};
