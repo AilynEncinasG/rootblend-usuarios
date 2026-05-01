@@ -1,0 +1,931 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SEOquake analytics</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        @media print {
+            .page-break {
+                page-break-before: always;
+            }
+
+            #pageinfo_block table[data-role="2-word-table"] {
+                page-break-after: always;
+            }
+
+            .float-element-shadow {
+                display: none !important;
+            }
+
+            footer,
+            .main-menu,
+            .black-menu,
+            section header .semrush,
+            .criterion > div.tips,
+            [data-role="more-checks-text"],
+            section > .block:last-of-type,
+            [data-role="rule-viewport"] + .criterion {
+                display: none !important;
+            }
+
+
+            .slidePanel.hideContent [data-role="headings"] {
+                height: auto !important;
+                overflow: visible !important;
+            }
+
+            .slidePanel.hideContent .show {
+                display: none !important;
+            }
+
+            header .green-bg .container img.top-logo {
+                top: 10px !important;
+            }
+
+            .criterion > div.content .hint {
+                color: #000 !important;
+                margin-top: 1em !important;
+                font-size: 110% !important;
+            }
+        }
+    </style>
+    <link type="text/css" rel="stylesheet" href="common.css"/>
+</head>
+<body>
+<header>
+    <div class="black-menu">
+    <nav class="container">
+        <a href="https://www.seoquake.com/guide/index.html" target="_blank" data-role="howto-link">How to use</a>
+        <a href="https://forms.gle/6frm8Fkr4F345HKN6" target="_blank" data-role="suggest-link">Have a suggestion?</a>
+    </nav>
+</div>
+
+    <div class="green-bg">
+        <div class="container">
+            <h1 id="page_url">...</h1>
+            <img src="static/common/top-logo.png" alt="SEOquake" class="top-logo"/>
+        </div>
+    </div>
+    <div class="main-menu">
+        <nav class="container">
+            <a href="#pageinfo" class="active" rel="pageinfo" data-role="menu-pageinfo">Page info</a>
+            <a href="#diagnosis" rel="diagnosis" data-role="menu-diagnosis">Diagnosis</a>
+            <a href="#internal" rel="internal" data-role="menu-internal">Internal</a>
+            <a href="#external" rel="external" data-role="menu-external">External</a>
+            <a href="#density" data-rel="word-1;word-2;word-3;word-4" rel="density" data-role="menu-density">Density</a>
+            <button data-role="compare"><img src="static/common/icon-compare.png" alt=""/> Compare URLs/domains</button>
+        </nav>
+    </div>
+</header>
+<main>
+    <section id="pageinfo_block">
+        <header class="container">
+    <h2 data-role="title">Page info</h2>
+</header>
+
+<div class="container" id="pageinfo_container">
+    <div class="block">
+        <div class="block-header" data-role="title-basic">Basic info:</div>
+        <div class="block-body">
+            <table class="pageinfo-table">
+                <tr>
+                    <td class="pinfoblock">
+                        <p>
+                            <label data-role="title-title">Title:</label>
+                            <span data-role="page-title"></span>
+                        </p>
+
+                        <p class="hidden">
+                            <label data-role="title-keywords">Meta keywords:</label>
+                            <span data-role="page-meta-keywords"></span>
+                        </p>
+
+                        <p>
+                            <label data-role="title-description">Meta description:</label>
+                            <span data-role="page-meta-description"></span>
+                        </p>
+
+                        <p>
+                            <label data-role="title-internal">Internal links:</label>
+                            <span data-role="page-links-internal"></span>
+                        </p>
+
+                        <p>
+                            <label data-role="title-external">External links:</label>
+                            <span data-role="page-links-external"></span>
+                        </p>
+
+                        <p>
+                            <label data-role="title-server">Server:</label>
+                            <span data-role="page-server"></span>
+                        </p>
+                    </td>
+                    <td>
+                        <a href="#" data-role="link-print" class="sqbtn"><i class="fa fa-print"></i> Print</a>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <div class="block">
+        <div class="block-header" data-role="title-parameters">Parameters:</div>
+        <p data-role="title-page-parameters">Page:</p>
+        <div data-role="page-parameters" class="page-parameters"></div>
+        <p data-role="title-domain-parameters">Domain:</p>
+        <div data-role="domain-parameters" class="page-parameters"></div>
+        <p data-role="title-backlinks-parameters">Backlinks:</p>
+        <div data-role="backlinks-parameters" class="page-parameters"></div>
+        <p data-role="title-other-parameters">Others:</p>
+        <div data-role="other-parameters" class="page-parameters"></div>
+    </div>
+
+    <div class="block page-break">
+        <div class="block-header"><h3 data-role="title-keywords-density">Keywords density</h3></div>
+        <p data-role="total-words">Total number of words:&nbsp;<span data-role="1-word-count"></span>.
+            <a href="#word-1" rel="1-word-count" data-role="see-all-keywords">See all</a></p>
+        <table data-role="1-word-table" class="density-keywords-table">
+            <thead>
+            <tr>
+                <th data-role="keywords-keyword">Keyword</th>
+                <th data-role="keywords-foundin">Found in</th>
+                <th data-role="keywords-repeats">Repeats</th>
+                <th data-role="keywords-density">Density</th>
+            </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+
+        <p data-role="total-2words">Total 2 word phrases:&nbsp;<span data-role="2-word-count"></span>.
+            <a href="#word-2" rel="1-word-count" data-role="see-all-keywords">See all</a></p>
+        <table data-role="2-word-table" class="density-keywords-table">
+            <thead>
+            <tr>
+                <th data-role="keywords-keyword">Keyword</th>
+                <th data-role="keywords-foundin">Found in</th>
+                <th data-role="keywords-repeats">Repeats</th>
+                <th data-role="keywords-density">Density</th>
+            </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+
+        <p data-role="total-3words">Total 3 word phrases:&nbsp;<span data-role="3-word-count"></span>.
+            <a href="#word-3" rel="1-word-count" data-role="see-all-keywords">See all</a></p>
+        <table data-role="3-word-table" class="density-keywords-table">
+            <thead>
+            <tr>
+                <th data-role="keywords-keyword">Keyword</th>
+                <th data-role="keywords-foundin">Found in</th>
+                <th data-role="keywords-repeats">Repeats</th>
+                <th data-role="keywords-density">Density</th>
+            </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+
+        <p data-role="total-3words">Total 4 word phrases:&nbsp;<span data-role="4-word-count"></span>.
+            <a href="#word-4" data-role="see-all-keywords">See all</a></p>
+        <table data-role="4-word-table" class="density-keywords-table">
+            <thead>
+            <tr>
+                <th data-role="keywords-keyword">Keyword</th>
+                <th data-role="keywords-foundin">Found in</th>
+                <th data-role="keywords-repeats">Repeats</th>
+                <th data-role="keywords-density">Density</th>
+            </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+</div>
+
+        <div class="block container" style="margin-top: 30px;">
+    <div class="block-body block-body-gray">
+       <p><span data-role="feedback-1">Need more features?</span>
+            <a href="https://www.seoquake.com/review/suggest.php" target="_blank" data-role="feedback-link">Drop us a line</a>
+            <span data-role="feedback-2">or just mail us:</span>
+           <a href="mailto:mail@seoquaketeam.com" data-role="feedback-email">mail@seoquaketeam.com</a></p>
+    </div>
+</div>
+
+    </section>
+    <section id="diagnosis_block">
+        <header class="container">
+    <h2 data-role="title">Page SEO audit</h2>
+    <div class="summary">
+        <div class="success">
+            <span class="icon circle"></span><span class="description" data-role="passed">Passed:</span><span data-role="success-counter">0</span>
+        </div>
+        <div class="error">
+            <span class="icon circle"></span><span class="description" data-role="error">Error:</span><span data-role="error-counter">0</span>
+        </div>
+        <div class="warning">
+            <span class="icon circle"></span><span class="description" data-role="warning">Warning:</span><span data-role="warning-counter">0</span>
+        </div>
+    </div>
+    <div class="semrush">
+        <a href="https://www.semrush.com/lp/site-audit-2/en/?utm_source=seoquake&utm_medium=diagnosis&utm_campaign=get_free_audit&ref=174537735" target="_blank" data-role="audit-banner">Get 100-pages audit for FREE in 5 minutes</a>
+        <span data-role="semrush-provided">provided by<a href="https://www.semrush.com/?utm_source=seoquake&utm_medium=toolbar&utm_campaign=audit&ref=174537735" data-role="semrush-link" target="_blank" style="margin-left: 0.5em;">semrush.com</a></span>
+    </div>
+</header>
+
+<div class="block container">
+    <div class="block-header" data-role="title-page-rules">Page analysis</div>
+    <div class="block-body">
+        <div data-role="rule-url" class="criterion">
+            <div class="title" data-role="rule-url-title">URL</div>
+            <div class="icon cssload"></div>
+            <div class="content">
+                <p data-role="message">Processing...</p>
+                <p data-role="value" class="hint"></p>
+            </div>
+            <div class="tips" data-role="tips">
+                <button data-role="open" class="open">Tips</button>
+                <div class="tips-block" data-role="dropdown">
+                    <button data-role="close" class="close">Tips</button>
+                    <div class="content" data-role="rule-url-tip"></div>
+                </div>
+            </div>
+        </div>
+
+        <div data-role="rule-canonical" class="criterion">
+            <div class="title" data-role="rule-canonical-title">Canonical</div>
+            <div class="icon cssload"></div>
+            <div class="content">
+                <p data-role="message">Processing...</p>
+                <p data-role="value" class="hint"></p>
+            </div>
+            <div class="tips" data-role="tips">
+                <button data-role="open" class="open">Tips</button>
+                <div class="tips-block" data-role="dropdown">
+                    <button data-role="close" class="close">Tips</button>
+                    <div class="content" data-role="rule-canonical-tip"></div>
+                </div>
+            </div>
+        </div>
+
+        <div data-role="rule-title" class="criterion ai-suggest">
+            <div class="title" data-role="rule-title-title">Title</div>
+            <div class="icon cssload"></div>
+            <div class="content">
+                <p data-role="message">Processing...</p>
+                <p data-role="value" class="hint"></p>
+            </div>
+            <div class="tips" data-role="tips">
+                <button data-role="open" class="open">Tips</button>
+                <div class="tips-block" data-role="dropdown">
+                    <button data-role="close" class="close">Tips</button>
+                    <div class="content" data-role="rule-title-tip"></div>
+                </div>
+            </div>
+
+            <!-- <div class="title-generator" data-role="title-generator">
+                <button class="generator-button open" data-role="title-generator-open-button">
+                    <span>Improve with AI</span>
+                    <i class="ai icon load"></i>
+                </button>
+                <div class="generator-container" data-role="title-generator-container">
+                    <button class="generator-button close" data-role="title-generator-close-button">Improve with AI</button>
+                    <div class="generator-content" data-role="title-generator-content">
+                        <div class="generator-elements" data-role="title-generator-elements"></div>
+                        <div class="generator-contols" data-role="title-generator-contols">
+                            <div class="generator-no-suggest">
+                                <p>No improvements to suggest</p>
+                                <p>Sorry, our AI-powered model was unable to generate your text in a significantly different way.</p>
+                            </div>
+                            <div class="generator-error">
+                                <p>Something went wrong</p>
+                                <p>Please try again later or contact us if the problem persists.</p>
+                            </div>
+                            <div class="generator-no-support">
+                                <p>The language is not supported.</p>
+                                <p>We currently only support English language.</p>
+                            </div>
+                            <button class="generator-reroll" data-role="title-generator-reroll">
+                                <i class="ai icon load"></i>
+                                <span>Try again</span>
+                            </button>
+                            <p class="feedback">Do you like these suggestions? Give us <a href="https://forms.gle/hmYGaigoSk8P8G179" target="_blank">feedback!</a></p>
+                        </div>
+                    </div>
+                </div>
+            </div> -->
+        </div>
+
+        <div data-role="rule-description" class="criterion ai-suggest">
+            <div class="title" data-role="rule-meta-title">Meta description</div>
+            <div class="icon cssload"></div>
+            <div class="content">
+                <p data-role="message">Processing...</p>
+                <p data-role="value" class="hint"></p>
+            </div>
+            <div class="tips" data-role="tips">
+                <button data-role="open" class="open">Tips</button>
+                <div class="tips-block" data-role="dropdown">
+                    <button data-role="close" class="close">Tips</button>
+                    <div class="content" data-role="rule-meta-tip"></div>
+                </div>
+            </div>
+
+            <!-- <div class="description-generator" data-role="description-generator">
+                <button class="generator-button open" data-role="description-generator-open-button">
+                    <span>Improve with AI</span>
+                    <i class="ai icon load"></i>
+                </button>
+                <div class="generator-container" data-role="description-generator-container">
+                    <button class="generator-button close" data-role="description-generator-close-button">Improve with AI</button>
+                    <div class="generator-content" data-role="description-generator-content">
+                        <div class="generator-elements" data-role="description-generator-elements"></div>
+                        <div class="generator-contols" data-role="description-generator-contols">
+                            <div class="generator-no-suggest">
+                                <p>No improvements to suggest</p>
+                                <p>Sorry, our AI-powered model was unable to generate your text in a significantly different way.</p>
+                            </div>
+                            <div class="generator-error">
+                                <p>Something went wrong</p>
+                                <p>Please try again later or contact us if the problem persists.</p>
+                            </div>
+                            <div class="generator-no-support">
+                                <p>The language is not supported.</p>
+                                <p>We currently only support English language.</p>
+                            </div>
+                            <button class="generator-reroll" data-role="description-generator-reroll">
+                                <i class="ai icon load"></i>
+                                <span>Try again</span>
+                            </button>
+                            <p class="feedback">Do you like these suggestions? Give us <a href="https://forms.gle/hmYGaigoSk8P8G179" target="_blank">feedback!</a></p>
+                        </div>
+                    </div>
+                </div>
+            </div> -->
+        </div>
+
+        <div data-role="rule-keywords" class="criterion">
+            <div class="title" data-role="rule-keywords-title">Meta keywords</div>
+            <div class="icon cssload"></div>
+            <div class="content">
+                <p data-role="message">Processing...</p>
+                <p data-role="value" class="hint"></p>
+            </div>
+            <div class="tips" data-role="tips">
+                <button data-role="open" class="open">Tips</button>
+                <div class="tips-block" data-role="dropdown">
+                    <button data-role="close" class="close">Tips</button>
+                    <div class="content" data-role="rule-keywords-tip"></div>
+                </div>
+            </div>
+        </div>
+
+        <div data-role="rule-headings" class="criterion">
+            <div class="title" data-role="rule-headings-title">Headings</div>
+            <div class="icon cssload"></div>
+            <div class="content">
+                <p data-role="message">Processing...</p>
+                <p data-role="value" class="hint"></p>
+                <div data-role="hide-overflow">
+                    <ul data-role="headings" class="hint"></ul>
+                    <button data-role="show" class="show">View others</button>
+                    <button data-role="close" class="close">View less</button>
+                </div>
+            </div>
+            <div class="tips" data-role="tips">
+                <button data-role="open" class="open">Tips</button>
+                <div class="tips-block" data-role="dropdown">
+                    <button data-role="close" class="close">Tips</button>
+                    <div class="content" data-role="rule-headings-tip"></div>
+                </div>
+            </div>
+        </div>
+
+        <div data-role="rule-images" class="criterion">
+            <div class="title" data-role="rule-images-title">Images</div>
+            <div class="icon cssload"></div>
+            <div class="content">
+                <p data-role="message">Processing...</p>
+                <p data-role="value" class="hint"></p>
+            </div>
+            <div class="tips" data-role="tips">
+                <button data-role="open" class="open">Tips</button>
+                <div class="tips-block" data-role="dropdown">
+                    <button data-role="close" class="close">Tips</button>
+                    <div class="content" data-role="rule-images-tip"></div>
+                </div>
+            </div>
+        </div>
+
+        <div data-role="rule-ratio" class="criterion">
+            <div class="title" data-role="rule-text2html-title">Text/HTML ratio</div>
+            <div class="icon cssload"></div>
+            <div class="content">
+                <p data-role="message">Processing...</p>
+            </div>
+            <div class="tips" data-role="tips">
+                <button data-role="open" class="open">Tips</button>
+                <div class="tips-block" data-role="dropdown">
+                    <button data-role="close" class="close">Tips</button>
+                    <div class="content" data-role="rule-text2html-tip"></div>
+                </div>
+            </div>
+        </div>
+
+        <div data-role="rule-frames" class="criterion">
+            <div class="title" data-role="rule-frames-title">Frames</div>
+            <div class="icon cssload"></div>
+            <div class="content">
+                <p data-role="message">Processing...</p>
+            </div>
+            <div class="tips" data-role="tips">
+                <button data-role="open" class="open">Tips</button>
+                <div class="tips-block" data-role="dropdown">
+                    <button data-role="close" class="close">Tips</button>
+                    <div class="content" data-role="rule-frames-tip"></div>
+                </div>
+            </div>
+        </div>
+
+        <div data-role="rule-flash" class="criterion">
+            <div class="title" data-role="rule-flash-title">Flash</div>
+            <div class="icon cssload"></div>
+            <div class="content">
+                <p data-role="message">Processing...</p>
+            </div>
+            <div class="tips" data-role="tips">
+                <button data-role="open" class="open">Tips</button>
+                <div class="tips-block" data-role="dropdown">
+                    <button data-role="close" class="close">Tips</button>
+                    <div class="content" data-role="rule-flash-tip"></div>
+                </div>
+            </div>
+        </div>
+
+        <div data-role="rule-microformats" class="criterion">
+            <div class="title" data-role="rule-microformats-title">Microformats</div>
+            <div class="icon cssload"></div>
+            <div class="content">
+                <p data-role="message">Processing...</p>
+                <p data-role="value" class="hint"></p>
+            </div>
+            <div class="tips" data-role="tips">
+                <button data-role="open" class="open">Tips</button>
+                <div class="tips-block" data-role="dropdown">
+                    <button data-role="close" class="close">Tips</button>
+                    <div class="content" data-role="rule-microformats-tip"></div>
+                </div>
+            </div>
+        </div>
+
+        <div data-role="rule-schemaorg" class="criterion">
+            <div class="title" data-role="rule-schemaorg-title">Schema.org</div>
+            <div class="icon cssload"></div>
+            <div class="content">
+                <p data-role="message">Processing...</p>
+                <p data-role="value" class="hint"></p>
+            </div>
+            <div class="tips" data-role="tips">
+                <button data-role="open" class="open">Tips</button>
+                <div class="tips-block" data-role="dropdown">
+                    <button data-role="close" class="close">Tips</button>
+                    <div class="content" data-role="rule-schemaorg-tip"></div>
+                </div>
+            </div>
+        </div>
+
+        <div data-role="rule-opengraph" class="criterion">
+            <div class="title" data-role="rule-opengraph-title">Open Graph</div>
+            <div class="icon cssload"></div>
+            <div class="content">
+                <p data-role="message">Processing...</p>
+                <p data-role="value" class="hint"></p>
+            </div>
+            <div class="tips" data-role="tips">
+                <button data-role="open" class="open">Tips</button>
+                <div class="tips-block" data-role="dropdown">
+                    <button data-role="close" class="close">Tips</button>
+                    <div class="content" data-role="rule-opengraph-tip"></div>
+                </div>
+            </div>
+        </div>
+
+        <div data-role="rule-twittercard" class="criterion">
+            <div class="title" data-role="rule-twittercard-title">Twitter Card</div>
+            <div class="icon cssload"></div>
+            <div class="content">
+                <p data-role="message">Processing...</p>
+                <p data-role="value" class="hint"></p>
+            </div>
+            <div class="tips" data-role="tips">
+                <button data-role="open" class="open">Tips</button>
+                <div class="tips-block" data-role="dropdown">
+                    <button data-role="close" class="close">Tips</button>
+                    <div class="content" data-role="rule-twittercard-tip"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="block container">
+    <div class="block-header" data-role="title-mobile-rules">Mobile compliance</div>
+    <div class="block-body">
+        <div data-role="rule-viewport" class="criterion">
+            <div class="title" data-role="rule-viewport-title">Meta viewport</div>
+            <div class="icon cssload"></div>
+            <div class="content">
+                <p data-role="message">Processing...</p>
+                <p data-role="value" class="hint"></p>
+            </div>
+            <div class="tips" data-role="tips">
+                <button data-role="open" class="open">Tips</button>
+                <div class="tips-block" data-role="dropdown">
+                    <button data-role="close" class="close">Tips</button>
+                    <div class="content" data-role="rule-viewport-tip"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="criterion">
+            <p class="info" data-role="more-checks-text">Need more checks?
+                <a href="https://www.seoquake.com/review/suggest.php" target="_blank" data-role="more-checks-link">Drop us a line</a></p>
+        </div>
+    </div>
+</div>
+
+<div class="block container">
+    <div class="block-header" data-role="title-site-rules">Site compliance</div>
+    <div class="block-body">
+        <div data-role="rule-robotstxt" class="criterion">
+            <div class="title" data-role="rule-robots-title">Robots.txt</div>
+            <div class="icon cssload"></div>
+            <div class="content">
+                <p data-role="message">Processing...</p>
+                <p data-role="value" class="hint"></p>
+            </div>
+            <div class="tips" data-role="tips">
+                <button data-role="open" class="open">Tips</button>
+                <div class="tips-block" data-role="dropdown">
+                    <button data-role="close" class="close">Tips</button>
+                    <div class="content" data-role="rule-robots-tip"></div>
+                </div>
+            </div>
+        </div>
+
+        <div data-role="rule-sitemapxml" class="criterion">
+            <div class="title" data-role="rule-sitemap-title">XML Sitemaps</div>
+            <div class="icon cssload"></div>
+            <div class="content">
+                <p data-role="message">Processing...</p>
+                <p data-role="value" class="hint"></p>
+            </div>
+            <div class="tips" data-role="tips">
+                <button data-role="open" class="open">Tips</button>
+                <div class="tips-block" data-role="dropdown">
+                    <button data-role="close" class="close">Tips</button>
+                    <div class="content" data-role="rule-sitemap-tip"></div>
+                </div>
+            </div>
+        </div>
+
+        <div data-role="rule-language" class="criterion">
+            <div class="title" data-role="rule-language-title">Language</div>
+            <div class="icon cssload"></div>
+            <div class="content">
+                <p data-role="message">Processing...</p>
+                <p data-role="value" class="hint"></p>
+            </div>
+            <div class="tips" data-role="tips">
+                <button data-role="open" class="open">Tips</button>
+                <div class="tips-block" data-role="dropdown">
+                    <button data-role="close" class="close">Tips</button>
+                    <div class="content" data-role="rule-language-tip"></div>
+                </div>
+            </div>
+        </div>
+
+        <div data-role="rule-doctype" class="criterion">
+            <div class="title" data-role="rule-doctype-title">Doctype</div>
+            <div class="icon cssload"></div>
+            <div class="content">
+                <p data-role="message">Processing...</p>
+                <p data-role="value" class="hint"></p>
+            </div>
+            <div class="tips" data-role="tips">
+                <button data-role="open" class="open">Tips</button>
+                <div class="tips-block" data-role="dropdown">
+                    <button data-role="close" class="close">Tips</button>
+                    <div class="content" data-role="rule-doctype-tip"></div>
+                </div>
+            </div>
+        </div>
+
+        <div data-role="rule-encoding" class="criterion">
+            <div class="title" data-role="rule-encoding-title">Encoding</div>
+            <div class="icon cssload"></div>
+            <div class="content">
+                <p data-role="message">Processing...</p>
+                <p data-role="value" class="hint"></p>
+            </div>
+            <div class="tips" data-role="tips">
+                <button data-role="open" class="open">Tips</button>
+                <div class="tips-block" data-role="dropdown">
+                    <button data-role="close" class="close">Tips</button>
+                    <div class="content" data-role="rule-encoding-tip"></div>
+                </div>
+            </div>
+        </div>
+
+        <div data-role="rule-googleanalytics" class="criterion">
+            <div class="title" data-role="rule-analytics-title">Google&trade; Analytics</div>
+            <div class="icon cssload"></div>
+            <div class="content">
+                <p data-role="message">Processing...</p>
+            </div>
+            <div class="tips" data-role="tips">
+                <button data-role="open" class="open">Tips</button>
+                <div class="tips-block" data-role="dropdown">
+                    <button data-role="close" class="close">Tips</button>
+                    <div class="content" data-role="rule-analytics-tip"></div>
+                </div>
+            </div>
+        </div>
+
+        <div data-role="rule-favicon" class="criterion">
+            <div class="title" data-role="rule-favicon-title">Favicon</div>
+            <div class="icon cssload"></div>
+            <div class="content">
+                <p data-role="message">Processing...</p>
+                <p data-role="value" class="hint"></p>
+            </div>
+            <div class="tips" data-role="tips">
+                <button data-role="open" class="open">Tips</button>
+                <div class="tips-block" data-role="dropdown">
+                    <button data-role="close" class="close">Tips</button>
+                    <div class="content" data-role="rule-favicon-tip"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+        <div class="block container" style="margin-top: 30px;">
+    <div class="block-body block-body-gray">
+       <p><span data-role="feedback-1">Need more features?</span>
+            <a href="https://www.seoquake.com/review/suggest.php" target="_blank" data-role="feedback-link">Drop us a line</a>
+            <span data-role="feedback-2">or just mail us:</span>
+           <a href="mailto:mail@seoquaketeam.com" data-role="feedback-email">mail@seoquaketeam.com</a></p>
+    </div>
+</div>
+
+    </section>
+    <section id="internal_block">
+    </section>
+    <section id="external_block">
+    </section>
+    <section id="density_block">
+        <header>
+    <h2 data-role="title">Keyword density</h2>
+    <div class="summary">
+        <div class="total orange emphasis">
+            <span data-role="totalLinks" class="description">Total words:</span><span data-role="1-word-count">0</span>
+        </div>
+        <div class="links"><!--
+         --><span data-role="2-word-phrases" class="description">2-word phrases:</span><span data-role="2-word-count">0</span><!--
+         --><span data-role="3-word-phrases" class="description">3-word phrases:</span><span data-role="3-word-count">0</span><!--
+         --><span data-role="4-word-phrases" class="description">4-word phrases:</span><span data-role="4-word-count">0</span><!--
+        --></div>
+    </div>
+</header>
+
+<div class="sqtoolbar"><!--
+    --><button data-role="button-save" class="sqbtn sqbtn-small sqbtn-gray sqbtn-transparent" title="Save data to csv file">Save as CSV</button><!--
+    --><button data-role="button-configure" class="sqbtn sqbtn-small sqbtn-gray sqbtn-transparent" title="Edit stop-word list">Configure stop-word list</button><!--
+--></div>
+
+<div class="density-container">
+    <div class="tow">
+        <a name="word-1"></a>
+        <div class="block">
+            <div class="block-header" data-role="all-words-title">All words</div>
+            <table data-role="1-word-table" class="density-keywords-table">
+                <thead>
+                    <tr>
+                        <th class="border-right" data-role="keywords-keyword">Keyword</th>
+                        <th data-role="keywords-foundin">Found in</th>
+                        <th data-role="keywords-repeats">Repeats</th>
+                        <th data-role="keywords-density">Density</th>
+                        <th data-role="keywords-prominence">Prominence</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+        <a name="word-2"></a>
+        <div class="block">
+            <div class="block-header" data-role="2-words-title">2-word phrases</div>
+            <table data-role="2-word-table" class="density-keywords-table">
+                <thead>
+                    <tr>
+                        <th class="border-right" data-role="keywords-keyword">Keyword</th>
+                        <th data-role="keywords-foundin">Found in</th>
+                        <th data-role="keywords-repeats">Repeats</th>
+                        <th data-role="keywords-density">Density</th>
+                        <th data-role="keywords-prominence">Prominence</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+        <a name="word-3"></a>
+        <div class="block">
+            <div class="block-header" data-role="3-words-title">3-word phrases</div>
+            <table data-role="3-word-table" class="density-keywords-table">
+                <thead>
+                    <tr>
+                        <th class="border-right" data-role="keywords-keyword">Keyword</th>
+                        <th data-role="keywords-foundin">Found in</th>
+                        <th data-role="keywords-repeats">Repeats</th>
+                        <th data-role="keywords-density">Density</th>
+                        <th data-role="keywords-prominence">Prominence</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+        <a name="word-4"></a>
+        <div class="block">
+            <div class="block-header" data-role="4-words-title">4-word phrases</div>
+            <table data-role="4-word-table" class="density-keywords-table">
+                <thead>
+                    <tr>
+                        <th class="border-right" data-role="keywords-keyword">Keyword</th>
+                        <th data-role="keywords-foundin">Found in</th>
+                        <th data-role="keywords-repeats">Repeats</th>
+                        <th data-role="keywords-density">Density</th>
+                        <th data-role="keywords-prominence">Prominence</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+        <a name="text"></a>
+        <div class="block">
+            <div class="block-header" data-role="original-text">Original text:</div>
+            <div data-role="info-content" class="block-body"></div>
+        </div>
+    </div>
+    <div class="column">
+        <div class="block" data-role="bookmarks_panel">
+            <div class="block-header" data-role="bookmarks-title">Bookmarks</div>
+            <div class="block-body">
+                <ul class="density-bookmarks">
+                    <li><a href="#word-1" data-role="1word-link">1-word keywords table</a></li>
+                    <li><a href="#word-2" data-role="2word-link">2-word keywords table</a></li>
+                    <li><a href="#word-3" data-role="3word-link">3-word keywords table</a></li>
+                    <li><a href="#word-4" data-role="4word-link">4-word keywords table</a></li>
+                    <li><a href="#text" data-role="original-link">Original text</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="block">
+            <div class="block-header" data-role="pageinfo-title">Page info</div>
+            <div class="block-body scrollme">
+                <table>
+                    <tr>
+                        <th data-role="pageinfo-title-title">Title:</th>
+                        <td data-role="info-title">n/a</td>
+                    </tr>
+                    <tr class="hidden">
+                        <th data-role="pageinfo-keywords-title">Meta keywords:</th>
+                        <td data-role="info-meta-keywords">n/a</td>
+                    </tr>
+                    <tr>
+                        <th data-role="pageinfo-description-title">Meta description:</th>
+                        <td data-role="info-meta-description">n/a</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="block" data-role="filter_panel">
+            <div class="block-header" data-role="filter-title">Filter</div>
+            <div class="block-body">
+                <form name="filter" data-role="form-filter">
+                    <table>
+                        <tr>
+                            <td colspan="3">
+                                <input type="text" data-role="filter-value"/>
+                                <button data-role="button-filter-apply" class="sqbtn sqbtn-small sqbtn-transparent sqbtn-gray">Apply</button>
+                                <button data-role="button-filter-reset" class="sqbtn sqbtn-small sqbtn-transparent sqbtn-gray">Reset</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input type="radio" name="filter-type" value="0" id="den-filter-start" checked/>
+                                <label for="den-filter-start" data-role="starts-with">Starts with</label>
+                            </td>
+                            <td>
+                                <input type="radio" name="filter-type" value="1" id="den-filter-contains"/>
+                                <label for="den-filter-contains" data-role="contains">Contains</label>
+                            </td>
+                            <td>
+                                <input type="radio" name="filter-type" value="2" id="den-filter-regexp"/>
+                                <label for="den-filter-regexp" data-role="regexp">Regexp</label>
+                            </td>
+                        </tr>
+                    </table>
+                </form>
+            </div>
+        </div>
+        <div class="block">
+            <div class="block-header" data-role="keywords-title">Keywords cloud</div>
+            <div data-role="density-cloud" class="block-body"></div>
+        </div>
+    </div>
+    <div style="clear:both;"></div>
+</div>
+
+        <div class="block container" style="margin-top: 30px;">
+    <div class="block-body block-body-gray">
+       <p><span data-role="feedback-1">Need more features?</span>
+            <a href="https://www.seoquake.com/review/suggest.php" target="_blank" data-role="feedback-link">Drop us a line</a>
+            <span data-role="feedback-2">or just mail us:</span>
+           <a href="mailto:mail@seoquaketeam.com" data-role="feedback-email">mail@seoquaketeam.com</a></p>
+    </div>
+</div>
+
+    </section>
+</main>
+
+<footer class="green-bg">
+    <div class="container">
+        Copyright 2006 &dash; <script type="text/javascript" src="./year.js"></script> Semrush Inc
+    </div>
+</footer>
+
+<template id="linkinfo-template">
+    <header>
+    <h2 data-role="title">Links</h2>
+    <div class="summary">
+        <div class="total orange emphasis">
+            <button class="sqbtn sqbtn-transparent sqbtn-switch sqbtn-orange sqbtn-small sqbtn-pressed bold" data-role="filter" data-filter="total"><!--
+            --><span data-role="totalLinks">Total links:</span><span data-role="total-counter">0</span><!--
+            --></button>
+        </div>
+        <div class="links"><!--
+         --><button class="sqbtn sqbtn-transparent sqbtn-switch sqbtn-gray sqbtn-small" data-role="filter" data-filter="follow"><!--
+            --><span data-role="followLinks">Follow:</span><span data-role="follow-counter">0</span><!--
+            --></button><!--
+         --><button class="sqbtn sqbtn-transparent sqbtn-switch sqbtn-gray sqbtn-small" data-role="filter" data-filter="nofollow"><!--
+            --><span data-role="noFollowLinks">No follow:</span><span data-role="nofollow-counter">0</span><!--
+            --></button><!--
+         --><div class="separator"></div><!--
+         --><button class="sqbtn sqbtn-transparent sqbtn-switch sqbtn-gray sqbtn-small" data-role="filter" data-filter="image"><!--
+            --><span data-role="imagesLinks">Images:</span><span data-role="images-counter">0</span><!--
+            --></button><!--
+         --><button class="sqbtn sqbtn-transparent sqbtn-switch sqbtn-gray sqbtn-small" data-role="filter" data-filter="text"><!--
+            --><span data-role="textLinks">Text:</span><span data-role="text-counter">0</span><!--
+            --></button><!--
+         --><button class="sqbtn sqbtn-transparent sqbtn-switch sqbtn-gray sqbtn-small" data-role="filter" data-filter="form"><!--
+            --><span data-role="formLinks">Forms:</span><span data-role="form-counter">0</span><!--
+            --></button><!--
+         --><button class="sqbtn sqbtn-transparent sqbtn-switch sqbtn-gray sqbtn-small" data-role="filter" data-filter="frame"><!--
+            --><span data-role="frameLinks">Frames:</span><span data-role="frame-counter">0</span><!--
+            --></button><!--
+            --><div class="separator"></div><!--
+        --></div>
+    </div>
+</header>
+<div class="sqtoolbar">
+    <button data-role="button-request" class="sqbtn sqbtn-small sqbtn-gray sqbtn-transparent hidden" title="Request all parameters">Request all parameters</button><!--
+     --><button data-role="button-save" class="sqbtn sqbtn-small sqbtn-gray sqbtn-transparent" title="Save data to csv file">Save as CSV</button><!--
+     --><button data-role="button-configure" class="sqbtn sqbtn-small sqbtn-gray sqbtn-transparent" title="Configure parameters for this report">Add/hide parameters</button>
+</div>
+
+
+<table data-role="linkinfo-table" class="linkinfo-table">
+    <colgroup>
+        <col width="50"/>
+        <col width="500"/>
+    </colgroup>
+    <thead></thead>
+    <tbody></tbody>
+</table>
+
+
+    <div class="block container" style="margin-top: 30px;">
+    <div class="block-body block-body-gray">
+       <p><span data-role="feedback-1">Need more features?</span>
+            <a href="https://www.seoquake.com/review/suggest.php" target="_blank" data-role="feedback-link">Drop us a line</a>
+            <span data-role="feedback-2">or just mail us:</span>
+           <a href="mailto:mail@seoquaketeam.com" data-role="feedback-email">mail@seoquaketeam.com</a></p>
+    </div>
+</div>
+
+</template>
+
+<script type="text/javascript" src="common.js"></script>
+</body>
+</html>

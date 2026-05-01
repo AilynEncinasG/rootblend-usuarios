@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>SEOquake SERP tool</title>
+    <meta charset="utf-8"/>
+    <link rel="stylesheet" href="serptool.css" type="text/css">
+</head>
+<body>
+<header>
+    <div class="black-menu">
+    <nav class="container">
+        <a href="https://www.seoquake.com/guide/index.html" target="_blank" data-role="howto-link">How to use</a>
+        <a href="https://forms.gle/6frm8Fkr4F345HKN6" target="_blank" data-role="suggest-link">Have a suggestion?</a>
+    </nav>
+</div>
+
+    <div class="green-bg">
+        <div class="container">
+            <h1 id="main-title">serp title</h1>
+            <img src="static/common/top-logo.png" alt="SEOquake" class="top-logo"/>
+        </div>
+    </div>
+</header>
+
+<main>
+    <section>
+        <header>
+            <h2 data-role="title">SERP links</h2>
+        </header>
+        <div class="sqtoolbar" data-role="toolbar">
+            <button data-role="button-request" class="sqbtn sqbtn-small sqbtn-gray sqbtn-transparent" title="Request all parameters" style="display:none;">Request all parameters</button><!--
+             --><button data-role="button-save" class="sqbtn sqbtn-small sqbtn-gray sqbtn-transparent" title="Save data to csv file">Save as CSV</button><!--
+             --><button data-role="button-configure" class="sqbtn sqbtn-small sqbtn-gray sqbtn-transparent"  title="Configure parameters for this report">Add/hide parameters</button>
+        </div>
+
+        <table data-role="serptool-table" class="linkinfo-table">
+            <colgroup>
+                <col width="50"/>
+                <col width="500"/>
+            </colgroup>
+            <thead></thead>
+            <tbody></tbody>
+        </table>
+
+        <div class="block container" style="margin-top: 30px;">
+    <div class="block-body block-body-gray">
+       <p><span data-role="feedback-1">Need more features?</span>
+            <a href="https://www.seoquake.com/review/suggest.php" target="_blank" data-role="feedback-link">Drop us a line</a>
+            <span data-role="feedback-2">or just mail us:</span>
+           <a href="mailto:mail@seoquaketeam.com" data-role="feedback-email">mail@seoquaketeam.com</a></p>
+    </div>
+</div>
+
+    </section>
+</main>
+
+<footer class="green-bg">
+    <div class="container">
+        Copyright 2006 &dash; <script type="text/javascript" src="./year.js"></script> Semrush Inc
+    </div>
+</footer>
+
+<script type="text/javascript" src="serptool.js"></script>
+</body>
+</html>

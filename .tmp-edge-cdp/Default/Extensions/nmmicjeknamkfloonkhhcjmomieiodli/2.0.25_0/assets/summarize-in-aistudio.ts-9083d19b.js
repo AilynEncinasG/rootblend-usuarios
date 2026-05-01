@@ -1,0 +1,1 @@
+import{S as r}from"./summarizer-aecd6194.js";import"./browser-polyfill-45feeee0.js";import"./get-user-config-c40076a6.js";import"./jsx-runtime-4286988b.js";import"./createLucideIcon-6676f207.js";import"./settings-00b531d8.js";const t="aistudio";try{(async()=>await new r({enableFollowup:!0,platform:t}).initialize())()}catch{}

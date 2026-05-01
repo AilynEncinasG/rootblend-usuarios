@@ -1,0 +1,3493 @@
+{
+   "extDescription": {
+      "description": "{Extension description for extensions list}",
+      "message": "SEOquake 是一款免费插件，可为您提供关键 SEO 指标和其他有用工具（例如 SEO 检测等许多其他工具）"
+   },
+   "extName": {
+      "description": "{Main extension title}",
+      "message": "SEOquake"
+   },
+   "magic_showPanelQuiz1": {
+      "description": "{Special configuration key, DO NOT TOUCH}",
+      "message": "0"
+   },
+   "magic_showPanelQuiz2": {
+      "description": "{Special configuration key, DO NOT TOUCH}",
+      "message": "1"
+   },
+   "menuDisabled": {
+      "description": "{Not used}",
+      "message": "已禁用"
+   },
+   "menuEnabled": {
+      "description": "{Not used}",
+      "message": "已启用"
+   },
+   "menuItemAbout": {
+      "description": "{Not used}",
+      "message": "关于 SEOquake"
+   },
+   "menuItemDensity": {
+      "description": "{Context menu item for keywords Density}",
+      "message": "密度..."
+   },
+   "menuItemDiagnosis": {
+      "description": "{Context menu item for Diagnosis tool}",
+      "message": "诊断..."
+   },
+   "menuItemFeedback": {
+      "description": "{Not used}",
+      "message": "发送反馈..."
+   },
+   "menuItemFullInfo": {
+      "description": "{Not used}",
+      "message": "完整信息"
+   },
+   "menuItemHighlight": {
+      "description": "{Not used}",
+      "message": "突出显示 Nofollow"
+   },
+   "menuItemLinkInfo": {
+      "description": "{Context menu item for Compare URLs tool}",
+      "message": "比较 URL..."
+   },
+   "menuItemOptions": {
+      "description": "{Context menu item for configuration page}",
+      "message": "首选项..."
+   },
+   "menuItemPageinfo": {
+      "description": "{Context menu item for Page info tool}",
+      "message": "页面信息..."
+   },
+   "menuItemSEOBar": {
+      "description": "{Not used}",
+      "message": "SEObar"
+   },
+   "menuItemSERPBing": {
+      "description": "{Not used}",
+      "message": "必应"
+   },
+   "menuItemSERPGoogle": {
+      "description": "{Not used}",
+      "message": "谷歌"
+   },
+   "menuItemSERPYahoo": {
+      "description": "{Not used}",
+      "message": "Yahoo"
+   },
+   "menuItemSERPYandex": {
+      "description": "{Not used}",
+      "message": "Yandex"
+   },
+   "menuPlugins": {
+      "description": "{Not used}",
+      "message": "插件"
+   },
+   "sqCaptcha_header": {
+      "description": "{Title for captcha page seoquake panel}",
+      "message": "哎呀！看来是 SEOquake 导致了此问题"
+   },
+   "sqCaptcha_text": {
+      "description": "{Text for captcha page seoquake panel}",
+      "message": "由于 SEOquake 试图一次性为您收集多项数据，搜索引擎将此视为垃圾信息接收方式。请尝试禁用所有不需要的参数，或者 [https://www.seoquake.com/guide/troubleshooting.html](在我们的指南中阅读有关此问题的更多内容)。"
+   },
+   "sqChangelog_close": {
+      "description": "{Hide changelog panel button}",
+      "message": "好的，明白了"
+   },
+   "sqChangelog_title": {
+      "description": "{Header for changelog panel {version} and {date} will be automaticaly replaced}",
+      "message": "{date} 发布的 {version} 有什么新功能？"
+   },
+   "sqCommon_error_window_close": {
+      "description": "{Common report error window close button title}",
+      "message": "关闭"
+   },
+   "sqCommon_error_window_title": {
+      "description": "{Common report error window title}",
+      "message": "处理请求时出错"
+   },
+   "sqCommon_howto_link": {
+      "description": "{Reports top menu How to use link}",
+      "message": "使用方法"
+   },
+   "sqCommon_menu_compare": {
+      "description": "{Common report menu item compare urls}",
+      "message": " 比较 URL/域名"
+   },
+   "sqCommon_menu_density": {
+      "description": "{Common report menu item density}",
+      "message": "密度"
+   },
+   "sqCommon_menu_diagnosis": {
+      "description": "{Common report menu item diagnosis}",
+      "message": "诊断"
+   },
+   "sqCommon_menu_external": {
+      "description": "{Common report menu item external}",
+      "message": "外部"
+   },
+   "sqCommon_menu_internal": {
+      "description": "{Common report menu item internal}",
+      "message": "内部"
+   },
+   "sqCommon_menu_pageinfo": {
+      "description": "{Common report menu item page info}",
+      "message": "页面信息"
+   },
+   "sqCommon_parameters_configure_window_cancel": {
+      "description": "{Parameters configure window cancel button title}",
+      "message": "取消"
+   },
+   "sqCommon_parameters_configure_window_save": {
+      "description": "{Parameters configure window save button title}",
+      "message": "保存"
+   },
+   "sqCommon_parameters_configure_window_title": {
+      "description": "{Parameters configure window title at common report}",
+      "message": "在报告中添加/隐藏参数"
+   },
+   "sqCommon_suggest_link": {
+      "description": "{Reports top menu Have a suggestion link}",
+      "message": "要提出建议？"
+   },
+   "sqCompare_button_configure": {
+      "description": "{Compare link save metrics button}",
+      "message": "添加/隐藏参数"
+   },
+   "sqCompare_button_configure_tooltip": {
+      "description": "{Compare link save metrics button title}",
+      "message": "配置此报告的参数"
+   },
+   "sqCompare_button_edit": {
+      "description": "{Compare link save metrics button}",
+      "message": "更改列表"
+   },
+   "sqCompare_button_edit_tooltip": {
+      "description": "{Compare link save metrics button title}",
+      "message": "更改 URL 列表"
+   },
+   "sqCompare_button_import": {
+      "description": "{Compare links import URLs from file button}",
+      "message": "从 CSV 文件导入链接"
+   },
+   "sqCompare_button_process": {
+      "description": "{Compare links process data button text}",
+      "message": "处理 URL"
+   },
+   "sqCompare_button_request": {
+      "description": "{Compare link request metrics button}",
+      "message": "请求所有参数"
+   },
+   "sqCompare_button_request_tooltip": {
+      "description": "{Compare link request metrics button title}",
+      "message": "请求所有参数"
+   },
+   "sqCompare_button_save": {
+      "description": "{Compare link save metrics button}",
+      "message": "另存为 CSV"
+   },
+   "sqCompare_button_save_tooltip": {
+      "description": "{Compare link save metrics button title}",
+      "message": "将数据保存到 csv 文件"
+   },
+   "sqCompare_document_title": {
+      "description": "{Compare links document title}",
+      "message": "SEOquake 链接信息"
+   },
+   "sqCompare_title": {
+      "description": "{Compare links page title}",
+      "message": "比较 URL/域名"
+   },
+   "sqCompare_url_to_check_1": {
+      "description": "{Compare links textarea message bold text}",
+      "message": "请输入 URL 或域名以进行检查"
+   },
+   "sqCompare_url_to_check_2": {
+      "description": "{Compare links textarea message normal text}",
+      "message": "（每行一个域名）。"
+   },
+   "sqCountry_a1": {
+      "message": "匿名代理"
+   },
+   "sqCountry_a2": {
+      "message": "卫星提供商"
+   },
+   "sqCountry_ad": {
+      "message": "安道尔"
+   },
+   "sqCountry_ae": {
+      "message": "阿拉伯联合酋长国"
+   },
+   "sqCountry_af": {
+      "message": "阿富汗"
+   },
+   "sqCountry_ag": {
+      "message": "安提瓜和巴布达"
+   },
+   "sqCountry_ai": {
+      "message": "安圭拉"
+   },
+   "sqCountry_al": {
+      "message": "阿尔巴尼亚"
+   },
+   "sqCountry_am": {
+      "message": "亚美尼亚"
+   },
+   "sqCountry_ao": {
+      "message": "安哥拉"
+   },
+   "sqCountry_ap": {
+      "message": "亚太地区"
+   },
+   "sqCountry_ar": {
+      "message": "阿根廷"
+   },
+   "sqCountry_at": {
+      "message": "奥地利"
+   },
+   "sqCountry_au": {
+      "message": "澳大利亚"
+   },
+   "sqCountry_ax": {
+      "message": "奥兰群岛"
+   },
+   "sqCountry_az": {
+      "message": "阿塞拜疆"
+   },
+   "sqCountry_ba": {
+      "message": "波黑"
+   },
+   "sqCountry_bb": {
+      "message": "巴巴多斯"
+   },
+   "sqCountry_bd": {
+      "message": "孟加拉国"
+   },
+   "sqCountry_be": {
+      "message": "比利时"
+   },
+   "sqCountry_bf": {
+      "message": "布基纳法索"
+   },
+   "sqCountry_bg": {
+      "message": "保加利亚"
+   },
+   "sqCountry_bh": {
+      "message": "巴林"
+   },
+   "sqCountry_bi": {
+      "message": "布隆迪"
+   },
+   "sqCountry_bj": {
+      "message": "贝宁"
+   },
+   "sqCountry_bm": {
+      "message": "百慕大"
+   },
+   "sqCountry_bn": {
+      "message": "文莱"
+   },
+   "sqCountry_bo": {
+      "message": "玻利维亚"
+   },
+   "sqCountry_br": {
+      "message": "巴西"
+   },
+   "sqCountry_bs": {
+      "message": "巴哈马群岛"
+   },
+   "sqCountry_bt": {
+      "message": "不丹"
+   },
+   "sqCountry_bw": {
+      "message": "博茨瓦纳"
+   },
+   "sqCountry_by": {
+      "message": "白俄罗斯"
+   },
+   "sqCountry_bz": {
+      "message": "伯利兹"
+   },
+   "sqCountry_ca": {
+      "message": "加拿大"
+   },
+   "sqCountry_cd": {
+      "message": "刚果民主共和国"
+   },
+   "sqCountry_cf": {
+      "message": "中非共和国"
+   },
+   "sqCountry_cg": {
+      "message": "刚果"
+   },
+   "sqCountry_ch": {
+      "message": "瑞士"
+   },
+   "sqCountry_ci": {
+      "message": "科特迪瓦"
+   },
+   "sqCountry_cl": {
+      "message": "智利"
+   },
+   "sqCountry_cm": {
+      "message": "喀麦隆"
+   },
+   "sqCountry_cn": {
+      "message": "中国"
+   },
+   "sqCountry_co": {
+      "message": "哥伦比亚"
+   },
+   "sqCountry_cr": {
+      "message": "哥斯达黎加"
+   },
+   "sqCountry_cu": {
+      "message": "古巴"
+   },
+   "sqCountry_cv": {
+      "message": "佛得角"
+   },
+   "sqCountry_cw": {
+      "message": "库拉索"
+   },
+   "sqCountry_cy": {
+      "message": "塞浦路斯"
+   },
+   "sqCountry_cz": {
+      "message": "捷克共和国"
+   },
+   "sqCountry_de": {
+      "message": "德国"
+   },
+   "sqCountry_dj": {
+      "message": "吉布提"
+   },
+   "sqCountry_dk": {
+      "message": "丹麦"
+   },
+   "sqCountry_dm": {
+      "message": "多米尼克"
+   },
+   "sqCountry_do": {
+      "message": "多米尼加共和国"
+   },
+   "sqCountry_dz": {
+      "message": "阿尔及利亚"
+   },
+   "sqCountry_ec": {
+      "message": "厄瓜多尔"
+   },
+   "sqCountry_ee": {
+      "message": "爱沙尼亚"
+   },
+   "sqCountry_eg": {
+      "message": "埃及"
+   },
+   "sqCountry_eh": {
+      "message": "西撒哈拉"
+   },
+   "sqCountry_er": {
+      "message": "厄立特里亚"
+   },
+   "sqCountry_es": {
+      "message": "西班牙"
+   },
+   "sqCountry_et": {
+      "message": "埃塞俄比亚"
+   },
+   "sqCountry_eu": {
+      "message": "欧盟"
+   },
+   "sqCountry_fi": {
+      "message": "芬兰"
+   },
+   "sqCountry_fj": {
+      "message": "斐济"
+   },
+   "sqCountry_fk": {
+      "message": "福克兰群岛"
+   },
+   "sqCountry_fm": {
+      "message": "密克罗尼西亚联邦"
+   },
+   "sqCountry_fo": {
+      "message": "法罗群岛"
+   },
+   "sqCountry_fr": {
+      "message": "法国"
+   },
+   "sqCountry_ga": {
+      "message": "加蓬"
+   },
+   "sqCountry_gb": {
+      "message": "英国"
+   },
+   "sqCountry_ge": {
+      "message": "乔治亚"
+   },
+   "sqCountry_gg": {
+      "message": "根西岛"
+   },
+   "sqCountry_gh": {
+      "message": "加纳"
+   },
+   "sqCountry_gi": {
+      "message": "直布罗陀"
+   },
+   "sqCountry_gl": {
+      "message": "格陵兰"
+   },
+   "sqCountry_gm": {
+      "message": "冈比亚"
+   },
+   "sqCountry_gn": {
+      "message": "几内亚"
+   },
+   "sqCountry_gp": {
+      "message": "瓜德罗普"
+   },
+   "sqCountry_gq": {
+      "message": "赤道几内亚"
+   },
+   "sqCountry_gr": {
+      "message": "希腊"
+   },
+   "sqCountry_gs": {
+      "message": "南乔治亚岛和南桑威奇群岛"
+   },
+   "sqCountry_gt": {
+      "message": "危地马拉"
+   },
+   "sqCountry_gu": {
+      "message": "关岛"
+   },
+   "sqCountry_gw": {
+      "message": "几内亚比绍"
+   },
+   "sqCountry_gy": {
+      "message": "圭亚那"
+   },
+   "sqCountry_hk": {
+      "message": "中国香港"
+   },
+   "sqCountry_hn": {
+      "message": "洪都拉斯"
+   },
+   "sqCountry_hr": {
+      "message": "克罗地亚"
+   },
+   "sqCountry_ht": {
+      "message": "海地"
+   },
+   "sqCountry_hu": {
+      "message": "匈牙利"
+   },
+   "sqCountry_id": {
+      "message": "印度尼西亚"
+   },
+   "sqCountry_ie": {
+      "message": "爱尔兰"
+   },
+   "sqCountry_il": {
+      "message": "以色列"
+   },
+   "sqCountry_im": {
+      "message": "马恩岛"
+   },
+   "sqCountry_in": {
+      "message": "印度"
+   },
+   "sqCountry_iq": {
+      "message": "伊拉克"
+   },
+   "sqCountry_ir": {
+      "message": "伊朗"
+   },
+   "sqCountry_is": {
+      "message": "冰岛"
+   },
+   "sqCountry_it": {
+      "message": "意大利"
+   },
+   "sqCountry_jm": {
+      "message": "牙买加"
+   },
+   "sqCountry_jo": {
+      "message": "约旦"
+   },
+   "sqCountry_jp": {
+      "message": "日本"
+   },
+   "sqCountry_ke": {
+      "message": "肯尼亚"
+   },
+   "sqCountry_kg": {
+      "message": "吉尔吉斯斯坦"
+   },
+   "sqCountry_kh": {
+      "message": "柬埔寨"
+   },
+   "sqCountry_km": {
+      "message": "科摩罗"
+   },
+   "sqCountry_kn": {
+      "message": "圣基茨和尼维斯"
+   },
+   "sqCountry_kp": {
+      "message": "朝鲜"
+   },
+   "sqCountry_kr": {
+      "message": "韩国"
+   },
+   "sqCountry_kw": {
+      "message": "科威特"
+   },
+   "sqCountry_ky": {
+      "message": "开曼群岛"
+   },
+   "sqCountry_kz": {
+      "message": "哈萨克斯坦"
+   },
+   "sqCountry_la": {
+      "message": "老挝"
+   },
+   "sqCountry_lb": {
+      "message": "黎巴嫩"
+   },
+   "sqCountry_lc": {
+      "message": "圣卢西亚"
+   },
+   "sqCountry_li": {
+      "message": "列支敦士登"
+   },
+   "sqCountry_lk": {
+      "message": "斯里兰卡"
+   },
+   "sqCountry_lr": {
+      "message": "利比里亚"
+   },
+   "sqCountry_ls": {
+      "message": "莱索托"
+   },
+   "sqCountry_lt": {
+      "message": "立陶宛"
+   },
+   "sqCountry_lu": {
+      "message": "卢森堡"
+   },
+   "sqCountry_lv": {
+      "message": "拉脱维亚"
+   },
+   "sqCountry_ly": {
+      "message": "利比亚"
+   },
+   "sqCountry_ma": {
+      "message": "摩洛哥"
+   },
+   "sqCountry_mc": {
+      "message": "摩纳哥"
+   },
+   "sqCountry_md": {
+      "message": "摩尔多瓦"
+   },
+   "sqCountry_me": {
+      "message": "黑山共和国"
+   },
+   "sqCountry_mg": {
+      "message": "马达加斯加"
+   },
+   "sqCountry_mk": {
+      "message": "马其顿"
+   },
+   "sqCountry_ml": {
+      "message": "马里"
+   },
+   "sqCountry_mm": {
+      "message": "缅甸"
+   },
+   "sqCountry_mn": {
+      "message": "蒙古"
+   },
+   "sqCountry_mo": {
+      "message": "澳门地区"
+   },
+   "sqCountry_mp": {
+      "message": "北马里亚纳群岛"
+   },
+   "sqCountry_mr": {
+      "message": "毛里塔尼亚"
+   },
+   "sqCountry_mt": {
+      "message": "马耳他"
+   },
+   "sqCountry_mu": {
+      "message": "毛里求斯"
+   },
+   "sqCountry_mv": {
+      "message": "马尔代夫"
+   },
+   "sqCountry_mw": {
+      "message": "马拉维"
+   },
+   "sqCountry_mx": {
+      "message": "墨西哥"
+   },
+   "sqCountry_my": {
+      "message": "马来西亚"
+   },
+   "sqCountry_mz": {
+      "message": "莫桑比克"
+   },
+   "sqCountry_na": {
+      "message": "纳米比亚"
+   },
+   "sqCountry_nc": {
+      "message": "新喀里多尼亚"
+   },
+   "sqCountry_ne": {
+      "message": "尼日尔"
+   },
+   "sqCountry_ng": {
+      "message": "尼日利亚"
+   },
+   "sqCountry_ni": {
+      "message": "尼加拉瓜"
+   },
+   "sqCountry_nl": {
+      "message": "荷兰"
+   },
+   "sqCountry_no": {
+      "message": "挪威"
+   },
+   "sqCountry_np": {
+      "message": "尼泊尔"
+   },
+   "sqCountry_nz": {
+      "message": "新西兰"
+   },
+   "sqCountry_o1": {
+      "message": "其他"
+   },
+   "sqCountry_om": {
+      "message": "阿曼"
+   },
+   "sqCountry_pa": {
+      "message": "巴拿马"
+   },
+   "sqCountry_pe": {
+      "message": "秘鲁"
+   },
+   "sqCountry_pf": {
+      "message": "法属波利尼西亚"
+   },
+   "sqCountry_pg": {
+      "message": "巴布亚新几内亚"
+   },
+   "sqCountry_ph": {
+      "message": "菲律宾"
+   },
+   "sqCountry_pk": {
+      "message": "巴基斯坦"
+   },
+   "sqCountry_pl": {
+      "message": "波兰"
+   },
+   "sqCountry_pm": {
+      "message": "圣皮埃尔和密克隆岛"
+   },
+   "sqCountry_pr": {
+      "message": "波多黎各"
+   },
+   "sqCountry_ps": {
+      "message": "巴勒斯坦"
+   },
+   "sqCountry_pt": {
+      "message": "葡萄牙"
+   },
+   "sqCountry_py": {
+      "message": "巴拉圭"
+   },
+   "sqCountry_qa": {
+      "message": "卡塔尔"
+   },
+   "sqCountry_ro": {
+      "message": "罗马尼亚"
+   },
+   "sqCountry_rs": {
+      "message": "塞尔维亚"
+   },
+   "sqCountry_ru": {
+      "message": "俄罗斯"
+   },
+   "sqCountry_rw": {
+      "message": "卢旺达"
+   },
+   "sqCountry_sa": {
+      "message": "沙特阿拉伯"
+   },
+   "sqCountry_sb": {
+      "message": "所罗门群岛"
+   },
+   "sqCountry_sc": {
+      "message": "塞舌尔"
+   },
+   "sqCountry_sd": {
+      "message": "苏丹"
+   },
+   "sqCountry_se": {
+      "message": "瑞典"
+   },
+   "sqCountry_sg": {
+      "message": "新加坡"
+   },
+   "sqCountry_si": {
+      "message": "斯洛文尼亚"
+   },
+   "sqCountry_sk": {
+      "message": "斯洛伐克"
+   },
+   "sqCountry_sl": {
+      "message": "塞拉利昂"
+   },
+   "sqCountry_sm": {
+      "message": "圣马力诺"
+   },
+   "sqCountry_sn": {
+      "message": "塞内加尔"
+   },
+   "sqCountry_so": {
+      "message": "索马里"
+   },
+   "sqCountry_sr": {
+      "message": "苏里南"
+   },
+   "sqCountry_ss": {
+      "message": "南苏丹"
+   },
+   "sqCountry_st": {
+      "message": "圣多美和普林西比"
+   },
+   "sqCountry_sv": {
+      "message": "萨尔瓦多"
+   },
+   "sqCountry_sy": {
+      "message": "叙利亚"
+   },
+   "sqCountry_sz": {
+      "message": "斯威士兰"
+   },
+   "sqCountry_td": {
+      "message": "乍得"
+   },
+   "sqCountry_tf": {
+      "message": "法属南部和南极领地"
+   },
+   "sqCountry_tg": {
+      "message": "多哥"
+   },
+   "sqCountry_th": {
+      "message": "泰国"
+   },
+   "sqCountry_tj": {
+      "message": "塔吉克斯坦"
+   },
+   "sqCountry_tl": {
+      "message": "东帝汶"
+   },
+   "sqCountry_tm": {
+      "message": "土库曼斯坦"
+   },
+   "sqCountry_tn": {
+      "message": "突尼斯"
+   },
+   "sqCountry_tr": {
+      "message": "土耳其"
+   },
+   "sqCountry_tt": {
+      "message": "特立尼达和多巴哥"
+   },
+   "sqCountry_tw": {
+      "message": "中国台湾"
+   },
+   "sqCountry_tz": {
+      "message": "坦桑尼亚"
+   },
+   "sqCountry_ua": {
+      "message": "乌克兰"
+   },
+   "sqCountry_ug": {
+      "message": "乌干达"
+   },
+   "sqCountry_us": {
+      "message": "美国"
+   },
+   "sqCountry_uy": {
+      "message": "乌拉圭"
+   },
+   "sqCountry_uz": {
+      "message": "乌兹别克斯坦"
+   },
+   "sqCountry_va": {
+      "message": "罗马教廷（梵蒂冈城国）"
+   },
+   "sqCountry_ve": {
+      "message": "委内瑞拉"
+   },
+   "sqCountry_vg": {
+      "message": "英属维尔京群岛"
+   },
+   "sqCountry_vn": {
+      "message": "越南"
+   },
+   "sqCountry_vu": {
+      "message": "瓦努阿图"
+   },
+   "sqCountry_ws": {
+      "message": "萨摩亚"
+   },
+   "sqCountry_ye": {
+      "message": "也门"
+   },
+   "sqCountry_za": {
+      "message": "南非"
+   },
+   "sqCountry_zm": {
+      "message": "赞比亚"
+   },
+   "sqCountry_zw": {
+      "message": "津巴布韦"
+   },
+   "sqDensity_1word_link": {
+      "description": "",
+      "message": "1 词关键词表"
+   },
+   "sqDensity_2_word_phrases": {
+      "description": "",
+      "message": "2 词词组:"
+   },
+   "sqDensity_2_words_title": {
+      "description": "",
+      "message": "2 词词组"
+   },
+   "sqDensity_2word_link": {
+      "description": "",
+      "message": "2 词关键词表"
+   },
+   "sqDensity_3_word_phrases": {
+      "description": "",
+      "message": "3 词词组:"
+   },
+   "sqDensity_3_words_title": {
+      "description": "",
+      "message": "3 词词组"
+   },
+   "sqDensity_3word_link": {
+      "description": "",
+      "message": "3 词关键词表"
+   },
+   "sqDensity_4_word_phrases": {
+      "description": "",
+      "message": "4 词词组:"
+   },
+   "sqDensity_4_words_title": {
+      "description": "",
+      "message": "4 词词组"
+   },
+   "sqDensity_4word_link": {
+      "description": "",
+      "message": "4 词关键词表"
+   },
+   "sqDensity_all_words_title": {
+      "description": "",
+      "message": "所有词语"
+   },
+   "sqDensity_bookmarks_title": {
+      "description": "",
+      "message": "书签"
+   },
+   "sqDensity_button_configure": {
+      "description": "",
+      "message": "配置停用词列表"
+   },
+   "sqDensity_button_filter_apply": {
+      "description": "",
+      "message": "应用"
+   },
+   "sqDensity_button_filter_reset": {
+      "description": "",
+      "message": "重置"
+   },
+   "sqDensity_button_save": {
+      "description": "",
+      "message": "另存为 CSV"
+   },
+   "sqDensity_configure_close": {
+      "message": "关闭"
+   },
+   "sqDensity_configure_custom_list": {
+      "message": "使用自定义停用词列表"
+   },
+   "sqDensity_configure_custom_list_placeholder": {
+      "message": "输入要排除的词语"
+   },
+   "sqDensity_configure_default_label": {
+      "message": "使用默认值"
+   },
+   "sqDensity_configure_default_link": {
+      "message": "停用词列表"
+   },
+   "sqDensity_configure_include_list": {
+      "message": "使用白名单"
+   },
+   "sqDensity_configure_include_list_placeholder": {
+      "message": "输入要包含的词语"
+   },
+   "sqDensity_configure_save": {
+      "message": "保存"
+   },
+   "sqDensity_configure_title": {
+      "message": "配置停用词列表"
+   },
+   "sqDensity_contains": {
+      "description": "",
+      "message": "包含"
+   },
+   "sqDensity_filter_title": {
+      "description": "",
+      "message": "筛选器"
+   },
+   "sqDensity_keywords_density": {
+      "description": "",
+      "message": "密度"
+   },
+   "sqDensity_keywords_foundin": {
+      "description": "",
+      "message": "发现于："
+   },
+   "sqDensity_keywords_keyword": {
+      "description": "",
+      "message": "关键词"
+   },
+   "sqDensity_keywords_prominence": {
+      "description": "",
+      "message": "突出程度"
+   },
+   "sqDensity_keywords_repeats": {
+      "description": "",
+      "message": "重复次数"
+   },
+   "sqDensity_keywords_title": {
+      "description": "",
+      "message": "关键词云"
+   },
+   "sqDensity_original_link": {
+      "description": "",
+      "message": "原始文本"
+   },
+   "sqDensity_original_text": {
+      "description": "",
+      "message": "原始文本:"
+   },
+   "sqDensity_pageinfo_description_title": {
+      "description": "",
+      "message": "元描述："
+   },
+   "sqDensity_pageinfo_keywords_title": {
+      "description": "",
+      "message": "元关键词："
+   },
+   "sqDensity_pageinfo_title": {
+      "description": "",
+      "message": "页面信息"
+   },
+   "sqDensity_pageinfo_title_title": {
+      "description": "",
+      "message": "标题:"
+   },
+   "sqDensity_regexp": {
+      "description": "",
+      "message": "RegExp"
+   },
+   "sqDensity_starts_with": {
+      "description": "",
+      "message": "开始于："
+   },
+   "sqDensity_title": {
+      "description": "{Keywords density report title}",
+      "message": "关键词密度"
+   },
+   "sqDensity_totalLinks": {
+      "description": "",
+      "message": "词语总数："
+   },
+   "sqDensity_type_D_hint": {
+      "description": "{Keywords density tables found in page description tooltip}",
+      "message": "在元描述中找到此关键词"
+   },
+   "sqDensity_type_H1_hint": {
+      "description": "{Keywords density tables found in page h1 tooltip}",
+      "message": "在主要 H1 标题中找到此关键词"
+   },
+   "sqDensity_type_K_hint": {
+      "description": "{Keywords density tables found in page keywords tooltip}",
+      "message": "在元关键词中找到此关键词"
+   },
+   "sqDensity_type_T_hint": {
+      "description": "{Keywords density tables found in page title tooltip}",
+      "message": "在页面标题中找到此关键词"
+   },
+   "sqDiagnosis_audit_banner": {
+      "description": "{Semrush banner text}",
+      "message": "5 分钟内免费获取 100 个页面的检测结果"
+   },
+   "sqDiagnosis_canonical_average": {
+      "description": "{Diagnosis canonical rule - average state}",
+      "message": "还没有为此页面设置 canonical 标签。"
+   },
+   "sqDiagnosis_canonical_bad": {
+      "description": "{Diagnosis canonical rule - bad state}",
+      "message": "已为此页面设置 canonical 标签，但无法访问此页面。"
+   },
+   "sqDiagnosis_canonical_good": {
+      "description": "{Diagnosis canonical rule - good state}",
+      "message": "已为此页面设置 canonical 标签，而且链接工作正常。"
+   },
+   "sqDiagnosis_charset_bad_one": {
+      "description": "{Diagnosis charset rule - bad state}",
+      "message": "不当的字符/语言编码会削弱 SEO。声明字符/语言编码可以避免复杂的页面呈现。"
+   },
+   "sqDiagnosis_charset_good_one": {
+      "description": "{Diagnosis charset rule - good state}",
+      "message": "声明字符/语言编码将大大增强 SEO，还可以避免复杂的页面呈现。"
+   },
+   "sqDiagnosis_close": {
+      "description": "{Tips closed title}",
+      "message": "提示"
+   },
+   "sqDiagnosis_detecting": {
+      "description": "{Diagnosis slow rule processing message}",
+      "message": "正在检测..."
+   },
+   "sqDiagnosis_doctype_bad": {
+      "description": "{Diagnosis doctype rule - bad state}",
+      "message": "您尚未指定 doctype。"
+   },
+   "sqDiagnosis_doctype_good": {
+      "description": "{Diagnosis doctype rule - good state}",
+      "message": "太棒了！您已经指定了 doctype。"
+   },
+   "sqDiagnosis_error": {
+      "description": "{Counter for failed tests}",
+      "message": "错误:"
+   },
+   "sqDiagnosis_error_message": {
+      "message": "错误"
+   },
+   "sqDiagnosis_favicon_bad": {
+      "description": "{Diagnosis favicon rule - bad state}",
+      "message": "不理想。您应该拥有 favicon。"
+   },
+   "sqDiagnosis_favicon_good": {
+      "description": "{Diagnosis favicon rule - good state}",
+      "message": "很好，您拥有 favicon 图片。"
+   },
+   "sqDiagnosis_feeds_bad": {
+      "description": "{Diagnosis feed rule - bad state}",
+      "message": "看来您的页面不提供源。"
+   },
+   "sqDiagnosis_feeds_good": {
+      "description": "{Diagnosis feed rule - good state}",
+      "message": "看来您的页面提供源。"
+   },
+   "sqDiagnosis_feeds_notexact": {
+      "description": "{Diagnosis feed rule - average state}",
+      "message": "我们尚未找到此页面的确切源，但我们在您的站点上找到了一些源。这很好。"
+   },
+   "sqDiagnosis_flash_average": {
+      "description": "{Diagnosis flash rule - average state}",
+      "message": "您的页面似乎包含一些 Flash，但同时也包含足够的文本内容。"
+   },
+   "sqDiagnosis_flash_bad": {
+      "description": "{Diagnosis flash rule - bad state}",
+      "message": "您的页面包含许多 Flash，但文本内容不足以使页面达到平衡。这将大大削弱 SEO。"
+   },
+   "sqDiagnosis_flash_good": {
+      "description": "{Diagnosis flash rule - good state}",
+      "message": "没有检测到"
+   },
+   "sqDiagnosis_frames_average": {
+      "description": "{Diagnosis frames rule - average state}",
+      "message": "我们注意到您的网站中有一个 FRAME。这些标签通常会削弱 SEO。"
+   },
+   "sqDiagnosis_frames_bad": {
+      "description": "{Diagnosis frames rule - bad state}",
+      "message": "我们注意到您的页面中实现了 frame。这些标签通常会削弱 SEO。"
+   },
+   "sqDiagnosis_frames_exists": {
+      "description": "{Diagnosis frames rule - average state}",
+      "message": "我们注意到您的网站中采用了 IFRAME。通常情况下，只要使用正确，这些标签对 SEO 来说就不算是问题。"
+   },
+   "sqDiagnosis_frames_good": {
+      "description": "{Diagnosis frames rule - good state}",
+      "message": "没有检测到"
+   },
+   "sqDiagnosis_ganal_bad_one": {
+      "description": "{Diagnosis analytics rule - bad state}",
+      "message": "Google™ Analytics 当前并未监视您的网站。我们建议您充分利用这款出色的工具。"
+   },
+   "sqDiagnosis_ganal_good_one": {
+      "description": "{Diagnosis analytics rule - good state}",
+      "message": "Google™ Analytics 正在监视您的网站。这是一款应当充分利用的出色工具。"
+   },
+   "sqDiagnosis_headings_average": {
+      "description": "{Diagnosis headings rule - average state}",
+      "message": "您的页面实现了 HTML 小标题。"
+   },
+   "sqDiagnosis_headings_average_one": {
+      "description": "{Diagnosis headings rule - bad state}",
+      "message": "我们注意到您的页面实现了 HTML 小标题，但 \u003CH1> 到 \u003CH3> 的小标题并未出现。您应该对此予以纠正。"
+   },
+   "sqDiagnosis_headings_bad": {
+      "description": "{Diagnosis headings rule - bad state}",
+      "message": "我们建议实现 HTML 小标题。"
+   },
+   "sqDiagnosis_headings_good": {
+      "description": "{Diagnosis headings rule - good state}",
+      "message": "很好！您的页面实现了 HTML 小标题（\u003CH1> 到 \u003CH3>），而且仅使用了一个 \u003CH1> 小标题。"
+   },
+   "sqDiagnosis_images_average": {
+      "description": "{Diagnosis images rule - average state}",
+      "message": "{withoutAlt} 张图片缺少 ALT 属性。"
+   },
+   "sqDiagnosis_images_bad": {
+      "description": "{Diagnosis images rule - bad state}",
+      "message": "{withoutAlt} 张图片缺少 ALT 属性。"
+   },
+   "sqDiagnosis_images_good": {
+      "description": "{Diagnosis images rule - good state}",
+      "message": "所有图片都具有 ALT 属性。"
+   },
+   "sqDiagnosis_internal_error": {
+      "description": "{Common error for processing diagnosis rule}",
+      "message": "处理参数源时遇到问题"
+   },
+   "sqDiagnosis_kwds_average_not_enough": {
+      "description": "{Diagnosis keywords rule all state}",
+      "message": "{len} 个字符，{cLen} 个词语。"
+   },
+   "sqDiagnosis_kwds_average_too_long": {
+      "description": "{Diagnosis keywords rule all state}",
+      "message": "{len} 个字符，{cLen} 个词语。"
+   },
+   "sqDiagnosis_kwds_average_too_many": {
+      "description": "{Diagnosis keywords rule all state}",
+      "message": "{len} 个字符，{cLen} 个词语。"
+   },
+   "sqDiagnosis_kwds_average_too_short": {
+      "description": "{Diagnosis keywords rule all state}",
+      "message": "{len} 个字符，{cLen} 个词语。"
+   },
+   "sqDiagnosis_kwds_bad": {
+      "description": "{Diagnosis keywords rule all state}",
+      "message": "{len} 个字符，{cLen} 个词语。"
+   },
+   "sqDiagnosis_kwds_bad_more": {
+      "description": "{Diagnosis keywords rule all state}",
+      "message": "{len} 个字符，{cLen} 个词语。"
+   },
+   "sqDiagnosis_kwds_bad_too_many": {
+      "description": "{Diagnosis keywords rule all state}",
+      "message": "{len} 个字符，{cLen} 个词语。"
+   },
+   "sqDiagnosis_kwds_good": {
+      "description": "{Diagnosis keywords rule all state}",
+      "message": "{len} 个字符，{cLen} 个词语。"
+   },
+   "sqDiagnosis_lang_average": {
+      "description": "{Diagnosis lang rule - average state}",
+      "message": "您已经指定了网站语言，但仅在 META 语言标签中指定。*\u003Chtml>* 标签的“lang”属性具有更高的优先级。"
+   },
+   "sqDiagnosis_lang_bad": {
+      "description": "{Diagnosis lang rule - bad state}",
+      "message": "您尚未指定网站语言。"
+   },
+   "sqDiagnosis_lang_good": {
+      "description": "{Diagnosis lang rule - good state}",
+      "message": "太棒了！您已经指定了网站语言。"
+   },
+   "sqDiagnosis_message": {
+      "description": "{Processing data message}",
+      "message": "正在处理…"
+   },
+   "sqDiagnosis_meta_average": {
+      "description": "{Diagnosis meta description rule - average state}",
+      "message": "{len} 个字符 — 一般。最佳长度为 160 - 300 个字符。"
+   },
+   "sqDiagnosis_meta_bad_not_long": {
+      "description": "{Diagnosis meta description rule - bad state too short}",
+      "message": "{len} 个字符 — 请尝试将描述长度扩充到 160 个字符。"
+   },
+   "sqDiagnosis_meta_bad_not_short": {
+      "description": "{Diagnosis meta description rule - bad state too long}",
+      "message": "{len} 个字符 — 请尝试将描述长度缩短到 300 个字符。"
+   },
+   "sqDiagnosis_meta_good": {
+      "description": "{Diagnosis meta description rule - good state}",
+      "message": "{len} 个字符 — 最佳。"
+   },
+   "sqDiagnosis_microformats_average": {
+      "description": "{Diagnosis microformats rule - good state}",
+      "message": "此页面不使用微格式标记。\n\n您可以使用 [https://search.google.com/structured-data/testing-tool/#url={domain}](谷歌结构化数据测试工具) 验证您的标记。"
+   },
+   "sqDiagnosis_microformats_bad": {
+      "description": "{Diagnosis microformats rule - bad state}",
+      "message": "此页面使用微格式标记，但有些标签大小写不正确。请使用谷歌结构化数据测试工具验证您的标记。\n\n您可以使用 [https://search.google.com/structured-data/testing-tool/#url={domain}](谷歌结构化数据测试工具) 验证您的标记。"
+   },
+   "sqDiagnosis_microformats_good": {
+      "description": "{Diagnosis microformats rule - good state}",
+      "message": "我们找到了以下微格式类型。\n\n您可以使用 [https://search.google.com/structured-data/testing-tool/#url={domain}](谷歌结构化数据测试工具) 验证您的标记。"
+   },
+   "sqDiagnosis_more_checks_link": {
+      "description": "{Drop us a line link text}",
+      "message": "请给我们留言"
+   },
+   "sqDiagnosis_more_checks_text": {
+      "description": "{Drop us a line message text}",
+      "message": "需要更多检查？"
+   },
+   "sqDiagnosis_no_associated_feed": {
+      "description": "{Diagnosis feed rule - average state}",
+      "message": "没有关联的源。"
+   },
+   "sqDiagnosis_notfound": {
+      "description": "{Diagnosis not found message}",
+      "message": "没有找到"
+   },
+   "sqDiagnosis_open": {
+      "description": "{Tips open title}",
+      "message": "提示"
+   },
+   "sqDiagnosis_opengraph_average": {
+      "description": "{Diagnosis opengraph rule - average state}",
+      "message": "我们检测到此页面具有 Open Graph 对象，但我们无法确定其类型。\n\n您可以使用 [https://developers.facebook.com/tools/debug/og/object/?q={location}](Facebook 对象调试工具) 验证您的标记。"
+   },
+   "sqDiagnosis_opengraph_good": {
+      "description": "{Diagnosis opengraph rule - good state}",
+      "message": "太棒了！我们找到了几个 Open Graph 对象。\n\n您可以使用 [https://developers.facebook.com/tools/debug/og/object/?q={location}](Facebook 对象调试工具) 验证您的标记。"
+   },
+   "sqDiagnosis_opengraph_no": {
+      "description": "{Diagnosis opengraph rule - bad state}",
+      "message": "您的页面中没有任何 Open Graph 对象。\n\n您可以使用 [https://developers.facebook.com/tools/debug/og/object/?q={location}](Facebook 对象调试工具) 验证您的标记。"
+   },
+   "sqDiagnosis_passed": {
+      "description": "{Counter for successfull tests}",
+      "message": "合格："
+   },
+   "sqDiagnosis_ratio_average_one": {
+      "description": "{Diagnosis text2html rule - average state}",
+      "message": "{ratio}%  — 不理想。建议您向网站添加更多文本。"
+   },
+   "sqDiagnosis_ratio_bad_one": {
+      "description": "{Diagnosis text2html rule - bad state}",
+      "message": "{ratio}%  — 哎哟！您网站的文本与 HTML 代码比率低于 15%。建议您向网站添加大量文本。"
+   },
+   "sqDiagnosis_ratio_good": {
+      "description": "{Diagnosis text2html rule - good state}",
+      "message": "{ratio}%  — 最佳"
+   },
+   "sqDiagnosis_robots_bad": {
+      "description": "{Diagnosis robots.txt rule - bad state}",
+      "message": "您的网站不包含 robots.txt 文件。这可能会削弱 SEO。"
+   },
+   "sqDiagnosis_robots_good": {
+      "description": "{Diagnosis robots.txt rule - good state}",
+      "message": "很好，看来您的网站具有 robots.txt 文件。"
+   },
+   "sqDiagnosis_rule_analytics_tip": {
+      "description": "{Analytics rule tooltip. Can use some markdown for markup}",
+      "message": "请阅读此 [https://moz.com/blog/absolute-beginners-guide-to-google-analytics](文章) 以获取有关 Google Analytics 的更多信息"
+   },
+   "sqDiagnosis_rule_analytics_title": {
+      "description": "{Google analytics rule title}",
+      "message": "Google&trade; Analytics"
+   },
+   "sqDiagnosis_rule_canonical_tip": {
+      "description": "{Canonical rule tooltip. Can use some markdown for markup}",
+      "message": "canonical 链接标签是一种 HTML 元素，它可以帮助网站管理员在搜索引擎优化过程中，通过指定“标准化”或“首选”版本的网页来防止内容重复的问题。有关详细信息，请参阅 [https://support.google.com/webmasters/answer/139066](这篇谷歌文章)。"
+   },
+   "sqDiagnosis_rule_canonical_title": {
+      "description": "{Canonical rule title}",
+      "message": "标准化"
+   },
+   "sqDiagnosis_rule_doctype_tip": {
+      "description": "{Doctype rule tooltip. Can use some markdown for markup}",
+      "message": "指定 [http://www.w3schools.com/tags/tag_DOCTYPE.asp](doctype) 有助于 Web 浏览器正确呈现内容。"
+   },
+   "sqDiagnosis_rule_doctype_title": {
+      "description": "{Doctype rule title}",
+      "message": "Doctype"
+   },
+   "sqDiagnosis_rule_encoding_tip": {
+      "description": "{Encoding rule tooltip. Can use some markdown for markup}",
+      "message": "请阅读此 [https://www.w3.org/International/tutorials/tutorial-char-enc/](文章)，了解如何将正确的字符编码添加到站点。"
+   },
+   "sqDiagnosis_rule_encoding_title": {
+      "description": "{Encoding rule title}",
+      "message": "编码"
+   },
+   "sqDiagnosis_rule_favicon_tip": {
+      "description": "{Favicon rule tooltip. Can use some markdown for markup}",
+      "message": "请确保 favicon [http://www.howtojoomla.net/2007050865/how-tos/miscellaneous/how-to-change-your-favicon](反映您的品牌)。\n\n精选提示：如想提升访客体验，请查看 [http://www.youtube.com/watch?v=0KDjjePkd2U](这个) 优秀的 favicon。"
+   },
+   "sqDiagnosis_rule_favicon_title": {
+      "description": "{Favicon rule title}",
+      "message": "Favicon"
+   },
+   "sqDiagnosis_rule_flash_tip": {
+      "description": "{Flash rule tooltip. Can use some markdown for markup}",
+      "message": "Flash 仅在特定情况下具有良好的效果（例如增强页面外观时）。\n\n为了实现更好的 SEO，请不要使用 Flash。\n\n就目前而言，搜索引擎 [http://www.beussery.com/blog/index.php/2008/10/google-flash-seo/](无法将 Flash 编入索引)，但这一情况可能会在不久的将来发生变化。\n\n[http://en.wikipedia.org/wiki/Ajax_%28programming%29](AJAX) 也与 Flash 属于 [http://googlewebmastercentral.blogspot.com/2009/10/proposal-for-making-ajax-crawlable.html](同一类别)。"
+   },
+   "sqDiagnosis_rule_flash_title": {
+      "description": "{Flash rule title}",
+      "message": "Flash"
+   },
+   "sqDiagnosis_rule_frames_tip": {
+      "description": "{Frames ratio rule tooltip. Can use some markdown for markup}",
+      "message": "搜索引擎很难将带框架的页面编入索引，因为它并不遵循 [http://www.google.com/support/webmasters/bin/answer.py?hl=en&amp;answer=34445](标准网站布局)。\n优化网站时应避免使用框架。"
+   },
+   "sqDiagnosis_rule_frames_title": {
+      "description": "{Frames rule title}",
+      "message": "框架"
+   },
+   "sqDiagnosis_rule_headings_tip": {
+      "description": "{Headings rule tooltip. Can use some markdown for markup}",
+      "message": "小标题中可以包括关键词。\n\n起始小标题 (&lt;H1&gt;) 应包括最佳关键词。\n\n每页仅使用一个 &lt;H1&gt; 小标题将加强 SEO。"
+   },
+   "sqDiagnosis_rule_headings_title": {
+      "description": "{Meta headings rule title}",
+      "message": "小标题"
+   },
+   "sqDiagnosis_rule_images_tip": {
+      "description": "{Images rule tooltip. Can use some markdown for markup}",
+      "message": "我们建议将 ALT 文本添加到图片中，使搜索引擎更容易将其编入索引。\n\n搜索引擎查看图片的方式实际与人们不同。ALT 文本是一个允许您具体描述图片的选项。\n\nALT 文本可将描述附加到图片上，以便其显示在 [http://images.google.com/](Google&trade;) 和其他搜索引擎的图片结果中。\n\n请确保网站图片都有其自己 [http://www.webcredible.co.uk/user-friendly-resources/web-accessibility/image-alt-text.shtml](特定的 ALT 文本)。\n\n要了解如何将 ALT 文本分配到图片，[http://www.seosmarty.com/image-seo/](请点击此处)。\n\n请记住，页面加载时间根据图片的数量和大小而有所不同。请尽量使其保持在较低的水平。\n\n提示：您可以使用 [http://archive.org/web/](The Wayback Machine) 查看任何网站以往的设计。"
+   },
+   "sqDiagnosis_rule_images_title": {
+      "description": "{Images rule title}",
+      "message": "图片"
+   },
+   "sqDiagnosis_rule_keywords_tip": {
+      "description": "{Meta keywords rule tooltip. Can use some markdown for markup}",
+      "message": "[http://en.wikipedia.org/wiki/Meta_element#The_keywords_attribute](元关键词) 是与站点内容有关的词语或词组。人们过去曾经尝试利用此标签，因此它如今不会像以前那样影响搜索排名。"
+   },
+   "sqDiagnosis_rule_keywords_title": {
+      "description": "{Meta keywords rule title}",
+      "message": "元关键词"
+   },
+   "sqDiagnosis_rule_language_tip": {
+      "description": "{Language rule tooltip. Can use some markdown for markup}",
+      "message": "以下是为多语言站点提供的一些建议：\n\n&sdot; 您应该在每个页面的 HTML 代码中声明内容语言。\n&sdot; 您还应该在 URL 中声明语言代码（例如：company.com/es/contact.html）。\n&sdot; 如果计划构建多语言站点，请参阅 [http://www.toprankblog.com/2009/10/top-10-pitfalls-of-international-seo/](此处) 提供的提示"
+   },
+   "sqDiagnosis_rule_language_title": {
+      "description": "{Language rule title}",
+      "message": "语言"
+   },
+   "sqDiagnosis_rule_meta_tip": {
+      "description": "{Meta description rule tooltip. Can use some markdown for markup}",
+      "message": "[http://en.wikipedia.org/wiki/Meta_element#The_description_attribute](元描述) 非常有用，因为它们通常可以指示页面在搜索结果中的显示方式。\n\n为了获得最佳效果，[http://en.wikipedia.org/wiki/Meta_element#The_description_attribute](元描述) 的长度应为 160-300 个字符。\n\n元描述应该简洁明了，并包含 [http://googlewebmastercentral.blogspot.com/2007/09/improve-snippets-with-meta-description.html](最佳关键词)\n\n确保网站的每个页面都有自己的元描述。"
+   },
+   "sqDiagnosis_rule_meta_title": {
+      "description": "{Meta description rule title}",
+      "message": "元描述"
+   },
+   "sqDiagnosis_rule_microformats_tip": {
+      "description": "{Microformats rule tooltip. Can use some markdown for markup}",
+      "message": "[http://en.wikipedia.org/wiki/Microformat](微格式) 是一种标记，可用于更有效地组织发送到搜索引擎的数据的结构。\n\n由于采用了微格式，谷歌搜索结果的呈现方式一直在 [http://googlewebmastercentral.blogspot.com/2009/05/introducing-rich-snippets.html](不断改进)。"
+   },
+   "sqDiagnosis_rule_microformats_title": {
+      "description": "{Microformats rule title}",
+      "message": "微格式"
+   },
+   "sqDiagnosis_rule_opengraph_tip": {
+      "description": "{Open Graph rule tooltip. Can use some markdown for markup}",
+      "message": "Open Graph 协议使任何网页都能成为社交图谱中的丰富对象。例如，在 Facebook 上，此协议可用于使任何网页具有与 Facebook 上任何其他对象相同的功能。\n\n有关详细信息，请参阅 [http://ogp.me/](Open Graph 协议)。"
+   },
+   "sqDiagnosis_rule_opengraph_title": {
+      "description": "{OpenGraph rule title}",
+      "message": "Open Graph"
+   },
+   "sqDiagnosis_rule_robots_tip": {
+      "description": "{Robots.txt rule tooltip. Can use some markdown for markup}",
+      "message": "此文件可以限制搜索引擎抓取器的活动，并阻止其访问特定页面和目录。\n\n[http://www.robotstxt.org/orig.html](robots.txt 文件) 还可以定位 XML 站点地图。\n\n要检查 robots.txt 文件中是否存在语法错误，[http://tool.motoricerca.info/robots-checker.phtml](请点击此处)。"
+   },
+   "sqDiagnosis_rule_robots_title": {
+      "description": "{Robots.txt rule title}",
+      "message": "Robots.txt"
+   },
+   "sqDiagnosis_rule_schemaorg_tip": {
+      "description": "{Schema.org rule tooltip. Can use some markdown for markup}",
+      "message": "在网页上使用标记数据可以有效提高网站对搜索引擎的可见性和点进率，继而提高排名。\n\n有关详细信息，请参阅 [https://developers.google.com/search/docs/guides/intro-structured-data](结构化数据介绍)。"
+   },
+   "sqDiagnosis_rule_schemaorg_title": {
+      "description": "{Schema.org rule title}",
+      "message": "Schema.org"
+   },
+   "sqDiagnosis_rule_sitemap_tip": {
+      "description": "{Meta viewport rule tooltip. Can use some markdown for markup}",
+      "message": "[http://en.wikipedia.org/wiki/Sitemaps](XML 站点地图) 不但列出了可以抓取的 URL，还可以提供其他信息，例如更新频率、上次更新时间和重要性。\n\n有了 XML 站点地图，搜索引擎可以更准确地将网站编入索引。\n\n尽管始终存在 [http://www.seomoz.org/blog/expert-advice-on-google-sitemaps-verify-but-dont-submit](争议)，我们建议将 XML 站点地图提交到 [http://www.google.com/webmasters/tools/](Google&trade; Webmasters Tools)。"
+   },
+   "sqDiagnosis_rule_sitemap_title": {
+      "description": "{Sitemaps rule title}",
+      "message": "XML 站点地图"
+   },
+   "sqDiagnosis_rule_text2html_tip": {
+      "description": "{Text/HTML ratio rule tooltip. Can use some markdown for markup}",
+      "message": "文本与 HTML 的比率并非搜索引擎的直接排名因素，但是与该比率相关的许多因素均可指示最佳 SEO 做法，因此该比率可以间接导致更高的搜索排名。请阅读此 [https://www.woorank.com/en/blog/are-text-to-html-ratios-important](文章) 以了解更多信息。"
+   },
+   "sqDiagnosis_rule_text2html_title": {
+      "description": "{Text2Html ratio rule title}",
+      "message": "Text/HTML 比率"
+   },
+   "sqDiagnosis_rule_title_tip": {
+      "description": "{Title rule tooltip. Can use some markdown for markup}",
+      "message": "最有效的页面标题长度约为 10-70 个字符（包括空格）。\n\n请确保标题简洁明了，并且包含 [https://www.semrush.com/blog/seoquake-5-keys-to-optimizing-your-title-tags/?utm_source=seoquake&utm_medium=toolbar&utm_campaign=regular&ref=174537735](最佳关键词)。\n\n每个页面均应拥有自己的专属标题。\n\n特色工具：这是一种 [http://www.seomofo.com/snippet-optimizer.html](摘要优化工具)，可让您查看标题在 Google&trade;和其他搜索结果中的外观效果。"
+   },
+   "sqDiagnosis_rule_title_title": {
+      "description": "{Title rule title}",
+      "message": "标题"
+   },
+   "sqDiagnosis_rule_twittercard_tip": {
+      "description": "{Twitter card rule tooltip. Can use some markdown for markup}",
+      "message": "借助 Twitter Card，您可以将丰富的照片、视频和媒体体验附加到推文上，从而增加网站流量。\n\n有关详细信息，请参阅 [https://dev.twitter.com/cards/overview](Twitter 文档)。"
+   },
+   "sqDiagnosis_rule_twittercard_title": {
+      "description": "{Twitter card rule title}",
+      "message": "Twitter Card"
+   },
+   "sqDiagnosis_rule_url_tip": {
+      "description": "{URL rule tooltip. Can use some markdown for markup}",
+      "message": "当您使用描述页面内容的 URL（例如：http://www.company.com/companyinformation）时，搜索引擎和访客可以更有效地与您的网站进行互动。\n\nURL 对于 SEO 活动至关重要。请务必使用可让 [http://www.google.com/support/webmasters/bin/answer.py?hl=en&amp;answer=147959](Google&trade;轻松将您的网站编入索引) 的 URL。\n\n提个建议：您可以 [http://instantdomainsearch.com/](在此处) 搜索优质域名。如果您想用的域名不可用，请考虑使用 [http://sedo.com](Sedo) 查找替代名称。\n\n将域名注册为商标可以防止他人盗用您的品牌。"
+   },
+   "sqDiagnosis_rule_url_title": {
+      "description": "{URL rule title}",
+      "message": "URL"
+   },
+   "sqDiagnosis_rule_viewport_tip": {
+      "description": "{Meta viewport rule tooltip. Can use some markdown for markup}",
+      "message": "viewport 标签控制网页在移动设备上的显示方式。没有 viewport 标签，移动设备将按照典型的桌面屏幕宽度呈现页面（按比例缩放以适应屏幕）。设置 viewport 标签可让您控制页面的宽度和在不同设备上的缩放比例。\n\n请阅读 [https://developers.google.com/speed/docs/insights/ConfigureViewport](此文章)，了解有关 viewport 标签的更多信息。"
+   },
+   "sqDiagnosis_rule_viewport_title": {
+      "description": "{Meta viewport title}",
+      "message": "viewport meta 标签"
+   },
+   "sqDiagnosis_schemaorg_average": {
+      "description": "{Diagnosis schema.org rule - average state}",
+      "message": "我们检测到此页面使用了 [http://schema.org](schema.org) 标记，但我们无法确定其类型。\n\n您可以使用 [https://search.google.com/structured-data/testing-tool/#url={domain}](谷歌结构化数据测试工具) 验证您的标记。"
+   },
+   "sqDiagnosis_schemaorg_bad": {
+      "description": "{Diagnosis schema.org rule - bad state}",
+      "message": "您的页面不使用 [http://schema.org](Schema.org) 标记。\n\n您可以使用 [https://search.google.com/structured-data/testing-tool/#url={domain}](谷歌结构化数据测试工具) 验证您的标记。"
+   },
+   "sqDiagnosis_schemaorg_good": {
+      "description": "{Diagnosis schema.org rule - good state}",
+      "message": "太棒了！我们找到了几个 [http://schema.org](schema.org) 类型。\n\n您可以使用 [https://search.google.com/structured-data/testing-tool/#url={domain}](谷歌结构化数据测试工具) 验证您的标记。"
+   },
+   "sqDiagnosis_semrush_provided": {
+      "description": "{Semrush banner link title}",
+      "message": "提供方："
+   },
+   "sqDiagnosis_show": {
+      "description": "{View others data}",
+      "message": "查看其他小标题"
+   },
+   "sqDiagnosis_sitemaps_bad": {
+      "description": "{Diagnosis sitemap.xml rule - bad state}",
+      "message": "您的网站不包含 XML 站点地图，这可能会削弱 SEO。"
+   },
+   "sqDiagnosis_sitemaps_good": {
+      "description": "{Diagnosis sitemap.xml rule - good state}",
+      "message": "很好！您的网站包含 XML 站点地图。"
+   },
+   "sqDiagnosis_timeoutreached": {
+      "description": "{Diagnosis unable to process rule with connection timeout reason}",
+      "message": "无法检测：已达到连接超时。"
+   },
+   "sqDiagnosis_title": {
+      "description": "{Main diagnosis title}",
+      "message": "页面 SEO 检测"
+   },
+   "sqDiagnosis_title_average": {
+      "description": "{Diagnosis title rule - average state}",
+      "message": "{len} 个字符 — 一般。最佳长度为 10 - 70 个字符。"
+   },
+   "sqDiagnosis_title_bad_not_long": {
+      "description": "{Diagnosis title rule - bad state too short}",
+      "message": "{len} 个字符 — 不理想。请尝试将标题长度扩充到 10 个字符。"
+   },
+   "sqDiagnosis_title_bad_not_short": {
+      "description": "{Diagnosis title rule - bad state too long}",
+      "message": "{len} 个字符 — 不理想。请尝试将标题长度缩短到 70 个字符。"
+   },
+   "sqDiagnosis_title_good": {
+      "description": "{Diagnosis title rule - good state}",
+      "message": "{len} 个字符 — 最佳。"
+   },
+   "sqDiagnosis_title_mobile_rules": {
+      "description": "{Mobile compliance}",
+      "message": "移动设备兼容性"
+   },
+   "sqDiagnosis_title_page_rules": {
+      "description": "{Page analysis group title}",
+      "message": "页面分析"
+   },
+   "sqDiagnosis_title_site_rules": {
+      "description": "{Site compliance group title}",
+      "message": "站点合规性"
+   },
+   "sqDiagnosis_twittercard_bad": {
+      "description": "{Diagnosis twitter card rule - bad state}",
+      "message": "我们检测到此页面具有 [https://dev.twitter.com/cards/overview](Twitter Card)，但我们无法确定其类型。您可以使用 [https://cards-dev.twitter.com/validator](Twitter Card 验证工具) 验证您的卡片。"
+   },
+   "sqDiagnosis_twittercard_good": {
+      "description": "{Diagnosis twitter card rule - good state}",
+      "message": "太好了！我们在您的页面上找到了 [https://dev.twitter.com/cards/overview](Twitter Card)。您可以使用 [https://cards-dev.twitter.com/validator](Twitter Card 验证工具) 验证您的卡片。"
+   },
+   "sqDiagnosis_twittercard_no": {
+      "description": "{Diagnosis twitter card rule - no state}",
+      "message": "您的页面没有任何 [https://dev.twitter.com/cards/overview](Twitter Card)。您可以使用 [https://cards-dev.twitter.com/validator](Twitter Card 验证工具) 验证您的卡片。"
+   },
+   "sqDiagnosis_unable2detect": {
+      "description": "{Diagnosis unable to process rule message}",
+      "message": "无法检测"
+   },
+   "sqDiagnosis_url_average": {
+      "description": "{Not used}",
+      "message": "您的 URL 长度可能不够短。"
+   },
+   "sqDiagnosis_url_bad": {
+      "description": "{Diagnosis url-length rule - bad state}",
+      "message": "{len} 个字符 — 不理想。超过 200 个字符。"
+   },
+   "sqDiagnosis_url_good": {
+      "description": "{Diagnosis url-length rule - good state}",
+      "message": "{len} 个字符 — 最佳。"
+   },
+   "sqDiagnosis_viewport_default": {
+      "description": "{Diagnosis viewport rule - average state}",
+      "message": "很好！此页面具有典型的 viewport meta 标签值，可与大多数移动设备浏览器兼容。"
+   },
+   "sqDiagnosis_viewport_no": {
+      "description": "{Diagnosis viewport rule - bad state}",
+      "message": "此页面没有 viewport meta 标签或其值为空。它在移动设备上的外观效果可能不大好，而且会在移动搜索结果中获得较低的排名。"
+   },
+   "sqDiagnosis_viewport_some": {
+      "description": "{Diagnosis viewport rule - good state}",
+      "message": "此页面设置了 viewport meta 标签。"
+   },
+   "sqDiagnosis_warning": {
+      "description": "{Counter for test with warnings}",
+      "message": "警告:"
+   },
+   "sqFeedback_email": {
+      "description": "{Common report need more features block email}",
+      "message": "mail@seoquaketeam.com"
+   },
+   "sqFeedback_link": {
+      "description": "{Common report need more features block link}",
+      "message": "请给我们留言"
+   },
+   "sqFeedback_text_1": {
+      "description": "{Common report need more features block title}",
+      "message": "需要更多功能？"
+   },
+   "sqFeedback_text_2": {
+      "description": "{Common report need more features block message}",
+      "message": "或发送电子邮件："
+   },
+   "sqGSC_connect": {
+      "description": "{Message on connect semrush button in header}",
+      "message": "连接 Semrush 帐户以获取 Domain Score"
+   },
+   "sqGSC_domain_score_tooltip": {
+      "description": "{Message for DS tooltip}",
+      "message": "该度量标准可衡量一个域名的重要程度，以 100 分为满分（从 0 到 100），其依据是指向此域名的链接的质量和数量。分数越高，域名的质量越高。Domain Score 的计算方式与谷歌的 PageRank 相同。"
+   },
+   "sqGSC_export": {
+      "description": "{Message on export button}",
+      "message": "导出此表格"
+   },
+   "sqGSC_notes_GOOGLE_ORGANIC": {
+      "description": "{Text for google organic update note}",
+      "message": "谷歌更新（自然）"
+   },
+   "sqGSC_notes_GOOGLE_PAID": {
+      "description": "{Text for google paid update note}",
+      "message": "谷歌更新（付费）"
+   },
+   "sqGSC_notes_UNCONFIRMED": {
+      "description": "{Text for google unconfirmed update note}",
+      "message": "谷歌更新（未确认）"
+   },
+   "sqGSC_notes_connect_button": {
+      "description": "{}",
+      "message": "启用"
+   },
+   "sqGSC_notes_connect_message": {
+      "description": "{}",
+      "message": "使用 SEOquake 获取谷歌更新 - "
+   },
+   "sqGSC_notes_counter": {
+      "description": "{}",
+      "message": "备注"
+   },
+   "sqGSC_notes_counter_one": {
+      "description": "{}",
+      "message": "备注"
+   },
+   "sqGSC_notes_dashboard_message": {
+      "description": "{Text for google dashboard small chart}",
+      "message": "Semrush 已注册更新"
+   },
+   "sqGSC_notes_dashboard_no_data": {
+      "description": "{Text for google dashboard small chart}",
+      "message": "选定时段无更新"
+   },
+   "sqGSC_notes_switch_message": {
+      "description": "{}",
+      "message": "SEOquake：谷歌更新"
+   },
+   "sqGSC_onboarding_close": {
+      "description": "{}",
+      "message": "请将其关闭"
+   },
+   "sqGSC_onboarding_notes_text": {
+      "description": "{}",
+      "message": "*欢迎使用 Notes 了解谷歌算法更新*\n\n随时了解谷歌算法更新。启用 Notes 功能后，您可以直接在 Google Search Console 图表中查看有关谷歌更新的信息。"
+   },
+   "sqGSC_onboarding_ok": {
+      "description": "{}",
+      "message": "好的，太棒了！"
+   },
+   "sqGSC_onboarding_text": {
+      "description": "{}",
+      "message": "*来认识一下 Domain Volume 和 Domain Trust 指标！*\n\n这些指标可让您根据指向特定域名的反向链接的数量和质量，轻松评估出特定域名的重要性和可信度。"
+   },
+   "sqGSC_trust_score_tooltip": {
+      "description": "{Message for TS tooltip}",
+      "message": "该度量标准衡量一个特殊域名的可信度，以 100 分为满分（其中“0”表示页面可信度低，“100”表示页面可信度高）其依据是指向域名的受信任站点中的反向链接数量。如果站点的 Trust Score 明显低于其 Domain Score，则可能表示 Domain Score 被人为地夸大了。此类站点中的反向链接可能会触发谷歌处罚。"
+   },
+   "sqLinkinfo_anchor": {
+      "description": "{Linkinfo report link anchor title}",
+      "message": "锚链接"
+   },
+   "sqLinkinfo_anchor_empty": {
+      "description": "{Linkinfo report link with empty anchor notice}",
+      "message": "无锚链接"
+   },
+   "sqLinkinfo_badge_hint": {
+      "description": "{Linkinfo report table repeats counter tooltip}",
+      "message": "类型和锚链接相同的链接的重复次数"
+   },
+   "sqLinkinfo_button_configure": {
+      "description": "{Linkinfo report add/hide parameters button title}",
+      "message": "添加/隐藏参数"
+   },
+   "sqLinkinfo_button_request": {
+      "description": "{Linkinfo report request all parameters button title}",
+      "message": "请求所有参数"
+   },
+   "sqLinkinfo_button_save": {
+      "description": "{Linkinfo report save as CSV button title}",
+      "message": "另存为 CSV"
+   },
+   "sqLinkinfo_count_hint": {
+      "description": "{Linkinfo report table more links tooltip}",
+      "message": "此 URL 还有更多链接。点击查看链接类型和锚链接的所有组合"
+   },
+   "sqLinkinfo_count_more": {
+      "description": "{Linkinfo report table more links link title when more then +1 link}",
+      "message": "+ {count} 个链接"
+   },
+   "sqLinkinfo_count_one": {
+      "description": "{Linkinfo report table more links link title when +1 link}",
+      "message": "+ {count} 个链接"
+   },
+   "sqLinkinfo_external": {
+      "description": "{Linkinfo report external links title}",
+      "message": "外部链接"
+   },
+   "sqLinkinfo_followLinks": {
+      "description": "{Linkinfo report follow links button title}",
+      "message": "Follow:"
+   },
+   "sqLinkinfo_formLinks": {
+      "description": "{Linkinfo report forms links button title}",
+      "message": "表格："
+   },
+   "sqLinkinfo_frameLinks": {
+      "description": "{Linkinfo report frames links button title}",
+      "message": "框架:"
+   },
+   "sqLinkinfo_header_backlink": {
+      "description": "{Linkinfo table header backlinks}",
+      "message": "反向链接参数"
+   },
+   "sqLinkinfo_header_backlink_title": {
+      "description": "{Linkinfo table header backlinks title}",
+      "message": "与当前链接的反向链接相关的参数"
+   },
+   "sqLinkinfo_header_domain": {
+      "description": "{Linkinfo table header domain}",
+      "message": "域名参数"
+   },
+   "sqLinkinfo_header_domain_title": {
+      "description": "{Linkinfo table header domain title}",
+      "message": "与链接域名相关的参数"
+   },
+   "sqLinkinfo_header_index": {
+      "description": "{Linkinfo table header index}",
+      "message": "编号"
+   },
+   "sqLinkinfo_header_link": {
+      "description": "{Linkinfo table header link}",
+      "message": "链接参数"
+   },
+   "sqLinkinfo_header_link_title": {
+      "description": "{Linkinfo table header link title}",
+      "message": "与完整链接相关的参数"
+   },
+   "sqLinkinfo_header_url": {
+      "description": "{Linkinfo table header URL}",
+      "message": "URL"
+   },
+   "sqLinkinfo_imagesLinks": {
+      "description": "{Linkinfo report images links button title}",
+      "message": "图片:"
+   },
+   "sqLinkinfo_internal": {
+      "description": "{Linkinfo report internal links title}",
+      "message": "内部链接"
+   },
+   "sqLinkinfo_noFollowLinks": {
+      "description": "{Linkinfo report no follow links button title}",
+      "message": "Nofollow:"
+   },
+   "sqLinkinfo_textLinks": {
+      "description": "{Linkinfo report text links button title}",
+      "message": "文本:"
+   },
+   "sqLinkinfo_totalLinks": {
+      "description": "{Linkinfo report total links button title}",
+      "message": "链接总数："
+   },
+   "sqLinkinfo_type_form": {
+      "description": "{Linkinfo report link type form title}",
+      "message": "表格"
+   },
+   "sqLinkinfo_type_frame": {
+      "description": "{Linkinfo report link type frame title}",
+      "message": "框架"
+   },
+   "sqLinkinfo_type_image": {
+      "description": "{Linkinfo report link type image title}",
+      "message": "图片"
+   },
+   "sqLinkinfo_type_text": {
+      "description": "{Linkinfo report link type text title}",
+      "message": "文本"
+   },
+   "sqOptionsSave": {
+      "description": "{Save message on button}",
+      "message": "保存"
+   },
+   "sqOptionsSaving": {
+      "description": "{Saving process message on button}",
+      "message": "正在保存…"
+   },
+   "sqOptions_general_clear_cache": {
+      "description": "{Options general clear cache button text}",
+      "message": "清除缓存"
+   },
+   "sqOptions_general_clear_cache_clearing": {
+      "description": "{Options general clear cache button text when clearing}",
+      "message": "正在清除..."
+   },
+   "sqOptions_general_core_disabled_field": {
+      "description": "{Options general core disabled field title}",
+      "message": "SEOquake 已启用："
+   },
+   "sqOptions_general_core_disabled_label": {
+      "description": "{Options general core disabled label title}",
+      "message": "所有插件的全局开关"
+   },
+   "sqOptions_general_dropdown_panel_title": {
+      "description": "{Options general experimental features switch}",
+      "message": "下拉面板配置"
+   },
+   "sqOptions_general_experimental_label": {
+      "description": "{Options general experimental features switch}",
+      "message": "启用实验性功能"
+   },
+   "sqOptions_general_export_download": {
+      "message": "获取文件"
+   },
+   "sqOptions_general_export_load_label": {
+      "message": "从文件导入:"
+   },
+   "sqOptions_general_export_load_title": {
+      "message": "选择文件"
+   },
+   "sqOptions_general_export_save_label": {
+      "message": "保存到文件："
+   },
+   "sqOptions_general_filename_0": {
+      "description": "{Options general filename template first}",
+      "message": "\u003Cfilename>.csv"
+   },
+   "sqOptions_general_filename_1": {
+      "description": "{Options general filename template second}",
+      "message": "\u003Cfilename> - \u003Cdate>.csv"
+   },
+   "sqOptions_general_filename_2": {
+      "description": "{Options general filename template third}",
+      "message": "\u003Cfilename> - \u003Cdate> - \u003Ctime>.csv"
+   },
+   "sqOptions_general_filename_field": {
+      "description": "{Options general filename template title}",
+      "message": "导出文件名模板:"
+   },
+   "sqOptions_general_noanalytics_label": {
+      "description": "{Options general experimental features switch}",
+      "message": "禁用使用情况统计信息收集。&nbsp;"
+   },
+   "sqOptions_general_noanalytics_link": {
+      "description": "{Options general experimental features switch}",
+      "message": "更多信息"
+   },
+   "sqOptions_general_noanalytics_title": {
+      "description": "{Options general no analytics title}",
+      "message": "禁止分析："
+   },
+   "sqOptions_general_nofollow_field": {
+      "description": "{Options general nofollow field title}",
+      "message": "突出显示 Nofollow："
+   },
+   "sqOptions_general_nofollow_label": {
+      "description": "{Options general nofollow field label}",
+      "message": "将标记有 rel=\"nofollow\" 标签的所有链接"
+   },
+   "sqOptions_general_panel_export_title": {
+      "message": "导出/导入设置"
+   },
+   "sqOptions_general_panel_mode_0": {
+      "description": "{Options general experimental features switch}",
+      "message": "正在显示"
+   },
+   "sqOptions_general_panel_mode_1": {
+      "description": "{Options general experimental features switch}",
+      "message": "应请求提供"
+   },
+   "sqOptions_general_panel_mode_title": {
+      "description": "{Options general panel mode title}",
+      "message": "加载参数："
+   },
+   "sqOptions_general_panel_tips_label": {
+      "message": "在面板中显示当日提示"
+   },
+   "sqOptions_general_panel_tips_title": {
+      "message": "显示提示："
+   },
+   "sqOptions_general_request_delay_field": {
+      "description": "{Options general request delay title}",
+      "message": "参数请求延迟："
+   },
+   "sqOptions_general_title": {
+      "description": "{Options general title}",
+      "message": "常规首选项"
+   },
+   "sqOptions_general_use_cache_field": {
+      "description": "{Options general use cache field}",
+      "message": "启用参数缓存："
+   },
+   "sqOptions_general_use_cache_label": {
+      "description": "{Options general use cache label}",
+      "message": "将缓存参数结果，直到浏览器重新启动"
+   },
+   "sqOptions_gsc_disabled_label": {
+      "description": "{Options google search console disable switch label}",
+      "message": "Включить все функции."
+   },
+   "sqOptions_gsc_disabled_title": {
+      "description": "{Options google search console disable switch}",
+      "message": "Включить интеграцию с GSC:"
+   },
+   "sqOptions_gsc_feature_dsts": {
+      "description": "{Options google search console disable DS/TS metrics display}",
+      "message": "Включить показатели Domain Score и Trust Score."
+   },
+   "sqOptions_gsc_feature_notes": {
+      "description": "{Options google search console disable Notes display}",
+      "message": "Включить обновления Google."
+   },
+   "sqOptions_gsc_features_title": {
+      "description": "{Options google search console features list label}",
+      "message": "Возможности:"
+   },
+   "sqOptions_gsc_title": {
+      "description": "{Options google search console configuration panel title}",
+      "message": "Интеграция с Google Search Console"
+   },
+   "sqOptions_gsc_title_general": {
+      "description": "{Options google search console configuration panel general section title}",
+      "message": "Общие настройки"
+   },
+   "sqOptions_import_advanced_disabled": {
+      "description": "",
+      "message": "高级设置已禁用"
+   },
+   "sqOptions_import_advanced_disabled_ga": {
+      "description": "",
+      "message": "禁用 Google Analitycs 收集&nbsp;"
+   },
+   "sqOptions_import_bing_disabled": {
+      "description": "",
+      "message": "必应插件已禁用"
+   },
+   "sqOptions_import_bing_mode": {
+      "description": "",
+      "message": "必应插件请求模式"
+   },
+   "sqOptions_import_category_advanced": {
+      "description": "",
+      "message": "高级设置"
+   },
+   "sqOptions_import_category_bing": {
+      "description": "",
+      "message": "必应 SERP 设置"
+   },
+   "sqOptions_import_category_core": {
+      "description": "",
+      "message": "常规选项"
+   },
+   "sqOptions_import_category_google": {
+      "description": "",
+      "message": "谷歌 SERP 设置"
+   },
+   "sqOptions_import_category_gsc": {
+      "description": "{Google Search console integration configuration import category title}",
+      "message": "Google Search Console 集成"
+   },
+   "sqOptions_import_category_nofollow": {
+      "description": "",
+      "message": "Nofollow 插件设置"
+   },
+   "sqOptions_import_category_panel": {
+      "description": "",
+      "message": "面板配置"
+   },
+   "sqOptions_import_category_semrush": {
+      "description": "",
+      "message": "Semrush SERP 复制插件"
+   },
+   "sqOptions_import_category_seobar": {
+      "description": "",
+      "message": "SEObar 选项"
+   },
+   "sqOptions_import_category_yahoo": {
+      "description": "",
+      "message": "Yahoo SERP 设置"
+   },
+   "sqOptions_import_category_yandex": {
+      "description": "",
+      "message": "Yandex SERP 设置"
+   },
+   "sqOptions_import_confirm_cancel": {
+      "description": "Submit button on import settings window",
+      "message": "取消"
+   },
+   "sqOptions_import_confirm_changes": {
+      "description": "{Header for changes table in import settings window for parameters block}",
+      "message": "更改"
+   },
+   "sqOptions_import_confirm_close": {
+      "description": "{Close button message}",
+      "message": "关闭"
+   },
+   "sqOptions_import_confirm_configuration_title": {
+      "description": "Title for configuration changes list",
+      "message": "配置更改"
+   },
+   "sqOptions_import_confirm_current": {
+      "message": "当前"
+   },
+   "sqOptions_import_confirm_header": {
+      "description": "Header of import new settings window",
+      "message": "确认新设置导入"
+   },
+   "sqOptions_import_confirm_new": {
+      "message": "从文件"
+   },
+   "sqOptions_import_confirm_parameters": {
+      "description": "{Header for parameters block in import window}",
+      "message": "参数"
+   },
+   "sqOptions_import_confirm_parameters_delete": {
+      "message": "删除"
+   },
+   "sqOptions_import_confirm_parameters_differs": {
+      "message": "不同于"
+   },
+   "sqOptions_import_confirm_parameters_new": {
+      "message": "新增"
+   },
+   "sqOptions_import_confirm_parameters_title": {
+      "message": "参数更改"
+   },
+   "sqOptions_import_confirm_submit": {
+      "description": "Submit button on import settings window",
+      "message": "导入"
+   },
+   "sqOptions_import_core_disable_highlight_sites": {
+      "description": "",
+      "message": "在 SERP 上突出显示站点"
+   },
+   "sqOptions_import_core_disable_serps_pos_numbers": {
+      "description": "",
+      "message": "SERP 显示排名编号"
+   },
+   "sqOptions_import_core_disabled": {
+      "description": "",
+      "message": "SEOquake 已禁用"
+   },
+   "sqOptions_import_core_export_template": {
+      "description": "",
+      "message": "导出文件名模板"
+   },
+   "sqOptions_import_core_highlight_sites": {
+      "description": "",
+      "message": "突出显示站点列表"
+   },
+   "sqOptions_import_core_highlight_sites_color": {
+      "description": "",
+      "message": "突出显示颜色"
+   },
+   "sqOptions_import_core_request_delay": {
+      "description": "",
+      "message": "请求延迟"
+   },
+   "sqOptions_import_core_use_cache": {
+      "description": "",
+      "message": "使用缓存"
+   },
+   "sqOptions_import_google_disabled": {
+      "description": "",
+      "message": "谷歌插件已禁用"
+   },
+   "sqOptions_import_google_gl": {
+      "description": "",
+      "message": "谷歌结果语言"
+   },
+   "sqOptions_import_google_hl": {
+      "description": "",
+      "message": "谷歌 UI 语言"
+   },
+   "sqOptions_import_google_mode": {
+      "description": "",
+      "message": "谷歌插件请求模式"
+   },
+   "sqOptions_import_google_onboarding_keyword_difficulty": {
+      "description": "{}",
+      "message": "关键词竞争度帮助未显示"
+   },
+   "sqOptions_import_google_show_hlgl": {
+      "description": "",
+      "message": "显示 HL/GL 配置"
+   },
+   "sqOptions_import_google_show_keyword_difficulty": {
+      "description": "{}",
+      "message": "显示关键词竞争度"
+   },
+   "sqOptions_import_gsc_disabled": {
+      "description": "{Google Search console disabled}",
+      "message": "功能已禁用"
+   },
+   "sqOptions_import_nofollow_disabled": {
+      "description": "",
+      "message": "Nofollow 插件已禁用"
+   },
+   "sqOptions_import_nothing": {
+      "description": "{Message when import file is same as current configuration}",
+      "message": "文件包含相同的配置"
+   },
+   "sqOptions_import_panel_mode": {
+      "description": "",
+      "message": "面板请求模式"
+   },
+   "sqOptions_import_semrush_disabled": {
+      "description": "",
+      "message": "Semrush 插件已禁用"
+   },
+   "sqOptions_import_semrush_mode": {
+      "description": "",
+      "message": "Semrush 插件请求模式"
+   },
+   "sqOptions_import_seobar_color": {
+      "description": "",
+      "message": "样式"
+   },
+   "sqOptions_import_seobar_densityLink": {
+      "description": "",
+      "message": "显示关键词密度链接"
+   },
+   "sqOptions_import_seobar_diagnosisLink": {
+      "description": "",
+      "message": "显示页面 SEO 检测链接"
+   },
+   "sqOptions_import_seobar_disabled": {
+      "description": "",
+      "message": "SEObar 已禁用"
+   },
+   "sqOptions_import_seobar_excludes": {
+      "description": "",
+      "message": "筛选这些资源"
+   },
+   "sqOptions_import_seobar_https": {
+      "description": "",
+      "message": "在 HTTPS 资源上显示"
+   },
+   "sqOptions_import_seobar_linkinfoLink": {
+      "description": "",
+      "message": "显示链接信息数据"
+   },
+   "sqOptions_import_seobar_mode": {
+      "description": "",
+      "message": "请求模式"
+   },
+   "sqOptions_import_seobar_open_minimized": {
+      "description": "",
+      "message": "最小化开启（未使用）"
+   },
+   "sqOptions_import_seobar_pageinfoLink": {
+      "description": "",
+      "message": "显示通用报告链接"
+   },
+   "sqOptions_import_seobar_pinned": {
+      "description": "{Pinned mode different on import}",
+      "message": "在固定的模式下显示 SEObar"
+   },
+   "sqOptions_import_seobar_position": {
+      "description": "",
+      "message": "职位"
+   },
+   "sqOptions_import_seobar_robotsLink": {
+      "description": "",
+      "message": "显示 robots.txt 链接"
+   },
+   "sqOptions_import_seobar_sitemapLink": {
+      "description": "",
+      "message": "显示 sitemap.xml 链接"
+   },
+   "sqOptions_import_yahoo_disabled": {
+      "description": "",
+      "message": "Yahoo 插件已禁用"
+   },
+   "sqOptions_import_yahoo_mode": {
+      "description": "",
+      "message": "Yahoo 插件请求模式"
+   },
+   "sqOptions_import_yandex_disabled": {
+      "description": "",
+      "message": "Yandex 插件已禁用"
+   },
+   "sqOptions_import_yandex_mode": {
+      "description": "",
+      "message": "Yandex 插件请求模式"
+   },
+   "sqOptions_menu_export": {
+      "description": "{Options page menu Export}",
+      "message": "导出设置"
+   },
+   "sqOptions_menu_general": {
+      "description": "{Options page menu General}",
+      "message": "常规"
+   },
+   "sqOptions_menu_gsc": {
+      "description": "{Options page menu GSC}",
+      "message": "GSC"
+   },
+   "sqOptions_menu_guide": {
+      "description": "{Options page menu link to user guide}",
+      "message": "用户指南"
+   },
+   "sqOptions_menu_integration": {
+      "description": "{Options page menu Integration}",
+      "message": "集成"
+   },
+   "sqOptions_menu_parameters": {
+      "description": "{Options page menu Parameters}",
+      "message": "参数"
+   },
+   "sqOptions_menu_seobar": {
+      "description": "{Options page menu Seobar}",
+      "message": "SEObar"
+   },
+   "sqOptions_menu_serp": {
+      "description": "{Options page menu SERP Overlay}",
+      "message": "SERP 覆盖"
+   },
+   "sqOptions_parameters_delete_confirm": {
+      "description": "{Confirm window text when user trying to delete parameter}",
+      "message": "确定要删除此参数吗？"
+   },
+   "sqOptions_parameters_delete_custom_message": {
+      "description": "{Options parameters delete custom parameters confirm box text}",
+      "message": "是否要删除所有自定义参数？\n您所有的更改都将丢失。"
+   },
+   "sqOptions_parameters_deleted_message": {
+      "description": "{Options parameters restore deleted parameters confirm box text}",
+      "message": "是否要恢复已删除的默认参数？您的所有更改都将丢失。"
+   },
+   "sqOptions_parameters_modified_and_deleted_message": {
+      "description": "{Options parameters restore modified and deleted parameters confirm box text}",
+      "message": "是否要恢复默认参数？您所有的更改都将丢失。"
+   },
+   "sqOptions_parameters_modified_message": {
+      "description": "{Options parameters restore modified parameters confirm box text}",
+      "message": "是否要恢复已修改的默认参数？您的所有更改都将丢失。"
+   },
+   "sqOptions_parameters_new_parameter": {
+      "description": "{Options parameters new parameter button}",
+      "message": "新参数"
+   },
+   "sqOptions_parameters_new_parameter_error": {
+      "description": "{Error message displayed if user trying to save parameter without required fields. TITLE, NAME, URL_R, URL_S should not be translated}",
+      "message": "您应该指定 TITLE 和 NAME。此外，请设置 URL_R 或 URL_S 以从参数中获利。"
+   },
+   "sqOptions_parameters_parameter_window_0": {
+      "description": "{Options parameters edit window tooltip}",
+      "message": "域名级别名称"
+   },
+   "sqOptions_parameters_parameter_window_1": {
+      "description": "{Options parameters edit window tooltip}",
+      "message": "url"
+   },
+   "sqOptions_parameters_parameter_window_10": {
+      "description": "{Options parameters edit window tooltip}",
+      "message": "SERP 中的排名"
+   },
+   "sqOptions_parameters_parameter_window_2": {
+      "description": "{Options parameters edit window tooltip}",
+      "message": "域名"
+   },
+   "sqOptions_parameters_parameter_window_3": {
+      "description": "{Options parameters edit window tooltip}",
+      "message": "不带 www 的域名"
+   },
+   "sqOptions_parameters_parameter_window_4": {
+      "description": "{Options parameters edit window tooltip}",
+      "message": "2 级域名"
+   },
+   "sqOptions_parameters_parameter_window_5": {
+      "description": "{Options parameters edit window tooltip}",
+      "message": "URL 方案"
+   },
+   "sqOptions_parameters_parameter_window_6": {
+      "description": "{Options parameters edit window tooltip}",
+      "message": "URL 路径"
+   },
+   "sqOptions_parameters_parameter_window_7": {
+      "description": "{Options parameters edit window tooltip}",
+      "message": "URL 查询"
+   },
+   "sqOptions_parameters_parameter_window_8": {
+      "description": "{Options parameters edit window tooltip}",
+      "message": "搜索关键词"
+   },
+   "sqOptions_parameters_parameter_window_9": {
+      "description": "{Options parameters edit window tooltip}",
+      "message": "谷歌 PR 校验和"
+   },
+   "sqOptions_parameters_parameter_window_cancel": {
+      "description": "{Options parameters edit window cancel button title}",
+      "message": "取消"
+   },
+   "sqOptions_parameters_parameter_window_create_title": {
+      "description": "{Options parameters edit window create mode title}",
+      "message": "创建参数"
+   },
+   "sqOptions_parameters_parameter_window_delete": {
+      "description": "{Options parameters edit window delete button title}",
+      "message": "删除"
+   },
+   "sqOptions_parameters_parameter_window_edit_title": {
+      "description": "{Options parameters edit window edit mode title}",
+      "message": "编辑参数"
+   },
+   "sqOptions_parameters_parameter_window_ok": {
+      "description": "{Options parameters edit window save button title}",
+      "message": "保存"
+   },
+   "sqOptions_parameters_reset": {
+      "description": "{Options parameters reset parameters button}",
+      "message": "恢复默认参数"
+   },
+   "sqOptions_parameters_restore_menu_delete": {
+      "description": "{Options parameters restore menu delete item}",
+      "message": "删除自定义参数"
+   },
+   "sqOptions_parameters_restore_menu_deleted": {
+      "description": "{Options parameters restore menu delete item}",
+      "message": "仅已删除"
+   },
+   "sqOptions_parameters_restore_menu_modified": {
+      "description": "{Options parameters restore menu delete item}",
+      "message": "仅已修改"
+   },
+   "sqOptions_parameters_restore_menu_modified_and_deleted": {
+      "description": "{Options parameters restore menu delete item}",
+      "message": "已修改和已删除"
+   },
+   "sqOptions_parameters_table_all": {
+      "description": "{Options parameters table column all}",
+      "message": "所有"
+   },
+   "sqOptions_parameters_table_bing": {
+      "description": "{Options parameters table column seobar}",
+      "message": "必应"
+   },
+   "sqOptions_parameters_table_external": {
+      "description": "{Options parameters table column seobar}",
+      "message": "外部"
+   },
+   "sqOptions_parameters_table_google": {
+      "description": "{Options parameters table column seobar}",
+      "message": "谷歌"
+   },
+   "sqOptions_parameters_table_internal": {
+      "description": "{Options parameters table column seobar}",
+      "message": "内部"
+   },
+   "sqOptions_parameters_table_linkinfo": {
+      "description": "{Options parameters table column seobar}",
+      "message": "链接信息"
+   },
+   "sqOptions_parameters_table_reports": {
+      "description": "{Options parameters table reports group header}",
+      "message": "报告"
+   },
+   "sqOptions_parameters_table_semrush": {
+      "description": "{Options parameters table column seobar}",
+      "message": "Semrush"
+   },
+   "sqOptions_parameters_table_seobar": {
+      "description": "{Options parameters table column seobar}",
+      "message": "SEObar"
+   },
+   "sqOptions_parameters_table_serp": {
+      "description": "{Options parameters table serp group header}",
+      "message": "SERP 覆盖"
+   },
+   "sqOptions_parameters_table_yahoo": {
+      "description": "{Options parameters table column seobar}",
+      "message": "Yahoo"
+   },
+   "sqOptions_parameters_table_yandex": {
+      "description": "{Options parameters table column seobar}",
+      "message": "Yandex"
+   },
+   "sqOptions_parameters_title": {
+      "description": "{Options parameters title}",
+      "message": "参数配置"
+   },
+   "sqOptions_restore_default_message": {
+      "message": "这将恢复默认配置。继续吗？"
+   },
+   "sqOptions_restore_default_title": {
+      "description": "{Options restore default button text}",
+      "message": "恢复默认设置"
+   },
+   "sqOptions_seobar_color_dark": {
+      "description": "{Options SEObar preferences page color style dark}",
+      "message": "深"
+   },
+   "sqOptions_seobar_color_light": {
+      "description": "{Options SEObar preferences page color style light}",
+      "message": "浅"
+   },
+   "sqOptions_seobar_color_title": {
+      "description": "{Options SEObar preferences page color style}",
+      "message": "颜色样式："
+   },
+   "sqOptions_seobar_density_label": {
+      "description": "{Options SEObar preferences page density parameter label}",
+      "message": "显示指向密度报告的链接"
+   },
+   "sqOptions_seobar_density_title": {
+      "description": "{Options SEObar preferences page density parameter}",
+      "message": "密度链接："
+   },
+   "sqOptions_seobar_diagnosis_label": {
+      "description": "{Options SEObar preferences page diagnosis parameter label}",
+      "message": "显示指向页面诊断报告的链接"
+   },
+   "sqOptions_seobar_diagnosis_title": {
+      "description": "{Options SEObar preferences page diagnosis parameter}",
+      "message": "诊断链接："
+   },
+   "sqOptions_seobar_disabled_label": {
+      "description": "{Options SEObar preferences page seobar global switch  label}",
+      "message": "在所有页面上显示 SEObar"
+   },
+   "sqOptions_seobar_disabled_title": {
+      "description": "{Options SEObar preferences page seobar global switch}",
+      "message": "SEObar 已启用："
+   },
+   "sqOptions_seobar_exclude_list": {
+      "description": "{Options SEObar preferences page exclude list placeholder}",
+      "message": "输入要排除 SEObar 的站点。"
+   },
+   "sqOptions_seobar_exclude_message": {
+      "description": "{Options SEObar preferences page exclude list message}",
+      "message": "您可以输入域名，或者标记了不应显示 SEObar 的域名的正则表达式。"
+   },
+   "sqOptions_seobar_exclude_title": {
+      "description": "{Options SEObar preferences page exclude list title}",
+      "message": "排除列表："
+   },
+   "sqOptions_seobar_filters_title": {
+      "description": "{Options SEObar preferences page URL filters group}",
+      "message": "URL 筛选器"
+   },
+   "sqOptions_seobar_https_label": {
+      "description": "{Options SEObar preferences page https label}",
+      "message": "在 HTTPS 资源上显示 SEObar（可能会更改连接状态图标）"
+   },
+   "sqOptions_seobar_https_title": {
+      "description": "{Options SEObar preferences page https switch}",
+      "message": "在 HTTPS 上显示："
+   },
+   "sqOptions_seobar_linkinfo_label": {
+      "description": "{Options SEObar preferences page linkinfo parameter label}",
+      "message": "在页面上显示报告链接和内部/外部链接计数器"
+   },
+   "sqOptions_seobar_linkinfo_title": {
+      "description": "{Options SEObar preferences page linkinfo parameter}",
+      "message": "链接信息链接："
+   },
+   "sqOptions_seobar_load_mode_0": {
+      "description": "{Options SEObar preferences page load mode auto}",
+      "message": "页面加载时"
+   },
+   "sqOptions_seobar_load_mode_1": {
+      "description": "{Options SEObar preferences page load mode by button}",
+      "message": "应请求提供"
+   },
+   "sqOptions_seobar_load_title": {
+      "description": "{Options SEObar preferences page load mode}",
+      "message": "加载参数："
+   },
+   "sqOptions_seobar_loading_title": {
+      "description": "{Options SEObar preferences page seobar orientation and loading block}",
+      "message": "加载和方向"
+   },
+   "sqOptions_seobar_match_list": {
+      "description": "{Options SEObar preferences page exclude list placeholder}",
+      "message": "仅输入要包括 SEObar 的网站。"
+   },
+   "sqOptions_seobar_match_message": {
+      "description": "{Options SEObar preferences page exclude list message}",
+      "message": "您可以指定要启用 SEObar 的域名。SEObar 将仅在这些域名上显示。"
+   },
+   "sqOptions_seobar_match_title": {
+      "description": "{Options SEObar preferences page exclude list title}",
+      "message": "白名单域名："
+   },
+   "sqOptions_seobar_pageinfo_label": {
+      "description": "{Options SEObar preferences page pageinfo parameter label}",
+      "message": "显示指向页面信息报告的链接"
+   },
+   "sqOptions_seobar_pageinfo_title": {
+      "description": "{Options SEObar preferences page pageinfo parameter}",
+      "message": "页面信息链接："
+   },
+   "sqOptions_seobar_parameters_title": {
+      "description": "{Options SEObar preferences page parameters group title}",
+      "message": "参数"
+   },
+   "sqOptions_seobar_pinned_label": {
+      "description": "{Options SEObar preference minimized mode description}",
+      "message": "在垂直显示模式下最小化显示 SEObar"
+   },
+   "sqOptions_seobar_pinned_title": {
+      "description": "{Options SEObar preference minimized mode}",
+      "message": "最小化显示："
+   },
+   "sqOptions_seobar_position_horizontal": {
+      "description": "{Options SEObar preferences page position horizontal top}",
+      "message": "画面上横"
+   },
+   "sqOptions_seobar_position_horizontal_bottom": {
+      "description": "{Options SEObar preferences page position horizontal bottom}",
+      "message": "水平底部"
+   },
+   "sqOptions_seobar_position_title": {
+      "description": "{Options SEObar preferences page position}",
+      "message": "职位:"
+   },
+   "sqOptions_seobar_position_vertical_left": {
+      "description": "{Options SEObar preferences page position vertical left}",
+      "message": "垂直左侧浮动"
+   },
+   "sqOptions_seobar_position_vertical_right": {
+      "description": "{Options SEObar preferences page position vertical right}",
+      "message": "垂直右侧浮动"
+   },
+   "sqOptions_seobar_robots_label": {
+      "description": "{Options SEObar preferences page robots parameter label}",
+      "message": "显示 robots.txt 诊断结果"
+   },
+   "sqOptions_seobar_robots_title": {
+      "description": "{Options SEObar preferences page robots parameter}",
+      "message": "Robots.txt 可见："
+   },
+   "sqOptions_seobar_siteaudit_label": {
+      "description": "Options SEObar preferences page siteaudit parameter label",
+      "message": "显示 Semrush Site Audit 工具的报告结果"
+   },
+   "sqOptions_seobar_siteaudit_title": {
+      "description": "Options SEObar preferences page siteaudit parameter",
+      "message": "Semrush Site Audit 链接："
+   },
+   "sqOptions_seobar_sitemap_label": {
+      "description": "{Options SEObar preferences page sitemap parameter label}",
+      "message": "显示 sitemap.xml 诊断结果"
+   },
+   "sqOptions_seobar_sitemap_title": {
+      "description": "{Options SEObar preferences page sitemap parameter}",
+      "message": "Sitemap.xml 可见："
+   },
+   "sqOptions_seobar_special_parameters_title": {
+      "description": "{Options SEObar preferences page special parameters group title}",
+      "message": "特殊参数"
+   },
+   "sqOptions_seobar_title": {
+      "description": "{Options SEObar preferences page title}",
+      "message": "SEObar 首选项"
+   },
+   "sqOptions_serp_general_title": {
+      "description": "{Options SERP page general preferences title}",
+      "message": "常规首选项"
+   },
+   "sqOptions_serp_highlight_blue": {
+      "description": "{Options SERP page highlight color blue}",
+      "message": "浅蓝色"
+   },
+   "sqOptions_serp_highlight_color": {
+      "description": "{Options SERP page highlight color}",
+      "message": "突出显示颜色："
+   },
+   "sqOptions_serp_highlight_field": {
+      "description": "{Options SERP page highlight enable checkbox}",
+      "message": "启用突出显示域名："
+   },
+   "sqOptions_serp_highlight_green": {
+      "description": "{Options SERP page highlight color green}",
+      "message": "浅绿色"
+   },
+   "sqOptions_serp_highlight_import_button": {
+      "description": "{Options SERP page highlight list import button}",
+      "message": "导入列表"
+   },
+   "sqOptions_serp_highlight_import_message": {
+      "description": "{Options SERP page highlight list import message}",
+      "message": "您可以从文件导入域名列表。请使用 UTF-8 编码的纯文本文件。务必将每个值置于单独的行上。文件大小应小于 1 MB。"
+   },
+   "sqOptions_serp_highlight_label": {
+      "description": "{Options SERP page highlight label}",
+      "message": "在 SERP 中突出显示特定域名"
+   },
+   "sqOptions_serp_highlight_list": {
+      "description": "{Options SERP page highlight list}",
+      "message": "突出显示列表："
+   },
+   "sqOptions_serp_highlight_orange": {
+      "description": "{Options SERP page highlight color orange}",
+      "message": "浅橙色"
+   },
+   "sqOptions_serp_highlight_pink": {
+      "description": "{Options SERP page highlight color pink}",
+      "message": "浅粉色"
+   },
+   "sqOptions_serp_highlight_purple": {
+      "description": "{Options SERP page highlight color purple}",
+      "message": "浅紫色"
+   },
+   "sqOptions_serp_highlight_red": {
+      "description": "{Options SERP page highlight color red}",
+      "message": "浅红色"
+   },
+   "sqOptions_serp_highlight_title": {
+      "description": "{Options SERP page highlight block title}",
+      "message": "突出显示域名"
+   },
+   "sqOptions_serp_highlight_turquoise": {
+      "description": "{Options SERP page highlight color turquoise}",
+      "message": "浅青色"
+   },
+   "sqOptions_serp_highlight_yellow": {
+      "description": "{Options SERP page highlight color yellow}",
+      "message": "浅黄色"
+   },
+   "sqOptions_serp_keyword_difficulty": {
+      "description": "{Options SERP page show keyword difficulty field title}",
+      "message": "显示关键词竞争度:"
+   },
+   "sqOptions_serp_keyword_difficulty_label": {
+      "description": "{Options SERP page show keyword difficulty field label}",
+      "message": "针对谷歌 SERP 启用关键词竞争度"
+   },
+   "sqOptions_serp_load_mode_0": {
+      "description": "{Options SERP page parameters load mode on show}",
+      "message": "页面加载时"
+   },
+   "sqOptions_serp_load_mode_1": {
+      "description": "{Options SERP page parameters load mode by request}",
+      "message": "应请求提供"
+   },
+   "sqOptions_serp_numbers": {
+      "description": "{Options SERP page show position numbers field title}",
+      "message": "显示排名："
+   },
+   "sqOptions_serp_numbers_label": {
+      "description": "{Options SERP page show position numbers field label}",
+      "message": "显示 SERP 结果的排名编号"
+   },
+   "sqOptions_serp_parameters_load": {
+      "description": "{Options SERP page parameters load mode title}",
+      "message": "加载参数："
+   },
+   "sqOptions_serp_parameters_title": {
+      "description": "{Options SERP page parameters preferences section title}",
+      "message": "参数首选项"
+   },
+   "sqOptions_serp_show": {
+      "description": "{Options SERP page show overlay}",
+      "message": "在搜索引擎中显示："
+   },
+   "sqOptions_serp_show_bing": {
+      "description": "{Options SERP page show overlay on bing}",
+      "message": "必应已启用"
+   },
+   "sqOptions_serp_show_google": {
+      "description": "{Options SERP page show overlay on google}",
+      "message": "谷歌已启用"
+   },
+   "sqOptions_serp_show_semrush": {
+      "description": "{Options SERP page show overlay on semrush}",
+      "message": "Semrush 已启用"
+   },
+   "sqOptions_serp_show_yahoo": {
+      "description": "{Options SERP page show overlay on yahoo}",
+      "message": "Yahoo 已启用"
+   },
+   "sqOptions_serp_show_yandex": {
+      "description": "{Options SERP page show overlay on yandex}",
+      "message": "Yandex 已启用"
+   },
+   "sqOptions_serp_tabs_title": {
+      "description": "{Options SERP page parameters title}",
+      "message": "SERP 覆盖中的活动参数"
+   },
+   "sqOptions_serp_title": {
+      "description": "{Options SERP page title}",
+      "message": "SERP 覆盖首选项"
+   },
+   "sqOptions_serp_trust_score": {
+      "description": "{Options SERP page show domain trust metrics panel title}",
+      "message": "显示 Domain Trust 指标："
+   },
+   "sqOptions_serp_trust_score_label": {
+      "description": "{Options SERP page show domain trust metrics panel label}",
+      "message": "启用 Domain Trust 指标特殊面板"
+   },
+   "sqOptions_title": {
+      "description": "{Options page title}",
+      "message": "SEOquake 首选项"
+   },
+   "sqPageinfo_keywords_density": {
+      "description": "{Pageinfo report keywords density table density header}",
+      "message": "密度"
+   },
+   "sqPageinfo_keywords_foundin": {
+      "description": "{Pageinfo report keywords density table foundin header}",
+      "message": "发现于："
+   },
+   "sqPageinfo_keywords_keyword": {
+      "description": "{Pageinfo report keywords density table keyword header}",
+      "message": "关键词"
+   },
+   "sqPageinfo_keywords_repeats": {
+      "description": "{Pageinfo report keywords density table repeats header}",
+      "message": "重复次数"
+   },
+   "sqPageinfo_link_print": {
+      "description": "{Pageinfo report print button title}",
+      "message": "打印"
+   },
+   "sqPageinfo_see_all_keywords": {
+      "description": "{Pageinfo report keywords density block see all link title}",
+      "message": "查看全部"
+   },
+   "sqPageinfo_title": {
+      "description": "{Pageinfo report title}",
+      "message": "页面信息"
+   },
+   "sqPageinfo_title_backlinks_parameters": {
+      "description": "{Pageinfo report parameters block backlinks parameters title}",
+      "message": "反向链接："
+   },
+   "sqPageinfo_title_basic": {
+      "description": "{Pageinfo report first block title}",
+      "message": "基本信息："
+   },
+   "sqPageinfo_title_description": {
+      "description": "{Pageinfo report first block meta descripton field title}",
+      "message": "元描述："
+   },
+   "sqPageinfo_title_domain_parameters": {
+      "description": "{Pageinfo report parameters block domain parameters title}",
+      "message": "域名："
+   },
+   "sqPageinfo_title_external": {
+      "description": "{Pageinfo report first block external links counter field title}",
+      "message": "外部链接:"
+   },
+   "sqPageinfo_title_internal": {
+      "description": "{Pageinfo report first block internal links counter field title}",
+      "message": "内部链接:"
+   },
+   "sqPageinfo_title_keywords": {
+      "description": "{Pageinfo report first block meta keywords field title}",
+      "message": "元关键词："
+   },
+   "sqPageinfo_title_keywords_density": {
+      "description": "{Pageinfo report keywords density block title}",
+      "message": "关键词密度"
+   },
+   "sqPageinfo_title_other_parameters": {
+      "description": "{Pageinfo report parameters block other parameters title}",
+      "message": "其他："
+   },
+   "sqPageinfo_title_page_parameters": {
+      "description": "{Pageinfo report parameters block page parameters title}",
+      "message": "页码："
+   },
+   "sqPageinfo_title_parameters": {
+      "description": "{Pageinfo report parameters block title}",
+      "message": "参数:"
+   },
+   "sqPageinfo_title_server": {
+      "description": "{Pageinfo report first block server field title}",
+      "message": "服务器:"
+   },
+   "sqPageinfo_title_title": {
+      "description": "{Pageinfo report first block pagetitle field title}",
+      "message": "标题:"
+   },
+   "sqPageinfo_total_2words": {
+      "description": "{Pageinfo report keywords density total 2-words phrases counter title}",
+      "message": "2 词词组总数："
+   },
+   "sqPageinfo_total_3words": {
+      "description": "{Pageinfo report keywords density total 3-words phrases counter title}",
+      "message": "3 词词组总数："
+   },
+   "sqPageinfo_total_4words": {
+      "description": "{Pageinfo report keywords density total 4-words phrases counter title}",
+      "message": "4 词词组总数："
+   },
+   "sqPageinfo_total_words": {
+      "description": "{Pageinfo report keywords density total words counter title}",
+      "message": "词语总数："
+   },
+   "sqPanel_backlinks_connect": {
+      "description": "{Title for backlinks connect button}",
+      "message": "连接 Semrush"
+   },
+   "sqPanel_backlinks_connect_message": {
+      "description": "{Connect Semrush message. Some markdown can be used}",
+      "message": "连接您的*免费* Semrush 帐户\n以访问*反向链接概览*报告"
+   },
+   "sqPanel_backlinks_domain": {
+      "description": "{Backlinks type pills switch to domain}",
+      "message": "域名"
+   },
+   "sqPanel_backlinks_empty_header": {
+      "description": "{Backlinks empty data header}",
+      "message": "抱歉，我们没有找到与您请求相关的任何信息"
+   },
+   "sqPanel_backlinks_empty_message": {
+      "description": "{Backlinks empty data message}",
+      "message": "出现这种情况可能有几种原因："
+   },
+   "sqPanel_backlinks_empty_reason1": {
+      "description": "{Backlinks empty data message reason 1}",
+      "message": "这是新网站，我们尚未对其进行抓取。但是我们一定在不久后会对其进行抓取！请稍后回来查看该网站的反向链接。"
+   },
+   "sqPanel_backlinks_empty_reason2": {
+      "description": "{Backlinks empty data message reason 2}",
+      "message": "该网站没有任何反向链接。尚未有人对其进行引荐。"
+   },
+   "sqPanel_backlinks_empty_reason3": {
+      "description": "{Backlinks empty data message reason 2}",
+      "message": "该域名不存在。"
+   },
+   "sqPanel_backlinks_error": {
+      "description": "{Some backlinks error message on unknown error}",
+      "message": "服务无法访问，请稍后重试。"
+   },
+   "sqPanel_backlinks_full_report": {
+      "description": "{Backlinks view full report button text}",
+      "message": "查看完整报告"
+   },
+   "sqPanel_backlinks_geo_domains": {
+      "description": "{Backlinks table geo domains header}",
+      "message": "域名"
+   },
+   "sqPanel_backlinks_geo_title": {
+      "description": "{Backlinks table geo header}",
+      "message": "国家/地区"
+   },
+   "sqPanel_backlinks_referring_domains": {
+      "description": "{Backlinks domains message}",
+      "message": "引荐域名"
+   },
+   "sqPanel_backlinks_referring_ips": {
+      "description": "{Backlinks ips message}",
+      "message": "引荐 IP"
+   },
+   "sqPanel_backlinks_referring_total": {
+      "description": "{Backlinks total message}",
+      "message": "反向链接总数"
+   },
+   "sqPanel_backlinks_root_domain": {
+      "description": "{Backlinks type pills switch to root domain}",
+      "message": "根域名"
+   },
+   "sqPanel_backlinks_scope": {
+      "description": "{Backlinks type pills switch to URL}",
+      "message": "报告范围: "
+   },
+   "sqPanel_backlinks_semrush_link": {
+      "description": "{Backlinks go to Semrush link}",
+      "message": "了解有关 Semrush 的更多信息"
+   },
+   "sqPanel_backlinks_semrush_text": {
+      "description": "{Backlings go to Semrush text}",
+      "message": "或&nbsp;"
+   },
+   "sqPanel_backlinks_tld_domains": {
+      "description": "{Backlinks table TLD domains header}",
+      "message": "域名"
+   },
+   "sqPanel_backlinks_tld_title": {
+      "description": "{Backlinks table TLD header}",
+      "message": "顶级域名分布"
+   },
+   "sqPanel_backlinks_url": {
+      "description": "{Backlinks type pills switch to URL}",
+      "message": "URL"
+   },
+   "sqPanel_content_analysis_unavailable_message": {
+      "description": "{Message displayed if data analysis unavailable}",
+      "message": "内容分析不可用。"
+   },
+   "sqPanel_display_advertising_empty_text": {
+      "description": "{Display advertising empty text}",
+      "message": "抱歉，我们没有找到任何信息===\n\n这是个新域名，我们的数据库中还没有此域名。"
+   },
+   "sqPanel_display_advertising_media_ads": {
+      "description": "{Display advertising panel percent bar left message}",
+      "message": "媒体广告样本"
+   },
+   "sqPanel_display_advertising_popular_media_ads": {
+      "description": "{Display advertising media ads row title}",
+      "message": "热门媒体广告"
+   },
+   "sqPanel_display_advertising_popular_text_ads": {
+      "description": "{Display advertising text ads row title}",
+      "message": "热门文本广告"
+   },
+   "sqPanel_display_advertising_show_more_ads": {
+      "description": "{Display advertising button to full report title}",
+      "message": "显示更多广告"
+   },
+   "sqPanel_display_advertising_text_ads": {
+      "description": "{Display advertising panel percent bar right message}",
+      "message": "文字广告样本"
+   },
+   "sqPanel_display_advertising_total_ads": {
+      "description": "{Display advertising panel total ads header}",
+      "message": "全部广告"
+   },
+   "sqPanel_display_advertising_total_avertisers": {
+      "description": "{Display advertising panel total Advertisers header}",
+      "message": "广告主总数"
+   },
+   "sqPanel_display_advertising_total_publishers": {
+      "description": "{Display advertising panel total publishers header}",
+      "message": "媒体总数"
+   },
+   "sqPanel_feedback_button_title": {
+      "description": "{Panel feedback button title}",
+      "message": "要提出建议？"
+   },
+   "sqPanel_feedback_error_close": {
+      "description": "{Feedback error panel close button text}",
+      "message": "关闭"
+   },
+   "sqPanel_feedback_error_message": {
+      "description": "{Feedback error panel message}",
+      "message": "尝试向我们发送消息时发生错误。您可以尝试发送电子邮件到 mail@seoquaketeam.com 或者在以下地址留下评论："
+   },
+   "sqPanel_feedback_error_title": {
+      "description": "{Feedback error panel title}",
+      "message": "哎呀！出错了"
+   },
+   "sqPanel_feedback_error_tryagain": {
+      "description": "{Feedback error panel tryagain button text}",
+      "message": "重试"
+   },
+   "sqPanel_feedback_form_cancel_title": {
+      "description": "{Feedback form cancel button title}",
+      "message": "关闭"
+   },
+   "sqPanel_feedback_form_email_placeholder": {
+      "description": "{Feedback form field email placeholder}",
+      "message": "电子邮件"
+   },
+   "sqPanel_feedback_form_link_prefix": {
+      "description": "{Feedback form store link prefix}",
+      "message": "或在以下地址撰写反馈："
+   },
+   "sqPanel_feedback_form_submit_title": {
+      "description": "{Feedback form submit button title}",
+      "message": "建议!"
+   },
+   "sqPanel_feedback_form_text_placeholder": {
+      "description": "{Feedback form field text placeholder}",
+      "message": "我想说…"
+   },
+   "sqPanel_feedback_form_title": {
+      "description": "{Feedback form title}",
+      "message": "告诉我们您对 SEOquake 的看法"
+   },
+   "sqPanel_feedback_sending_message": {
+      "description": "{Feedback sending panel title}",
+      "message": "正在将您的反馈发送给 SEOquake 团队。"
+   },
+   "sqPanel_feedback_sending_title": {
+      "description": "{Feedback sending panel title}",
+      "message": "告诉我们您对 SEOquake 的看法..."
+   },
+   "sqPanel_feedback_success_continue": {
+      "description": "{Feedback success panel title}",
+      "message": "继续"
+   },
+   "sqPanel_feedback_success_message": {
+      "description": "{Feedback success panel title}",
+      "message": "我们对此非常感谢。我们将审核您的所有消息，并对您有问必答。"
+   },
+   "sqPanel_feedback_success_title": {
+      "description": "{Feedback success panel title}",
+      "message": "您已告诉我们您对 SEOquake 的看法"
+   },
+   "sqPanel_global_disabled": {
+      "message": "SEOquake 已禁用"
+   },
+   "sqPanel_global_enabled": {
+      "message": "SEOquake 已启用"
+   },
+   "sqPanel_menu_about": {
+      "description": "{Panel menu preferenes item}",
+      "message": "关于 SEOquake"
+   },
+   "sqPanel_menu_enable": {
+      "description": "{Panel menu core enabled switch}",
+      "message": "启用 SEOquake"
+   },
+   "sqPanel_menu_nofollow": {
+      "description": "{Panel menu nofollow enabled switch}",
+      "message": "突出显示 Nofollow"
+   },
+   "sqPanel_menu_preferences": {
+      "description": "{Panel menu preferenes item}",
+      "message": "首选项..."
+   },
+   "sqPanel_menu_seobar": {
+      "description": "{Panel menu seobar enabled switch}",
+      "message": "显示 SEObar"
+   },
+   "sqPanel_menu_serpTitle": {
+      "description": "{Panel menu serp block title}",
+      "message": "显示 SERP 覆盖："
+   },
+   "sqPanel_module_title_density": {
+      "description": "{Panel density module link}",
+      "message": "密度"
+   },
+   "sqPanel_module_title_diagnosis": {
+      "description": "{Panel diagnosis module link}",
+      "message": "诊断"
+   },
+   "sqPanel_module_title_external": {
+      "description": "{Panel external module link}",
+      "message": "外部"
+   },
+   "sqPanel_module_title_internal": {
+      "description": "{Panel internal module link}",
+      "message": "内部"
+   },
+   "sqPanel_module_title_linkinfo": {
+      "description": "{Panel linkinfo module link}",
+      "message": "比较 URL"
+   },
+   "sqPanel_module_title_pageinfo": {
+      "description": "{Panel pageinfo module link}",
+      "message": "页面信息"
+   },
+   "sqPanel_nothing_to_analyze": {
+      "description": "{Message displayed for tabs which can not be analyzed}",
+      "message": "此页面上没有可分析的内容"
+   },
+   "sqPanel_notice_1": {
+      "message": "We have updated the terms of our privacy policy. Please find them [https://www.seoquake.com/policy.html](here) for your review."
+   },
+   "sqPanel_semrush_unreachable": {
+      "message": "===\n\n服务无法访问，请稍后重试。"
+   },
+   "sqPanel_tabs_backlinks": {
+      "description": "{Title for panel tab backlinks}",
+      "message": "反向链接"
+   },
+   "sqPanel_tabs_da": {
+      "description": "{Title for panel tab display advertising}",
+      "message": "展示广告"
+   },
+   "sqPanel_tabs_parameters": {
+      "description": "{Title for panel tab parameters}",
+      "message": "参数"
+   },
+   "sqPanel_tabs_traffic": {
+      "description": "{Title for panel tab traffic analytics}",
+      "message": "流量分析"
+   },
+   "sqPanel_tips_1": {
+      "message": "*知道吗？*您可以添加所需的任何自定义参数。[https://www.seoquake.com/guide/parameters/create.html](请参阅我们的指南) 或立即 [parameters](创建新参数)！\n"
+   },
+   "sqPanel_tips_2": {
+      "message": "*知道吗？*您只需点击一下即可 [general](导出和导入设置)。\n"
+   },
+   "sqPanel_tips_3": {
+      "message": "*知道吗？*您可以对 SERP 进行排序并将其导出到 .csv 文件中。\n"
+   },
+   "sqPanel_tips_4": {
+      "message": "captcha 太多？请尝试 [serp](禁用所有不需要的谷歌指标)。\n"
+   },
+   "sqPanel_tips_5": {
+      "message": "*知道吗？*您几乎可以在 [general](“设置”部分) 完成 SEOquake 的所有配置。\n"
+   },
+   "sqPanel_tips_next": {
+      "message": "下一条提示"
+   },
+   "sqPanel_top_no_title": {
+      "description": "{Top parameters title for parameter without title}",
+      "message": "无标题"
+   },
+   "sqPanel_top_select": {
+      "description": "{Top parameters title for no parameter selected}",
+      "message": "选择"
+   },
+   "sqPanel_traffic_analytics_connect_message": {
+      "description": "{Connect Semrush message. Some markdown can be used}",
+      "message": "连接您的*免费* Semrush 帐户\n以访问*流量分析*报告"
+   },
+   "sqPanel_traffic_analytics_data_empty": {
+      "message": "===\n\n服务无法访问，请稍后重试。"
+   },
+   "sqPanel_traffic_analytics_empty_header": {
+      "message": "抱歉，我们数据库中的此网站数据不足。"
+   },
+   "sqPanel_traffic_analytics_empty_message": {
+      "message": "出现这种情况可能有几种原因："
+   },
+   "sqPanel_traffic_analytics_empty_reason1": {
+      "message": "网站每月的唯一身份访问量不足一千。这意味着我们缺乏数据来进行准确的估算。"
+   },
+   "sqPanel_traffic_analytics_empty_reason2": {
+      "message": "域名输入错误。请确保域名拼写正确。"
+   },
+   "sqPanel_traffic_analytics_source_direct": {
+      "message": "直接"
+   },
+   "sqPanel_traffic_analytics_source_paid": {
+      "message": "付费"
+   },
+   "sqPanel_traffic_analytics_source_referral": {
+      "message": "引荐"
+   },
+   "sqPanel_traffic_analytics_source_search": {
+      "message": "搜索"
+   },
+   "sqPanel_traffic_analytics_source_social": {
+      "message": "社交"
+   },
+   "sqPanel_try_this_link": {
+      "description": "{Message before link in nothing to analize}",
+      "message": "请尝试访问此链接："
+   },
+   "sqPanel_waiting": {
+      "description": "{Message on SEO Dashboard when page data is still loading.}",
+      "message": "正在等待页面内容准备就绪..."
+   },
+   "sqSERPSemRush_connect_block": {
+      "description": "{SERP Semrush panel connect Semrush text}",
+      "message": "使用免费 Semrush 帐户获取*域名权重*、*访问量*和*参与度数据* - [#connect](连接)"
+   },
+   "sqSERPSemRush_hint": {
+      "description": "{SERP Semrush panel}",
+      "message": "*Domain Score*是衡量指向域名的链接的质量和搜索量的指标。该分数越接近 100，域名的质量就越高。\n\n*Trust Score*是一项类似的指标，可用于根据域名拥有的可信反向链接数量衡量域名的可信度。如果 Trust Score 明显低于 Domain Score，则可能表明域名拥有大量不可信反向链接。"
+   },
+   "sqSERPSemRush_onboarding_text": {
+      "description": "{SERP Semrush panel onboarding text} ",
+      "message": "*来认识一下域名权重和参与度数据！*\n\n*域名权重*指标允许您根据网站拥有的反向链接的数量和质量，来评估网站的重要性和可信度。\n\n*访问量和用户参与度*指标则可让您洞察任何网站的在线活跃度和受众行为。"
+   },
+   "sqSERPTool_document_title": {
+      "description": "{SERPtool report title}",
+      "message": "SEOquake SERP 工具"
+   },
+   "sqSERPTool_title": {
+      "description": "{SERPtool report h1 title}",
+      "message": "SERP 链接"
+   },
+   "sqSemrush_connect": {
+      "description": "{Message on connect Semrush button.}",
+      "message": "连接 Semrush"
+   },
+   "sqSemrush_feedback_link": {
+      "description": "Message for feedback link",
+      "message": "如何改善 Semrush 集成？"
+   },
+   "sqSemrush_feedback_submit": {
+      "description": "Text on feedback send button",
+      "message": "提交"
+   },
+   "sqSemrush_feedback_success": {
+      "description": "Text for message send result",
+      "message": "谢谢！您的反馈已成功发送"
+   },
+   "sqSemrush_feedback_text_placeholder": {
+      "description": "Text placeholder in feedback textarea",
+      "message": "请分享您的看法"
+   },
+   "sqSemrush_setup_siteaudit_button": {
+      "description": "Message on setup button",
+      "message": "设置"
+   },
+   "sqSemrush_setup_siteaudit_message": {
+      "description": "Message for siteaudit panel state when current domain does not have siteaudit",
+      "message": "尚未针对 {domain} 设置任何检测活动。"
+   },
+   "sqSemrush_siteaudit_connect_1": {
+      "description": "First part of connect message",
+      "message": "连接 Semrush 帐户以显示您的 Site Audit 活动数据。"
+   },
+   "sqSemrush_siteaudit_connect_2": {
+      "description": "Second part of connect message",
+      "message": "这将允许您快速查看页面上的所有问题。"
+   },
+   "sqSemrush_siteaudit_connect_button": {
+      "description": "Connect button text",
+      "message": "连接"
+   },
+   "sqSemrush_siteaudit_connect_dontwant": {
+      "description": "Edit seobar settings message",
+      "message": "不想在 SEObar 中看到此参数？"
+   },
+   "sqSemrush_siteaudit_connect_settings": {
+      "description": "Edit seobar settings link",
+      "message": "编辑 SEObar 设置"
+   },
+   "sqSemrush_siteaudit_details_noerrors": {
+      "description": "Message when no errors on page",
+      "message": "此页面上未发现任何问题。非常健康！"
+   },
+   "sqSemrush_siteaudit_details_notparsed_1": {
+      "description": "Siteaudit no data message 1",
+      "message": "此页面在您上次检测期间未被抓取。"
+   },
+   "sqSemrush_siteaudit_details_notparsed_2": {
+      "description": "Siteaudit no data message 2",
+      "message": "请在下次检测期间尽量检测更多页面。"
+   },
+   "sqSemrush_siteaudit_details_notparsed_link": {
+      "description": "Siteaudit no data configure link",
+      "message": "检查 Site Audit 设置"
+   },
+   "sqSemrush_siteaudit_details_viewdetails": {
+      "description": "View details buttons when no errors on page",
+      "message": "查看详情"
+   },
+   "sqSeobar2_close": {
+      "description": "{Close seobar button tooltip text}",
+      "message": "关闭面板"
+   },
+   "sqSeobar2_close_button_close": {
+      "description": "{Title for close seobar panel button}",
+      "message": "针对所有域名"
+   },
+   "sqSeobar2_close_button_hide": {
+      "description": "{Title for hide seobar panel button}",
+      "message": "针对此域名"
+   },
+   "sqSeobar2_close_header": {
+      "description": "{Heading message on close panel}",
+      "message": "禁用 SEObar"
+   },
+   "sqSeobar2_close_link_whitelist": {
+      "description": "{Title for seobar configure whitelist link}",
+      "message": "您可以指定要启用 SEObar 的域名"
+   },
+   "sqSeobar2_configuration": {
+      "description": "{seobar configuration panel link to main configuration}",
+      "message": "更多设置"
+   },
+   "sqSeobar2_configuration_color": {
+      "description": "{Configuration panel color select title}",
+      "message": "颜色主题"
+   },
+   "sqSeobar2_configuration_color_dark": {
+      "description": "{Configuration panel dark color pill title}",
+      "message": "深"
+   },
+   "sqSeobar2_configuration_color_light": {
+      "description": "{Configuration panel light color pill title}",
+      "message": "浅"
+   },
+   "sqSeobar2_configuration_more_settings": {
+      "description": "{seobar configuration panel link to main configuration}",
+      "message": "更多设置"
+   },
+   "sqSeobar2_configuration_parameters_title": {
+      "description": "{Configuration panel parameters title}",
+      "message": "参数"
+   },
+   "sqSeobar2_configuration_position": {
+      "description": "{Configuration panel position select title}",
+      "message": "SEObar 位置"
+   },
+   "sqSeobar2_configuration_position_bottom": {
+      "message": "水平底部"
+   },
+   "sqSeobar2_configuration_position_left": {
+      "description": "{Configuration panel left position pill title}",
+      "message": "垂直左侧"
+   },
+   "sqSeobar2_configuration_position_right": {
+      "description": "{Configuration panel right position pill title}",
+      "message": "垂直右侧"
+   },
+   "sqSeobar2_configuration_position_top": {
+      "description": "{Configuration panel top position pill title}",
+      "message": "水平顶部"
+   },
+   "sqSeobar2_configure": {
+      "description": "{Seobar cog button tooltip text}",
+      "message": "配置面板"
+   },
+   "sqSeobar2_density": {
+      "description": "{Density link title}",
+      "message": "密度"
+   },
+   "sqSeobar2_diagnosis": {
+      "description": "{Diagnosis link title}",
+      "message": "诊断"
+   },
+   "sqSeobar2_external": {
+      "description": "{External links title}",
+      "message": "外部链接"
+   },
+   "sqSeobar2_feedback_close": {
+      "description": "{Feedback cancel button title}",
+      "message": "关闭"
+   },
+   "sqSeobar2_feedback_no": {
+      "description": "{Feedback no button text}",
+      "message": "否"
+   },
+   "sqSeobar2_feedback_placeholder": {
+      "description": "{Feedback message box placeholder text}",
+      "message": "您要发送给我们的任何反馈"
+   },
+   "sqSeobar2_feedback_question": {
+      "description": "{Feedback question}",
+      "message": "它好用吗？"
+   },
+   "sqSeobar2_feedback_result": {
+      "description": "{Feedback result message}",
+      "message": "谢谢！您的反馈已成功发送。"
+   },
+   "sqSeobar2_feedback_send": {
+      "description": "{Feedback send button title}",
+      "message": "发送反馈"
+   },
+   "sqSeobar2_feedback_yes": {
+      "description": "{Feedback yes button text}",
+      "message": "是"
+   },
+   "sqSeobar2_float_hide_hint": {
+      "message": "按“S”可以隐藏 SEObar"
+   },
+   "sqSeobar2_float_show_hint": {
+      "message": "按“S”可以显示 SEObar"
+   },
+   "sqSeobar2_internal": {
+      "description": "{Internal links title}",
+      "message": "内部链接"
+   },
+   "sqSeobar2_more": {
+      "description": "{Horizontal seobar more date button title}",
+      "message": "更多数据"
+   },
+   "sqSeobar2_pageinfo": {
+      "description": "{Pageinfo link title}",
+      "message": "摘要报告"
+   },
+   "sqSeobar2_parameters_group_backlinks": {
+      "description": "{Seobar parameters group backlinks title}",
+      "message": "反向链接"
+   },
+   "sqSeobar2_parameters_group_domain": {
+      "description": "{Seobar parameters group domain title}",
+      "message": "域名"
+   },
+   "sqSeobar2_parameters_group_other": {
+      "description": "{Seobar parameters group other title}",
+      "message": "其他"
+   },
+   "sqSeobar2_parameters_group_page": {
+      "description": "{Seobar parameters group page title}",
+      "message": "页码"
+   },
+   "sqSeobar2_reload": {
+      "description": "{Load parameters values button title}",
+      "message": "加载所有参数"
+   },
+   "sqSeobar2_robots": {
+      "description": "{Robots.txt magic parameter title}",
+      "message": "Robots.txt"
+   },
+   "sqSeobar2_siteaudit": {
+      "message": "Site Audit"
+   },
+   "sqSeobar2_sitemap": {
+      "description": "{Sitemap.xml magic parameter title}",
+      "message": "Sitemap.xml"
+   },
+   "sqSeobar2_switch_to_vertical": {
+      "description": "{More data dropdown message}",
+      "message": "看来参数不适应 SEObar 宽度。为您方便起见，我们创建了一个新的 SEObar 垂直布局。"
+   },
+   "sqSeobar2_switch_to_vertical_button": {
+      "description": "{More data dropdown button}",
+      "message": "试一试!"
+   },
+   "sqSeobar2_toggle": {
+      "description": "{Pin vertical seobar panel button title}",
+      "message": "切换面板"
+   },
+   "sqSerpOverlay_export": {
+      "message": "导出为 CSV"
+   },
+   "sqSerpOverlay_get_metrics": {
+      "message": "获取指标"
+   },
+   "sqSerpOverlay_hlgl_country": {
+      "message": "国家/地区"
+   },
+   "sqSerpOverlay_hlgl_group_common": {
+      "message": "主要"
+   },
+   "sqSerpOverlay_hlgl_group_others": {
+      "message": "其他"
+   },
+   "sqSerpOverlay_hlgl_language": {
+      "message": "语言"
+   },
+   "sqSerpOverlay_hlgl_reset": {
+      "message": "重置"
+   },
+   "sqSerpOverlay_hlgl_set": {
+      "message": "设置区域"
+   },
+   "sqSerpOverlay_hlgl_title": {
+      "message": "地方"
+   },
+   "sqSerpOverlay_keyword_difficulty": {
+      "description": "{First part of keyword difficulty message}",
+      "message": "关键词竞争度:"
+   },
+   "sqSerpOverlay_keyword_difficulty_db": {
+      "description": "{Database message for current detected database}",
+      "message": "({db}数据库)"
+   },
+   "sqSerpOverlay_keyword_difficulty_full_report": {
+      "description": "{Second part of keyword difficulty message}",
+      "message": "&nbsp;&mdash&nbsp;查看此关键词的 [https://www.semrush.com/us/info/+(keyword)](完整报告)"
+   },
+   "sqSerpOverlay_keyword_difficulty_onboarding_close": {
+      "description": "{}",
+      "message": "请将其关闭"
+   },
+   "sqSerpOverlay_keyword_difficulty_onboarding_ok": {
+      "description": "{}",
+      "message": "好的，太棒了！"
+   },
+   "sqSerpOverlay_keyword_difficulty_onboarding_text": {
+      "description": "{}",
+      "message": "*来认识一下关键词竞争度分数！*\n\n它旨在评估于当前 SERP 页面中有机搜索特定关键词时抢占竞争对手排名的难度。"
+   },
+   "sqSerpOverlay_parameters": {
+      "message": "参数"
+   },
+   "sqSerpOverlay_serptool": {
+      "message": "SERP 报告"
+   },
+   "sqSerpOverlay_sort_ascending": {
+      "message": "升序"
+   },
+   "sqSerpOverlay_sort_by": {
+      "message": "（依据"
+   },
+   "sqSerpOverlay_sort_descending": {
+      "message": "降序"
+   },
+   "sqSerpOverlay_sort_message": {
+      "message": "选择参数"
+   },
+   "sqSerpOverlay_sort_title": {
+      "message": "为此页面排序"
+   },
+   "sqSiteaudit_details_errors": {
+      "description": "{Error title for siteaudit page details}",
+      "message": "错误"
+   },
+   "sqSiteaudit_details_warnings": {
+      "description": "{Warnings title for siteaudit page details}",
+      "message": "警告"
+   },
+   "unavailableHere": {
+      "description": "{Error when data is currently unavailable}",
+      "message": "此页面信息不可用。请尝试其他页面。"
+   }
+}

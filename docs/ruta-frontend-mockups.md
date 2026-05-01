@@ -27,30 +27,43 @@ Este frontend esta armado con datos mock para que puedas navegar la experiencia 
 - `/notifications` notificaciones.
 - `/subscriptions` seguidos y suscripciones.
 
+La campana del navbar abre un panel desplegable de notificaciones sin cambiar de pagina. El avatar abre un menu desplegable con Inicio, Perfil, Activar canal, Panel creador, Configuracion, Cambiar contrasena y Cerrar sesion.
+
 ## Creador streamer
 
 - `/creator/activate` activar canal de creador. Mantiene la regla: streamer o podcaster, no ambos.
 - `/creator/dashboard` redirecciona segun el rol elegido.
 - `/creator/streamer/dashboard` panel del streamer.
+- `/creator/streamer` alias directo del panel streamer.
 - `/creator/streamer/streams/new` crear/configurar stream.
+- `/creator/streamer/create-stream` alias del formulario crear/configurar stream.
 - `/creator/streamer/live-control` control de transmision.
+- `/creator/streamer/control` alias del control de transmision.
 - `/creator/streamer/channel/edit` editar informacion del canal.
+- `/creator/streamer/channel` alias de editar canal.
 - `/creator/streamer/stats` estadisticas de stream.
 - `/creator/streamer/highlights` momentos destacados.
 - `/creator/streamer/highlights/new` subir momento destacado.
 - `/creator/streamer/highlights/1/edit` editar/eliminar momento.
 
+Si el usuario activo eligio `streamer`, cualquier intento de entrar a `/creator/podcaster` devuelve automaticamente a `/creator/streamer`. El streamer puede ser tambien moderador de su propio canal y puede asignar moderadores por canal desde el chat o desde `/moderation/moderators`.
+
 ## Creador podcaster
 
 - `/creator/podcaster/dashboard` panel del podcaster.
+- `/creator/podcaster` alias directo del panel podcaster.
 - `/creator/podcaster/podcasts/new` crear podcast.
+- `/creator/podcaster/create-podcast` alias de crear podcast.
 - `/creator/podcaster/podcasts/fuera-orbita` administrar podcast.
+- `/creator/podcaster/podcasts/fuera-orbita/manage` alias administrar podcast.
 - `/creator/podcaster/episodes/new` subir episodio.
 - `/creator/podcaster/episodes` lista de episodios.
 - `/creator/podcaster/stats` estadisticas de podcast.
 - `/creator/podcaster/history` historial del podcast.
 - `/creator/podcaster/episodes/ep-42/edit` editar episodio.
 - `/creator/podcaster/episodes/ep-42/delete` eliminar episodio.
+
+Si el usuario activo eligio `podcaster`, cualquier intento de entrar a `/creator/streamer` devuelve automaticamente a `/creator/podcaster`.
 
 ## Estados y demo distribuida
 
@@ -76,3 +89,18 @@ Este frontend esta armado con datos mock para que puedas navegar la experiencia 
 - `/moderation/sanctions` usuarios sancionados.
 - `/moderation` panel del moderador.
 - `/moderation/permissions` permisos y funciones del moderador.
+
+Un usuario puede ser solo moderador, o moderador y streamer, o moderador y podcaster. La moderacion no cambia su tipo de creador. Los permisos de moderador son por canal: si otro canal tambien quiere a ese usuario como moderador, el duenio de ese otro canal debe asignarlo.
+
+En `/streams/cyberpunk-2077`, cada mensaje del chat tiene un boton de acciones. Al abrirlo aparecen: hacer moderador, eliminar mensaje, silenciar usuario y bloquear usuario.
+
+## Checklist rapido
+
+1. Entra a `/login` e inicia sesion con cualquier dato.
+2. Haz clic en el avatar: debe abrirse el menu desplegable.
+3. Haz clic en la campana: debe abrirse el panel de notificaciones.
+4. Ve a `/creator/activate`, elige Streamer y continua.
+5. Entra a `/creator/streamer`.
+6. Entra a `/moderation/moderators` para agregar o quitar moderadores.
+7. Intenta entrar a `/creator/podcaster`: debe devolverte a `/creator/streamer`.
+8. Entra a `/streams/cyberpunk-2077` y abre las acciones de un mensaje del chat.

@@ -1,0 +1,47 @@
+{
+   "action": {
+      "default_icon": {
+         "19": "static/icon-disabled19.png",
+         "38": "static/icon-disabled38.png"
+      },
+      "default_popup": "panel.html",
+      "default_title": "SEOquake"
+   },
+   "background": {
+      "service_worker": "background.js"
+   },
+   "content_scripts": [ {
+      "all_frames": false,
+      "css": [ "plugins.css" ],
+      "exclude_matches": [ "*://*.facebook.com/*", "*://*.facebook.net/*", "*://*.fbcdn.net/*", "*://*.akamaihd.net/*", "*://*.virtualearth.net/*", "*://*.youtube.com/*" ],
+      "js": [ "data/plugins.js" ],
+      "matches": [ "http://*/*", "https://*/*" ]
+   }, {
+      "css": [ "captcha.css" ],
+      "js": [ "data/captcha.js" ],
+      "matches": [ "http://ipv4.google.com/sorry/IndexRedirect*", "https://ipv4.google.com/sorry/IndexRedirect*", "http://ipv4.google.com/sorry/index*", "https://ipv4.google.com/sorry/index*", "*://*.yandex.ru/showcaptcha*", "*://yandex.ru/showcaptcha*", "*://*.yandex.ua/showcaptcha*", "*://yandex.ua/showcaptcha*", "*://*.yandex.by/showcaptcha*", "*://yandex.by/showcaptcha*", "*://*.yandex.kz/showcaptcha*", "*://yandex.kz/showcaptcha*", "*://*.yandex.com/showcaptcha*", "*://yandex.com/showcaptcha*", "*://*.yandex.com.tr/showcaptcha*", "*://yandex.com.tr/showcaptcha*" ]
+   }, {
+      "js": [ "data/oauth.js" ],
+      "matches": [ "http://localhost:8000/oauth2/success*", "https://auth.rc.semrush.net/oauth2/success*", "https://oauth.semrush.com/oauth2/success*" ]
+   } ],
+   "default_locale": "en",
+   "description": "__MSG_extDescription__",
+   "host_permissions": [ "*://*/*" ],
+   "icons": {
+      "128": "static/logo_128x128.png",
+      "16": "static/icon_16x16.png",
+      "48": "static/logo_48x48.png"
+   },
+   "key": "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC+GCVH9I+SmB50BbdpoxYcU2ZMrPK6w8HjEIvAlVGDxdqlv3zlXh3W7qV134ET++tReBzolNLy+PtOh1+nytKC6FujZseop/8TAXy6+bTSMSnd5R7bMaDpYiWbSsBRL4+sdl2oQ2fmteqLsZJFmKMX/i1BNZlhbD4v4GiUFIWmXwIDAQAB",
+   "manifest_version": 3,
+   "name": "__MSG_extName__",
+   "options_page": "options.html",
+   "permissions": [ "contextMenus", "storage", "scripting", "tabs" ],
+   "short_name": "SEOquake",
+   "update_url": "https://clients2.google.com/service/update2/crx",
+   "version": "3.13.4",
+   "web_accessible_resources": [ {
+      "matches": [ "http://*/*", "https://*/*" ],
+      "resources": [ "/static/fonts/*", "/static/icons/*", "/static/svg/*" ]
+   } ]
+}

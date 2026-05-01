@@ -1,0 +1,3493 @@
+{
+   "extDescription": {
+      "description": "{Extension description for extensions list}",
+      "message": "SEOquake es un plugin gratuito que te ofrece importantes métricas SEO, junto con otras herramientas útiles, como, por ejemplo, Auditoría SEO"
+   },
+   "extName": {
+      "description": "{Main extension title}",
+      "message": "SEOquake"
+   },
+   "magic_showPanelQuiz1": {
+      "description": "{Special configuration key, DO NOT TOUCH}",
+      "message": "0"
+   },
+   "magic_showPanelQuiz2": {
+      "description": "{Special configuration key, DO NOT TOUCH}",
+      "message": "1"
+   },
+   "menuDisabled": {
+      "description": "{Not used}",
+      "message": "Desactivado"
+   },
+   "menuEnabled": {
+      "description": "{Not used}",
+      "message": "Activado"
+   },
+   "menuItemAbout": {
+      "description": "{Not used}",
+      "message": "Acerca de SEOquake"
+   },
+   "menuItemDensity": {
+      "description": "{Context menu item for keywords Density}",
+      "message": "Densidad..."
+   },
+   "menuItemDiagnosis": {
+      "description": "{Context menu item for Diagnosis tool}",
+      "message": "Diagnóstico..."
+   },
+   "menuItemFeedback": {
+      "description": "{Not used}",
+      "message": "Enviar opinión..."
+   },
+   "menuItemFullInfo": {
+      "description": "{Not used}",
+      "message": "Info completa"
+   },
+   "menuItemHighlight": {
+      "description": "{Not used}",
+      "message": "Resaltar nofollow"
+   },
+   "menuItemLinkInfo": {
+      "description": "{Context menu item for Compare URLs tool}",
+      "message": "Comparar URL..."
+   },
+   "menuItemOptions": {
+      "description": "{Context menu item for configuration page}",
+      "message": "Preferencias..."
+   },
+   "menuItemPageinfo": {
+      "description": "{Context menu item for Page info tool}",
+      "message": "Info de la página..."
+   },
+   "menuItemSEOBar": {
+      "description": "{Not used}",
+      "message": "SEObar"
+   },
+   "menuItemSERPBing": {
+      "description": "{Not used}",
+      "message": "Bing"
+   },
+   "menuItemSERPGoogle": {
+      "description": "{Not used}",
+      "message": "Google"
+   },
+   "menuItemSERPYahoo": {
+      "description": "{Not used}",
+      "message": "Yahoo"
+   },
+   "menuItemSERPYandex": {
+      "description": "{Not used}",
+      "message": "Yandex"
+   },
+   "menuPlugins": {
+      "description": "{Not used}",
+      "message": "Plugins"
+   },
+   "sqCaptcha_header": {
+      "description": "{Title for captcha page seoquake panel}",
+      "message": "Lo sentimos. Parece que SEOquake ocasionó esto."
+   },
+   "sqCaptcha_text": {
+      "description": "{Text for captcha page seoquake panel}",
+      "message": "Debido a que SEOquake intenta recopilar múltiples datos al mismo tiempo, el motor de búsqueda lo considera una manera spam de recibir información. Intenta desactivar los parámetros que no necesitas u [https://www.seoquake.com/guide/troubleshooting.html](obtén más información sobre este problema en nuestra guía)."
+   },
+   "sqChangelog_close": {
+      "description": "{Hide changelog panel button}",
+      "message": "OK, entiendo"
+   },
+   "sqChangelog_title": {
+      "description": "{Header for changelog panel {version} and {date} will be automaticaly replaced}",
+      "message": "¿Qué novedades hay en la {version} del {date}?"
+   },
+   "sqCommon_error_window_close": {
+      "description": "{Common report error window close button title}",
+      "message": "Cerrar"
+   },
+   "sqCommon_error_window_title": {
+      "description": "{Common report error window title}",
+      "message": "Error al procesar solicitud"
+   },
+   "sqCommon_howto_link": {
+      "description": "{Reports top menu How to use link}",
+      "message": "Cómo se utiliza"
+   },
+   "sqCommon_menu_compare": {
+      "description": "{Common report menu item compare urls}",
+      "message": " Comparar URL/dominios"
+   },
+   "sqCommon_menu_density": {
+      "description": "{Common report menu item density}",
+      "message": "Densidad"
+   },
+   "sqCommon_menu_diagnosis": {
+      "description": "{Common report menu item diagnosis}",
+      "message": "Diagnóstico"
+   },
+   "sqCommon_menu_external": {
+      "description": "{Common report menu item external}",
+      "message": "Externo"
+   },
+   "sqCommon_menu_internal": {
+      "description": "{Common report menu item internal}",
+      "message": "Interno"
+   },
+   "sqCommon_menu_pageinfo": {
+      "description": "{Common report menu item page info}",
+      "message": "Info de la página"
+   },
+   "sqCommon_parameters_configure_window_cancel": {
+      "description": "{Parameters configure window cancel button title}",
+      "message": "Cancelar"
+   },
+   "sqCommon_parameters_configure_window_save": {
+      "description": "{Parameters configure window save button title}",
+      "message": "Guardar"
+   },
+   "sqCommon_parameters_configure_window_title": {
+      "description": "{Parameters configure window title at common report}",
+      "message": "Agregar/ocultar parámetros en informe"
+   },
+   "sqCommon_suggest_link": {
+      "description": "{Reports top menu Have a suggestion link}",
+      "message": "¿Tienes una sugerencia?"
+   },
+   "sqCompare_button_configure": {
+      "description": "{Compare link save metrics button}",
+      "message": "Agregar/ocultar parámetros"
+   },
+   "sqCompare_button_configure_tooltip": {
+      "description": "{Compare link save metrics button title}",
+      "message": "Configurar parámetros para este informe"
+   },
+   "sqCompare_button_edit": {
+      "description": "{Compare link save metrics button}",
+      "message": "Cambiar lista"
+   },
+   "sqCompare_button_edit_tooltip": {
+      "description": "{Compare link save metrics button title}",
+      "message": "Cambiar lista de URL"
+   },
+   "sqCompare_button_import": {
+      "description": "{Compare links import URLs from file button}",
+      "message": "Importar enlaces de archivo CSV"
+   },
+   "sqCompare_button_process": {
+      "description": "{Compare links process data button text}",
+      "message": "Procesar URL"
+   },
+   "sqCompare_button_request": {
+      "description": "{Compare link request metrics button}",
+      "message": "Solicitar todos los parámetros"
+   },
+   "sqCompare_button_request_tooltip": {
+      "description": "{Compare link request metrics button title}",
+      "message": "Solicitar todos los parámetros"
+   },
+   "sqCompare_button_save": {
+      "description": "{Compare link save metrics button}",
+      "message": "Guardar como CSV"
+   },
+   "sqCompare_button_save_tooltip": {
+      "description": "{Compare link save metrics button title}",
+      "message": "Guardar datos en archivo csv"
+   },
+   "sqCompare_document_title": {
+      "description": "{Compare links document title}",
+      "message": "Info de enlace SEOquake"
+   },
+   "sqCompare_title": {
+      "description": "{Compare links page title}",
+      "message": "Comparar URL/dominios"
+   },
+   "sqCompare_url_to_check_1": {
+      "description": "{Compare links textarea message bold text}",
+      "message": "Introducir URL o dominios para comprobar"
+   },
+   "sqCompare_url_to_check_2": {
+      "description": "{Compare links textarea message normal text}",
+      "message": " (uno por línea)."
+   },
+   "sqCountry_a1": {
+      "message": "Proxy anónimo"
+   },
+   "sqCountry_a2": {
+      "message": "Proveedor de satélite"
+   },
+   "sqCountry_ad": {
+      "message": "Andorra"
+   },
+   "sqCountry_ae": {
+      "message": "Emiratos Árabes Unidos"
+   },
+   "sqCountry_af": {
+      "message": "Afganistán"
+   },
+   "sqCountry_ag": {
+      "message": "Antigua y Barbuda"
+   },
+   "sqCountry_ai": {
+      "message": "Anguila"
+   },
+   "sqCountry_al": {
+      "message": "Albania"
+   },
+   "sqCountry_am": {
+      "message": "Armenia"
+   },
+   "sqCountry_ao": {
+      "message": "Angola"
+   },
+   "sqCountry_ap": {
+      "message": "Región Asia/Pacífico"
+   },
+   "sqCountry_ar": {
+      "message": "Argentina"
+   },
+   "sqCountry_at": {
+      "message": "Austria"
+   },
+   "sqCountry_au": {
+      "message": "Australia"
+   },
+   "sqCountry_ax": {
+      "message": "Aland"
+   },
+   "sqCountry_az": {
+      "message": "Azerbaiyán"
+   },
+   "sqCountry_ba": {
+      "message": "Bosnia y Herz."
+   },
+   "sqCountry_bb": {
+      "message": "Barbados"
+   },
+   "sqCountry_bd": {
+      "message": "Bangladesh"
+   },
+   "sqCountry_be": {
+      "message": "Bélgica"
+   },
+   "sqCountry_bf": {
+      "message": "Burkina Faso"
+   },
+   "sqCountry_bg": {
+      "message": "Bulgaria"
+   },
+   "sqCountry_bh": {
+      "message": "Bahréin"
+   },
+   "sqCountry_bi": {
+      "message": "Burundi"
+   },
+   "sqCountry_bj": {
+      "message": "Benín"
+   },
+   "sqCountry_bm": {
+      "message": "Bermudas"
+   },
+   "sqCountry_bn": {
+      "message": "Brunéi"
+   },
+   "sqCountry_bo": {
+      "message": "Bolivia"
+   },
+   "sqCountry_br": {
+      "message": "Brasil"
+   },
+   "sqCountry_bs": {
+      "message": "Bahamas"
+   },
+   "sqCountry_bt": {
+      "message": "Bután"
+   },
+   "sqCountry_bw": {
+      "message": "Botsuana"
+   },
+   "sqCountry_by": {
+      "message": "Bielorrusia"
+   },
+   "sqCountry_bz": {
+      "message": "Belice"
+   },
+   "sqCountry_ca": {
+      "message": "Canadá"
+   },
+   "sqCountry_cd": {
+      "message": "Rep. Dem. Congo"
+   },
+   "sqCountry_cf": {
+      "message": "Rep. Centroafricana"
+   },
+   "sqCountry_cg": {
+      "message": "Congo"
+   },
+   "sqCountry_ch": {
+      "message": "Suiza"
+   },
+   "sqCountry_ci": {
+      "message": "Côte d'Ivoire"
+   },
+   "sqCountry_cl": {
+      "message": "Chile"
+   },
+   "sqCountry_cm": {
+      "message": "Camerún"
+   },
+   "sqCountry_cn": {
+      "message": "China"
+   },
+   "sqCountry_co": {
+      "message": "Colombia"
+   },
+   "sqCountry_cr": {
+      "message": "Costa Rica"
+   },
+   "sqCountry_cu": {
+      "message": "Cuba"
+   },
+   "sqCountry_cv": {
+      "message": "Cabo Verde"
+   },
+   "sqCountry_cw": {
+      "message": "Curazao"
+   },
+   "sqCountry_cy": {
+      "message": "Chipre"
+   },
+   "sqCountry_cz": {
+      "message": "Rep. Checa"
+   },
+   "sqCountry_de": {
+      "message": "Alemania"
+   },
+   "sqCountry_dj": {
+      "message": "Yibuti"
+   },
+   "sqCountry_dk": {
+      "message": "Dinamarca"
+   },
+   "sqCountry_dm": {
+      "message": "Dominica"
+   },
+   "sqCountry_do": {
+      "message": "Rep. Dominicana"
+   },
+   "sqCountry_dz": {
+      "message": "Argelia"
+   },
+   "sqCountry_ec": {
+      "message": "Ecuador"
+   },
+   "sqCountry_ee": {
+      "message": "Estonia"
+   },
+   "sqCountry_eg": {
+      "message": "Egipto"
+   },
+   "sqCountry_eh": {
+      "message": "Sáhara Occidental"
+   },
+   "sqCountry_er": {
+      "message": "Eritrea"
+   },
+   "sqCountry_es": {
+      "message": "España"
+   },
+   "sqCountry_et": {
+      "message": "Etiopía"
+   },
+   "sqCountry_eu": {
+      "message": "Unión Europea"
+   },
+   "sqCountry_fi": {
+      "message": "Finlandia"
+   },
+   "sqCountry_fj": {
+      "message": "Fiyi"
+   },
+   "sqCountry_fk": {
+      "message": "Is. Falkland"
+   },
+   "sqCountry_fm": {
+      "message": "Micronesia, Estados federados de"
+   },
+   "sqCountry_fo": {
+      "message": "Islas Feroe"
+   },
+   "sqCountry_fr": {
+      "message": "Francia"
+   },
+   "sqCountry_ga": {
+      "message": "Gabón"
+   },
+   "sqCountry_gb": {
+      "message": "Reino Unido"
+   },
+   "sqCountry_ge": {
+      "message": "Georgia"
+   },
+   "sqCountry_gg": {
+      "message": "Guernsey"
+   },
+   "sqCountry_gh": {
+      "message": "Ghana"
+   },
+   "sqCountry_gi": {
+      "message": "Gibraltar"
+   },
+   "sqCountry_gl": {
+      "message": "Groenlandia"
+   },
+   "sqCountry_gm": {
+      "message": "Gambia"
+   },
+   "sqCountry_gn": {
+      "message": "Guinea"
+   },
+   "sqCountry_gp": {
+      "message": "Guadalupe"
+   },
+   "sqCountry_gq": {
+      "message": "Guinea Ecuat."
+   },
+   "sqCountry_gr": {
+      "message": "Grecia"
+   },
+   "sqCountry_gs": {
+      "message": "Is. Geo. del Sur y Sandw. del Sur"
+   },
+   "sqCountry_gt": {
+      "message": "Guatemala"
+   },
+   "sqCountry_gu": {
+      "message": "Guam"
+   },
+   "sqCountry_gw": {
+      "message": "Guinea-Bisáu"
+   },
+   "sqCountry_gy": {
+      "message": "Guyana"
+   },
+   "sqCountry_hk": {
+      "message": "Hong Kong"
+   },
+   "sqCountry_hn": {
+      "message": "Honduras"
+   },
+   "sqCountry_hr": {
+      "message": "Croacia"
+   },
+   "sqCountry_ht": {
+      "message": "Haití"
+   },
+   "sqCountry_hu": {
+      "message": "Hungría"
+   },
+   "sqCountry_id": {
+      "message": "Indonesia"
+   },
+   "sqCountry_ie": {
+      "message": "Irlanda"
+   },
+   "sqCountry_il": {
+      "message": "Israel"
+   },
+   "sqCountry_im": {
+      "message": "Isla de Man"
+   },
+   "sqCountry_in": {
+      "message": "India"
+   },
+   "sqCountry_iq": {
+      "message": "Iraq"
+   },
+   "sqCountry_ir": {
+      "message": "Irán"
+   },
+   "sqCountry_is": {
+      "message": "Islandia"
+   },
+   "sqCountry_it": {
+      "message": "Italia"
+   },
+   "sqCountry_jm": {
+      "message": "Jamaica"
+   },
+   "sqCountry_jo": {
+      "message": "Jordania"
+   },
+   "sqCountry_jp": {
+      "message": "Japón"
+   },
+   "sqCountry_ke": {
+      "message": "Kenia"
+   },
+   "sqCountry_kg": {
+      "message": "Kirguistán"
+   },
+   "sqCountry_kh": {
+      "message": "Camboya"
+   },
+   "sqCountry_km": {
+      "message": "Comoros"
+   },
+   "sqCountry_kn": {
+      "message": "San Cristóbal y Nieves"
+   },
+   "sqCountry_kp": {
+      "message": "Rep. Dem. Corea"
+   },
+   "sqCountry_kr": {
+      "message": "Corea"
+   },
+   "sqCountry_kw": {
+      "message": "Kuwait"
+   },
+   "sqCountry_ky": {
+      "message": "Islas Caimán"
+   },
+   "sqCountry_kz": {
+      "message": "Kazajstán"
+   },
+   "sqCountry_la": {
+      "message": "RDP Lao"
+   },
+   "sqCountry_lb": {
+      "message": "Líbano"
+   },
+   "sqCountry_lc": {
+      "message": "Santa Lucía"
+   },
+   "sqCountry_li": {
+      "message": "Liechtenstein"
+   },
+   "sqCountry_lk": {
+      "message": "Sri Lanka"
+   },
+   "sqCountry_lr": {
+      "message": "Liberia"
+   },
+   "sqCountry_ls": {
+      "message": "Lesoto"
+   },
+   "sqCountry_lt": {
+      "message": "Lituania"
+   },
+   "sqCountry_lu": {
+      "message": "Luxemburgo"
+   },
+   "sqCountry_lv": {
+      "message": "Letonia"
+   },
+   "sqCountry_ly": {
+      "message": "Libia"
+   },
+   "sqCountry_ma": {
+      "message": "Marruecos"
+   },
+   "sqCountry_mc": {
+      "message": "Mónaco"
+   },
+   "sqCountry_md": {
+      "message": "Moldavia"
+   },
+   "sqCountry_me": {
+      "message": "Montenegro"
+   },
+   "sqCountry_mg": {
+      "message": "Madagascar"
+   },
+   "sqCountry_mk": {
+      "message": "Macedonia"
+   },
+   "sqCountry_ml": {
+      "message": "Mali"
+   },
+   "sqCountry_mm": {
+      "message": "Birmania"
+   },
+   "sqCountry_mn": {
+      "message": "Mongolia"
+   },
+   "sqCountry_mo": {
+      "message": "Macao"
+   },
+   "sqCountry_mp": {
+      "message": "Islas Marianas del Norte"
+   },
+   "sqCountry_mr": {
+      "message": "Mauritania"
+   },
+   "sqCountry_mt": {
+      "message": "Malta"
+   },
+   "sqCountry_mu": {
+      "message": "Mauricio"
+   },
+   "sqCountry_mv": {
+      "message": "Maldivas"
+   },
+   "sqCountry_mw": {
+      "message": "Malaui"
+   },
+   "sqCountry_mx": {
+      "message": "México"
+   },
+   "sqCountry_my": {
+      "message": "Malasia"
+   },
+   "sqCountry_mz": {
+      "message": "Mozambique"
+   },
+   "sqCountry_na": {
+      "message": "Namibia"
+   },
+   "sqCountry_nc": {
+      "message": "Nueva Caledonia"
+   },
+   "sqCountry_ne": {
+      "message": "Níger"
+   },
+   "sqCountry_ng": {
+      "message": "Nigeria"
+   },
+   "sqCountry_ni": {
+      "message": "Nicaragua"
+   },
+   "sqCountry_nl": {
+      "message": "Países Bajos"
+   },
+   "sqCountry_no": {
+      "message": "Noruega"
+   },
+   "sqCountry_np": {
+      "message": "Nepal"
+   },
+   "sqCountry_nz": {
+      "message": "Nueva Zelanda"
+   },
+   "sqCountry_o1": {
+      "message": "Otros"
+   },
+   "sqCountry_om": {
+      "message": "Omán"
+   },
+   "sqCountry_pa": {
+      "message": "Panamá"
+   },
+   "sqCountry_pe": {
+      "message": "Perú"
+   },
+   "sqCountry_pf": {
+      "message": "Polinesia Franc."
+   },
+   "sqCountry_pg": {
+      "message": "Papua Nueva Guinea"
+   },
+   "sqCountry_ph": {
+      "message": "Filipinas"
+   },
+   "sqCountry_pk": {
+      "message": "Pakistán"
+   },
+   "sqCountry_pl": {
+      "message": "Polonia"
+   },
+   "sqCountry_pm": {
+      "message": "San Pedro y Miquelón"
+   },
+   "sqCountry_pr": {
+      "message": "Puerto Rico"
+   },
+   "sqCountry_ps": {
+      "message": "Palestina"
+   },
+   "sqCountry_pt": {
+      "message": "Portugués"
+   },
+   "sqCountry_py": {
+      "message": "Paraguay"
+   },
+   "sqCountry_qa": {
+      "message": "Qatar"
+   },
+   "sqCountry_ro": {
+      "message": "Rumanía"
+   },
+   "sqCountry_rs": {
+      "message": "Serbia"
+   },
+   "sqCountry_ru": {
+      "message": "Rusia"
+   },
+   "sqCountry_rw": {
+      "message": "Ruanda"
+   },
+   "sqCountry_sa": {
+      "message": "Arabia Saudí"
+   },
+   "sqCountry_sb": {
+      "message": "Is. Salomón"
+   },
+   "sqCountry_sc": {
+      "message": "Seychelles"
+   },
+   "sqCountry_sd": {
+      "message": "Sudán"
+   },
+   "sqCountry_se": {
+      "message": "Suecia"
+   },
+   "sqCountry_sg": {
+      "message": "Singapur"
+   },
+   "sqCountry_si": {
+      "message": "Eslovenia"
+   },
+   "sqCountry_sk": {
+      "message": "Eslovaquia"
+   },
+   "sqCountry_sl": {
+      "message": "Sierra Leona"
+   },
+   "sqCountry_sm": {
+      "message": "San Marino"
+   },
+   "sqCountry_sn": {
+      "message": "Senegal"
+   },
+   "sqCountry_so": {
+      "message": "Somalia"
+   },
+   "sqCountry_sr": {
+      "message": "Surinam"
+   },
+   "sqCountry_ss": {
+      "message": "Sudán del Sur"
+   },
+   "sqCountry_st": {
+      "message": "Santo Tomé y Príncipe"
+   },
+   "sqCountry_sv": {
+      "message": "El Salvador"
+   },
+   "sqCountry_sy": {
+      "message": "Siria"
+   },
+   "sqCountry_sz": {
+      "message": "Suazilandia"
+   },
+   "sqCountry_td": {
+      "message": "Chad"
+   },
+   "sqCountry_tf": {
+      "message": "Fr. S. Tierras Antárticas"
+   },
+   "sqCountry_tg": {
+      "message": "Togo"
+   },
+   "sqCountry_th": {
+      "message": "Tailandia"
+   },
+   "sqCountry_tj": {
+      "message": "Tayikistán"
+   },
+   "sqCountry_tl": {
+      "message": "Timor Oriental"
+   },
+   "sqCountry_tm": {
+      "message": "Turkmenistán"
+   },
+   "sqCountry_tn": {
+      "message": "Túnez"
+   },
+   "sqCountry_tr": {
+      "message": "Turquía"
+   },
+   "sqCountry_tt": {
+      "message": "Trinidad y Tobago"
+   },
+   "sqCountry_tw": {
+      "message": "Taiwán"
+   },
+   "sqCountry_tz": {
+      "message": "Tanzania"
+   },
+   "sqCountry_ua": {
+      "message": "Ucrania"
+   },
+   "sqCountry_ug": {
+      "message": "Uganda"
+   },
+   "sqCountry_us": {
+      "message": "Estados Unidos"
+   },
+   "sqCountry_uy": {
+      "message": "Uruguay"
+   },
+   "sqCountry_uz": {
+      "message": "Uzbekistán"
+   },
+   "sqCountry_va": {
+      "message": "Santa Sede (Estado de la Ciudad del Vaticano)"
+   },
+   "sqCountry_ve": {
+      "message": "Venezuela"
+   },
+   "sqCountry_vg": {
+      "message": "Islas Vírgenes, Gran Bretaña"
+   },
+   "sqCountry_vn": {
+      "message": "Vietnam"
+   },
+   "sqCountry_vu": {
+      "message": "Vanuatu"
+   },
+   "sqCountry_ws": {
+      "message": "Samoa"
+   },
+   "sqCountry_ye": {
+      "message": "Yemen"
+   },
+   "sqCountry_za": {
+      "message": "Sudáfrica"
+   },
+   "sqCountry_zm": {
+      "message": "Zambia"
+   },
+   "sqCountry_zw": {
+      "message": "Zimbabue"
+   },
+   "sqDensity_1word_link": {
+      "description": "",
+      "message": "Table de palabras clave de 1 palabra"
+   },
+   "sqDensity_2_word_phrases": {
+      "description": "",
+      "message": "Frases de 2 palabras:"
+   },
+   "sqDensity_2_words_title": {
+      "description": "",
+      "message": "Frases de 2 palabras"
+   },
+   "sqDensity_2word_link": {
+      "description": "",
+      "message": "Table de palabras clave de 2 palabras"
+   },
+   "sqDensity_3_word_phrases": {
+      "description": "",
+      "message": "Frases de 3 palabras:"
+   },
+   "sqDensity_3_words_title": {
+      "description": "",
+      "message": "Frases de 3 palabras"
+   },
+   "sqDensity_3word_link": {
+      "description": "",
+      "message": "Table de palabras clave de 3 palabras"
+   },
+   "sqDensity_4_word_phrases": {
+      "description": "",
+      "message": "Frases de 4 palabras:"
+   },
+   "sqDensity_4_words_title": {
+      "description": "",
+      "message": "Frases de 4 palabras"
+   },
+   "sqDensity_4word_link": {
+      "description": "",
+      "message": "Table de palabras clave de 4 palabras"
+   },
+   "sqDensity_all_words_title": {
+      "description": "",
+      "message": "Todas las palabras"
+   },
+   "sqDensity_bookmarks_title": {
+      "description": "",
+      "message": "Marcadores"
+   },
+   "sqDensity_button_configure": {
+      "description": "",
+      "message": "Configurar lista de palabras de detección"
+   },
+   "sqDensity_button_filter_apply": {
+      "description": "",
+      "message": "Aplicar"
+   },
+   "sqDensity_button_filter_reset": {
+      "description": "",
+      "message": "Resetear"
+   },
+   "sqDensity_button_save": {
+      "description": "",
+      "message": "Guardar como CSV"
+   },
+   "sqDensity_configure_close": {
+      "message": "Cerrar"
+   },
+   "sqDensity_configure_custom_list": {
+      "message": "Utilizar lista de palabras de detección personalizada"
+   },
+   "sqDensity_configure_custom_list_placeholder": {
+      "message": "Introducir palabras para excluir"
+   },
+   "sqDensity_configure_default_label": {
+      "message": "Utilizar predeterminada "
+   },
+   "sqDensity_configure_default_link": {
+      "message": "lista de palabras de detección"
+   },
+   "sqDensity_configure_include_list": {
+      "message": "Utilizar lista blanca"
+   },
+   "sqDensity_configure_include_list_placeholder": {
+      "message": "Introducir palabras que incluir"
+   },
+   "sqDensity_configure_save": {
+      "message": "Guardar"
+   },
+   "sqDensity_configure_title": {
+      "message": "Configurar lista de palabras de detección"
+   },
+   "sqDensity_contains": {
+      "description": "",
+      "message": "Contiene"
+   },
+   "sqDensity_filter_title": {
+      "description": "",
+      "message": "Filtro"
+   },
+   "sqDensity_keywords_density": {
+      "description": "",
+      "message": "Densidad"
+   },
+   "sqDensity_keywords_foundin": {
+      "description": "",
+      "message": "Encontradas en"
+   },
+   "sqDensity_keywords_keyword": {
+      "description": "",
+      "message": "Palabra clave"
+   },
+   "sqDensity_keywords_prominence": {
+      "description": "",
+      "message": "Prominencia"
+   },
+   "sqDensity_keywords_repeats": {
+      "description": "",
+      "message": "Repeticiones"
+   },
+   "sqDensity_keywords_title": {
+      "description": "",
+      "message": "Nube de palabras clave"
+   },
+   "sqDensity_original_link": {
+      "description": "",
+      "message": "Texto original:"
+   },
+   "sqDensity_original_text": {
+      "description": "",
+      "message": "Texto original:"
+   },
+   "sqDensity_pageinfo_description_title": {
+      "description": "",
+      "message": "Metadescripción:"
+   },
+   "sqDensity_pageinfo_keywords_title": {
+      "description": "",
+      "message": "Palabras clave meta:"
+   },
+   "sqDensity_pageinfo_title": {
+      "description": "",
+      "message": "Info de la página"
+   },
+   "sqDensity_pageinfo_title_title": {
+      "description": "",
+      "message": "Título:"
+   },
+   "sqDensity_regexp": {
+      "description": "",
+      "message": "Regexp"
+   },
+   "sqDensity_starts_with": {
+      "description": "",
+      "message": "Empieza con"
+   },
+   "sqDensity_title": {
+      "description": "{Keywords density report title}",
+      "message": "Densidad de palabras clave"
+   },
+   "sqDensity_totalLinks": {
+      "description": "",
+      "message": "Total de palabras:"
+   },
+   "sqDensity_type_D_hint": {
+      "description": "{Keywords density tables found in page description tooltip}",
+      "message": "Esta palabra clave fue encontrada en la metadescripción"
+   },
+   "sqDensity_type_H1_hint": {
+      "description": "{Keywords density tables found in page h1 tooltip}",
+      "message": "Esta palabra clave fue encontrada en el encabezado H1 principal"
+   },
+   "sqDensity_type_K_hint": {
+      "description": "{Keywords density tables found in page keywords tooltip}",
+      "message": "Esta palabra clave fue encontrada en las palabras clave meta"
+   },
+   "sqDensity_type_T_hint": {
+      "description": "{Keywords density tables found in page title tooltip}",
+      "message": "Esta palabra clave fue encontrada en el título de la página"
+   },
+   "sqDiagnosis_audit_banner": {
+      "description": "{Semrush banner text}",
+      "message": "Obtén una auditoría de 100 páginas GRATIS en 5 minutos"
+   },
+   "sqDiagnosis_canonical_average": {
+      "description": "{Diagnosis canonical rule - average state}",
+      "message": "No se ha configurado ninguna etiqueta canónica para este página."
+   },
+   "sqDiagnosis_canonical_bad": {
+      "description": "{Diagnosis canonical rule - bad state}",
+      "message": "Se ha configurado una etiqueta canónica para esta página pero no se puede alcanzar."
+   },
+   "sqDiagnosis_canonical_good": {
+      "description": "{Diagnosis canonical rule - good state}",
+      "message": "Se ha configurado una etiqueta canónica para esta página y el enlace funciona correctamente."
+   },
+   "sqDiagnosis_charset_bad_one": {
+      "description": "{Diagnosis charset rule - bad state}",
+      "message": "Una codificación inadecuada de caracteres/idioma debilitará tu SEO. Si se declara una codificación de caracteres/idioma se evitan complicaciones cuando se visualiza la página."
+   },
+   "sqDiagnosis_charset_good_one": {
+      "description": "{Diagnosis charset rule - good state}",
+      "message": "Si se declara una codificación de caracteres/idioma se fortalecerá considerablemente la SEO. También evita complicaciones cuando se visualiza la página."
+   },
+   "sqDiagnosis_close": {
+      "description": "{Tips closed title}",
+      "message": "Consejos"
+   },
+   "sqDiagnosis_detecting": {
+      "description": "{Diagnosis slow rule processing message}",
+      "message": "Detectando..."
+   },
+   "sqDiagnosis_doctype_bad": {
+      "description": "{Diagnosis doctype rule - bad state}",
+      "message": "No has especificado el tipo de documento."
+   },
+   "sqDiagnosis_doctype_good": {
+      "description": "{Diagnosis doctype rule - good state}",
+      "message": "¡Genial! Has especificado el tipo de documento."
+   },
+   "sqDiagnosis_error": {
+      "description": "{Counter for failed tests}",
+      "message": "Error:"
+   },
+   "sqDiagnosis_error_message": {
+      "message": "Error"
+   },
+   "sqDiagnosis_favicon_bad": {
+      "description": "{Diagnosis favicon rule - bad state}",
+      "message": "No es bueno. Deberías tener una imagen favicon."
+   },
+   "sqDiagnosis_favicon_good": {
+      "description": "{Diagnosis favicon rule - good state}",
+      "message": "¡Qué bien que tienes una imagen favicon!"
+   },
+   "sqDiagnosis_feeds_bad": {
+      "description": "{Diagnosis feed rule - bad state}",
+      "message": "Parece que tu página no ofrece ningún feed."
+   },
+   "sqDiagnosis_feeds_good": {
+      "description": "{Diagnosis feed rule - good state}",
+      "message": "Parece que tu página ofrece un feed."
+   },
+   "sqDiagnosis_feeds_notexact": {
+      "description": "{Diagnosis feed rule - average state}",
+      "message": "No hemos encontrado ningún feed exacto para esta página, pero hemos encontrado algunos en tu sitio. Bien."
+   },
+   "sqDiagnosis_flash_average": {
+      "description": "{Diagnosis flash rule - average state}",
+      "message": "Tu página parece contener Flash, pero también tiene suficiente contenido de texto."
+   },
+   "sqDiagnosis_flash_bad": {
+      "description": "{Diagnosis flash rule - bad state}",
+      "message": "Tu página tiene mucho Flash y no tiene suficiente contenido de texto para equilibrarlo. Esto debilitará considerablemente tu SEO."
+   },
+   "sqDiagnosis_flash_good": {
+      "description": "{Diagnosis flash rule - good state}",
+      "message": "No detectado"
+   },
+   "sqDiagnosis_frames_average": {
+      "description": "{Diagnosis frames rule - average state}",
+      "message": "Vemos que tu sitio web tiene un MARCO. Los marcos suelen debilitar tu SEO."
+   },
+   "sqDiagnosis_frames_bad": {
+      "description": "{Diagnosis frames rule - bad state}",
+      "message": "Vemos que tu página está implementando marcos. Los marcos suelen debilitar tu SEO."
+   },
+   "sqDiagnosis_frames_exists": {
+      "description": "{Diagnosis frames rule - average state}",
+      "message": "Vemos que tu sitio web tiene IFRAME. Normalmente no suele ser un problema para SEO si se utilizan adecuadamente."
+   },
+   "sqDiagnosis_frames_good": {
+      "description": "{Diagnosis frames rule - good state}",
+      "message": "No detectado"
+   },
+   "sqDiagnosis_ganal_bad_one": {
+      "description": "{Diagnosis analytics rule - bad state}",
+      "message": "Google™ Analytics no está supervisando tu sitio web. Te sugerimos que saques el máximo partido de esta increíble herramienta."
+   },
+   "sqDiagnosis_ganal_good_one": {
+      "description": "{Diagnosis analytics rule - good state}",
+      "message": "Google™ Analytics está supervisando tu sitio web. Es una increíble herramienta de la que todos deberíamos sacar partido."
+   },
+   "sqDiagnosis_headings_average": {
+      "description": "{Diagnosis headings rule - average state}",
+      "message": "Tu página implementa encabezados HTML."
+   },
+   "sqDiagnosis_headings_average_one": {
+      "description": "{Diagnosis headings rule - bad state}",
+      "message": "Vemos que tu página implementa encabezados HTML pero no hay ningún encabezado \u003CH1> - \u003CH3>. Esto debe corregirse."
+   },
+   "sqDiagnosis_headings_bad": {
+      "description": "{Diagnosis headings rule - bad state}",
+      "message": "Te sugerimos implementar encabezados HTML."
+   },
+   "sqDiagnosis_headings_good": {
+      "description": "{Diagnosis headings rule - good state}",
+      "message": "¡Bien! Tu página implementa encabezados HTML (\u003CH1> - \u003CH3>) y solo se utiliza un encabezado \u003CH1>."
+   },
+   "sqDiagnosis_images_average": {
+      "description": "{Diagnosis images rule - average state}",
+      "message": "{withoutAlt} imágenes sin ALT."
+   },
+   "sqDiagnosis_images_bad": {
+      "description": "{Diagnosis images rule - bad state}",
+      "message": "{withoutAlt} imágenes sin ALT."
+   },
+   "sqDiagnosis_images_good": {
+      "description": "{Diagnosis images rule - good state}",
+      "message": "Todas las imágenes tienen el atributo ALT."
+   },
+   "sqDiagnosis_internal_error": {
+      "description": "{Common error for processing diagnosis rule}",
+      "message": "Problema al procesar fuente de parámetros"
+   },
+   "sqDiagnosis_kwds_average_not_enough": {
+      "description": "{Diagnosis keywords rule all state}",
+      "message": "{len} caracteres, {cLen} palabras."
+   },
+   "sqDiagnosis_kwds_average_too_long": {
+      "description": "{Diagnosis keywords rule all state}",
+      "message": "{len} caracteres, {cLen} palabras."
+   },
+   "sqDiagnosis_kwds_average_too_many": {
+      "description": "{Diagnosis keywords rule all state}",
+      "message": "{len} caracteres, {cLen} palabras."
+   },
+   "sqDiagnosis_kwds_average_too_short": {
+      "description": "{Diagnosis keywords rule all state}",
+      "message": "{len} caracteres, {cLen} palabras."
+   },
+   "sqDiagnosis_kwds_bad": {
+      "description": "{Diagnosis keywords rule all state}",
+      "message": "{len} caracteres, {cLen} palabras."
+   },
+   "sqDiagnosis_kwds_bad_more": {
+      "description": "{Diagnosis keywords rule all state}",
+      "message": "{len} caracteres, {cLen} palabras."
+   },
+   "sqDiagnosis_kwds_bad_too_many": {
+      "description": "{Diagnosis keywords rule all state}",
+      "message": "{len} caracteres, {cLen} palabras."
+   },
+   "sqDiagnosis_kwds_good": {
+      "description": "{Diagnosis keywords rule all state}",
+      "message": "{len} caracteres, {cLen} palabras."
+   },
+   "sqDiagnosis_lang_average": {
+      "description": "{Diagnosis lang rule - average state}",
+      "message": "Has especificado el idioma de tu sitio web, pero solo en la metaetiqueta «Idioma». El atributo «lang» de la etiqueta *\u003Chtml>* tiene mayor precedencia."
+   },
+   "sqDiagnosis_lang_bad": {
+      "description": "{Diagnosis lang rule - bad state}",
+      "message": "No has especificado un idioma para tu sitio web."
+   },
+   "sqDiagnosis_lang_good": {
+      "description": "{Diagnosis lang rule - good state}",
+      "message": "¡Genial! Has especificado el idioma de tus sitios web."
+   },
+   "sqDiagnosis_message": {
+      "description": "{Processing data message}",
+      "message": "Procesando..."
+   },
+   "sqDiagnosis_meta_average": {
+      "description": "{Diagnosis meta description rule - average state}",
+      "message": "{len} caracteres — medio. El número óptimo es entre 160 y 300 caracteres."
+   },
+   "sqDiagnosis_meta_bad_not_long": {
+      "description": "{Diagnosis meta description rule - bad state too short}",
+      "message": "{len} caracteres — trata de ampliar la descripción a 160 caracteres."
+   },
+   "sqDiagnosis_meta_bad_not_short": {
+      "description": "{Diagnosis meta description rule - bad state too long}",
+      "message": "{len} caracteres — trata de acortar la descripción a 300 caracteres."
+   },
+   "sqDiagnosis_meta_good": {
+      "description": "{Diagnosis meta description rule - good state}",
+      "message": "{len} caracteres — óptimo."
+   },
+   "sqDiagnosis_microformats_average": {
+      "description": "{Diagnosis microformats rule - good state}",
+      "message": "Esta página no utiliza marcado de microformato.\n\nPuedes validar el marcado con la [https://search.google.com/structured-data/testing-tool/#url={domain}](Herramienta de prueba de datos estructurados de Google)."
+   },
+   "sqDiagnosis_microformats_bad": {
+      "description": "{Diagnosis microformats rule - bad state}",
+      "message": "Esta página utiliza marcado de microformato pero algunas etiquetas utilizan las mayúsculas/minúsculas incorrectamente. Valida el marcado con la herramienta de prueba de datos estructurados de Google.\n\nPuedes validar el marcado con la [https://search.google.com/structured-data/testing-tool/#url={domain}](Herramienta de prueba de datos estructurados de Google)."
+   },
+   "sqDiagnosis_microformats_good": {
+      "description": "{Diagnosis microformats rule - good state}",
+      "message": "Hemos encontrado los siguientes tipos de microformatos.\n\nPuedes validar el marcado con [https://search.google.com/structured-data/testing-tool/#url={domain}](herramienta de prueba de datos estructurados de Google)."
+   },
+   "sqDiagnosis_more_checks_link": {
+      "description": "{Drop us a line link text}",
+      "message": "Escríbenos"
+   },
+   "sqDiagnosis_more_checks_text": {
+      "description": "{Drop us a line message text}",
+      "message": "¿Necesitas realizar más comprobaciones? "
+   },
+   "sqDiagnosis_no_associated_feed": {
+      "description": "{Diagnosis feed rule - average state}",
+      "message": "Ningún feed asociado."
+   },
+   "sqDiagnosis_notfound": {
+      "description": "{Diagnosis not found message}",
+      "message": "No encontrado"
+   },
+   "sqDiagnosis_open": {
+      "description": "{Tips open title}",
+      "message": "Consejos"
+   },
+   "sqDiagnosis_opengraph_average": {
+      "description": "{Diagnosis opengraph rule - average state}",
+      "message": "Hemos detectado que esta página tiene objetos de Open Graph, pero no pudimos determinar sus tipos.\n\nPuedes validar tu marcado con la [https://developers.facebook.com/tools/debug/og/object/?q={location}](Herramienta de depuración de objetos de Facebook)."
+   },
+   "sqDiagnosis_opengraph_good": {
+      "description": "{Diagnosis opengraph rule - good state}",
+      "message": "¡Genial! Hemos encontrado varios objetos de Open Graph.\n\nPuedes validar tu marcado con la [https://developers.facebook.com/tools/debug/og/object/?q={location}](Herramienta de depuración de objetos de Facebook)."
+   },
+   "sqDiagnosis_opengraph_no": {
+      "description": "{Diagnosis opengraph rule - bad state}",
+      "message": "Tu página no tiene objetos de Open Graph.\n\nPuedes validar tu marcado con la [https://developers.facebook.com/tools/debug/og/object/?q={location}](Herramienta de depuración de objetos de Facebook)."
+   },
+   "sqDiagnosis_passed": {
+      "description": "{Counter for successfull tests}",
+      "message": "Superada:"
+   },
+   "sqDiagnosis_ratio_average_one": {
+      "description": "{Diagnosis text2html rule - average state}",
+      "message": "{ratio}% — no esta mal. Te sugerimos añadir más texto a tu sitio web."
+   },
+   "sqDiagnosis_ratio_bad_one": {
+      "description": "{Diagnosis text2html rule - bad state}",
+      "message": "{ratio} % — ¡Ooohh! La relación de texto - código HTML de tus sitios web es inferior a 15 %. Te sugerimos añadir mucho más texto a tu sitio web."
+   },
+   "sqDiagnosis_ratio_good": {
+      "description": "{Diagnosis text2html rule - good state}",
+      "message": "{ratio}% — óptimo."
+   },
+   "sqDiagnosis_robots_bad": {
+      "description": "{Diagnosis robots.txt rule - bad state}",
+      "message": "Tu sitio web no contiene un archivo robots.txt. Esto puede debilitar tu SEO."
+   },
+   "sqDiagnosis_robots_good": {
+      "description": "{Diagnosis robots.txt rule - good state}",
+      "message": "Bien, parece que tu sitio web tiene un archivo robots.txt."
+   },
+   "sqDiagnosis_rule_analytics_tip": {
+      "description": "{Analytics rule tooltip. Can use some markdown for markup}",
+      "message": "Consulta este [https://moz.com/blog/absolute-beginners-guide-to-google-analytics](artículo) para obtener más información sobre Google Analytics."
+   },
+   "sqDiagnosis_rule_analytics_title": {
+      "description": "{Google analytics rule title}",
+      "message": "Google&trade; Analytics"
+   },
+   "sqDiagnosis_rule_canonical_tip": {
+      "description": "{Canonical rule tooltip. Can use some markdown for markup}",
+      "message": "Una etiqueta de enlace canónico es un elemento HTML que ayuda a los administradores de sitios web a evitar problemas de contenido duplicado al especificar la versión «canónica» o «preferida» de una página web como parte de la optimización para motores de búsqueda. Si deseas obtener más información, consulta [https://support.google.com/webmasters/answer/139066](este artículo de Google)."
+   },
+   "sqDiagnosis_rule_canonical_title": {
+      "description": "{Canonical rule title}",
+      "message": "Canónico"
+   },
+   "sqDiagnosis_rule_doctype_tip": {
+      "description": "{Doctype rule tooltip. Can use some markdown for markup}",
+      "message": "La especificación de un [http://www.w3schools.com/tags/tag_DOCTYPE.asp](tipo de archivo) ayuda a tu navegador web a reproducir correctamente el contenido."
+   },
+   "sqDiagnosis_rule_doctype_title": {
+      "description": "{Doctype rule title}",
+      "message": "Tipo de doc"
+   },
+   "sqDiagnosis_rule_encoding_tip": {
+      "description": "{Encoding rule tooltip. Can use some markdown for markup}",
+      "message": "Consulta este [https://www.w3.org/International/tutorials/tutorial-char-enc/](artículo) para saber cómo añadir la codificación de caracteres correcta al sitio web."
+   },
+   "sqDiagnosis_rule_encoding_title": {
+      "description": "{Encoding rule title}",
+      "message": "Codificación"
+   },
+   "sqDiagnosis_rule_favicon_tip": {
+      "description": "{Favicon rule tooltip. Can use some markdown for markup}",
+      "message": "Asegúrate de que tu favicon [http://www.howtojoomla.net/2007050865/how-tos/miscellaneous/how-to-change-your-favicon](sea un buen reflejo de tu marca).\n\nConsejo destacado: si deseas ofrecer la mejor experiencia a tus visitantes, échale un vistazo a [http://www.youtube.com/watch?v=0KDjjePkd2U](este) increíble favicon."
+   },
+   "sqDiagnosis_rule_favicon_title": {
+      "description": "{Favicon rule title}",
+      "message": "Favicon"
+   },
+   "sqDiagnosis_rule_flash_tip": {
+      "description": "{Flash rule tooltip. Can use some markdown for markup}",
+      "message": "Flash solo es adecuado para determinadas situaciones, como cuando se desea mejorar el aspecto de la página.\n\nPara un mejor SEO, no utilices nunca Flash.\n\nEs posible que esto pueda cambiar en el futuro próximo pero actualmente, los motores de búsqueda [http://www.beussery.com/blog/index.php/2008/10/google-flash-seo/](no pueden indexar) Flash.\n\n\n[http://en.wikipedia.org/wiki/Ajax_%28programming%29](AJAX) está también en la [http://googlewebmastercentral.blogspot.com/2009/10/proposal-for-making-ajax-crawlable.html](misma categoría) que Flash."
+   },
+   "sqDiagnosis_rule_flash_title": {
+      "description": "{Flash rule title}",
+      "message": "Flash"
+   },
+   "sqDiagnosis_rule_frames_tip": {
+      "description": "{Frames ratio rule tooltip. Can use some markdown for markup}",
+      "message": "Es difícil para los motores de búsqueda indexar páginas con marcos ya que no siguen [http://www.google.com/support/webmasters/bin/answer.py?hl=en&amp;answer=34445](el diseño estándar de un sitio web).\n\nDebes evitar el uso de marcos si deseas optimizar tu sitio web."
+   },
+   "sqDiagnosis_rule_frames_title": {
+      "description": "{Frames rule title}",
+      "message": "Marcos"
+   },
+   "sqDiagnosis_rule_headings_tip": {
+      "description": "{Headings rule tooltip. Can use some markdown for markup}",
+      "message": "Puedes incluir palabras clave en tus encabezados.\n\nEl encabezado inicial (&lt;H1&gt;) debe incluir tus mejores palabras clave.\n\nEl uso de un único encabezado &lt;H1&gt; por página fortalecerá tu SEO."
+   },
+   "sqDiagnosis_rule_headings_title": {
+      "description": "{Meta headings rule title}",
+      "message": "Encabezados"
+   },
+   "sqDiagnosis_rule_images_tip": {
+      "description": "{Images rule tooltip. Can use some markdown for markup}",
+      "message": "Te sugerimos añadir texto alternativo a tus imágenes para que sea más fácil para los motores de búsqueda indexarlas.\n\nLos motores de búsqueda no ven físicamente las imágenes como las ven las personas. El texto alternativo es una opción que te permite describir específicamente la imagen.\n\nEl texto alternativo adjunta una descripción a tus imágenes para que puedan aparecer en los resultados de imágenes de [http://images.google.com/](Google&trade;) y otros motores de búsqueda.\n\nAsegúrate de que las imágenes de tu sitio web tengan su propio [http://www.webcredible.co.uk/user-friendly-resources/web-accessibility/image-alt-text.shtml](texto ALT específico).\n\nPara averiguar cómo asignar texto ALT a tus imágenes, [http://www.seosmarty.com/image-seo/](haz clic aquí).\n\nTen en cuenta que el tiempo de carga de tus páginas variará en función del número y del tamaño de tus imágenes. Trata que sean las menos posibles.\n\nUn consejo: puedes ver los antiguos diseños de cualquier sitio web utilizando [http://archive.org/web/](The Wayback Machine)."
+   },
+   "sqDiagnosis_rule_images_title": {
+      "description": "{Images rule title}",
+      "message": "Imágenes"
+   },
+   "sqDiagnosis_rule_keywords_tip": {
+      "description": "{Meta keywords rule tooltip. Can use some markdown for markup}",
+      "message": "Las [http://en.wikipedia.org/wiki/Meta_element#The_keywords_attribute](metapalabras clave) son palabras o frases que pertenecen al contenido de tu sitio. En el pasado, se ha tratado de sacar el máximo partido de esta etiqueta así que ahora no afecta a tu ranking de búsqueda de la misma manera que entonces."
+   },
+   "sqDiagnosis_rule_keywords_title": {
+      "description": "{Meta keywords rule title}",
+      "message": "Palabras clave meta"
+   },
+   "sqDiagnosis_rule_language_tip": {
+      "description": "{Language rule tooltip. Can use some markdown for markup}",
+      "message": "Aquí te presentamos algunas sugerencias para los sitios multilingües:\n\n&sdot; Debes declarar el idioma del contenido en el código HTML de cada página.\n&sdot; También debes declarar el código del idioma en la URL (por ejemplo: company.com/es/contact.html).\n&sdot; Si tienes pensado construir un sitio multilingüe, consulta los consejos que se incluyen [http://www.toprankblog.com/2009/10/top-10-pitfalls-of-international-seo/](aquí)"
+   },
+   "sqDiagnosis_rule_language_title": {
+      "description": "{Language rule title}",
+      "message": "Idioma"
+   },
+   "sqDiagnosis_rule_meta_tip": {
+      "description": "{Meta description rule tooltip. Can use some markdown for markup}",
+      "message": "[http://en.wikipedia.org/wiki/Meta_element#The_description_attribute](Las metadescripciones) son útiles porque suelen determinar cómo aparecen tus páginas en los resultados de búsqueda.\n\nPara garantizar una efectividad óptima, [http://en.wikipedia.org/wiki/Meta_element#The_description_attribute](las metadescripciones) deben tener entre 160 y 300 caracteres.\n\nTus metadescripciones deben ser concisas y contener tus [http://googlewebmastercentral.blogspot.com/2007/09/improve-snippets-with-meta-description.html](mejores palabras clave)\n\nAsegúrate de que cada página de tu sitio web tiene su propia metadescripción."
+   },
+   "sqDiagnosis_rule_meta_title": {
+      "description": "{Meta description rule title}",
+      "message": "Metadescripción"
+   },
+   "sqDiagnosis_rule_microformats_tip": {
+      "description": "{Microformats rule tooltip. Can use some markdown for markup}",
+      "message": "El [http://en.wikipedia.org/wiki/Microformat](microformato) es un marcado que se utiliza para estructurar de manera más efectiva los datos que se envían a los motores de búsqueda.\n\nLa presentación de los resultados de búsqueda de Google [http://googlewebmastercentral.blogspot.com/2009/05/introducing-rich-snippets.html](mejora) continuamente gracias a los microformatos."
+   },
+   "sqDiagnosis_rule_microformats_title": {
+      "description": "{Microformats rule title}",
+      "message": "Microformatos"
+   },
+   "sqDiagnosis_rule_opengraph_tip": {
+      "description": "{Open Graph rule tooltip. Can use some markdown for markup}",
+      "message": "El protocolo Open Graph permite que cualquier página web se convierta en un rico objeto en un gráfico social. Por ejemplo, se utiliza en Facebook para permitir que cualquier página web tenga la misma funcionalidad que cualquier objeto en Facebook.\n\nPara obtener más información, consulta [http://ogp.me/](el protocolo Open Graph)."
+   },
+   "sqDiagnosis_rule_opengraph_title": {
+      "description": "{OpenGraph rule title}",
+      "message": "Open Graph"
+   },
+   "sqDiagnosis_rule_robots_tip": {
+      "description": "{Robots.txt rule tooltip. Can use some markdown for markup}",
+      "message": "Este archivo restringe la actividad de los rastreadores de motores de búsqueda e impide su acceso a determinadas páginas y directorios.\n\nUn [http://www.robotstxt.org/orig.html](archivo robots.txt) también localiza el sitemap XML.\n\nPara comprobar si tu archivo robots.txt tiene errores de sintaxis, [http://tool.motoricerca.info/robots-checker.phtml](haz clic aquí)."
+   },
+   "sqDiagnosis_rule_robots_title": {
+      "description": "{Robots.txt rule title}",
+      "message": "Robots.txt"
+   },
+   "sqDiagnosis_rule_schemaorg_tip": {
+      "description": "{Schema.org rule tooltip. Can use some markdown for markup}",
+      "message": "El uso de marcado en tus páginas web es una manera muy potente de aumentar tu visibilidad en los motores de búsqueda y obtener una mayor relación de clics, lo que a su vez contribuye a que disfrutes de mejores rankings.\n\nPara obtener más información, consulta [https://developers.google.com/search/docs/guides/intro-structured-data](Introducción a Datos Estructurados)."
+   },
+   "sqDiagnosis_rule_schemaorg_title": {
+      "description": "{Schema.org rule title}",
+      "message": "Schema.org"
+   },
+   "sqDiagnosis_rule_sitemap_tip": {
+      "description": "{Meta viewport rule tooltip. Can use some markdown for markup}",
+      "message": "Un [http://en.wikipedia.org/wiki/Sitemaps](sitemap XML) enumera las URL que pueden rastrearse y puede ofrecer otra información como la frecuencia de actualización, la última actualización realizada y su importancia.\n\nCon un sitemap XML, los motores de búsqueda pueden indexar tu sitio web de manera más precisa.\n\nAunque se ha [http://www.seomoz.org/blog/expert-advice-on-google-sitemaps-verify-but-dont-submit](tratado el tema), sugerimos que envíes un sitemap XML a [http://www.google.com/webmasters/tools/](las herramientas para Webmasters de Google&trade;)."
+   },
+   "sqDiagnosis_rule_sitemap_title": {
+      "description": "{Sitemaps rule title}",
+      "message": "Sitemaps XML"
+   },
+   "sqDiagnosis_rule_text2html_tip": {
+      "description": "{Text/HTML ratio rule tooltip. Can use some markdown for markup}",
+      "message": "La relación texto a HTML no es un factor directo del ranking de los motores de búsqueda pero hay muchos factores relacionados con esta relación que demuestran las mejores prácticas de SEO y, por lo tanto, pueden ocasionar indirectamente un ranking de búsqueda más alto. Para obtener más información consulta este [https://www.woorank.com/en/blog/are-text-to-html-ratios-important](artículo)."
+   },
+   "sqDiagnosis_rule_text2html_title": {
+      "description": "{Text2Html ratio rule title}",
+      "message": "Relación Texto/HTML"
+   },
+   "sqDiagnosis_rule_title_tip": {
+      "description": "{Title rule tooltip. Can use some markdown for markup}",
+      "message": "Los títulos de página más efectivos son aquellos que tienen 10 y 70 caracteres, incluidos espacios.\n\nEscoge títulos concisos y asegúrate de que incluyan tus [https://www.semrush.com/blog/seoquake-5-keys-to-optimizing-your-title-tags/?utm_source=seoquake&utm_medium=toolbar&utm_campaign=regular&ref=174537735](mejores palabras clave).\n\nCada página debería tener su propio título exclusivo.\n\nHerramienta destacada: Este es un [http://www.seomofo.com/snippet-optimizer.html](optimizador de snippets) que te permite ver qué aspecto tiene tu título en Google&trade; y otros resultados de búsqueda."
+   },
+   "sqDiagnosis_rule_title_title": {
+      "description": "{Title rule title}",
+      "message": "Título"
+   },
+   "sqDiagnosis_rule_twittercard_tip": {
+      "description": "{Twitter card rule tooltip. Can use some markdown for markup}",
+      "message": "Gracias a las tarjetas de Twitter, puedes adjuntar fotografías, vídeos y experiencia multimedia a los tuits que generen tráfico para tu sitio web.\n\nPara obtener más información, consulta [https://dev.twitter.com/cards/overview](documentación de Twitter)."
+   },
+   "sqDiagnosis_rule_twittercard_title": {
+      "description": "{Twitter card rule title}",
+      "message": "Tarjeta de Twitter"
+   },
+   "sqDiagnosis_rule_url_tip": {
+      "description": "{URL rule tooltip. Can use some markdown for markup}",
+      "message": "Los motores de búsqueda y los visitantes pueden interactuar con tu sitio web de manera más efectiva cuando utilizas URL que describen el contenido de las páginas (por ejemplo, http://www.company.com/companyinformation).\n\nLas URL son de suma importancia para tu campaña SEO. Asegúrate de utilizar URL que faciliten [http://www.google.com/support/webmasters/bin/answer.py?hl=en&amp;answer=147959](la indexación de tu sitio en Google™).\n\nTe damos una sugerencia: puedes buscar excelentes nombres de dominio [http://instantdomainsearch.com/](aquí). Si el nombre que quieres no está disponible, puedes usar [http://sedo.com](Sedo) para encontrar una alternativa.\n\nRegistrar el nombre de tu dominio como marca comercial impedirá que otros puedan robártelo."
+   },
+   "sqDiagnosis_rule_url_title": {
+      "description": "{URL rule title}",
+      "message": "URL"
+   },
+   "sqDiagnosis_rule_viewport_tip": {
+      "description": "{Meta viewport rule tooltip. Can use some markdown for markup}",
+      "message": "Una ventana gráfica controla cómo se muestra una página web en un dispositivo móvil. Sin una ventana gráfica, los dispositivos móviles reproducirán la página en un ancho de pantalla de escritorio habitual, ajustado a la pantalla. Si se establece una ventana gráfico, esto te dará control sobre el ancho de la página y el escalado en diferentes dispositivos.\n\nConsulta [https://developers.google.com/speed/docs/insights/ConfigureViewport](este artículo) para obtener más información sobre la ventana gráfica."
+   },
+   "sqDiagnosis_rule_viewport_title": {
+      "description": "{Meta viewport title}",
+      "message": "Meta viewport"
+   },
+   "sqDiagnosis_schemaorg_average": {
+      "description": "{Diagnosis schema.org rule - average state}",
+      "message": "Hemos detectado que esta página utiliza marcado [http://schema.org](schema.org), pero no pudimos determinar sus tipos.\n\nPuedes validar tu marcado con la [https://search.google.com/structured-data/testing-tool/#url={domain}](Herramienta de prueba de datos estructurados de Google)."
+   },
+   "sqDiagnosis_schemaorg_bad": {
+      "description": "{Diagnosis schema.org rule - bad state}",
+      "message": "Tu página no utiliza marcado [http://schema.org](Schema.org).\n\nPuedes validar tu marcado con la [https://search.google.com/structured-data/testing-tool/#url={domain}](Herramienta de prueba de datos estructurados de Google)."
+   },
+   "sqDiagnosis_schemaorg_good": {
+      "description": "{Diagnosis schema.org rule - good state}",
+      "message": "¡Genial! Se han encontrado varios tipos de [http://schema.org](schema.org).\n\nPuedes validar tu marcado con la [https://search.google.com/structured-data/testing-tool/#url={domain}](Herramienta de prueba de datos estructurados de Google)."
+   },
+   "sqDiagnosis_semrush_provided": {
+      "description": "{Semrush banner link title}",
+      "message": "suministrada por"
+   },
+   "sqDiagnosis_show": {
+      "description": "{View others data}",
+      "message": "Ver otros"
+   },
+   "sqDiagnosis_sitemaps_bad": {
+      "description": "{Diagnosis sitemap.xml rule - bad state}",
+      "message": "Tu sitio web no contiene un sitemap XML y ello puede debilitar tu SEO."
+   },
+   "sqDiagnosis_sitemaps_good": {
+      "description": "{Diagnosis sitemap.xml rule - good state}",
+      "message": "¡Bien! Tu sitio web contiene un sitemap XML."
+   },
+   "sqDiagnosis_timeoutreached": {
+      "description": "{Diagnosis unable to process rule with connection timeout reason}",
+      "message": "No se pudo detectar: se alcanzó el tiempo de espera de la conexión."
+   },
+   "sqDiagnosis_title": {
+      "description": "{Main diagnosis title}",
+      "message": "Auditoría SEO de página"
+   },
+   "sqDiagnosis_title_average": {
+      "description": "{Diagnosis title rule - average state}",
+      "message": "{len} caracteres — medio. El número óptimo es entre 10 y 70 caracteres."
+   },
+   "sqDiagnosis_title_bad_not_long": {
+      "description": "{Diagnosis title rule - bad state too short}",
+      "message": "{len} caracteres — incorrecto. Trata de alargar el título a 10 caracteres."
+   },
+   "sqDiagnosis_title_bad_not_short": {
+      "description": "{Diagnosis title rule - bad state too long}",
+      "message": "{len} caracteres — incorrecto. Trata de acortar la descripción a 70 caracteres."
+   },
+   "sqDiagnosis_title_good": {
+      "description": "{Diagnosis title rule - good state}",
+      "message": "{len} caracteres — óptimo."
+   },
+   "sqDiagnosis_title_mobile_rules": {
+      "description": "{Mobile compliance}",
+      "message": "Compatibilidad con dispositivos móviles"
+   },
+   "sqDiagnosis_title_page_rules": {
+      "description": "{Page analysis group title}",
+      "message": "Análisis de la página"
+   },
+   "sqDiagnosis_title_site_rules": {
+      "description": "{Site compliance group title}",
+      "message": "Cumplimiento del sitio"
+   },
+   "sqDiagnosis_twittercard_bad": {
+      "description": "{Diagnosis twitter card rule - bad state}",
+      "message": "Hemos detectado que esta página tiene [https://dev.twitter.com/cards/overview](tarjetas de Twitter), pero no pudimos determinar sus tipos. Puedes validar tus tarjetas con la [https://cards-dev.twitter.com/validator](Herramienta de validación de tarjetas de Twitter)."
+   },
+   "sqDiagnosis_twittercard_good": {
+      "description": "{Diagnosis twitter card rule - good state}",
+      "message": "¡Bien! Hemos encontrado [https://dev.twitter.com/cards/overview](tarjetas de Twitter) en tu página. Puedes validar tus tarjetas con la [https://cards-dev.twitter.com/validator](Herramienta de validación de tarjetas de Twitter)."
+   },
+   "sqDiagnosis_twittercard_no": {
+      "description": "{Diagnosis twitter card rule - no state}",
+      "message": "Tu página no tiene ninguna [https://dev.twitter.com/cards/overview](tarjeta de Twitter). Puedes validar tus tarjetas con la [https://cards-dev.twitter.com/validator](Herramienta de validación de tarjetas de Twitter)."
+   },
+   "sqDiagnosis_unable2detect": {
+      "description": "{Diagnosis unable to process rule message}",
+      "message": "No se pudo detectar"
+   },
+   "sqDiagnosis_url_average": {
+      "description": "{Not used}",
+      "message": "Puede que tu URL no sea lo suficientemente corta."
+   },
+   "sqDiagnosis_url_bad": {
+      "description": "{Diagnosis url-length rule - bad state}",
+      "message": "{len} caracteres — incorrecto. Más de 200 caracteres."
+   },
+   "sqDiagnosis_url_good": {
+      "description": "{Diagnosis url-length rule - good state}",
+      "message": "{len} caracteres — óptimo."
+   },
+   "sqDiagnosis_viewport_default": {
+      "description": "{Diagnosis viewport rule - average state}",
+      "message": "¡Bien! Esta página tiene el valor de meta etiqueta viewport habitual compatible con la mayoría de navegadores móviles."
+   },
+   "sqDiagnosis_viewport_no": {
+      "description": "{Diagnosis viewport rule - bad state}",
+      "message": "Esta página no tiene ninguna meta etiqueta viewport o tiene un valor vacío. Probablemente no tendrá buen aspecto en dispositivos móviles y tendrá un menor posicionamiento en resultados de búsqueda móvil."
+   },
+   "sqDiagnosis_viewport_some": {
+      "description": "{Diagnosis viewport rule - good state}",
+      "message": "Esta página tiene un conjunto de metaetiquetas."
+   },
+   "sqDiagnosis_warning": {
+      "description": "{Counter for test with warnings}",
+      "message": "Advertencia:"
+   },
+   "sqFeedback_email": {
+      "description": "{Common report need more features block email}",
+      "message": "mail@seoquaketeam.com"
+   },
+   "sqFeedback_link": {
+      "description": "{Common report need more features block link}",
+      "message": "Escríbenos"
+   },
+   "sqFeedback_text_1": {
+      "description": "{Common report need more features block title}",
+      "message": "¿Necesitas más funciones?"
+   },
+   "sqFeedback_text_2": {
+      "description": "{Common report need more features block message}",
+      "message": "o envíanos un mensaje:"
+   },
+   "sqGSC_connect": {
+      "description": "{Message on connect semrush button in header}",
+      "message": "Conecta tu cuenta de Semrush para obtener Domain Scores."
+   },
+   "sqGSC_domain_score_tooltip": {
+      "description": "{Message for DS tooltip}",
+      "message": "Esta métrica mide la importancia de un dominio utilizando una escala de 100 puntos (de 0 a 100) y está basada en la calidad y el volumen de enlaces que dirigen al dominio en cuestión. Cuanto mayor es la puntuación, mejor es la calidad del dominio. Domain Score se calcula de la misma manera que el PageRank de Google."
+   },
+   "sqGSC_export": {
+      "description": "{Message on export button}",
+      "message": "Exportar esta tabla"
+   },
+   "sqGSC_notes_GOOGLE_ORGANIC": {
+      "description": "{Text for google organic update note}",
+      "message": "Actualizaciones de Google (orgánicas)"
+   },
+   "sqGSC_notes_GOOGLE_PAID": {
+      "description": "{Text for google paid update note}",
+      "message": "Actualizaciones de Google (de pago)"
+   },
+   "sqGSC_notes_UNCONFIRMED": {
+      "description": "{Text for google unconfirmed update note}",
+      "message": "Actualizaciones de Google (no confirmadas)"
+   },
+   "sqGSC_notes_connect_button": {
+      "description": "{}",
+      "message": "Activar"
+   },
+   "sqGSC_notes_connect_message": {
+      "description": "{}",
+      "message": "Obtén actualizaciones de Google con SEOquake - "
+   },
+   "sqGSC_notes_counter": {
+      "description": "{}",
+      "message": "notas"
+   },
+   "sqGSC_notes_counter_one": {
+      "description": "{}",
+      "message": "nota"
+   },
+   "sqGSC_notes_dashboard_message": {
+      "description": "{Text for google dashboard small chart}",
+      "message": "Actualizaciones registradas por Semrush"
+   },
+   "sqGSC_notes_dashboard_no_data": {
+      "description": "{Text for google dashboard small chart}",
+      "message": "No hay actualizaciones para el periodo seleccionado."
+   },
+   "sqGSC_notes_switch_message": {
+      "description": "{}",
+      "message": "SEOquake: actualizaciones de Google"
+   },
+   "sqGSC_onboarding_close": {
+      "description": "{}",
+      "message": "Desáctivenlo"
+   },
+   "sqGSC_onboarding_notes_text": {
+      "description": "{}",
+      "message": "*Bienvenido a Notas sobre las actualizaciones al algoritmo de Google*\n\nMantente al tanto de las actualizaciones al algoritmo de Google. Si activas la función Notas verás información acerca de las actualizaciones de Google directamente en los gráficos de Google Search Console."
+   },
+   "sqGSC_onboarding_ok": {
+      "description": "{}",
+      "message": "¡OK, genial!"
+   },
+   "sqGSC_onboarding_text": {
+      "description": "{}",
+      "message": "*Descubre las métricas de volumen y confianza del dominio*\n\nEstas métricas te ayudan a evaluar la importancia y fiabilidad de un dominio concreto en base a la cantidad y calidad de los backlinks que apunten a él."
+   },
+   "sqGSC_trust_score_tooltip": {
+      "description": "{Message for TS tooltip}",
+      "message": "Esta métrica mide el nivel de confianza de un determinado dominio mediante una escala de 100 puntos (donde «0» indica un sitio de baja confianza y «100» un sitio de mucha confianza) y se basa en el número de backlinks de sitios de confianza que dirigen al dominio. Si Trust Score del sitio es considerablemente inferior al Domain Score, esto puede ser una señal de que el primero se infló de manera artificial. Los backlinks de esos sitios pueden acarrear penalizaciones de Google."
+   },
+   "sqLinkinfo_anchor": {
+      "description": "{Linkinfo report link anchor title}",
+      "message": "Anclaje"
+   },
+   "sqLinkinfo_anchor_empty": {
+      "description": "{Linkinfo report link with empty anchor notice}",
+      "message": "Anclaje vacío"
+   },
+   "sqLinkinfo_badge_hint": {
+      "description": "{Linkinfo report table repeats counter tooltip}",
+      "message": "Repeticiones de enlace con el mismo tipo y anclaje"
+   },
+   "sqLinkinfo_button_configure": {
+      "description": "{Linkinfo report add/hide parameters button title}",
+      "message": "Agregar/ocultar parámetros"
+   },
+   "sqLinkinfo_button_request": {
+      "description": "{Linkinfo report request all parameters button title}",
+      "message": "Solicitar todos los parámetros"
+   },
+   "sqLinkinfo_button_save": {
+      "description": "{Linkinfo report save as CSV button title}",
+      "message": "Guardar como CSV"
+   },
+   "sqLinkinfo_count_hint": {
+      "description": "{Linkinfo report table more links tooltip}",
+      "message": "Hay más enlaces con esta URL. Haz clic para ver todas las combinaciones de tipos de enlace y anclaje."
+   },
+   "sqLinkinfo_count_more": {
+      "description": "{Linkinfo report table more links link title when more then +1 link}",
+      "message": "+ {count} enlaces más"
+   },
+   "sqLinkinfo_count_one": {
+      "description": "{Linkinfo report table more links link title when +1 link}",
+      "message": "+ {count} enlace más"
+   },
+   "sqLinkinfo_external": {
+      "description": "{Linkinfo report external links title}",
+      "message": "Enlaces externos"
+   },
+   "sqLinkinfo_followLinks": {
+      "description": "{Linkinfo report follow links button title}",
+      "message": "Follow:"
+   },
+   "sqLinkinfo_formLinks": {
+      "description": "{Linkinfo report forms links button title}",
+      "message": "Formularios:"
+   },
+   "sqLinkinfo_frameLinks": {
+      "description": "{Linkinfo report frames links button title}",
+      "message": "Marcos:"
+   },
+   "sqLinkinfo_header_backlink": {
+      "description": "{Linkinfo table header backlinks}",
+      "message": "Parám. de backlink"
+   },
+   "sqLinkinfo_header_backlink_title": {
+      "description": "{Linkinfo table header backlinks title}",
+      "message": "Parámetros relacionados con backlinks al enlace actual"
+   },
+   "sqLinkinfo_header_domain": {
+      "description": "{Linkinfo table header domain}",
+      "message": "Parám. del dominio"
+   },
+   "sqLinkinfo_header_domain_title": {
+      "description": "{Linkinfo table header domain title}",
+      "message": "Parámetros relacionados con el dominio del enlace"
+   },
+   "sqLinkinfo_header_index": {
+      "description": "{Linkinfo table header index}",
+      "message": "#"
+   },
+   "sqLinkinfo_header_link": {
+      "description": "{Linkinfo table header link}",
+      "message": "Parám. de enlace"
+   },
+   "sqLinkinfo_header_link_title": {
+      "description": "{Linkinfo table header link title}",
+      "message": "Parámetros relacionados con enlace completo"
+   },
+   "sqLinkinfo_header_url": {
+      "description": "{Linkinfo table header URL}",
+      "message": "URL"
+   },
+   "sqLinkinfo_imagesLinks": {
+      "description": "{Linkinfo report images links button title}",
+      "message": "Imágenes:"
+   },
+   "sqLinkinfo_internal": {
+      "description": "{Linkinfo report internal links title}",
+      "message": "Enlaces internos"
+   },
+   "sqLinkinfo_noFollowLinks": {
+      "description": "{Linkinfo report no follow links button title}",
+      "message": "Nofollow:"
+   },
+   "sqLinkinfo_textLinks": {
+      "description": "{Linkinfo report text links button title}",
+      "message": "Texto:"
+   },
+   "sqLinkinfo_totalLinks": {
+      "description": "{Linkinfo report total links button title}",
+      "message": "Total de enlaces:"
+   },
+   "sqLinkinfo_type_form": {
+      "description": "{Linkinfo report link type form title}",
+      "message": "forma"
+   },
+   "sqLinkinfo_type_frame": {
+      "description": "{Linkinfo report link type frame title}",
+      "message": "marco"
+   },
+   "sqLinkinfo_type_image": {
+      "description": "{Linkinfo report link type image title}",
+      "message": "imagen"
+   },
+   "sqLinkinfo_type_text": {
+      "description": "{Linkinfo report link type text title}",
+      "message": "texto"
+   },
+   "sqOptionsSave": {
+      "description": "{Save message on button}",
+      "message": "Guardar"
+   },
+   "sqOptionsSaving": {
+      "description": "{Saving process message on button}",
+      "message": "Guardando..."
+   },
+   "sqOptions_general_clear_cache": {
+      "description": "{Options general clear cache button text}",
+      "message": "Borrar caché"
+   },
+   "sqOptions_general_clear_cache_clearing": {
+      "description": "{Options general clear cache button text when clearing}",
+      "message": "Borrando..."
+   },
+   "sqOptions_general_core_disabled_field": {
+      "description": "{Options general core disabled field title}",
+      "message": "SEOquake está activado:"
+   },
+   "sqOptions_general_core_disabled_label": {
+      "description": "{Options general core disabled label title}",
+      "message": "Conmutador global para todos los plugins"
+   },
+   "sqOptions_general_dropdown_panel_title": {
+      "description": "{Options general experimental features switch}",
+      "message": "Configuración de panel desplegable"
+   },
+   "sqOptions_general_experimental_label": {
+      "description": "{Options general experimental features switch}",
+      "message": "Activar funciones experimentales"
+   },
+   "sqOptions_general_export_download": {
+      "message": "Obtener archivo"
+   },
+   "sqOptions_general_export_load_label": {
+      "message": "Importar de archivo:"
+   },
+   "sqOptions_general_export_load_title": {
+      "message": "Seleccionar archivo"
+   },
+   "sqOptions_general_export_save_label": {
+      "message": "Guardar a archivo:"
+   },
+   "sqOptions_general_filename_0": {
+      "description": "{Options general filename template first}",
+      "message": "\u003Cfilename>.csv"
+   },
+   "sqOptions_general_filename_1": {
+      "description": "{Options general filename template second}",
+      "message": "\u003Cfilename> - \u003Cdate>.csv"
+   },
+   "sqOptions_general_filename_2": {
+      "description": "{Options general filename template third}",
+      "message": "\u003Cfilename> - \u003Cdate> - \u003Ctime>.csv"
+   },
+   "sqOptions_general_filename_field": {
+      "description": "{Options general filename template title}",
+      "message": "Exportar plantilla de nombre de archivo:"
+   },
+   "sqOptions_general_noanalytics_label": {
+      "description": "{Options general experimental features switch}",
+      "message": "Desactivar recopilación de estadísticas de uso.&nbsp;"
+   },
+   "sqOptions_general_noanalytics_link": {
+      "description": "{Options general experimental features switch}",
+      "message": "Más información"
+   },
+   "sqOptions_general_noanalytics_title": {
+      "description": "{Options general no analytics title}",
+      "message": "Sin analíticas:"
+   },
+   "sqOptions_general_nofollow_field": {
+      "description": "{Options general nofollow field title}",
+      "message": "Resaltar nofollow:"
+   },
+   "sqOptions_general_nofollow_label": {
+      "description": "{Options general nofollow field label}",
+      "message": "Se marcarán todos los enlaces con rel=„Nofollow“"
+   },
+   "sqOptions_general_panel_export_title": {
+      "message": "Exporta/importa la configuración"
+   },
+   "sqOptions_general_panel_mode_0": {
+      "description": "{Options general experimental features switch}",
+      "message": "Al mostrarse la página"
+   },
+   "sqOptions_general_panel_mode_1": {
+      "description": "{Options general experimental features switch}",
+      "message": "A solicitud"
+   },
+   "sqOptions_general_panel_mode_title": {
+      "description": "{Options general panel mode title}",
+      "message": "Cargar parámetros:"
+   },
+   "sqOptions_general_panel_tips_label": {
+      "message": "Mostrar consejos del día en panel"
+   },
+   "sqOptions_general_panel_tips_title": {
+      "message": "Mostrar consejos:"
+   },
+   "sqOptions_general_request_delay_field": {
+      "description": "{Options general request delay title}",
+      "message": "Retardo en solicitudes de parámetros:"
+   },
+   "sqOptions_general_title": {
+      "description": "{Options general title}",
+      "message": "Preferencias generales"
+   },
+   "sqOptions_general_use_cache_field": {
+      "description": "{Options general use cache field}",
+      "message": "Activar almacenamiento en caché de parámetros:"
+   },
+   "sqOptions_general_use_cache_label": {
+      "description": "{Options general use cache label}",
+      "message": "Los resultados de los parámetros se almacenarán en caché hasta que se reinicie el navegador"
+   },
+   "sqOptions_gsc_disabled_label": {
+      "description": "{Options google search console disable switch label}",
+      "message": "Включить все функции."
+   },
+   "sqOptions_gsc_disabled_title": {
+      "description": "{Options google search console disable switch}",
+      "message": "Включить интеграцию с GSC:"
+   },
+   "sqOptions_gsc_feature_dsts": {
+      "description": "{Options google search console disable DS/TS metrics display}",
+      "message": "Включить показатели Domain Score и Trust Score."
+   },
+   "sqOptions_gsc_feature_notes": {
+      "description": "{Options google search console disable Notes display}",
+      "message": "Включить обновления Google."
+   },
+   "sqOptions_gsc_features_title": {
+      "description": "{Options google search console features list label}",
+      "message": "Возможности:"
+   },
+   "sqOptions_gsc_title": {
+      "description": "{Options google search console configuration panel title}",
+      "message": "Интеграция с Google Search Console"
+   },
+   "sqOptions_gsc_title_general": {
+      "description": "{Options google search console configuration panel general section title}",
+      "message": "Общие настройки"
+   },
+   "sqOptions_import_advanced_disabled": {
+      "description": "",
+      "message": "Configuración avanzada desactivada"
+   },
+   "sqOptions_import_advanced_disabled_ga": {
+      "description": "",
+      "message": "Desactivar recopilación de Google Analitycs&nbsp;"
+   },
+   "sqOptions_import_bing_disabled": {
+      "description": "",
+      "message": "Plugin de Bing desactivado"
+   },
+   "sqOptions_import_bing_mode": {
+      "description": "",
+      "message": "Modo de solicitud de plugin de Bing"
+   },
+   "sqOptions_import_category_advanced": {
+      "description": "",
+      "message": "Configuración avanzada"
+   },
+   "sqOptions_import_category_bing": {
+      "description": "",
+      "message": "Configuración SERP Bing"
+   },
+   "sqOptions_import_category_core": {
+      "description": "",
+      "message": "Opciones generales"
+   },
+   "sqOptions_import_category_google": {
+      "description": "",
+      "message": "Configuración SERP Google"
+   },
+   "sqOptions_import_category_gsc": {
+      "description": "{Google Search console integration configuration import category title}",
+      "message": "Integración con Google Search Console"
+   },
+   "sqOptions_import_category_nofollow": {
+      "description": "",
+      "message": "Configuración de plugin Nofollow"
+   },
+   "sqOptions_import_category_panel": {
+      "description": "",
+      "message": "Configuración de panel"
+   },
+   "sqOptions_import_category_semrush": {
+      "description": "",
+      "message": "Plugin de copia SERP de Semrush"
+   },
+   "sqOptions_import_category_seobar": {
+      "description": "",
+      "message": "Opciones de SEObar"
+   },
+   "sqOptions_import_category_yahoo": {
+      "description": "",
+      "message": "Configuración SERP Yahoo"
+   },
+   "sqOptions_import_category_yandex": {
+      "description": "",
+      "message": "Configuración SERP Yandex"
+   },
+   "sqOptions_import_confirm_cancel": {
+      "description": "Submit button on import settings window",
+      "message": "Cancelar"
+   },
+   "sqOptions_import_confirm_changes": {
+      "description": "{Header for changes table in import settings window for parameters block}",
+      "message": "Variación"
+   },
+   "sqOptions_import_confirm_close": {
+      "description": "{Close button message}",
+      "message": "Cerrar"
+   },
+   "sqOptions_import_confirm_configuration_title": {
+      "description": "Title for configuration changes list",
+      "message": "Cambios en configuración"
+   },
+   "sqOptions_import_confirm_current": {
+      "message": "Actual"
+   },
+   "sqOptions_import_confirm_header": {
+      "description": "Header of import new settings window",
+      "message": "Confirmar importación de nueva configuración"
+   },
+   "sqOptions_import_confirm_new": {
+      "message": "Desde archivo"
+   },
+   "sqOptions_import_confirm_parameters": {
+      "description": "{Header for parameters block in import window}",
+      "message": "Parámetro"
+   },
+   "sqOptions_import_confirm_parameters_delete": {
+      "message": "Borrar"
+   },
+   "sqOptions_import_confirm_parameters_differs": {
+      "message": "Difiere"
+   },
+   "sqOptions_import_confirm_parameters_new": {
+      "message": "Nuevos"
+   },
+   "sqOptions_import_confirm_parameters_title": {
+      "message": "Cambios en parámetros"
+   },
+   "sqOptions_import_confirm_submit": {
+      "description": "Submit button on import settings window",
+      "message": "Importar"
+   },
+   "sqOptions_import_core_disable_highlight_sites": {
+      "description": "",
+      "message": "Resaltar sitios en SERP"
+   },
+   "sqOptions_import_core_disable_serps_pos_numbers": {
+      "description": "",
+      "message": "SERP muestra números de posición"
+   },
+   "sqOptions_import_core_disabled": {
+      "description": "",
+      "message": "SEOquake desactivada"
+   },
+   "sqOptions_import_core_export_template": {
+      "description": "",
+      "message": "Exportar plantilla de nombre de archivo"
+   },
+   "sqOptions_import_core_highlight_sites": {
+      "description": "",
+      "message": "Resaltar lista de sitios"
+   },
+   "sqOptions_import_core_highlight_sites_color": {
+      "description": "",
+      "message": "Color para resaltar"
+   },
+   "sqOptions_import_core_request_delay": {
+      "description": "",
+      "message": "Retardo de solicitud"
+   },
+   "sqOptions_import_core_use_cache": {
+      "description": "",
+      "message": "Utilizar caché"
+   },
+   "sqOptions_import_google_disabled": {
+      "description": "",
+      "message": "Plugin de Google desactivado"
+   },
+   "sqOptions_import_google_gl": {
+      "description": "",
+      "message": "Idioma de resultados de Google"
+   },
+   "sqOptions_import_google_hl": {
+      "description": "",
+      "message": "Idioma de IU de Google"
+   },
+   "sqOptions_import_google_mode": {
+      "description": "",
+      "message": "Modo de solicitud de plugin de Google"
+   },
+   "sqOptions_import_google_onboarding_keyword_difficulty": {
+      "description": "{}",
+      "message": "No se muestra la Ayuda de dificultad de la palabra clave"
+   },
+   "sqOptions_import_google_show_hlgl": {
+      "description": "",
+      "message": "Mostrar configuración HL/GL"
+   },
+   "sqOptions_import_google_show_keyword_difficulty": {
+      "description": "{}",
+      "message": "Mostrar dificultad de la palabra clave"
+   },
+   "sqOptions_import_gsc_disabled": {
+      "description": "{Google Search console disabled}",
+      "message": "Funciones inhabilitadas"
+   },
+   "sqOptions_import_nofollow_disabled": {
+      "description": "",
+      "message": "Plugin Nofollow desactivado"
+   },
+   "sqOptions_import_nothing": {
+      "description": "{Message when import file is same as current configuration}",
+      "message": "El archivo contiene la misma configuración"
+   },
+   "sqOptions_import_panel_mode": {
+      "description": "",
+      "message": "Modo de solicitud del panel"
+   },
+   "sqOptions_import_semrush_disabled": {
+      "description": "",
+      "message": "Plugin de Semrush desactivado"
+   },
+   "sqOptions_import_semrush_mode": {
+      "description": "",
+      "message": "Modo de solicitud de plugin Semrush"
+   },
+   "sqOptions_import_seobar_color": {
+      "description": "",
+      "message": "Estilo"
+   },
+   "sqOptions_import_seobar_densityLink": {
+      "description": "",
+      "message": "Mostrar enlace de densidad de palabras clave"
+   },
+   "sqOptions_import_seobar_diagnosisLink": {
+      "description": "",
+      "message": "Mostrar enlace de auditoría de SEO de la página"
+   },
+   "sqOptions_import_seobar_disabled": {
+      "description": "",
+      "message": "SEObar desactivada"
+   },
+   "sqOptions_import_seobar_excludes": {
+      "description": "",
+      "message": "Filtrar estos recursos"
+   },
+   "sqOptions_import_seobar_https": {
+      "description": "",
+      "message": "Mostrar en recursos HTTPS"
+   },
+   "sqOptions_import_seobar_linkinfoLink": {
+      "description": "",
+      "message": "Mostrar datos de info de enlace"
+   },
+   "sqOptions_import_seobar_mode": {
+      "description": "",
+      "message": "Modo de solicitud"
+   },
+   "sqOptions_import_seobar_open_minimized": {
+      "description": "",
+      "message": "Abrir minimizado (no utilizado)"
+   },
+   "sqOptions_import_seobar_pageinfoLink": {
+      "description": "",
+      "message": "Mostrar enlace de informes habituales"
+   },
+   "sqOptions_import_seobar_pinned": {
+      "description": "{Pinned mode different on import}",
+      "message": "Mostrar SEObar en modo fijo"
+   },
+   "sqOptions_import_seobar_position": {
+      "description": "",
+      "message": "Posición"
+   },
+   "sqOptions_import_seobar_robotsLink": {
+      "description": "",
+      "message": "Mostrar enlace de robots.txt"
+   },
+   "sqOptions_import_seobar_sitemapLink": {
+      "description": "",
+      "message": "Mostrar enlace de sitemap.xml"
+   },
+   "sqOptions_import_yahoo_disabled": {
+      "description": "",
+      "message": "Plugin de Yahoo desactivado"
+   },
+   "sqOptions_import_yahoo_mode": {
+      "description": "",
+      "message": "Modo de solicitud de plugin de Yahoo"
+   },
+   "sqOptions_import_yandex_disabled": {
+      "description": "",
+      "message": "Plugin de Yandex desactivado"
+   },
+   "sqOptions_import_yandex_mode": {
+      "description": "",
+      "message": "Modo de solicitud de plugin de Yandex"
+   },
+   "sqOptions_menu_export": {
+      "description": "{Options page menu Export}",
+      "message": "Exportar configuración"
+   },
+   "sqOptions_menu_general": {
+      "description": "{Options page menu General}",
+      "message": "General"
+   },
+   "sqOptions_menu_gsc": {
+      "description": "{Options page menu GSC}",
+      "message": "GSC"
+   },
+   "sqOptions_menu_guide": {
+      "description": "{Options page menu link to user guide}",
+      "message": "Guía de usuario"
+   },
+   "sqOptions_menu_integration": {
+      "description": "{Options page menu Integration}",
+      "message": "Integración"
+   },
+   "sqOptions_menu_parameters": {
+      "description": "{Options page menu Parameters}",
+      "message": "Parámetros"
+   },
+   "sqOptions_menu_seobar": {
+      "description": "{Options page menu Seobar}",
+      "message": "SEObar"
+   },
+   "sqOptions_menu_serp": {
+      "description": "{Options page menu SERP Overlay}",
+      "message": "Panel SERP "
+   },
+   "sqOptions_parameters_delete_confirm": {
+      "description": "{Confirm window text when user trying to delete parameter}",
+      "message": "¿Estás seguro de que deseas borrar este parámetro?"
+   },
+   "sqOptions_parameters_delete_custom_message": {
+      "description": "{Options parameters delete custom parameters confirm box text}",
+      "message": "¿Desea borrar todos los parámetros personalizados?\nSe perderán todos los cambios."
+   },
+   "sqOptions_parameters_deleted_message": {
+      "description": "{Options parameters restore deleted parameters confirm box text}",
+      "message": "¿Deseas restaurar los parámetros predeterminados borrados? Se perderán todos los cambios."
+   },
+   "sqOptions_parameters_modified_and_deleted_message": {
+      "description": "{Options parameters restore modified and deleted parameters confirm box text}",
+      "message": "¿Deseas restaurar los parámetros predeterminados? Se perderán todos los cambios."
+   },
+   "sqOptions_parameters_modified_message": {
+      "description": "{Options parameters restore modified parameters confirm box text}",
+      "message": "¿Deseas restaurar los parámetros predeterminados modificados? Se perderán todos los cambios."
+   },
+   "sqOptions_parameters_new_parameter": {
+      "description": "{Options parameters new parameter button}",
+      "message": "Nuevo parámetro"
+   },
+   "sqOptions_parameters_new_parameter_error": {
+      "description": "{Error message displayed if user trying to save parameter without required fields. TITLE, NAME, URL_R, URL_S should not be translated}",
+      "message": "Debe especificar TÍTULO y NOMBRE. Configura también URL_R o URL_S para sacar partido del parámetro."
+   },
+   "sqOptions_parameters_parameter_window_0": {
+      "description": "{Options parameters edit window tooltip}",
+      "message": "nombres de niveles de dominio"
+   },
+   "sqOptions_parameters_parameter_window_1": {
+      "description": "{Options parameters edit window tooltip}",
+      "message": "URL"
+   },
+   "sqOptions_parameters_parameter_window_10": {
+      "description": "{Options parameters edit window tooltip}",
+      "message": "posición en SERP"
+   },
+   "sqOptions_parameters_parameter_window_2": {
+      "description": "{Options parameters edit window tooltip}",
+      "message": "dominio"
+   },
+   "sqOptions_parameters_parameter_window_3": {
+      "description": "{Options parameters edit window tooltip}",
+      "message": "dominio sin www"
+   },
+   "sqOptions_parameters_parameter_window_4": {
+      "description": "{Options parameters edit window tooltip}",
+      "message": "dominio de 2º nivel"
+   },
+   "sqOptions_parameters_parameter_window_5": {
+      "description": "{Options parameters edit window tooltip}",
+      "message": "esquema de URL"
+   },
+   "sqOptions_parameters_parameter_window_6": {
+      "description": "{Options parameters edit window tooltip}",
+      "message": "ruta de URL"
+   },
+   "sqOptions_parameters_parameter_window_7": {
+      "description": "{Options parameters edit window tooltip}",
+      "message": "consulta de URL"
+   },
+   "sqOptions_parameters_parameter_window_8": {
+      "description": "{Options parameters edit window tooltip}",
+      "message": "palabra clave de búsqueda"
+   },
+   "sqOptions_parameters_parameter_window_9": {
+      "description": "{Options parameters edit window tooltip}",
+      "message": "Suma de comprobación de Google PageRank"
+   },
+   "sqOptions_parameters_parameter_window_cancel": {
+      "description": "{Options parameters edit window cancel button title}",
+      "message": "Cancelar"
+   },
+   "sqOptions_parameters_parameter_window_create_title": {
+      "description": "{Options parameters edit window create mode title}",
+      "message": "Crear parámetro"
+   },
+   "sqOptions_parameters_parameter_window_delete": {
+      "description": "{Options parameters edit window delete button title}",
+      "message": "Borrar"
+   },
+   "sqOptions_parameters_parameter_window_edit_title": {
+      "description": "{Options parameters edit window edit mode title}",
+      "message": "Editar parámetro"
+   },
+   "sqOptions_parameters_parameter_window_ok": {
+      "description": "{Options parameters edit window save button title}",
+      "message": "Guardar"
+   },
+   "sqOptions_parameters_reset": {
+      "description": "{Options parameters reset parameters button}",
+      "message": "Restaurar parámetros predeterminados"
+   },
+   "sqOptions_parameters_restore_menu_delete": {
+      "description": "{Options parameters restore menu delete item}",
+      "message": "Borrar parámetros personalizados"
+   },
+   "sqOptions_parameters_restore_menu_deleted": {
+      "description": "{Options parameters restore menu delete item}",
+      "message": "Solo borrados"
+   },
+   "sqOptions_parameters_restore_menu_modified": {
+      "description": "{Options parameters restore menu delete item}",
+      "message": "Solo modificados"
+   },
+   "sqOptions_parameters_restore_menu_modified_and_deleted": {
+      "description": "{Options parameters restore menu delete item}",
+      "message": "Modificados y borrados"
+   },
+   "sqOptions_parameters_table_all": {
+      "description": "{Options parameters table column all}",
+      "message": "Todas"
+   },
+   "sqOptions_parameters_table_bing": {
+      "description": "{Options parameters table column seobar}",
+      "message": "Bing"
+   },
+   "sqOptions_parameters_table_external": {
+      "description": "{Options parameters table column seobar}",
+      "message": "Externo"
+   },
+   "sqOptions_parameters_table_google": {
+      "description": "{Options parameters table column seobar}",
+      "message": "Google"
+   },
+   "sqOptions_parameters_table_internal": {
+      "description": "{Options parameters table column seobar}",
+      "message": "Interno"
+   },
+   "sqOptions_parameters_table_linkinfo": {
+      "description": "{Options parameters table column seobar}",
+      "message": "Info de enlace"
+   },
+   "sqOptions_parameters_table_reports": {
+      "description": "{Options parameters table reports group header}",
+      "message": "Informes"
+   },
+   "sqOptions_parameters_table_semrush": {
+      "description": "{Options parameters table column seobar}",
+      "message": "Semrush"
+   },
+   "sqOptions_parameters_table_seobar": {
+      "description": "{Options parameters table column seobar}",
+      "message": "SEObar"
+   },
+   "sqOptions_parameters_table_serp": {
+      "description": "{Options parameters table serp group header}",
+      "message": "Panel SERP "
+   },
+   "sqOptions_parameters_table_yahoo": {
+      "description": "{Options parameters table column seobar}",
+      "message": "Yahoo"
+   },
+   "sqOptions_parameters_table_yandex": {
+      "description": "{Options parameters table column seobar}",
+      "message": "Yandex"
+   },
+   "sqOptions_parameters_title": {
+      "description": "{Options parameters title}",
+      "message": "Configuración de parámetros"
+   },
+   "sqOptions_restore_default_message": {
+      "message": "Esto restaurará la configuración predeterminada. ¿Deseas continuar?"
+   },
+   "sqOptions_restore_default_title": {
+      "description": "{Options restore default button text}",
+      "message": "Restaurar predeterminado"
+   },
+   "sqOptions_seobar_color_dark": {
+      "description": "{Options SEObar preferences page color style dark}",
+      "message": "Oscuro"
+   },
+   "sqOptions_seobar_color_light": {
+      "description": "{Options SEObar preferences page color style light}",
+      "message": "Claro"
+   },
+   "sqOptions_seobar_color_title": {
+      "description": "{Options SEObar preferences page color style}",
+      "message": "estilo de color:"
+   },
+   "sqOptions_seobar_density_label": {
+      "description": "{Options SEObar preferences page density parameter label}",
+      "message": "Mostrar enlace a informe de densidad"
+   },
+   "sqOptions_seobar_density_title": {
+      "description": "{Options SEObar preferences page density parameter}",
+      "message": "Enlace de densidad:"
+   },
+   "sqOptions_seobar_diagnosis_label": {
+      "description": "{Options SEObar preferences page diagnosis parameter label}",
+      "message": "Mostrar enlace a informe de diagnóstico de la página"
+   },
+   "sqOptions_seobar_diagnosis_title": {
+      "description": "{Options SEObar preferences page diagnosis parameter}",
+      "message": "Enlace de diagnóstico:"
+   },
+   "sqOptions_seobar_disabled_label": {
+      "description": "{Options SEObar preferences page seobar global switch  label}",
+      "message": "Mostrar SEObar en todas las páginas"
+   },
+   "sqOptions_seobar_disabled_title": {
+      "description": "{Options SEObar preferences page seobar global switch}",
+      "message": "SEObar activada:"
+   },
+   "sqOptions_seobar_exclude_list": {
+      "description": "{Options SEObar preferences page exclude list placeholder}",
+      "message": "Introduce sitios en los que desees que se excluya la SEObar."
+   },
+   "sqOptions_seobar_exclude_message": {
+      "description": "{Options SEObar preferences page exclude list message}",
+      "message": "Puedes introducir nombres de dominio/expresiones habituales relacionadas con el dominio, en los que no se debe mostrar la SEObar."
+   },
+   "sqOptions_seobar_exclude_title": {
+      "description": "{Options SEObar preferences page exclude list title}",
+      "message": "Lista de exclusión:"
+   },
+   "sqOptions_seobar_filters_title": {
+      "description": "{Options SEObar preferences page URL filters group}",
+      "message": "Filtros URL"
+   },
+   "sqOptions_seobar_https_label": {
+      "description": "{Options SEObar preferences page https label}",
+      "message": "Mostrar SEObar en recursos HTTPS (podría cambiar el icono de estado de conexión)"
+   },
+   "sqOptions_seobar_https_title": {
+      "description": "{Options SEObar preferences page https switch}",
+      "message": "Mostrar en HTTPS:"
+   },
+   "sqOptions_seobar_linkinfo_label": {
+      "description": "{Options SEObar preferences page linkinfo parameter label}",
+      "message": "Mostrar enlaces a informes y contadores de enlaces externos/internos en la página"
+   },
+   "sqOptions_seobar_linkinfo_title": {
+      "description": "{Options SEObar preferences page linkinfo parameter}",
+      "message": "Enlace de info de enlace:"
+   },
+   "sqOptions_seobar_load_mode_0": {
+      "description": "{Options SEObar preferences page load mode auto}",
+      "message": "Al cargar la página"
+   },
+   "sqOptions_seobar_load_mode_1": {
+      "description": "{Options SEObar preferences page load mode by button}",
+      "message": "A solicitud"
+   },
+   "sqOptions_seobar_load_title": {
+      "description": "{Options SEObar preferences page load mode}",
+      "message": "Cargar parámetros:"
+   },
+   "sqOptions_seobar_loading_title": {
+      "description": "{Options SEObar preferences page seobar orientation and loading block}",
+      "message": "Carga y orientación"
+   },
+   "sqOptions_seobar_match_list": {
+      "description": "{Options SEObar preferences page exclude list placeholder}",
+      "message": "Introduce sitios en los que desees que se incluya solamente la SEObar."
+   },
+   "sqOptions_seobar_match_message": {
+      "description": "{Options SEObar preferences page exclude list message}",
+      "message": "Puedes especificar dominios para los que te gustaría activar la SEObar. La SEObar se mostrará solo en estos dominios."
+   },
+   "sqOptions_seobar_match_title": {
+      "description": "{Options SEObar preferences page exclude list title}",
+      "message": "Dominios en lista blanca:"
+   },
+   "sqOptions_seobar_pageinfo_label": {
+      "description": "{Options SEObar preferences page pageinfo parameter label}",
+      "message": "Mostrar enlace a informe de info de página"
+   },
+   "sqOptions_seobar_pageinfo_title": {
+      "description": "{Options SEObar preferences page pageinfo parameter}",
+      "message": "Enlace de info de página:"
+   },
+   "sqOptions_seobar_parameters_title": {
+      "description": "{Options SEObar preferences page parameters group title}",
+      "message": "Parámetros"
+   },
+   "sqOptions_seobar_pinned_label": {
+      "description": "{Options SEObar preference minimized mode description}",
+      "message": "Mostrar SEObar minimizada en modo de pantalla vertical"
+   },
+   "sqOptions_seobar_pinned_title": {
+      "description": "{Options SEObar preference minimized mode}",
+      "message": "Mostrar minimizado:"
+   },
+   "sqOptions_seobar_position_horizontal": {
+      "description": "{Options SEObar preferences page position horizontal top}",
+      "message": "Horizontal en parte superior"
+   },
+   "sqOptions_seobar_position_horizontal_bottom": {
+      "description": "{Options SEObar preferences page position horizontal bottom}",
+      "message": "Horizontal en parte inferior"
+   },
+   "sqOptions_seobar_position_title": {
+      "description": "{Options SEObar preferences page position}",
+      "message": "Posición:"
+   },
+   "sqOptions_seobar_position_vertical_left": {
+      "description": "{Options SEObar preferences page position vertical left}",
+      "message": "Vertical en lado izdo."
+   },
+   "sqOptions_seobar_position_vertical_right": {
+      "description": "{Options SEObar preferences page position vertical right}",
+      "message": "Vertical en lado dcho."
+   },
+   "sqOptions_seobar_robots_label": {
+      "description": "{Options SEObar preferences page robots parameter label}",
+      "message": "Mostrar resultado de diagnóstico de robots.txt"
+   },
+   "sqOptions_seobar_robots_title": {
+      "description": "{Options SEObar preferences page robots parameter}",
+      "message": "Robots.txt visible:"
+   },
+   "sqOptions_seobar_siteaudit_label": {
+      "description": "Options SEObar preferences page siteaudit parameter label",
+      "message": "Mostrar resultado de informe de la herramienta Auditoría del sitio de Semrush"
+   },
+   "sqOptions_seobar_siteaudit_title": {
+      "description": "Options SEObar preferences page siteaudit parameter",
+      "message": "Enlace de Auditoría del sitio de Semrush:"
+   },
+   "sqOptions_seobar_sitemap_label": {
+      "description": "{Options SEObar preferences page sitemap parameter label}",
+      "message": "Mostrar resultado de diagnóstico de sitemap.xml"
+   },
+   "sqOptions_seobar_sitemap_title": {
+      "description": "{Options SEObar preferences page sitemap parameter}",
+      "message": "Sitemap.xml visible:"
+   },
+   "sqOptions_seobar_special_parameters_title": {
+      "description": "{Options SEObar preferences page special parameters group title}",
+      "message": "Parámetros especiales"
+   },
+   "sqOptions_seobar_title": {
+      "description": "{Options SEObar preferences page title}",
+      "message": "Preferencias de SEObar"
+   },
+   "sqOptions_serp_general_title": {
+      "description": "{Options SERP page general preferences title}",
+      "message": "Preferencias generales"
+   },
+   "sqOptions_serp_highlight_blue": {
+      "description": "{Options SERP page highlight color blue}",
+      "message": "Celeste"
+   },
+   "sqOptions_serp_highlight_color": {
+      "description": "{Options SERP page highlight color}",
+      "message": "Color para resaltar:"
+   },
+   "sqOptions_serp_highlight_field": {
+      "description": "{Options SERP page highlight enable checkbox}",
+      "message": "Activar Resaltar dominios:"
+   },
+   "sqOptions_serp_highlight_green": {
+      "description": "{Options SERP page highlight color green}",
+      "message": "Verde claro"
+   },
+   "sqOptions_serp_highlight_import_button": {
+      "description": "{Options SERP page highlight list import button}",
+      "message": "Importar lista"
+   },
+   "sqOptions_serp_highlight_import_message": {
+      "description": "{Options SERP page highlight list import message}",
+      "message": "Puedes importar una lista de dominios de un archivo. Utiliza un archivo de texto sin formato con codificación UTF-8. Asegúrate de que cada valor se coloque en una línea diferente. El tamaño del archivo debe ser inferior a 1 MB."
+   },
+   "sqOptions_serp_highlight_label": {
+      "description": "{Options SERP page highlight label}",
+      "message": "Resaltar dominios específicos en SERP"
+   },
+   "sqOptions_serp_highlight_list": {
+      "description": "{Options SERP page highlight list}",
+      "message": "Resaltar lista:"
+   },
+   "sqOptions_serp_highlight_orange": {
+      "description": "{Options SERP page highlight color orange}",
+      "message": "Naranja claro"
+   },
+   "sqOptions_serp_highlight_pink": {
+      "description": "{Options SERP page highlight color pink}",
+      "message": "Rosa claro"
+   },
+   "sqOptions_serp_highlight_purple": {
+      "description": "{Options SERP page highlight color purple}",
+      "message": "Púrpura claro"
+   },
+   "sqOptions_serp_highlight_red": {
+      "description": "{Options SERP page highlight color red}",
+      "message": "Rojo claro"
+   },
+   "sqOptions_serp_highlight_title": {
+      "description": "{Options SERP page highlight block title}",
+      "message": "Resaltar dominios"
+   },
+   "sqOptions_serp_highlight_turquoise": {
+      "description": "{Options SERP page highlight color turquoise}",
+      "message": "Turquesa claro"
+   },
+   "sqOptions_serp_highlight_yellow": {
+      "description": "{Options SERP page highlight color yellow}",
+      "message": "Amarillo claro"
+   },
+   "sqOptions_serp_keyword_difficulty": {
+      "description": "{Options SERP page show keyword difficulty field title}",
+      "message": "Mostrar dificultad de la palabra clave:"
+   },
+   "sqOptions_serp_keyword_difficulty_label": {
+      "description": "{Options SERP page show keyword difficulty field label}",
+      "message": "Activar dificultad de la palabra clave para Google SERP"
+   },
+   "sqOptions_serp_load_mode_0": {
+      "description": "{Options SERP page parameters load mode on show}",
+      "message": "Al cargar la página"
+   },
+   "sqOptions_serp_load_mode_1": {
+      "description": "{Options SERP page parameters load mode by request}",
+      "message": "A solicitud"
+   },
+   "sqOptions_serp_numbers": {
+      "description": "{Options SERP page show position numbers field title}",
+      "message": "Mostrar números:"
+   },
+   "sqOptions_serp_numbers_label": {
+      "description": "{Options SERP page show position numbers field label}",
+      "message": "Mostrar números de posición de resultados SERP"
+   },
+   "sqOptions_serp_parameters_load": {
+      "description": "{Options SERP page parameters load mode title}",
+      "message": "Cargar parámetros:"
+   },
+   "sqOptions_serp_parameters_title": {
+      "description": "{Options SERP page parameters preferences section title}",
+      "message": "Preferencias de parámetros"
+   },
+   "sqOptions_serp_show": {
+      "description": "{Options SERP page show overlay}",
+      "message": "Mostrar en motor de búsqueda:"
+   },
+   "sqOptions_serp_show_bing": {
+      "description": "{Options SERP page show overlay on bing}",
+      "message": "Bing activado"
+   },
+   "sqOptions_serp_show_google": {
+      "description": "{Options SERP page show overlay on google}",
+      "message": "Google activado"
+   },
+   "sqOptions_serp_show_semrush": {
+      "description": "{Options SERP page show overlay on semrush}",
+      "message": "Semrush activado"
+   },
+   "sqOptions_serp_show_yahoo": {
+      "description": "{Options SERP page show overlay on yahoo}",
+      "message": "Yahoo activado"
+   },
+   "sqOptions_serp_show_yandex": {
+      "description": "{Options SERP page show overlay on yandex}",
+      "message": "Yandex activado"
+   },
+   "sqOptions_serp_tabs_title": {
+      "description": "{Options SERP page parameters title}",
+      "message": "Parámetros activos en panel SERP"
+   },
+   "sqOptions_serp_title": {
+      "description": "{Options SERP page title}",
+      "message": "Preferencias de panel SERP"
+   },
+   "sqOptions_serp_trust_score": {
+      "description": "{Options SERP page show domain trust metrics panel title}",
+      "message": "Mostrar métrica Domain Trust:"
+   },
+   "sqOptions_serp_trust_score_label": {
+      "description": "{Options SERP page show domain trust metrics panel label}",
+      "message": "Activar panel especial de la métrica Domain Trust"
+   },
+   "sqOptions_title": {
+      "description": "{Options page title}",
+      "message": "Preferencias de SEOquake"
+   },
+   "sqPageinfo_keywords_density": {
+      "description": "{Pageinfo report keywords density table density header}",
+      "message": "Densidad"
+   },
+   "sqPageinfo_keywords_foundin": {
+      "description": "{Pageinfo report keywords density table foundin header}",
+      "message": "Encontradas en"
+   },
+   "sqPageinfo_keywords_keyword": {
+      "description": "{Pageinfo report keywords density table keyword header}",
+      "message": "Palabra clave"
+   },
+   "sqPageinfo_keywords_repeats": {
+      "description": "{Pageinfo report keywords density table repeats header}",
+      "message": "Repeticiones"
+   },
+   "sqPageinfo_link_print": {
+      "description": "{Pageinfo report print button title}",
+      "message": " Imprimir"
+   },
+   "sqPageinfo_see_all_keywords": {
+      "description": "{Pageinfo report keywords density block see all link title}",
+      "message": "Ver todos"
+   },
+   "sqPageinfo_title": {
+      "description": "{Pageinfo report title}",
+      "message": "Info de la página"
+   },
+   "sqPageinfo_title_backlinks_parameters": {
+      "description": "{Pageinfo report parameters block backlinks parameters title}",
+      "message": "Backlinks:"
+   },
+   "sqPageinfo_title_basic": {
+      "description": "{Pageinfo report first block title}",
+      "message": "Info básica:"
+   },
+   "sqPageinfo_title_description": {
+      "description": "{Pageinfo report first block meta descripton field title}",
+      "message": "Metadescripción:"
+   },
+   "sqPageinfo_title_domain_parameters": {
+      "description": "{Pageinfo report parameters block domain parameters title}",
+      "message": "Dominio:"
+   },
+   "sqPageinfo_title_external": {
+      "description": "{Pageinfo report first block external links counter field title}",
+      "message": "Enlaces externos:"
+   },
+   "sqPageinfo_title_internal": {
+      "description": "{Pageinfo report first block internal links counter field title}",
+      "message": "Enlaces internos:"
+   },
+   "sqPageinfo_title_keywords": {
+      "description": "{Pageinfo report first block meta keywords field title}",
+      "message": "Palabras clave meta:"
+   },
+   "sqPageinfo_title_keywords_density": {
+      "description": "{Pageinfo report keywords density block title}",
+      "message": "Densidad de palabras clave"
+   },
+   "sqPageinfo_title_other_parameters": {
+      "description": "{Pageinfo report parameters block other parameters title}",
+      "message": "Otros:"
+   },
+   "sqPageinfo_title_page_parameters": {
+      "description": "{Pageinfo report parameters block page parameters title}",
+      "message": "Página:"
+   },
+   "sqPageinfo_title_parameters": {
+      "description": "{Pageinfo report parameters block title}",
+      "message": "Parámetros:"
+   },
+   "sqPageinfo_title_server": {
+      "description": "{Pageinfo report first block server field title}",
+      "message": "Servidor:"
+   },
+   "sqPageinfo_title_title": {
+      "description": "{Pageinfo report first block pagetitle field title}",
+      "message": "Título:"
+   },
+   "sqPageinfo_total_2words": {
+      "description": "{Pageinfo report keywords density total 2-words phrases counter title}",
+      "message": "Total de frases de 2 palabras: "
+   },
+   "sqPageinfo_total_3words": {
+      "description": "{Pageinfo report keywords density total 3-words phrases counter title}",
+      "message": "Total de frases de 3 palabras: "
+   },
+   "sqPageinfo_total_4words": {
+      "description": "{Pageinfo report keywords density total 4-words phrases counter title}",
+      "message": "Total de frases de 4 palabras: "
+   },
+   "sqPageinfo_total_words": {
+      "description": "{Pageinfo report keywords density total words counter title}",
+      "message": "Número total de palabras: "
+   },
+   "sqPanel_backlinks_connect": {
+      "description": "{Title for backlinks connect button}",
+      "message": "Conectar Semrush"
+   },
+   "sqPanel_backlinks_connect_message": {
+      "description": "{Connect Semrush message. Some markdown can be used}",
+      "message": "Conecta tu cuenta *gratuita* de Semrush\npara acceder al informe *Traffic Analytics*"
+   },
+   "sqPanel_backlinks_domain": {
+      "description": "{Backlinks type pills switch to domain}",
+      "message": "Dominio"
+   },
+   "sqPanel_backlinks_empty_header": {
+      "description": "{Backlinks empty data header}",
+      "message": "Lo sentimos, no hemos encontrado información relacionada con tu solicitud."
+   },
+   "sqPanel_backlinks_empty_message": {
+      "description": "{Backlinks empty data message}",
+      "message": "Hay varias razones por las que esto puede ocurrir:"
+   },
+   "sqPanel_backlinks_empty_reason1": {
+      "description": "{Backlinks empty data message reason 1}",
+      "message": "Este sitio web es nuevo y no lo hemos rastreado aún. ¡Pero sin duda lo rastrearemos en un futuro próximo! Vuelve más adelante para encontrar los backlinks de este sitio web."
+   },
+   "sqPanel_backlinks_empty_reason2": {
+      "description": "{Backlinks empty data message reason 2}",
+      "message": "El sitio web no tiene ningún backlink. Nadie se ha hecho referencia a él todavía."
+   },
+   "sqPanel_backlinks_empty_reason3": {
+      "description": "{Backlinks empty data message reason 2}",
+      "message": "Este dominio no existe."
+   },
+   "sqPanel_backlinks_error": {
+      "description": "{Some backlinks error message on unknown error}",
+      "message": "No se puede alcanzar el servicio, inténtalo de nuevo más tarde."
+   },
+   "sqPanel_backlinks_full_report": {
+      "description": "{Backlinks view full report button text}",
+      "message": "Ver informe completo"
+   },
+   "sqPanel_backlinks_geo_domains": {
+      "description": "{Backlinks table geo domains header}",
+      "message": "Dominios"
+   },
+   "sqPanel_backlinks_geo_title": {
+      "description": "{Backlinks table geo header}",
+      "message": "País"
+   },
+   "sqPanel_backlinks_referring_domains": {
+      "description": "{Backlinks domains message}",
+      "message": "Dominios de referencia"
+   },
+   "sqPanel_backlinks_referring_ips": {
+      "description": "{Backlinks ips message}",
+      "message": "IP de referencia"
+   },
+   "sqPanel_backlinks_referring_total": {
+      "description": "{Backlinks total message}",
+      "message": "Total de backlinks"
+   },
+   "sqPanel_backlinks_root_domain": {
+      "description": "{Backlinks type pills switch to root domain}",
+      "message": "Dominio raíz"
+   },
+   "sqPanel_backlinks_scope": {
+      "description": "{Backlinks type pills switch to URL}",
+      "message": "Alcance del informe: "
+   },
+   "sqPanel_backlinks_semrush_link": {
+      "description": "{Backlinks go to Semrush link}",
+      "message": "Obtén más información sobre Semrush"
+   },
+   "sqPanel_backlinks_semrush_text": {
+      "description": "{Backlings go to Semrush text}",
+      "message": "o&nbsp;"
+   },
+   "sqPanel_backlinks_tld_domains": {
+      "description": "{Backlinks table TLD domains header}",
+      "message": "Dominios"
+   },
+   "sqPanel_backlinks_tld_title": {
+      "description": "{Backlinks table TLD header}",
+      "message": "Distribución TLD"
+   },
+   "sqPanel_backlinks_url": {
+      "description": "{Backlinks type pills switch to URL}",
+      "message": "URL"
+   },
+   "sqPanel_content_analysis_unavailable_message": {
+      "description": "{Message displayed if data analysis unavailable}",
+      "message": "Análisis de contenido no disponible."
+   },
+   "sqPanel_display_advertising_empty_text": {
+      "description": "{Display advertising empty text}",
+      "message": "Lo sentimos, no hemos encontrado ninguna información===\n\nEs un nuevo dominio y aún no está en nuestras bases de datos."
+   },
+   "sqPanel_display_advertising_media_ads": {
+      "description": "{Display advertising panel percent bar left message}",
+      "message": "Anuncios de medios"
+   },
+   "sqPanel_display_advertising_popular_media_ads": {
+      "description": "{Display advertising media ads row title}",
+      "message": "Anuncios de medios populares"
+   },
+   "sqPanel_display_advertising_popular_text_ads": {
+      "description": "{Display advertising text ads row title}",
+      "message": "Anuncios de texto populares"
+   },
+   "sqPanel_display_advertising_show_more_ads": {
+      "description": "{Display advertising button to full report title}",
+      "message": "Mostrar más anuncios"
+   },
+   "sqPanel_display_advertising_text_ads": {
+      "description": "{Display advertising panel percent bar right message}",
+      "message": "Anuncios de texto"
+   },
+   "sqPanel_display_advertising_total_ads": {
+      "description": "{Display advertising panel total ads header}",
+      "message": "Total de anuncios"
+   },
+   "sqPanel_display_advertising_total_avertisers": {
+      "description": "{Display advertising panel total Advertisers header}",
+      "message": "Total de anunciantes"
+   },
+   "sqPanel_display_advertising_total_publishers": {
+      "description": "{Display advertising panel total publishers header}",
+      "message": "Total de editores"
+   },
+   "sqPanel_feedback_button_title": {
+      "description": "{Panel feedback button title}",
+      "message": "¿Tienes una sugerencia?"
+   },
+   "sqPanel_feedback_error_close": {
+      "description": "{Feedback error panel close button text}",
+      "message": "Cerrar"
+   },
+   "sqPanel_feedback_error_message": {
+      "description": "{Feedback error panel message}",
+      "message": "Error al tratar de enviarnos el mensaje. Puedes enviarnos un mensaje a mail@seoquaketeam.com o dejar un comentario en "
+   },
+   "sqPanel_feedback_error_title": {
+      "description": "{Feedback error panel title}",
+      "message": "¡Lo sentimos! Ha sucedido algo"
+   },
+   "sqPanel_feedback_error_tryagain": {
+      "description": "{Feedback error panel tryagain button text}",
+      "message": "Inténtalo de nuevo"
+   },
+   "sqPanel_feedback_form_cancel_title": {
+      "description": "{Feedback form cancel button title}",
+      "message": "Cerrar"
+   },
+   "sqPanel_feedback_form_email_placeholder": {
+      "description": "{Feedback form field email placeholder}",
+      "message": "Email"
+   },
+   "sqPanel_feedback_form_link_prefix": {
+      "description": "{Feedback form store link prefix}",
+      "message": "o envíanos tu opinión a"
+   },
+   "sqPanel_feedback_form_submit_title": {
+      "description": "{Feedback form submit button title}",
+      "message": "¡Envíanos tus sugerencias!"
+   },
+   "sqPanel_feedback_form_text_placeholder": {
+      "description": "{Feedback form field text placeholder}",
+      "message": "Solo quería decir..."
+   },
+   "sqPanel_feedback_form_title": {
+      "description": "{Feedback form title}",
+      "message": "Dinos tu opinión sobre SEOquake"
+   },
+   "sqPanel_feedback_sending_message": {
+      "description": "{Feedback sending panel title}",
+      "message": "Enviando tu opinión al equipo de SEOquake."
+   },
+   "sqPanel_feedback_sending_title": {
+      "description": "{Feedback sending panel title}",
+      "message": "Estás escribiendo tu opinión sobre SEOquake..."
+   },
+   "sqPanel_feedback_success_continue": {
+      "description": "{Feedback success panel title}",
+      "message": "Continuar"
+   },
+   "sqPanel_feedback_success_message": {
+      "description": "{Feedback success panel title}",
+      "message": "Muchas gracias. Revisaremos todos los mensajes y ninguno quedará sin respuesta."
+   },
+   "sqPanel_feedback_success_title": {
+      "description": "{Feedback success panel title}",
+      "message": "Nos has enviado tu opinión sobre SEOquake"
+   },
+   "sqPanel_global_disabled": {
+      "message": "SEOquake desactivada"
+   },
+   "sqPanel_global_enabled": {
+      "message": "SEOquake activada"
+   },
+   "sqPanel_menu_about": {
+      "description": "{Panel menu preferenes item}",
+      "message": "Acerca de SEOquake"
+   },
+   "sqPanel_menu_enable": {
+      "description": "{Panel menu core enabled switch}",
+      "message": "Activar SEOquake"
+   },
+   "sqPanel_menu_nofollow": {
+      "description": "{Panel menu nofollow enabled switch}",
+      "message": "Resaltar nofollow"
+   },
+   "sqPanel_menu_preferences": {
+      "description": "{Panel menu preferenes item}",
+      "message": "Preferencias..."
+   },
+   "sqPanel_menu_seobar": {
+      "description": "{Panel menu seobar enabled switch}",
+      "message": "Mostrar SEObar"
+   },
+   "sqPanel_menu_serpTitle": {
+      "description": "{Panel menu serp block title}",
+      "message": "Mostrar panel SERP:"
+   },
+   "sqPanel_module_title_density": {
+      "description": "{Panel density module link}",
+      "message": "Densidad"
+   },
+   "sqPanel_module_title_diagnosis": {
+      "description": "{Panel diagnosis module link}",
+      "message": "Diagnóstico"
+   },
+   "sqPanel_module_title_external": {
+      "description": "{Panel external module link}",
+      "message": "Externo"
+   },
+   "sqPanel_module_title_internal": {
+      "description": "{Panel internal module link}",
+      "message": "Interno"
+   },
+   "sqPanel_module_title_linkinfo": {
+      "description": "{Panel linkinfo module link}",
+      "message": "Comparar URL"
+   },
+   "sqPanel_module_title_pageinfo": {
+      "description": "{Panel pageinfo module link}",
+      "message": "Info de la página"
+   },
+   "sqPanel_nothing_to_analyze": {
+      "description": "{Message displayed for tabs which can not be analyzed}",
+      "message": "En esta página no hay nada para analizar"
+   },
+   "sqPanel_notice_1": {
+      "message": "We have updated the terms of our privacy policy. Please find them [https://www.seoquake.com/policy.html](here) for your review."
+   },
+   "sqPanel_semrush_unreachable": {
+      "message": "No se puede alcanzar el servicio, inténtalo de nuevo más tarde."
+   },
+   "sqPanel_tabs_backlinks": {
+      "description": "{Title for panel tab backlinks}",
+      "message": "Backlinks"
+   },
+   "sqPanel_tabs_da": {
+      "description": "{Title for panel tab display advertising}",
+      "message": "Publicidad de display"
+   },
+   "sqPanel_tabs_parameters": {
+      "description": "{Title for panel tab parameters}",
+      "message": "Parámetros"
+   },
+   "sqPanel_tabs_traffic": {
+      "description": "{Title for panel tab traffic analytics}",
+      "message": "Traffic Analytics"
+   },
+   "sqPanel_tips_1": {
+      "message": "*¿Sabías* que puedes añadir cualquier parámetro personalizado que desees? [https://www.seoquake.com/guide/parameters/create.html]¡(Consulta nuestra guía) o [parameters](crea un parámetro nuevo) ahora!\n"
+   },
+   "sqPanel_tips_2": {
+      "message": "*¿Sabías* que puedes [general](exportar e importar tu configuración) con un solo clic?\n"
+   },
+   "sqPanel_tips_3": {
+      "message": "*¿Sabías* que puedes clasificar y exportar las SERP en un archivo .csv?\n"
+   },
+   "sqPanel_tips_4": {
+      "message": "¿Demasiados captchas? Prueba [serp](desactivar todas las métricas de Google) que no necesites.\n"
+   },
+   "sqPanel_tips_5": {
+      "message": "*¿Sabías* que puedes configurar casi todos los aspectos de SEOquake en la [general](sección Configuración)?\n"
+   },
+   "sqPanel_tips_next": {
+      "message": "Siguiente consejo"
+   },
+   "sqPanel_top_no_title": {
+      "description": "{Top parameters title for parameter without title}",
+      "message": "Sin título"
+   },
+   "sqPanel_top_select": {
+      "description": "{Top parameters title for no parameter selected}",
+      "message": "Seleccionar"
+   },
+   "sqPanel_traffic_analytics_connect_message": {
+      "description": "{Connect Semrush message. Some markdown can be used}",
+      "message": "Conecta tu cuenta *gratuita* de Semrush\npara acceder al informe *Traffic Analytics*"
+   },
+   "sqPanel_traffic_analytics_data_empty": {
+      "message": "===\n\nNo es posible alcanzar el servicio, inténtalo de nuevo más tarde."
+   },
+   "sqPanel_traffic_analytics_empty_header": {
+      "message": "Lo sentimos, no tenemos datos suficientes de este sitio web en nuestra base de datos."
+   },
+   "sqPanel_traffic_analytics_empty_message": {
+      "message": "Esto puede producirse por distintos motivos:"
+   },
+   "sqPanel_traffic_analytics_empty_reason1": {
+      "message": "El sitio web tiene menos de mil visitantes únicos al mes. Esto significa que no tenemos datos suficientes para realizar cálculos precisos."
+   },
+   "sqPanel_traffic_analytics_empty_reason2": {
+      "message": "El nombre del dominio está mal escrito. Asegúrate de escribirlo correctamente."
+   },
+   "sqPanel_traffic_analytics_source_direct": {
+      "message": "Directo"
+   },
+   "sqPanel_traffic_analytics_source_paid": {
+      "message": "De pago"
+   },
+   "sqPanel_traffic_analytics_source_referral": {
+      "message": "De referencia"
+   },
+   "sqPanel_traffic_analytics_source_search": {
+      "message": "De búsqueda"
+   },
+   "sqPanel_traffic_analytics_source_social": {
+      "message": "Redes sociales"
+   },
+   "sqPanel_try_this_link": {
+      "description": "{Message before link in nothing to analize}",
+      "message": "Prueba esto: "
+   },
+   "sqPanel_waiting": {
+      "description": "{Message on SEO Dashboard when page data is still loading.}",
+      "message": "Esperando que el contenido de la página esté listo..."
+   },
+   "sqSERPSemRush_connect_block": {
+      "description": "{SERP Semrush panel connect Semrush text}",
+      "message": "Obtén *autoridad del dominio, *visitas* y *datos de interacción* con una cuenta gratuita de Semrush - [#connect](Conectar)"
+   },
+   "sqSERPSemRush_hint": {
+      "description": "{SERP Semrush panel}",
+      "message": "*Domain Score* es una métrica que mide la calidad y el volumen de los enlaces que señalan a un dominio. Cuanto más cerca de 100 esté la puntuación, mayor será la calidad del dominio.\n\n*Trust Score* es una métrica similar que se utiliza para medir la confianza de un dominio en base a cuántos backlinks de confianza tiene. Si Trust Score es significativamente menor que Domain Score puede ser una señal de que el dominio tiene una gran cantidad de backlinks no confiables."
+   },
+   "sqSERPSemRush_onboarding_text": {
+      "description": "{SERP Semrush panel onboarding text} ",
+      "message": "*¡Presentamos los datos Autoridad del dominio e Interacción!*\n\nLa métrica *Autoridad del dominio* te permite calcular la importancia y confianza de un sitio web en base a la calidad y número de los backlinks que tiene.\n\nLa métrica *Visitas e interacción de usuarios* brinda información sobre la presencia en línea y el comportamiento de la audiencia de cualquier sitio web."
+   },
+   "sqSERPTool_document_title": {
+      "description": "{SERPtool report title}",
+      "message": "Herramienta SERP SEOquake"
+   },
+   "sqSERPTool_title": {
+      "description": "{SERPtool report h1 title}",
+      "message": "Enlaces SERP"
+   },
+   "sqSemrush_connect": {
+      "description": "{Message on connect Semrush button.}",
+      "message": "Conectar Semrush"
+   },
+   "sqSemrush_feedback_link": {
+      "description": "Message for feedback link",
+      "message": "¿Cómo podemos mejorar nuestra integración Semrush?"
+   },
+   "sqSemrush_feedback_submit": {
+      "description": "Text on feedback send button",
+      "message": "Enviar"
+   },
+   "sqSemrush_feedback_success": {
+      "description": "Text for message send result",
+      "message": "¡Gracias! Tu opinión se ha enviado correctamente"
+   },
+   "sqSemrush_feedback_text_placeholder": {
+      "description": "Text placeholder in feedback textarea",
+      "message": "Comparte tus ideas"
+   },
+   "sqSemrush_setup_siteaudit_button": {
+      "description": "Message on setup button",
+      "message": "Configurar"
+   },
+   "sqSemrush_setup_siteaudit_message": {
+      "description": "Message for siteaudit panel state when current domain does not have siteaudit",
+      "message": "No se ha configurado ninguna campaña de auditoría para {domain}."
+   },
+   "sqSemrush_siteaudit_connect_1": {
+      "description": "First part of connect message",
+      "message": "Conecta tu cuenta de Semrush para ver datos de tus campañas de Auditoría de sitios."
+   },
+   "sqSemrush_siteaudit_connect_2": {
+      "description": "Second part of connect message",
+      "message": "Esta te permitirá ver rápidamente todos los problemas de la página."
+   },
+   "sqSemrush_siteaudit_connect_button": {
+      "description": "Connect button text",
+      "message": "Conectar"
+   },
+   "sqSemrush_siteaudit_connect_dontwant": {
+      "description": "Edit seobar settings message",
+      "message": "¿No deseas ver este parámetro en la SEObar?"
+   },
+   "sqSemrush_siteaudit_connect_settings": {
+      "description": "Edit seobar settings link",
+      "message": "Editar configuración de SEObar"
+   },
+   "sqSemrush_siteaudit_details_noerrors": {
+      "description": "Message when no errors on page",
+      "message": "No se encontraron problemas en esta página. ¡Es correcta!"
+   },
+   "sqSemrush_siteaudit_details_notparsed_1": {
+      "description": "Siteaudit no data message 1",
+      "message": "Esta página no se ha rastreado en tu última auditoría."
+   },
+   "sqSemrush_siteaudit_details_notparsed_2": {
+      "description": "Siteaudit no data message 2",
+      "message": "Trata de auditar más páginas en la siguiente auditoría."
+   },
+   "sqSemrush_siteaudit_details_notparsed_link": {
+      "description": "Siteaudit no data configure link",
+      "message": "Comprobar configuración de Auditoría del sitio"
+   },
+   "sqSemrush_siteaudit_details_viewdetails": {
+      "description": "View details buttons when no errors on page",
+      "message": "Ver detalles"
+   },
+   "sqSeobar2_close": {
+      "description": "{Close seobar button tooltip text}",
+      "message": "Cerrar panel"
+   },
+   "sqSeobar2_close_button_close": {
+      "description": "{Title for close seobar panel button}",
+      "message": "Para cualquier dominio"
+   },
+   "sqSeobar2_close_button_hide": {
+      "description": "{Title for hide seobar panel button}",
+      "message": "Para este dominio"
+   },
+   "sqSeobar2_close_header": {
+      "description": "{Heading message on close panel}",
+      "message": "Desactivar SEObar"
+   },
+   "sqSeobar2_close_link_whitelist": {
+      "description": "{Title for seobar configure whitelist link}",
+      "message": "Puedes especificar dominios para los que te gustaría activar la SEObar"
+   },
+   "sqSeobar2_configuration": {
+      "description": "{seobar configuration panel link to main configuration}",
+      "message": "Más ajustes"
+   },
+   "sqSeobar2_configuration_color": {
+      "description": "{Configuration panel color select title}",
+      "message": "tema de color"
+   },
+   "sqSeobar2_configuration_color_dark": {
+      "description": "{Configuration panel dark color pill title}",
+      "message": "Oscuro"
+   },
+   "sqSeobar2_configuration_color_light": {
+      "description": "{Configuration panel light color pill title}",
+      "message": "Claro"
+   },
+   "sqSeobar2_configuration_more_settings": {
+      "description": "{seobar configuration panel link to main configuration}",
+      "message": "Más ajustes"
+   },
+   "sqSeobar2_configuration_parameters_title": {
+      "description": "{Configuration panel parameters title}",
+      "message": "Parámetros"
+   },
+   "sqSeobar2_configuration_position": {
+      "description": "{Configuration panel position select title}",
+      "message": "Posición SEObar"
+   },
+   "sqSeobar2_configuration_position_bottom": {
+      "message": "Horizontal en parte inferior"
+   },
+   "sqSeobar2_configuration_position_left": {
+      "description": "{Configuration panel left position pill title}",
+      "message": "Vertical en lado izdo."
+   },
+   "sqSeobar2_configuration_position_right": {
+      "description": "{Configuration panel right position pill title}",
+      "message": "Vertical en lado dcho."
+   },
+   "sqSeobar2_configuration_position_top": {
+      "description": "{Configuration panel top position pill title}",
+      "message": "Horizontal en parte superior"
+   },
+   "sqSeobar2_configure": {
+      "description": "{Seobar cog button tooltip text}",
+      "message": "Configurar panel"
+   },
+   "sqSeobar2_density": {
+      "description": "{Density link title}",
+      "message": "Densidad"
+   },
+   "sqSeobar2_diagnosis": {
+      "description": "{Diagnosis link title}",
+      "message": "Diagnóstico"
+   },
+   "sqSeobar2_external": {
+      "description": "{External links title}",
+      "message": "Enlaces externos"
+   },
+   "sqSeobar2_feedback_close": {
+      "description": "{Feedback cancel button title}",
+      "message": "Cerrar"
+   },
+   "sqSeobar2_feedback_no": {
+      "description": "{Feedback no button text}",
+      "message": "No"
+   },
+   "sqSeobar2_feedback_placeholder": {
+      "description": "{Feedback message box placeholder text}",
+      "message": "¿Te gustaría enviarnos alguna opinión?"
+   },
+   "sqSeobar2_feedback_question": {
+      "description": "{Feedback question}",
+      "message": "¿Te funciona bien?"
+   },
+   "sqSeobar2_feedback_result": {
+      "description": "{Feedback result message}",
+      "message": "¡Gracias! Tu opinión se ha enviado correctamente."
+   },
+   "sqSeobar2_feedback_send": {
+      "description": "{Feedback send button title}",
+      "message": "Enviar opinión"
+   },
+   "sqSeobar2_feedback_yes": {
+      "description": "{Feedback yes button text}",
+      "message": "Sí"
+   },
+   "sqSeobar2_float_hide_hint": {
+      "message": "Pulsa «S» para ocultar SEObar."
+   },
+   "sqSeobar2_float_show_hint": {
+      "message": "Pulsa «S» para mostrar SEObar."
+   },
+   "sqSeobar2_internal": {
+      "description": "{Internal links title}",
+      "message": "Enlaces internos"
+   },
+   "sqSeobar2_more": {
+      "description": "{Horizontal seobar more date button title}",
+      "message": "Más datos"
+   },
+   "sqSeobar2_pageinfo": {
+      "description": "{Pageinfo link title}",
+      "message": "Informe de resumen"
+   },
+   "sqSeobar2_parameters_group_backlinks": {
+      "description": "{Seobar parameters group backlinks title}",
+      "message": "Backlinks"
+   },
+   "sqSeobar2_parameters_group_domain": {
+      "description": "{Seobar parameters group domain title}",
+      "message": "Dominio"
+   },
+   "sqSeobar2_parameters_group_other": {
+      "description": "{Seobar parameters group other title}",
+      "message": "Otros"
+   },
+   "sqSeobar2_parameters_group_page": {
+      "description": "{Seobar parameters group page title}",
+      "message": "Página"
+   },
+   "sqSeobar2_reload": {
+      "description": "{Load parameters values button title}",
+      "message": "Cargar todos los parámetros"
+   },
+   "sqSeobar2_robots": {
+      "description": "{Robots.txt magic parameter title}",
+      "message": "Robots.txt"
+   },
+   "sqSeobar2_siteaudit": {
+      "message": "Auditoría del sitio"
+   },
+   "sqSeobar2_sitemap": {
+      "description": "{Sitemap.xml magic parameter title}",
+      "message": "Sitemap.xml"
+   },
+   "sqSeobar2_switch_to_vertical": {
+      "description": "{More data dropdown message}",
+      "message": "Parece que los parámetros no encajan en el ancho de la SEObar. Para mayor comodidad, hemos creado un nuevo diseño vertical de la SEObar."
+   },
+   "sqSeobar2_switch_to_vertical_button": {
+      "description": "{More data dropdown button}",
+      "message": "¡Pruébalo ahora!"
+   },
+   "sqSeobar2_toggle": {
+      "description": "{Pin vertical seobar panel button title}",
+      "message": "Alternar panel"
+   },
+   "sqSerpOverlay_export": {
+      "message": "Exportar a CSV"
+   },
+   "sqSerpOverlay_get_metrics": {
+      "message": "Obtener métricas"
+   },
+   "sqSerpOverlay_hlgl_country": {
+      "message": "País"
+   },
+   "sqSerpOverlay_hlgl_group_common": {
+      "message": "Principales"
+   },
+   "sqSerpOverlay_hlgl_group_others": {
+      "message": "Otros"
+   },
+   "sqSerpOverlay_hlgl_language": {
+      "message": "Idioma"
+   },
+   "sqSerpOverlay_hlgl_reset": {
+      "message": "Resetear"
+   },
+   "sqSerpOverlay_hlgl_set": {
+      "message": "Establecer ubicación"
+   },
+   "sqSerpOverlay_hlgl_title": {
+      "message": "Ubicación"
+   },
+   "sqSerpOverlay_keyword_difficulty": {
+      "description": "{First part of keyword difficulty message}",
+      "message": "Dificultad de palabra clave:"
+   },
+   "sqSerpOverlay_keyword_difficulty_db": {
+      "description": "{Database message for current detected database}",
+      "message": "(para la base de datos {db})"
+   },
+   "sqSerpOverlay_keyword_difficulty_full_report": {
+      "description": "{Second part of keyword difficulty message}",
+      "message": "&nbsp;&mdash&nbsp;Ver [https://www.semrush.com/us/info/+(keyword)](informe completo) para esta palabra clave"
+   },
+   "sqSerpOverlay_keyword_difficulty_onboarding_close": {
+      "description": "{}",
+      "message": "Desáctivenlo"
+   },
+   "sqSerpOverlay_keyword_difficulty_onboarding_ok": {
+      "description": "{}",
+      "message": "¡OK, genial!"
+   },
+   "sqSerpOverlay_keyword_difficulty_onboarding_text": {
+      "description": "{}",
+      "message": "*¡Di hola a la puntuación de Dificultad de palabra clave!*\n\nHa sido diseñada para calcular lo difícil que sería alcanzar las posiciones de los competidores en las búsquedas orgánicas con una determinada palabra clave en la página SERP actual."
+   },
+   "sqSerpOverlay_parameters": {
+      "message": "Parámetros"
+   },
+   "sqSerpOverlay_serptool": {
+      "message": "Informe SERP"
+   },
+   "sqSerpOverlay_sort_ascending": {
+      "message": "ascendente"
+   },
+   "sqSerpOverlay_sort_by": {
+      "message": "por"
+   },
+   "sqSerpOverlay_sort_descending": {
+      "message": "descendente"
+   },
+   "sqSerpOverlay_sort_message": {
+      "message": "seleccionar parámetro"
+   },
+   "sqSerpOverlay_sort_title": {
+      "message": "Clasificar esta página"
+   },
+   "sqSiteaudit_details_errors": {
+      "description": "{Error title for siteaudit page details}",
+      "message": "Errores"
+   },
+   "sqSiteaudit_details_warnings": {
+      "description": "{Warnings title for siteaudit page details}",
+      "message": "Advertencias"
+   },
+   "unavailableHere": {
+      "description": "{Error when data is currently unavailable}",
+      "message": "Información no disponible para esta página. Prueba otra página."
+   }
+}

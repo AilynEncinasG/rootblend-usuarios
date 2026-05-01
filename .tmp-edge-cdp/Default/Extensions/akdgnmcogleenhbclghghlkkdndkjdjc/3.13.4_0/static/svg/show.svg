@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg"
+     xmlns:xlink="http://www.w3.org/1999/xlink"
+     width="16"
+     height="64"
+     >
+    <defs>
+        <symbol id="a">
+            <path d="M8 3c-2.7 0-5.7 1.3-8 5 2.3 3.7 5.3 5 8 5s5.7-1.3 8-5c-2.3-3.7-5.3-5-8-5zm0 9c-2.2 0-4-1.8-4-4s1.8-4 4-4 4 1.8 4 4-1.8 4-4 4z"/><circle cx="8" cy="8" r="2"/>
+        </symbol>
+    </defs>
+    <use xlink:href="#a" x="0" y="0" fill="#81938a" />
+    <use xlink:href="#a" x="0" y="16" fill="#fff" />
+    <use xlink:href="#a" x="0" y="32" fill="#adbabe" />
+    <use xlink:href="#a" x="0" y="48" fill="#64787e" />
+</svg>

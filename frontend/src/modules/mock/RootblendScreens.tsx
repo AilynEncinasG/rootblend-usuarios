@@ -109,10 +109,46 @@ function firstPodcast() {
   return podcasts[0];
 }
 
+const CREATOR_ROLE_KEY = "creator_role";
+const MODERATORS_KEY = "rootblend:moderators:cyberpunk-2077";
+
+type CreatorRole = "streamer" | "podcaster";
+
+function getCreatorRole(): CreatorRole | null {
+  const role = localStorage.getItem(CREATOR_ROLE_KEY);
+  return role === "streamer" || role === "podcaster" ? role : null;
+}
+
+function setCreatorRole(role: CreatorRole) {
+  localStorage.setItem(CREATOR_ROLE_KEY, role);
+}
+
+function getModerators() {
+  const stored = localStorage.getItem(MODERATORS_KEY);
+
+  if (stored) {
+    try {
+      const parsed = JSON.parse(stored) as string[];
+      if (Array.isArray(parsed)) return parsed;
+    } catch {
+      return ["GamerX", "PixelKing", "LunaVibes"];
+    }
+  }
+
+  return ["GamerX", "PixelKing", "LunaVibes"];
+}
+
+function saveModerators(moderators: string[]) {
+  localStorage.setItem(MODERATORS_KEY, JSON.stringify(moderators));
+}
+
 export function RootShell({ active = "home", children, rightPanel }: ShellProps) {
   const navigate = useNavigate();
   const [query, setQuery] = useState("");
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [notificationsOpen, setNotificationsOpen] = useState(false);
   const loggedIn = isAuthenticated();
+  const role = getCreatorRole();
 
   function submitSearch(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -140,13 +176,102 @@ export function RootShell({ active = "home", children, rightPanel }: ShellProps)
         <TopActions>
           {loggedIn ? (
             <>
-              <IconRound to="/notifications" title="Notificaciones">
-                <FiBell />
-              </IconRound>
-              <UserPill to="/account/menu">
-                <Avatar>U</Avatar>
-                <span>{getUserLabel()}</span>
-              </UserPill>
+              <TopPopoverWrap>
+                <IconRound
+                  type="button"
+                  title="Notificaciones"
+                  onClick={() => {
+                    setNotificationsOpen((value) => !value);
+                    setMenuOpen(false);
+                  }}
+                >
+                  <FiBell />
+                  <UnreadDot />
+                </IconRound>
+
+                {notificationsOpen && (
+                  <DropdownPanel $wide>
+                    <DropdownHeader>
+                      <strong>Notificaciones</strong>
+                      <Link to="/notifications" onClick={() => setNotificationsOpen(false)}>
+                        Ver todas
+                      </Link>
+                    </DropdownHeader>
+
+                    {notifications.map((item, index) => (
+                      <DropdownItem
+                        key={item.title}
+                        to={index === 1 ? "/podcasts/fuera-orbita" : "/streams/cyberpunk-2077"}
+                        onClick={() => setNotificationsOpen(false)}
+                      >
+                        <NotificationMark $accent={item.accent} />
+                        <div>
+                          <strong>{item.title}</strong>
+                          <small>{item.meta}</small>
+                        </div>
+                      </DropdownItem>
+                    ))}
+                  </DropdownPanel>
+                )}
+              </TopPopoverWrap>
+
+              <TopPopoverWrap>
+                <UserPill
+                  type="button"
+                  onClick={() => {
+                    setMenuOpen((value) => !value);
+                    setNotificationsOpen(false);
+                  }}
+                >
+                  <Avatar>U</Avatar>
+                  <span>{getUserLabel()}</span>
+                </UserPill>
+
+                {menuOpen && (
+                  <DropdownPanel>
+                    <ProfileHeader>
+                      <Avatar $large>U</Avatar>
+                      <div>
+                        <h2>{getUserLabel()}</h2>
+                        <p>
+                          {role
+                            ? `Creador ${role === "streamer" ? "streamer" : "podcaster"}`
+                            : "Viewer ROOTBLEND"}
+                        </p>
+                      </div>
+                    </ProfileHeader>
+
+                    <DropdownMenuLink to="/" onClick={() => setMenuOpen(false)}>
+                      <FiHome /> Inicio
+                    </DropdownMenuLink>
+                    <DropdownMenuLink to="/profile" onClick={() => setMenuOpen(false)}>
+                      <FiUser /> Perfil
+                    </DropdownMenuLink>
+                    <DropdownMenuLink to="/creator/activate" onClick={() => setMenuOpen(false)}>
+                      <FiRadio /> Activar canal
+                    </DropdownMenuLink>
+                    <DropdownMenuLink to="/creator/dashboard" onClick={() => setMenuOpen(false)}>
+                      <FiGrid /> Panel creador
+                    </DropdownMenuLink>
+                    <DropdownMenuLink to="/settings" onClick={() => setMenuOpen(false)}>
+                      <FiSettings /> Configuracion
+                    </DropdownMenuLink>
+                    <DropdownMenuLink to="/change-password" onClick={() => setMenuOpen(false)}>
+                      <FiLock /> Cambiar contrasena
+                    </DropdownMenuLink>
+                    <DropdownMenuLink
+                      to="/"
+                      onClick={() => {
+                        clearAuthStorage();
+                        setMenuOpen(false);
+                        navigate("/");
+                      }}
+                    >
+                      <FiLogOut /> Cerrar sesion
+                    </DropdownMenuLink>
+                  </DropdownPanel>
+                )}
+              </TopPopoverWrap>
             </>
           ) : (
             <>
@@ -265,16 +390,28 @@ function PodcastCard({ podcast }: { podcast: PodcastItem }) {
 function ChatPanel({ allowInput = true }: { allowInput?: boolean }) {
   const [items, setItems] = useState<ChatMessage[]>(chatMessages);
   const [message, setMessage] = useState("");
+  const [activeMessageId, setActiveMessageId] = useState<string | null>(null);
+  const [moderators, setModerators] = useState<string[]>(() => getModerators());
+  const [mutedUsers, setMutedUsers] = useState<string[]>([]);
+  const [blockedUsers, setBlockedUsers] = useState<string[]>([]);
+  const [actionFeedback, setActionFeedback] = useState("Moderacion por canal: PixelNate / Cyberpunk 2077.");
   const loggedIn = isAuthenticated();
+  const ownerMode = getCreatorRole() === "streamer";
+  const canModerate = ownerMode || moderators.includes(getUserLabel());
 
   function sendMessage(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    const currentUser = getUserLabel();
     if (!message.trim() || !loggedIn || !allowInput) return;
+    if (mutedUsers.includes(currentUser) || blockedUsers.includes(currentUser)) {
+      setActionFeedback("No puedes escribir porque tienes una sancion activa en este canal.");
+      return;
+    }
     setItems((current) => [
       ...current,
       {
         id: `${Date.now()}`,
-        user: getUserLabel(),
+        user: currentUser,
         badge: "TU",
         text: message.trim(),
         time: "Ahora",
@@ -284,12 +421,85 @@ function ChatPanel({ allowInput = true }: { allowInput?: boolean }) {
     setMessage("");
   }
 
+  function assignModerator(user: string) {
+    if (!ownerMode) {
+      setActionFeedback("Solo el duenio del canal puede asignar moderadores.");
+      return;
+    }
+
+    const next = Array.from(new Set([...moderators, user]));
+    setModerators(next);
+    saveModerators(next);
+    setItems((current) =>
+      current.map((item) =>
+        item.user === user
+          ? {
+              ...item,
+              badge: "MOD",
+            }
+          : item
+      )
+    );
+    setActionFeedback(`${user} ahora es moderador solo de este canal.`);
+    setActiveMessageId(null);
+  }
+
+  function deleteMessage(id: string, user: string) {
+    if (!canModerate) {
+      setActionFeedback("Necesitas ser moderador de este canal para eliminar mensajes.");
+      return;
+    }
+
+    setItems((current) =>
+      current.map((item) =>
+        item.id === id
+          ? {
+              ...item,
+              text: "Mensaje eliminado por moderacion.",
+              color: "#94a3b8",
+            }
+          : item
+      )
+    );
+    setActionFeedback(`Mensaje de ${user} eliminado para todos.`);
+    setActiveMessageId(null);
+  }
+
+  function silenceUser(user: string) {
+    if (!canModerate) {
+      setActionFeedback("Necesitas ser moderador de este canal para silenciar usuarios.");
+      return;
+    }
+
+    setMutedUsers((current) => Array.from(new Set([...current, user])));
+    setActionFeedback(`${user} fue silenciado 10 minutos en este canal.`);
+    setActiveMessageId(null);
+  }
+
+  function blockUser(user: string) {
+    if (!canModerate) {
+      setActionFeedback("Necesitas ser moderador de este canal para bloquear usuarios.");
+      return;
+    }
+
+    setBlockedUsers((current) => Array.from(new Set([...current, user])));
+    setItems((current) => current.filter((item) => item.user !== user));
+    setActionFeedback(`${user} fue bloqueado del chat de este canal.`);
+    setActiveMessageId(null);
+  }
+
   return (
     <ChatBox>
       <PanelHeader>
         <strong>Chat en vivo</strong>
-        <FiSettings />
+        <HeaderActionGroup>
+          <ServicePill $status={canModerate ? "Operativo" : "Degradado"}>
+            {canModerate ? "MOD activo" : "Viewer"}
+          </ServicePill>
+          <Link to="/moderation"><FiSettings /></Link>
+        </HeaderActionGroup>
       </PanelHeader>
+      <ChatStatus>{actionFeedback}</ChatStatus>
       <ChatMessages>
         {items.map((item) => (
           <ChatRow key={item.id}>
@@ -301,6 +511,31 @@ function ChatPanel({ allowInput = true }: { allowInput?: boolean }) {
               </ChatName>
               <p>{item.text}</p>
             </ChatBubble>
+            <ChatActionButton
+              type="button"
+              title="Acciones de chat"
+              onClick={() =>
+                setActiveMessageId((current) => current === item.id ? null : item.id)
+              }
+            >
+              <FiMoreVertical />
+            </ChatActionButton>
+            {activeMessageId === item.id && (
+              <ChatActionMenu>
+                <button type="button" onClick={() => assignModerator(item.user)}>
+                  <FiShield /> Hacer moderador
+                </button>
+                <button type="button" onClick={() => deleteMessage(item.id, item.user)}>
+                  <FiTrash2 /> Eliminar mensaje
+                </button>
+                <button type="button" onClick={() => silenceUser(item.user)}>
+                  <FiVolume2 /> Silenciar usuario
+                </button>
+                <button type="button" onClick={() => blockUser(item.user)}>
+                  <FiXCircle /> Bloquear usuario
+                </button>
+              </ChatActionMenu>
+            )}
           </ChatRow>
         ))}
       </ChatMessages>
@@ -428,8 +663,10 @@ export function HomePage() {
 }
 
 export function ExploreStreamsPage() {
+  const [params] = useSearchParams();
+  const initialCategory = params.get("category") || "Todos";
   const [search, setSearch] = useState("");
-  const [category, setCategory] = useState("Todos");
+  const [category, setCategory] = useState(initialCategory);
   const [visibleCount, setVisibleCount] = useState(12);
   const repeatedStreams = [...streams, ...streams, ...streams].map((stream, index) => ({
     ...stream,
@@ -490,7 +727,7 @@ export function CategoriesPage() {
       </PageHeading>
       <CategoryGrid>
         {categories.map((category) => (
-          <CategoryCard key={category.id} to={`/search?q=${category.name}`} $image={category.image}>
+          <CategoryCard key={category.id} to={`/streams?category=${encodeURIComponent(category.name)}`} $image={category.image}>
             <span>{category.name}</span>
             <small>{category.viewers} espectadores activos</small>
           </CategoryCard>
@@ -716,7 +953,7 @@ export function PodcastsPage() {
             <PrimaryButton type="button" onClick={() => setPlaying("Fuera de Orbita")}>
               <FiPlay /> Escuchar ahora
             </PrimaryButton>
-            <GhostLink to="/creator/podcaster/podcasts/new"><FiMic /> Crear podcast</GhostLink>
+            <GhostLink to="/creator/podcaster/create-podcast"><FiMic /> Crear podcast</GhostLink>
           </ButtonRow>
         </HeroCopy>
         <HeroMedia $image={brandAssets.podcastsView}>
@@ -901,6 +1138,36 @@ export function ForgotPasswordPage() {
   );
 }
 
+export function ResetPasswordPage() {
+  const navigate = useNavigate();
+  const [saved, setSaved] = useState(false);
+
+  function submit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    setSaved(true);
+    window.setTimeout(() => navigate("/login"), 900);
+  }
+
+  return (
+    <AuthScreen $image={brandAssets.loginView}>
+      <AuthCard onSubmit={submit}>
+        <BrandBlock>
+          <FiLock />
+          <h1>Nueva contrasena</h1>
+          <p>Completa el segundo paso de recuperacion antes de volver al login.</p>
+        </BrandBlock>
+        <Label>Nueva contrasena</Label>
+        <Field><FiLock /><input type="password" defaultValue="rootblend2026" /></Field>
+        <Label>Confirmar contrasena</Label>
+        <Field><FiLock /><input type="password" defaultValue="rootblend2026" /></Field>
+        <PrimaryButton type="submit">Guardar nueva contrasena</PrimaryButton>
+        {saved && <SuccessBox><FiCheckCircle /> Contrasena actualizada. Redirigiendo al login...</SuccessBox>}
+        <GhostLink to="/login">Volver al inicio de sesion</GhostLink>
+      </AuthCard>
+    </AuthScreen>
+  );
+}
+
 export function UserMenuPage() {
   const navigate = useNavigate();
 
@@ -1025,6 +1292,24 @@ export function SubscriptionsPage() {
   );
 }
 
+export function FollowingPage() {
+  return (
+    <RootShell active="home">
+      <PageHeading><Eyebrow>Comunidad</Eyebrow><h1>Canales seguidos</h1><p>Vista separada para administrar solo los canales que sigues.</p></PageHeading>
+      <Panel>
+        <PanelHeader><strong>Siguiendo ahora</strong><Link to="/subscriptions">Ver suscripciones</Link></PanelHeader>
+        {streams.slice(0, 6).map((stream) => (
+          <NotificationRow key={stream.id} $accent="#00e5ff">
+            <Avatar>{stream.avatar}</Avatar>
+            <div><strong>{stream.channel}</strong><small>{stream.category} · {stream.viewers} espectadores</small></div>
+            <GhostLink to={`/channels/${stream.id}`}>Ver canal</GhostLink>
+          </NotificationRow>
+        ))}
+      </Panel>
+    </RootShell>
+  );
+}
+
 function FollowRow({ stream, action }: { stream: StreamItem; action: string }) {
   return (
     <SideListItem to={`/streams/${stream.id}`}>
@@ -1041,8 +1326,8 @@ export function CreatorActivatePage() {
 
   function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    localStorage.setItem("creator_role", role);
-    navigate(role === "streamer" ? "/creator/streamer/dashboard" : "/creator/podcaster/dashboard");
+    setCreatorRole(role as CreatorRole);
+    navigate(role === "streamer" ? "/creator/streamer" : "/creator/podcaster");
   }
 
   return (
@@ -1066,8 +1351,13 @@ function FiLinkIcon() {
 }
 
 export function CreatorDashboardPage() {
-  const role = localStorage.getItem("creator_role") || "streamer";
-  return <Navigate to={role === "podcaster" ? "/creator/podcaster/dashboard" : "/creator/streamer/dashboard"} replace />;
+  const role = getCreatorRole() || "streamer";
+  return <Navigate to={role === "podcaster" ? "/creator/podcaster" : "/creator/streamer"} replace />;
+}
+
+export function StatsRedirectPage() {
+  const role = getCreatorRole() || "streamer";
+  return <Navigate to={role === "podcaster" ? "/creator/podcaster/stats" : "/creator/streamer/stats"} replace />;
 }
 
 export function StreamerDashboardPage() {
@@ -1075,10 +1365,11 @@ export function StreamerDashboardPage() {
     <CreatorScreen title="Panel del streamer" subtitle="Gestiona directos, canal, momentos y estadisticas." image={brandAssets.streamerPanel}>
       <MetricGrid>{stats.map((item) => <StatCard key={item.label} {...item} />)}</MetricGrid>
       <QuickActions>
-        <PrimaryLink to="/creator/streamer/live-control"><FiRadio /> Iniciar transmision</PrimaryLink>
-        <GhostLink to="/creator/streamer/streams/new"><FiPlus /> Crear stream</GhostLink>
+        <PrimaryLink to="/creator/streamer/control"><FiRadio /> Iniciar transmision</PrimaryLink>
+        <GhostLink to="/creator/streamer/create-stream"><FiPlus /> Crear stream</GhostLink>
         <GhostLink to="/creator/streamer/highlights"><FiStar /> Momentos</GhostLink>
         <GhostLink to="/creator/streamer/stats"><FiActivity /> Estadisticas</GhostLink>
+        <GhostLink to="/moderation/moderators"><FiShield /> Moderadores</GhostLink>
       </QuickActions>
     </CreatorScreen>
   );
@@ -1177,7 +1468,7 @@ export function PodcasterDashboardPage() {
         <StatCard label="Duracion promedio" value="48m 32s" trend="+6%" />
       </MetricGrid>
       <QuickActions>
-        <PrimaryLink to="/creator/podcaster/podcasts/new"><FiPlus /> Crear podcast</PrimaryLink>
+        <PrimaryLink to="/creator/podcaster/create-podcast"><FiPlus /> Crear podcast</PrimaryLink>
         <GhostLink to="/creator/podcaster/episodes/new"><FiUpload /> Subir episodio</GhostLink>
         <GhostLink to="/creator/podcaster/episodes"><FiHeadphones /> Episodios</GhostLink>
       </QuickActions>
@@ -1200,7 +1491,7 @@ export function ManagePodcastPage() {
   return (
     <CreatorScreen title="Administrar podcast" subtitle="Informacion, episodios, configuracion y estado publico." image={brandAssets.podcasterPanel}>
       <InfoGrid>
-        <Panel><PanelHeader><strong>Informacion</strong><Link to="/creator/podcaster/podcasts/new">Editar</Link></PanelHeader><TwoCol><span>Nombre</span><strong>TechTalk</strong><span>Categoria</span><strong>Tecnologia</strong><span>Estado</span><strong>Publicado</strong></TwoCol></Panel>
+        <Panel><PanelHeader><strong>Informacion</strong><Link to="/creator/podcaster/create-podcast">Editar</Link></PanelHeader><TwoCol><span>Nombre</span><strong>TechTalk</strong><span>Categoria</span><strong>Tecnologia</strong><span>Estado</span><strong>Publicado</strong></TwoCol></Panel>
         <Panel><PanelHeader><strong>Ultimos episodios</strong><Link to="/creator/podcaster/episodes">Ver todos</Link></PanelHeader>{firstPodcast().episodes.map((episode) => <EpisodeRow key={episode.id}><FiHeadphones /><span>{episode.title}</span><small>{episode.duration}</small></EpisodeRow>)}</Panel>
       </InfoGrid>
     </CreatorScreen>
@@ -1310,10 +1601,10 @@ function CreatorForm({ title, subtitle, button, children, onSubmit }: { title: s
 
 function CreatorNav() {
   const links = [
-    ["/creator/streamer/dashboard", "Streamer"],
-    ["/creator/streamer/live-control", "Control"],
+    ["/creator/streamer", "Streamer"],
+    ["/creator/streamer/control", "Control"],
     ["/creator/streamer/stats", "Estadisticas"],
-    ["/creator/podcaster/dashboard", "Podcaster"],
+    ["/creator/podcaster", "Podcaster"],
     ["/creator/podcaster/episodes", "Episodios"],
     ["/moderation", "Moderacion"],
   ];
@@ -1372,7 +1663,7 @@ export function ServiceDownPage() {
 }
 
 export function GatewayErrorPage() {
-  return <StatePage icon={<FiWifiOff />} title="Ups! Algo salio mal" text="No pudimos conectar con el servicio en este momento. Codigo de error: 502 Bad Gateway." primary="/service-down" primaryLabel="Intentar de nuevo" secondary="/" secondaryLabel="Ir al inicio" />;
+  return <StatePage icon={<FiWifiOff />} title="Ups! Algo salio mal" text="No pudimos conectar con el servicio en este momento. Codigo de error: 502 Bad Gateway." primary="/partial-unavailable" primaryLabel="Intentar de nuevo" secondary="/" secondaryLabel="Ir al inicio" />;
 }
 
 export function ConfirmDeletePage() {
@@ -1421,7 +1712,7 @@ export function SystemStatusPage() {
           </ServiceRow>
         ))}
       </Panel>
-      <ButtonRow><PrimaryLink to="/service-down"><FiAlertTriangle /> Simular servicio caido</PrimaryLink><GhostButton type="button"><FiRefreshCw /> Actualizar</GhostButton></ButtonRow>
+      <ButtonRow><PrimaryLink to="/partial-unavailable"><FiAlertTriangle /> Simular servicio caido</PrimaryLink><GhostButton type="button"><FiRefreshCw /> Actualizar</GhostButton></ButtonRow>
     </RootShell>
   );
 }
@@ -1475,9 +1766,66 @@ export function ModeratorAssignedPage() {
 }
 
 export function ModeratorsListPage() {
+  const [moderators, setModerators] = useState<string[]>(() => getModerators());
+  const [newModerator, setNewModerator] = useState("NeoModerator");
+
+  function addModerator(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const cleanName = newModerator.trim();
+    if (!cleanName) return;
+
+    const next = Array.from(new Set([...moderators, cleanName]));
+    setModerators(next);
+    saveModerators(next);
+    setNewModerator("");
+  }
+
+  function removeModerator(name: string) {
+    const next = moderators.filter((moderator) => moderator !== name);
+    setModerators(next);
+    saveModerators(next);
+  }
+
   return (
     <ModerationScreen title="Lista de moderadores" subtitle="Gestiona los moderadores de tu canal.">
-      <Panel>{["GamerX", "PixelKing", "LunaVibes", "TechNova", "NeoPlayer"].map((name) => <NotificationRow key={name} $accent="#00e5ff"><Avatar>{name.slice(0, 2).toUpperCase()}</Avatar><div><strong>{name}</strong><small>Activo</small></div><DangerButton type="button">Quitar rol</DangerButton></NotificationRow>)}</Panel>
+      <Panel>
+        <ModeratorToolbar onSubmit={addModerator}>
+          <Field>
+            <FiUser />
+            <input
+              value={newModerator}
+              onChange={(event) => setNewModerator(event.target.value)}
+              placeholder="Nombre del usuario"
+            />
+          </Field>
+          <PrimaryButton type="submit"><FiPlus /> Agregar moderador</PrimaryButton>
+        </ModeratorToolbar>
+
+        <AlertPanel>
+          <FiShield />
+          <div>
+            <strong>Moderacion por canal</strong>
+            <p>Estos permisos aplican solo al canal Cyberpunk 2077 / PixelNate. Para otro canal, el duenio debe asignarlo de nuevo.</p>
+          </div>
+        </AlertPanel>
+
+        {moderators.length === 0 ? (
+          <EmptyPanel icon={<FiShield />} title="Sin moderadores" text="Agrega usuarios para ayudarte a ordenar el chat." />
+        ) : (
+          moderators.map((name) => (
+            <NotificationRow key={name} $accent="#00e5ff">
+              <Avatar>{name.slice(0, 2).toUpperCase()}</Avatar>
+              <div>
+                <strong>{name}</strong>
+                <small>Activo · Canal Cyberpunk 2077</small>
+              </div>
+              <DangerButton type="button" onClick={() => removeModerator(name)}>
+                Quitar rol
+              </DangerButton>
+            </NotificationRow>
+          ))
+        )}
+      </Panel>
     </ModerationScreen>
   );
 }
@@ -1648,6 +1996,104 @@ const TopActions = styled.div`
   align-items: center;
   justify-content: flex-end;
   gap: 10px;
+`;
+
+const TopPopoverWrap = styled.div`
+  position: relative;
+`;
+
+const DropdownPanel = styled.div<{ $wide?: boolean }>`
+  position: absolute;
+  top: 46px;
+  right: 0;
+  z-index: 80;
+  width: ${({ $wide }) => ($wide ? "360px" : "310px")};
+  max-width: calc(100vw - 24px);
+  padding: 12px;
+  border-radius: 12px;
+  background: rgba(7, 12, 27, 0.98);
+  border: 1px solid rgba(0, 229, 255, 0.22);
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.44);
+`;
+
+const DropdownHeader = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px;
+
+  a {
+    color: #00e5ff;
+    font-size: 12px;
+    font-weight: 850;
+  }
+`;
+
+const DropdownItem = styled(Link)`
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 10px;
+  align-items: center;
+  min-height: 58px;
+  padding: 9px;
+  border-radius: 10px;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.06);
+  }
+
+  strong,
+  small {
+    display: block;
+  }
+
+  strong {
+    color: #fff;
+    font-size: 13px;
+  }
+
+  small {
+    margin-top: 3px;
+    color: rgba(226, 232, 240, 0.58);
+    font-size: 12px;
+  }
+`;
+
+const NotificationMark = styled.span<{ $accent: string }>`
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: ${({ $accent }) => $accent};
+  box-shadow: 0 0 18px ${({ $accent }) => $accent};
+`;
+
+const DropdownMenuLink = styled(Link)`
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 40px;
+  padding: 0 10px;
+  border-radius: 9px;
+  color: rgba(226, 232, 240, 0.86);
+  font-size: 13px;
+  font-weight: 850;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.06);
+    color: #fff;
+  }
+`;
+
+const UnreadDot = styled.span`
+  position: absolute;
+  top: 6px;
+  right: 7px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #a855f7;
+  box-shadow: 0 0 12px rgba(168, 85, 247, 0.9);
 `;
 
 const ShellGrid = styled.div<{ $hasRightPanel: boolean }>`
@@ -1970,28 +2416,34 @@ const DangerButton = styled.button`
   cursor: pointer;
 `;
 
-const IconRound = styled(Link)`
+const IconRound = styled.button`
+  position: relative;
   width: 36px;
   height: 36px;
+  padding: 0;
   border-radius: 50%;
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  color: #fff;
   background: rgba(15, 23, 42, 0.72);
   border: 1px solid rgba(148, 163, 184, 0.16);
+  cursor: pointer;
 `;
 
-const UserPill = styled(Link)`
+const UserPill = styled.button`
   display: inline-flex;
   align-items: center;
   gap: 8px;
   min-height: 36px;
   padding: 0 10px 0 4px;
   border-radius: 999px;
+  color: #fff;
   background: rgba(15, 23, 42, 0.74);
   border: 1px solid rgba(148, 163, 184, 0.16);
   font-size: 13px;
   font-weight: 800;
+  cursor: pointer;
 `;
 
 const Avatar = styled.div<{ $large?: boolean; $small?: boolean }>`
@@ -2522,6 +2974,27 @@ const ChatBox = styled.div`
   border: 1px solid rgba(148, 163, 184, 0.12);
 `;
 
+const HeaderActionGroup = styled.div`
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+
+  a {
+    color: rgba(226, 232, 240, 0.74);
+  }
+`;
+
+const ChatStatus = styled.div`
+  margin: 0 12px 10px;
+  padding: 9px 10px;
+  border-radius: 9px;
+  color: rgba(226, 232, 240, 0.76);
+  background: rgba(0, 229, 255, 0.08);
+  border: 1px solid rgba(0, 229, 255, 0.14);
+  font-size: 12px;
+  line-height: 1.4;
+`;
+
 const ChatMessages = styled.div`
   flex: 1;
   overflow: auto;
@@ -2529,8 +3002,9 @@ const ChatMessages = styled.div`
 `;
 
 const ChatRow = styled.div`
+  position: relative;
   display: grid;
-  grid-template-columns: 26px 1fr;
+  grid-template-columns: 26px 1fr 28px;
   gap: 8px;
   margin-bottom: 12px;
 `;
@@ -2566,6 +3040,55 @@ const ChatName = styled.div<{ $color: string }>`
     margin-left: auto;
     color: rgba(226, 232, 240, 0.42);
     font-weight: 600;
+  }
+`;
+
+const ChatActionButton = styled.button`
+  width: 28px;
+  height: 28px;
+  border: 1px solid rgba(148, 163, 184, 0.12);
+  border-radius: 8px;
+  color: rgba(226, 232, 240, 0.72);
+  background: rgba(2, 6, 23, 0.56);
+  cursor: pointer;
+
+  &:hover {
+    color: #fff;
+    border-color: rgba(0, 229, 255, 0.28);
+  }
+`;
+
+const ChatActionMenu = styled.div`
+  position: absolute;
+  top: 28px;
+  right: 0;
+  z-index: 20;
+  width: 210px;
+  padding: 8px;
+  border-radius: 10px;
+  background: rgba(7, 12, 27, 0.98);
+  border: 1px solid rgba(148, 163, 184, 0.16);
+  box-shadow: 0 18px 44px rgba(0, 0, 0, 0.4);
+
+  button {
+    width: 100%;
+    min-height: 34px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border: 0;
+    border-radius: 8px;
+    color: rgba(226, 232, 240, 0.86);
+    background: transparent;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 800;
+    text-align: left;
+  }
+
+  button:hover {
+    background: rgba(255, 255, 255, 0.07);
+    color: #fff;
   }
 `;
 
@@ -2949,6 +3472,18 @@ const QuickActions = styled.div`
   flex-wrap: wrap;
   gap: 10px;
   margin-bottom: 18px;
+`;
+
+const ModeratorToolbar = styled.form`
+  display: grid;
+  grid-template-columns: minmax(220px, 1fr) auto;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 14px;
+
+  @media (max-width: 760px) {
+    grid-template-columns: 1fr;
+  }
 `;
 
 const ChartPanel = styled.div`

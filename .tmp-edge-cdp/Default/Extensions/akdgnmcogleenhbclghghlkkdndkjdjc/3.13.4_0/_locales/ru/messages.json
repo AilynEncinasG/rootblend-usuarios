@@ -1,0 +1,3493 @@
+{
+   "extDescription": {
+      "description": "{Extension description for extensions list}",
+      "message": "SEOquake — это бесплатный плагин, предоставляющий данные основных показателей поисковой оптимизации и позволяющий работать с такими полезными инструментами, как SEO-аудит и многие другие"
+   },
+   "extName": {
+      "description": "{Main extension title}",
+      "message": "SEOquake"
+   },
+   "magic_showPanelQuiz1": {
+      "description": "{Special configuration key, DO NOT TOUCH}",
+      "message": "0"
+   },
+   "magic_showPanelQuiz2": {
+      "description": "{Special configuration key, DO NOT TOUCH}",
+      "message": "1"
+   },
+   "menuDisabled": {
+      "description": "{Not used}",
+      "message": "Выключено"
+   },
+   "menuEnabled": {
+      "description": "{Not used}",
+      "message": "Включено"
+   },
+   "menuItemAbout": {
+      "description": "{Not used}",
+      "message": "О SEOquake"
+   },
+   "menuItemDensity": {
+      "description": "{Context menu item for keywords Density}",
+      "message": "Плотность..."
+   },
+   "menuItemDiagnosis": {
+      "description": "{Context menu item for Diagnosis tool}",
+      "message": "Диагностика..."
+   },
+   "menuItemFeedback": {
+      "description": "{Not used}",
+      "message": "Оставить отзыв..."
+   },
+   "menuItemFullInfo": {
+      "description": "{Not used}",
+      "message": "Полная информация"
+   },
+   "menuItemHighlight": {
+      "description": "{Not used}",
+      "message": "Выделять ссылки «nofollow»"
+   },
+   "menuItemLinkInfo": {
+      "description": "{Context menu item for Compare URLs tool}",
+      "message": "Сравнение URL..."
+   },
+   "menuItemOptions": {
+      "description": "{Context menu item for configuration page}",
+      "message": "Настройки..."
+   },
+   "menuItemPageinfo": {
+      "description": "{Context menu item for Page info tool}",
+      "message": "Сведения о странице..."
+   },
+   "menuItemSEOBar": {
+      "description": "{Not used}",
+      "message": "SEObar"
+   },
+   "menuItemSERPBing": {
+      "description": "{Not used}",
+      "message": "Bing"
+   },
+   "menuItemSERPGoogle": {
+      "description": "{Not used}",
+      "message": "Google"
+   },
+   "menuItemSERPYahoo": {
+      "description": "{Not used}",
+      "message": "Yahoo"
+   },
+   "menuItemSERPYandex": {
+      "description": "{Not used}",
+      "message": "Яндекс"
+   },
+   "menuPlugins": {
+      "description": "{Not used}",
+      "message": "Плагины"
+   },
+   "sqCaptcha_header": {
+      "description": "{Title for captcha page seoquake panel}",
+      "message": "Ой! Похоже это вызвано SEOquake"
+   },
+   "sqCaptcha_text": {
+      "description": "{Text for captcha page seoquake panel}",
+      "message": "Так как SEOquake собирает единовременно множество данных, поисковая система расценивает это как спам. Попробуйте отключить ненужные параметры или [https://www.seoquake.com/guide/troubleshooting.html](узнайте больше о данной проблеме в нашем руководстве)."
+   },
+   "sqChangelog_close": {
+      "description": "{Hide changelog panel button}",
+      "message": "Спасибо, понятно!"
+   },
+   "sqChangelog_title": {
+      "description": "{Header for changelog panel {version} and {date} will be automaticaly replaced}",
+      "message": "Что нового в версии {version} от {date}?"
+   },
+   "sqCommon_error_window_close": {
+      "description": "{Common report error window close button title}",
+      "message": "Закрыть"
+   },
+   "sqCommon_error_window_title": {
+      "description": "{Common report error window title}",
+      "message": "В процессе обработки произошла ошибка"
+   },
+   "sqCommon_howto_link": {
+      "description": "{Reports top menu How to use link}",
+      "message": "Инструкции по работе"
+   },
+   "sqCommon_menu_compare": {
+      "description": "{Common report menu item compare urls}",
+      "message": " Сравнение URL/доменов"
+   },
+   "sqCommon_menu_density": {
+      "description": "{Common report menu item density}",
+      "message": "Плотность"
+   },
+   "sqCommon_menu_diagnosis": {
+      "description": "{Common report menu item diagnosis}",
+      "message": "Диагностика"
+   },
+   "sqCommon_menu_external": {
+      "description": "{Common report menu item external}",
+      "message": "Внешние"
+   },
+   "sqCommon_menu_internal": {
+      "description": "{Common report menu item internal}",
+      "message": "Внутренние"
+   },
+   "sqCommon_menu_pageinfo": {
+      "description": "{Common report menu item page info}",
+      "message": "Сведения о странице"
+   },
+   "sqCommon_parameters_configure_window_cancel": {
+      "description": "{Parameters configure window cancel button title}",
+      "message": "Отмена"
+   },
+   "sqCommon_parameters_configure_window_save": {
+      "description": "{Parameters configure window save button title}",
+      "message": "Сохранить"
+   },
+   "sqCommon_parameters_configure_window_title": {
+      "description": "{Parameters configure window title at common report}",
+      "message": "Добавить/скрыть параметры в отчете"
+   },
+   "sqCommon_suggest_link": {
+      "description": "{Reports top menu Have a suggestion link}",
+      "message": "Есть предложение?"
+   },
+   "sqCompare_button_configure": {
+      "description": "{Compare link save metrics button}",
+      "message": "Добавить/скрыть параметры"
+   },
+   "sqCompare_button_configure_tooltip": {
+      "description": "{Compare link save metrics button title}",
+      "message": "Настройка параметров для этого отчета"
+   },
+   "sqCompare_button_edit": {
+      "description": "{Compare link save metrics button}",
+      "message": "Изменить список"
+   },
+   "sqCompare_button_edit_tooltip": {
+      "description": "{Compare link save metrics button title}",
+      "message": "Изменение списка URL"
+   },
+   "sqCompare_button_import": {
+      "description": "{Compare links import URLs from file button}",
+      "message": "Импортировать ссылки из файла CSV"
+   },
+   "sqCompare_button_process": {
+      "description": "{Compare links process data button text}",
+      "message": "Обработать URL"
+   },
+   "sqCompare_button_request": {
+      "description": "{Compare link request metrics button}",
+      "message": "Запросить все параметры"
+   },
+   "sqCompare_button_request_tooltip": {
+      "description": "{Compare link request metrics button title}",
+      "message": "Запросить все параметры"
+   },
+   "sqCompare_button_save": {
+      "description": "{Compare link save metrics button}",
+      "message": "Сохранить в формате CSV"
+   },
+   "sqCompare_button_save_tooltip": {
+      "description": "{Compare link save metrics button title}",
+      "message": "Сохранение данных в файле CSV"
+   },
+   "sqCompare_document_title": {
+      "description": "{Compare links document title}",
+      "message": "Сведения о ссылках SEOquake"
+   },
+   "sqCompare_title": {
+      "description": "{Compare links page title}",
+      "message": "Сравнение URL/доменов"
+   },
+   "sqCompare_url_to_check_1": {
+      "description": "{Compare links textarea message bold text}",
+      "message": "Укажите URL или домен для проверки"
+   },
+   "sqCompare_url_to_check_2": {
+      "description": "{Compare links textarea message normal text}",
+      "message": " (по одному в каждой строке)."
+   },
+   "sqCountry_a1": {
+      "message": "Анонимный прокси"
+   },
+   "sqCountry_a2": {
+      "message": "Оператор спутникового вещания"
+   },
+   "sqCountry_ad": {
+      "message": "Андорра"
+   },
+   "sqCountry_ae": {
+      "message": "Объединенные Арабские Эмираты"
+   },
+   "sqCountry_af": {
+      "message": "Афганистан"
+   },
+   "sqCountry_ag": {
+      "message": "Антигуа и Барбуда"
+   },
+   "sqCountry_ai": {
+      "message": "Ангилья"
+   },
+   "sqCountry_al": {
+      "message": "Албания"
+   },
+   "sqCountry_am": {
+      "message": "Армения"
+   },
+   "sqCountry_ao": {
+      "message": "Ангола"
+   },
+   "sqCountry_ap": {
+      "message": "Азиатско-Тихоокеанский регион"
+   },
+   "sqCountry_ar": {
+      "message": "Аргентина"
+   },
+   "sqCountry_at": {
+      "message": "Австрия"
+   },
+   "sqCountry_au": {
+      "message": "Австралия"
+   },
+   "sqCountry_ax": {
+      "message": "Аландские острова"
+   },
+   "sqCountry_az": {
+      "message": "Азербайджан"
+   },
+   "sqCountry_ba": {
+      "message": "Босния и Герцеговина"
+   },
+   "sqCountry_bb": {
+      "message": "Барбадос"
+   },
+   "sqCountry_bd": {
+      "message": "Бангладеш"
+   },
+   "sqCountry_be": {
+      "message": "Бельгия"
+   },
+   "sqCountry_bf": {
+      "message": "Буркина-Фасо"
+   },
+   "sqCountry_bg": {
+      "message": "Болгария"
+   },
+   "sqCountry_bh": {
+      "message": "Бахрейн"
+   },
+   "sqCountry_bi": {
+      "message": "Бурунди"
+   },
+   "sqCountry_bj": {
+      "message": "Бенин"
+   },
+   "sqCountry_bm": {
+      "message": "Бермудские острова"
+   },
+   "sqCountry_bn": {
+      "message": "Бруней"
+   },
+   "sqCountry_bo": {
+      "message": "Боливия"
+   },
+   "sqCountry_br": {
+      "message": "Бразилия"
+   },
+   "sqCountry_bs": {
+      "message": "Багамские острова"
+   },
+   "sqCountry_bt": {
+      "message": "Бутан"
+   },
+   "sqCountry_bw": {
+      "message": "Ботсвана"
+   },
+   "sqCountry_by": {
+      "message": "Беларусь"
+   },
+   "sqCountry_bz": {
+      "message": "Белиз"
+   },
+   "sqCountry_ca": {
+      "message": "Канада"
+   },
+   "sqCountry_cd": {
+      "message": "Дем. Респ. Конго"
+   },
+   "sqCountry_cf": {
+      "message": "Центральноафриканская Респ."
+   },
+   "sqCountry_cg": {
+      "message": "Конго"
+   },
+   "sqCountry_ch": {
+      "message": "Швейцария"
+   },
+   "sqCountry_ci": {
+      "message": "Кот-д’Ивуар"
+   },
+   "sqCountry_cl": {
+      "message": "Чили"
+   },
+   "sqCountry_cm": {
+      "message": "Камерун"
+   },
+   "sqCountry_cn": {
+      "message": "Китай"
+   },
+   "sqCountry_co": {
+      "message": "Колумбия"
+   },
+   "sqCountry_cr": {
+      "message": "Коста-Рика"
+   },
+   "sqCountry_cu": {
+      "message": "Куба"
+   },
+   "sqCountry_cv": {
+      "message": "Кабо-Верде"
+   },
+   "sqCountry_cw": {
+      "message": "Кюрасао"
+   },
+   "sqCountry_cy": {
+      "message": "Кипр"
+   },
+   "sqCountry_cz": {
+      "message": "Чехия"
+   },
+   "sqCountry_de": {
+      "message": "Германия"
+   },
+   "sqCountry_dj": {
+      "message": "Джибути"
+   },
+   "sqCountry_dk": {
+      "message": "Дания"
+   },
+   "sqCountry_dm": {
+      "message": "Доминика"
+   },
+   "sqCountry_do": {
+      "message": "Доминиканская Респ."
+   },
+   "sqCountry_dz": {
+      "message": "Алжир"
+   },
+   "sqCountry_ec": {
+      "message": "Эквадор"
+   },
+   "sqCountry_ee": {
+      "message": "Эстония"
+   },
+   "sqCountry_eg": {
+      "message": "Египет"
+   },
+   "sqCountry_eh": {
+      "message": "Западная Сахара"
+   },
+   "sqCountry_er": {
+      "message": "Эритрея"
+   },
+   "sqCountry_es": {
+      "message": "Испания"
+   },
+   "sqCountry_et": {
+      "message": "Эфиопия"
+   },
+   "sqCountry_eu": {
+      "message": "Европейский Союз"
+   },
+   "sqCountry_fi": {
+      "message": "Финляндия"
+   },
+   "sqCountry_fj": {
+      "message": "Фиджи"
+   },
+   "sqCountry_fk": {
+      "message": "Фолклендские острова"
+   },
+   "sqCountry_fm": {
+      "message": "Федеративные Штаты Микронезии"
+   },
+   "sqCountry_fo": {
+      "message": "Фарерские острова"
+   },
+   "sqCountry_fr": {
+      "message": "Франция"
+   },
+   "sqCountry_ga": {
+      "message": "Габон"
+   },
+   "sqCountry_gb": {
+      "message": "Великобритания"
+   },
+   "sqCountry_ge": {
+      "message": "Джорджия"
+   },
+   "sqCountry_gg": {
+      "message": "Гернси"
+   },
+   "sqCountry_gh": {
+      "message": "Гана"
+   },
+   "sqCountry_gi": {
+      "message": "Гибралтар"
+   },
+   "sqCountry_gl": {
+      "message": "Гренландия"
+   },
+   "sqCountry_gm": {
+      "message": "Гамбия"
+   },
+   "sqCountry_gn": {
+      "message": "Гвинея"
+   },
+   "sqCountry_gp": {
+      "message": "Гваделупа"
+   },
+   "sqCountry_gq": {
+      "message": "Экваториальная Гвинея"
+   },
+   "sqCountry_gr": {
+      "message": "Греция"
+   },
+   "sqCountry_gs": {
+      "message": "Южная Георгия и Южные Сандвичевы острова"
+   },
+   "sqCountry_gt": {
+      "message": "Гватемала"
+   },
+   "sqCountry_gu": {
+      "message": "Гуам"
+   },
+   "sqCountry_gw": {
+      "message": "Гвинея-Бисау"
+   },
+   "sqCountry_gy": {
+      "message": "Гайана"
+   },
+   "sqCountry_hk": {
+      "message": "Гонконг"
+   },
+   "sqCountry_hn": {
+      "message": "Гондурас"
+   },
+   "sqCountry_hr": {
+      "message": "Хорватия"
+   },
+   "sqCountry_ht": {
+      "message": "Гаити"
+   },
+   "sqCountry_hu": {
+      "message": "Венгрия"
+   },
+   "sqCountry_id": {
+      "message": "Индонезия"
+   },
+   "sqCountry_ie": {
+      "message": "Ирландия"
+   },
+   "sqCountry_il": {
+      "message": "Израиль"
+   },
+   "sqCountry_im": {
+      "message": "Остров Мэн"
+   },
+   "sqCountry_in": {
+      "message": "Индия"
+   },
+   "sqCountry_iq": {
+      "message": "Ирак"
+   },
+   "sqCountry_ir": {
+      "message": "Иран"
+   },
+   "sqCountry_is": {
+      "message": "Исландия"
+   },
+   "sqCountry_it": {
+      "message": "Италия"
+   },
+   "sqCountry_jm": {
+      "message": "Ямайка"
+   },
+   "sqCountry_jo": {
+      "message": "Иордания"
+   },
+   "sqCountry_jp": {
+      "message": "Япония"
+   },
+   "sqCountry_ke": {
+      "message": "Кения"
+   },
+   "sqCountry_kg": {
+      "message": "Киргизия"
+   },
+   "sqCountry_kh": {
+      "message": "Камбоджа"
+   },
+   "sqCountry_km": {
+      "message": "Коморские острова"
+   },
+   "sqCountry_kn": {
+      "message": "Сент-Китс и Невис"
+   },
+   "sqCountry_kp": {
+      "message": "Корейская Народно-Демократ. Респ."
+   },
+   "sqCountry_kr": {
+      "message": "Респ."
+   },
+   "sqCountry_kw": {
+      "message": "Кувейт"
+   },
+   "sqCountry_ky": {
+      "message": "Каймановы острова"
+   },
+   "sqCountry_kz": {
+      "message": "Казахстан"
+   },
+   "sqCountry_la": {
+      "message": "Лаосская Народно-Демократ. Респ."
+   },
+   "sqCountry_lb": {
+      "message": "Ливан"
+   },
+   "sqCountry_lc": {
+      "message": "Сент-Люсия"
+   },
+   "sqCountry_li": {
+      "message": "Лихтенштейн"
+   },
+   "sqCountry_lk": {
+      "message": "Шри-Ланка"
+   },
+   "sqCountry_lr": {
+      "message": "Либерия"
+   },
+   "sqCountry_ls": {
+      "message": "Лесото"
+   },
+   "sqCountry_lt": {
+      "message": "Литва"
+   },
+   "sqCountry_lu": {
+      "message": "Люксембург"
+   },
+   "sqCountry_lv": {
+      "message": "Латвия"
+   },
+   "sqCountry_ly": {
+      "message": "Ливия"
+   },
+   "sqCountry_ma": {
+      "message": "Марокко"
+   },
+   "sqCountry_mc": {
+      "message": "Монако"
+   },
+   "sqCountry_md": {
+      "message": "Молдова"
+   },
+   "sqCountry_me": {
+      "message": "Черногория"
+   },
+   "sqCountry_mg": {
+      "message": "Мадагаскар"
+   },
+   "sqCountry_mk": {
+      "message": "Македония"
+   },
+   "sqCountry_ml": {
+      "message": "Мали"
+   },
+   "sqCountry_mm": {
+      "message": "Мьянма"
+   },
+   "sqCountry_mn": {
+      "message": "Монголия"
+   },
+   "sqCountry_mo": {
+      "message": "Макао"
+   },
+   "sqCountry_mp": {
+      "message": "Северные Марианские острова"
+   },
+   "sqCountry_mr": {
+      "message": "Мавритания"
+   },
+   "sqCountry_mt": {
+      "message": "Мальта"
+   },
+   "sqCountry_mu": {
+      "message": "Маврикий"
+   },
+   "sqCountry_mv": {
+      "message": "Мальдивские острова"
+   },
+   "sqCountry_mw": {
+      "message": "Малави"
+   },
+   "sqCountry_mx": {
+      "message": "Мексика"
+   },
+   "sqCountry_my": {
+      "message": "Малайзия"
+   },
+   "sqCountry_mz": {
+      "message": "Мозамбик"
+   },
+   "sqCountry_na": {
+      "message": "Намибия"
+   },
+   "sqCountry_nc": {
+      "message": "Новая Каледония"
+   },
+   "sqCountry_ne": {
+      "message": "Нигер"
+   },
+   "sqCountry_ng": {
+      "message": "Нигерия"
+   },
+   "sqCountry_ni": {
+      "message": "Никарагуа"
+   },
+   "sqCountry_nl": {
+      "message": "Нидерланды"
+   },
+   "sqCountry_no": {
+      "message": "Норвегия"
+   },
+   "sqCountry_np": {
+      "message": "Непал"
+   },
+   "sqCountry_nz": {
+      "message": "Новая Зеландия"
+   },
+   "sqCountry_o1": {
+      "message": "Другое"
+   },
+   "sqCountry_om": {
+      "message": "Оман"
+   },
+   "sqCountry_pa": {
+      "message": "Панама"
+   },
+   "sqCountry_pe": {
+      "message": "Перу"
+   },
+   "sqCountry_pf": {
+      "message": "ФранцузскаяПолинезия"
+   },
+   "sqCountry_pg": {
+      "message": "Папуа-Новая Гвинея"
+   },
+   "sqCountry_ph": {
+      "message": "Филиппины"
+   },
+   "sqCountry_pk": {
+      "message": "Пакистан"
+   },
+   "sqCountry_pl": {
+      "message": "Польша"
+   },
+   "sqCountry_pm": {
+      "message": "Сен-Пьер и Микелон"
+   },
+   "sqCountry_pr": {
+      "message": "Пуэрто-Рико"
+   },
+   "sqCountry_ps": {
+      "message": "Палестина"
+   },
+   "sqCountry_pt": {
+      "message": "Португалия"
+   },
+   "sqCountry_py": {
+      "message": "Парагвай"
+   },
+   "sqCountry_qa": {
+      "message": "Катар"
+   },
+   "sqCountry_ro": {
+      "message": "Румыния"
+   },
+   "sqCountry_rs": {
+      "message": "Сербия"
+   },
+   "sqCountry_ru": {
+      "message": "Россия"
+   },
+   "sqCountry_rw": {
+      "message": "Руанда"
+   },
+   "sqCountry_sa": {
+      "message": "Саудовская Аравия"
+   },
+   "sqCountry_sb": {
+      "message": "Соломоновы острова"
+   },
+   "sqCountry_sc": {
+      "message": "Сейшельские острова"
+   },
+   "sqCountry_sd": {
+      "message": "Судан"
+   },
+   "sqCountry_se": {
+      "message": "Швеция"
+   },
+   "sqCountry_sg": {
+      "message": "Сингапур"
+   },
+   "sqCountry_si": {
+      "message": "Словения"
+   },
+   "sqCountry_sk": {
+      "message": "Словакия"
+   },
+   "sqCountry_sl": {
+      "message": "Сьерра-Леоне"
+   },
+   "sqCountry_sm": {
+      "message": "Сан-Марино"
+   },
+   "sqCountry_sn": {
+      "message": "Сенегал"
+   },
+   "sqCountry_so": {
+      "message": "Сомали"
+   },
+   "sqCountry_sr": {
+      "message": "Суринам"
+   },
+   "sqCountry_ss": {
+      "message": "Южный Судан"
+   },
+   "sqCountry_st": {
+      "message": "Сан-Томе и Принсипи"
+   },
+   "sqCountry_sv": {
+      "message": "Сальвадор"
+   },
+   "sqCountry_sy": {
+      "message": "Сирия"
+   },
+   "sqCountry_sz": {
+      "message": "Свазиленд"
+   },
+   "sqCountry_td": {
+      "message": "Чад"
+   },
+   "sqCountry_tf": {
+      "message": "Французские Южные и Антарктич. территории"
+   },
+   "sqCountry_tg": {
+      "message": "Того"
+   },
+   "sqCountry_th": {
+      "message": "Таиланд"
+   },
+   "sqCountry_tj": {
+      "message": "Таджикистан"
+   },
+   "sqCountry_tl": {
+      "message": "Timor-Leste"
+   },
+   "sqCountry_tm": {
+      "message": "Туркменистан"
+   },
+   "sqCountry_tn": {
+      "message": "Тунис"
+   },
+   "sqCountry_tr": {
+      "message": "Турция"
+   },
+   "sqCountry_tt": {
+      "message": "Тринидад и Тобаго"
+   },
+   "sqCountry_tw": {
+      "message": "Тайвань"
+   },
+   "sqCountry_tz": {
+      "message": "Танзания"
+   },
+   "sqCountry_ua": {
+      "message": "Украина"
+   },
+   "sqCountry_ug": {
+      "message": "Уганда"
+   },
+   "sqCountry_us": {
+      "message": "США"
+   },
+   "sqCountry_uy": {
+      "message": "Уругвай"
+   },
+   "sqCountry_uz": {
+      "message": "Узбекистан"
+   },
+   "sqCountry_va": {
+      "message": "Святой Престол (город-государство Ватикан)"
+   },
+   "sqCountry_ve": {
+      "message": "Венесуэла"
+   },
+   "sqCountry_vg": {
+      "message": "Виргинские Острова (Великобритания)"
+   },
+   "sqCountry_vn": {
+      "message": "Вьетнам"
+   },
+   "sqCountry_vu": {
+      "message": "Вануату"
+   },
+   "sqCountry_ws": {
+      "message": "Самоа"
+   },
+   "sqCountry_ye": {
+      "message": "Йемен"
+   },
+   "sqCountry_za": {
+      "message": "ЮАР"
+   },
+   "sqCountry_zm": {
+      "message": "Замбия"
+   },
+   "sqCountry_zw": {
+      "message": "Зимбабве"
+   },
+   "sqDensity_1word_link": {
+      "description": "",
+      "message": "Одиночные ключевые слова"
+   },
+   "sqDensity_2_word_phrases": {
+      "description": "",
+      "message": "Комбинации из 2 слов:"
+   },
+   "sqDensity_2_words_title": {
+      "description": "",
+      "message": "Комбинации из 2 слов"
+   },
+   "sqDensity_2word_link": {
+      "description": "",
+      "message": "Комбинации из 2 ключевых слов"
+   },
+   "sqDensity_3_word_phrases": {
+      "description": "",
+      "message": "Комбинации из 3 слов:"
+   },
+   "sqDensity_3_words_title": {
+      "description": "",
+      "message": "Комбинации из 3 слов"
+   },
+   "sqDensity_3word_link": {
+      "description": "",
+      "message": "Таблица ключевых слов из 3х слов"
+   },
+   "sqDensity_4_word_phrases": {
+      "description": "",
+      "message": "Комбинации из 4 слов:"
+   },
+   "sqDensity_4_words_title": {
+      "description": "",
+      "message": "Комбинации из 4 слов"
+   },
+   "sqDensity_4word_link": {
+      "description": "",
+      "message": "Таблица ключевых слов из 4х слов"
+   },
+   "sqDensity_all_words_title": {
+      "description": "",
+      "message": "Все слова"
+   },
+   "sqDensity_bookmarks_title": {
+      "description": "",
+      "message": "Закладки"
+   },
+   "sqDensity_button_configure": {
+      "description": "",
+      "message": "Составить список стоп-слов"
+   },
+   "sqDensity_button_filter_apply": {
+      "description": "",
+      "message": "Применить"
+   },
+   "sqDensity_button_filter_reset": {
+      "description": "",
+      "message": "Сброс"
+   },
+   "sqDensity_button_save": {
+      "description": "",
+      "message": "Сохранить в формате CSV"
+   },
+   "sqDensity_configure_close": {
+      "message": "Закрыть"
+   },
+   "sqDensity_configure_custom_list": {
+      "message": "Использовать настраиваемый список стоп-слов"
+   },
+   "sqDensity_configure_custom_list_placeholder": {
+      "message": "Введите слова, которые следует исключить"
+   },
+   "sqDensity_configure_default_label": {
+      "message": "Использовать по умолчанию "
+   },
+   "sqDensity_configure_default_link": {
+      "message": "список стоп-слов"
+   },
+   "sqDensity_configure_include_list": {
+      "message": "Использовать белый список"
+   },
+   "sqDensity_configure_include_list_placeholder": {
+      "message": "Введите слова, которые следует включить"
+   },
+   "sqDensity_configure_save": {
+      "message": "Сохранить"
+   },
+   "sqDensity_configure_title": {
+      "message": "Составить список стоп-слов"
+   },
+   "sqDensity_contains": {
+      "description": "",
+      "message": "Содержит"
+   },
+   "sqDensity_filter_title": {
+      "description": "",
+      "message": "Фильтр"
+   },
+   "sqDensity_keywords_density": {
+      "description": "",
+      "message": "Плотность"
+   },
+   "sqDensity_keywords_foundin": {
+      "description": "",
+      "message": "Найдено в"
+   },
+   "sqDensity_keywords_keyword": {
+      "description": "",
+      "message": "Ключевое слово"
+   },
+   "sqDensity_keywords_prominence": {
+      "description": "",
+      "message": "Заметность"
+   },
+   "sqDensity_keywords_repeats": {
+      "description": "",
+      "message": "Повторы"
+   },
+   "sqDensity_keywords_title": {
+      "description": "",
+      "message": "Облако ключевых слов"
+   },
+   "sqDensity_original_link": {
+      "description": "",
+      "message": "Исходный текст"
+   },
+   "sqDensity_original_text": {
+      "description": "",
+      "message": "Исходный текст:"
+   },
+   "sqDensity_pageinfo_description_title": {
+      "description": "",
+      "message": "Метаописание:"
+   },
+   "sqDensity_pageinfo_keywords_title": {
+      "description": "",
+      "message": "Метатег ключевых слов:"
+   },
+   "sqDensity_pageinfo_title": {
+      "description": "",
+      "message": "Сведения о странице"
+   },
+   "sqDensity_pageinfo_title_title": {
+      "description": "",
+      "message": "Заголовок:"
+   },
+   "sqDensity_regexp": {
+      "description": "",
+      "message": "Рег. выраж."
+   },
+   "sqDensity_starts_with": {
+      "description": "",
+      "message": "Начинается с"
+   },
+   "sqDensity_title": {
+      "description": "{Keywords density report title}",
+      "message": "Плотность ключевых слов"
+   },
+   "sqDensity_totalLinks": {
+      "description": "",
+      "message": "Общее количество слов:"
+   },
+   "sqDensity_type_D_hint": {
+      "description": "{Keywords density tables found in page description tooltip}",
+      "message": "Это ключевое слово найдено в метаописании"
+   },
+   "sqDensity_type_H1_hint": {
+      "description": "{Keywords density tables found in page h1 tooltip}",
+      "message": "Это ключевое слово найдено в основном заголовке H1"
+   },
+   "sqDensity_type_K_hint": {
+      "description": "{Keywords density tables found in page keywords tooltip}",
+      "message": "Это ключевое слово найдено в метатеге ключевых слов"
+   },
+   "sqDensity_type_T_hint": {
+      "description": "{Keywords density tables found in page title tooltip}",
+      "message": "Это ключевое слово найдено в заголовке страницы"
+   },
+   "sqDiagnosis_audit_banner": {
+      "description": "{Semrush banner text}",
+      "message": "БЕСПЛАТНЫЙ аудит 100 страниц за 5 минут"
+   },
+   "sqDiagnosis_canonical_average": {
+      "description": "{Diagnosis canonical rule - average state}",
+      "message": "Атрибут canonical не установлен для данной страницы."
+   },
+   "sqDiagnosis_canonical_bad": {
+      "description": "{Diagnosis canonical rule - bad state}",
+      "message": "Атрибут canonical установлен для данной страницы, но недоступен."
+   },
+   "sqDiagnosis_canonical_good": {
+      "description": "{Diagnosis canonical rule - good state}",
+      "message": "Атрибут canonical установлен для данной страницы, ссылка работает."
+   },
+   "sqDiagnosis_charset_bad_one": {
+      "description": "{Diagnosis charset rule - bad state}",
+      "message": "Неверная кодировка символов/языковая кодировка затруднит поисковую оптимизацию. Указание кодировки символов/языковой кодировки повышает эффективность обработки страницы."
+   },
+   "sqDiagnosis_charset_good_one": {
+      "description": "{Diagnosis charset rule - good state}",
+      "message": "Указание кодировки символов/языковой кодировки значительно улучшит результаты поисковой оптимизации. Оно также повышает эффективность обработки страницы."
+   },
+   "sqDiagnosis_close": {
+      "description": "{Tips closed title}",
+      "message": "Советы"
+   },
+   "sqDiagnosis_detecting": {
+      "description": "{Diagnosis slow rule processing message}",
+      "message": "Определение..."
+   },
+   "sqDiagnosis_doctype_bad": {
+      "description": "{Diagnosis doctype rule - bad state}",
+      "message": "Тип документа не указан."
+   },
+   "sqDiagnosis_doctype_good": {
+      "description": "{Diagnosis doctype rule - good state}",
+      "message": "Отлично! Тип документа указан."
+   },
+   "sqDiagnosis_error": {
+      "description": "{Counter for failed tests}",
+      "message": "Ошибки:"
+   },
+   "sqDiagnosis_error_message": {
+      "message": "Ошибка"
+   },
+   "sqDiagnosis_favicon_bad": {
+      "description": "{Diagnosis favicon rule - bad state}",
+      "message": "Это плохо! Мы рекомендуем создать для сайта favicon."
+   },
+   "sqDiagnosis_favicon_good": {
+      "description": "{Diagnosis favicon rule - good state}",
+      "message": "Ваш сайт имеет собственный favicon, что повышает его узнаваемость."
+   },
+   "sqDiagnosis_feeds_bad": {
+      "description": "{Diagnosis feed rule - bad state}",
+      "message": "Ваша страница не предоставляет фид."
+   },
+   "sqDiagnosis_feeds_good": {
+      "description": "{Diagnosis feed rule - good state}",
+      "message": "Ваша страница предоставляет фид."
+   },
+   "sqDiagnosis_feeds_notexact": {
+      "description": "{Diagnosis feed rule - average state}",
+      "message": "Нам не удалось найти фид на этой странице, но мы обнаружили его на других страницах вашего сайта, что очень хорошо."
+   },
+   "sqDiagnosis_flash_average": {
+      "description": "{Diagnosis flash rule - average state}",
+      "message": "Ваша страница содержит элементы Flash, но объем текста на ней достаточен."
+   },
+   "sqDiagnosis_flash_bad": {
+      "description": "{Diagnosis flash rule - bad state}",
+      "message": "Ваша страница содержит большое количество элементов Flash и недостаточный объем текста. Это мешает поисковой оптимизации."
+   },
+   "sqDiagnosis_flash_good": {
+      "description": "{Diagnosis flash rule - good state}",
+      "message": "Не обнаружено"
+   },
+   "sqDiagnosis_frames_average": {
+      "description": "{Diagnosis frames rule - average state}",
+      "message": "На вашем сайте обнаружен один элемент FRAME. Как правило, такие элементы мешают поисковой оптимизации."
+   },
+   "sqDiagnosis_frames_bad": {
+      "description": "{Diagnosis frames rule - bad state}",
+      "message": "На вашем сайте обнаружены фреймы. Как правило, такие элементы мешают поисковой оптимизации."
+   },
+   "sqDiagnosis_frames_exists": {
+      "description": "{Diagnosis frames rule - average state}",
+      "message": "На вашем сайте обнаружены элементы IFRAME. В случае правильного использования они не мешают поисковой оптимизации."
+   },
+   "sqDiagnosis_frames_good": {
+      "description": "{Diagnosis frames rule - good state}",
+      "message": "Не обнаружено"
+   },
+   "sqDiagnosis_ganal_bad_one": {
+      "description": "{Diagnosis analytics rule - bad state}",
+      "message": "Ваш сайт не отслеживается Google™ Analytics. Мы рекомендуем использовать этот эффективный инструмент."
+   },
+   "sqDiagnosis_ganal_good_one": {
+      "description": "{Diagnosis analytics rule - good state}",
+      "message": "Ваш сайт отслеживается Google™ Analytics. Это очень эффективный инструмент, возможности которого следует использовать."
+   },
+   "sqDiagnosis_headings_average": {
+      "description": "{Diagnosis headings rule - average state}",
+      "message": "На вашей странице используются HTML-заголовки."
+   },
+   "sqDiagnosis_headings_average_one": {
+      "description": "{Diagnosis headings rule - bad state}",
+      "message": "На вашей странице используются HTML-заголовки, но заголовки \u003CH1>–\u003CH3> не отображаются. Рекомендуется улучшить использование заголовков."
+   },
+   "sqDiagnosis_headings_bad": {
+      "description": "{Diagnosis headings rule - bad state}",
+      "message": "Рекомендуется использовать HTML-заголовки."
+   },
+   "sqDiagnosis_headings_good": {
+      "description": "{Diagnosis headings rule - good state}",
+      "message": "Отлично! На вашей странице используются HTML-заголовки (\u003CH1>–\u003CH3>), среди которых только один заголовок \u003CH1>."
+   },
+   "sqDiagnosis_images_average": {
+      "description": "{Diagnosis images rule - average state}",
+      "message": "{withoutAlt} изображений без атрибута ALT."
+   },
+   "sqDiagnosis_images_bad": {
+      "description": "{Diagnosis images rule - bad state}",
+      "message": "{withoutAlt} изображений без атрибута ALT."
+   },
+   "sqDiagnosis_images_good": {
+      "description": "{Diagnosis images rule - good state}",
+      "message": "Все изображения имеют атрибут ALT."
+   },
+   "sqDiagnosis_internal_error": {
+      "description": "{Common error for processing diagnosis rule}",
+      "message": "Проблема при обработке источника параметра"
+   },
+   "sqDiagnosis_kwds_average_not_enough": {
+      "description": "{Diagnosis keywords rule all state}",
+      "message": "{len} символов, {cLen} слов."
+   },
+   "sqDiagnosis_kwds_average_too_long": {
+      "description": "{Diagnosis keywords rule all state}",
+      "message": "{len} символов, {cLen} слов."
+   },
+   "sqDiagnosis_kwds_average_too_many": {
+      "description": "{Diagnosis keywords rule all state}",
+      "message": "{len} символов, {cLen} слов."
+   },
+   "sqDiagnosis_kwds_average_too_short": {
+      "description": "{Diagnosis keywords rule all state}",
+      "message": "{len} символов, {cLen} слов."
+   },
+   "sqDiagnosis_kwds_bad": {
+      "description": "{Diagnosis keywords rule all state}",
+      "message": "{len} символов, {cLen} слов."
+   },
+   "sqDiagnosis_kwds_bad_more": {
+      "description": "{Diagnosis keywords rule all state}",
+      "message": "{len} символов, {cLen} слов."
+   },
+   "sqDiagnosis_kwds_bad_too_many": {
+      "description": "{Diagnosis keywords rule all state}",
+      "message": "{len} символов, {cLen} слов."
+   },
+   "sqDiagnosis_kwds_good": {
+      "description": "{Diagnosis keywords rule all state}",
+      "message": "{len} символов, {cLen} слов."
+   },
+   "sqDiagnosis_lang_average": {
+      "description": "{Diagnosis lang rule - average state}",
+      "message": "Язык вашего сайта определен, но лишь с помощью метатега языка. Атрибут «lang» имеет более высокий приоритет."
+   },
+   "sqDiagnosis_lang_bad": {
+      "description": "{Diagnosis lang rule - bad state}",
+      "message": "Язык вашего сайта не определен."
+   },
+   "sqDiagnosis_lang_good": {
+      "description": "{Diagnosis lang rule - good state}",
+      "message": "Отлично! Язык вашего сайта определен."
+   },
+   "sqDiagnosis_message": {
+      "description": "{Processing data message}",
+      "message": "Идет обработка..."
+   },
+   "sqDiagnosis_meta_average": {
+      "description": "{Diagnosis meta description rule - average state}",
+      "message": "{len} символов — средне. Предпочтительна длина от 160 до 300 символов."
+   },
+   "sqDiagnosis_meta_bad_not_long": {
+      "description": "{Diagnosis meta description rule - bad state too short}",
+      "message": "{len} символов — удлините описание до 160 символов."
+   },
+   "sqDiagnosis_meta_bad_not_short": {
+      "description": "{Diagnosis meta description rule - bad state too long}",
+      "message": "{len} символов — сократите описание до 300 символов."
+   },
+   "sqDiagnosis_meta_good": {
+      "description": "{Diagnosis meta description rule - good state}",
+      "message": "{len} символов — оптимально."
+   },
+   "sqDiagnosis_microformats_average": {
+      "description": "{Diagnosis microformats rule - good state}",
+      "message": "Эта страница не использует Микроформатную разметку.\n\nВы можете проверить разметку используя [https://search.google.com/structured-data/testing-tool/#url={domain}](Инструмент проверки структурированных данных Google)."
+   },
+   "sqDiagnosis_microformats_bad": {
+      "description": "{Diagnosis microformats rule - bad state}",
+      "message": "Эта страница не использует микроформатную разметку, но в некоторых тегах использован неверный регистр. Пожалуйста, проверьте разметку с помощью инструмента проверки структурированных данных Google.\n\nВы можете проверить разметку, используя [https://search.google.com/structured-data/testing-tool/#url={domain}](Инструмент проверки структурированных данных Google)."
+   },
+   "sqDiagnosis_microformats_good": {
+      "description": "{Diagnosis microformats rule - good state}",
+      "message": "Мы обнаружили следующие типы Микроформатной разметки.\n\nВы можете проверить разметку используя [https://search.google.com/structured-data/testing-tool/#url={domain}](Инструмент проверки структурированных данных Google)."
+   },
+   "sqDiagnosis_more_checks_link": {
+      "description": "{Drop us a line link text}",
+      "message": "Отправьте нам сообщение"
+   },
+   "sqDiagnosis_more_checks_text": {
+      "description": "{Drop us a line message text}",
+      "message": "Нужны дополнительные проверки? "
+   },
+   "sqDiagnosis_no_associated_feed": {
+      "description": "{Diagnosis feed rule - average state}",
+      "message": "Фид не обнаружен."
+   },
+   "sqDiagnosis_notfound": {
+      "description": "{Diagnosis not found message}",
+      "message": "Не найдено"
+   },
+   "sqDiagnosis_open": {
+      "description": "{Tips open title}",
+      "message": "Советы"
+   },
+   "sqDiagnosis_opengraph_average": {
+      "description": "{Diagnosis opengraph rule - average state}",
+      "message": "Мы обнаружили, что на этой странице присутствуют объекты Open Graph, однако не смогли определить их типы.\n\nПроверить разметку можно с помощью [https://developers.facebook.com/tools/debug/og/object/?q={location}](отладчика Facebook Object Debugger)."
+   },
+   "sqDiagnosis_opengraph_good": {
+      "description": "{Diagnosis opengraph rule - good state}",
+      "message": "Отлично! Мы обнаружили несколько объектов Open Graph.\n\nПроверить разметку можно с помощью [https://developers.facebook.com/tools/debug/og/object/?q={location}](отладчика Facebook Object Debugger)."
+   },
+   "sqDiagnosis_opengraph_no": {
+      "description": "{Diagnosis opengraph rule - bad state}",
+      "message": "На вашей странице отсутствуют объекты Open Graph.\n\nПроверить разметку можно с помощью [https://developers.facebook.com/tools/debug/og/object/?q={location}](отладчика Facebook Object Debugger)."
+   },
+   "sqDiagnosis_passed": {
+      "description": "{Counter for successfull tests}",
+      "message": "Успешно:"
+   },
+   "sqDiagnosis_ratio_average_one": {
+      "description": "{Diagnosis text2html rule - average state}",
+      "message": "{ratio}% — приемлемо. Рекомендуем увеличить объем текста на сайте."
+   },
+   "sqDiagnosis_ratio_bad_one": {
+      "description": "{Diagnosis text2html rule - bad state}",
+      "message": "{ratio}% — увы! Соотношение текста и HTML-кода на вашем сайте меньше 15%. Рекомендуем значительно увеличить объем текста."
+   },
+   "sqDiagnosis_ratio_good": {
+      "description": "{Diagnosis text2html rule - good state}",
+      "message": "{ratio}% — оптимально."
+   },
+   "sqDiagnosis_robots_bad": {
+      "description": "{Diagnosis robots.txt rule - bad state}",
+      "message": "На вашем сайте отсутствует файл robots.txt. Это может затруднять поисковую оптимизацию."
+   },
+   "sqDiagnosis_robots_good": {
+      "description": "{Diagnosis robots.txt rule - good state}",
+      "message": "Отлично! На вашем сайте используется файл robots.txt."
+   },
+   "sqDiagnosis_rule_analytics_tip": {
+      "description": "{Analytics rule tooltip. Can use some markdown for markup}",
+      "message": "Ознакомьтесь с данной [https://moz.com/blog/absolute-beginners-guide-to-google-analytics](статьей), для получения дополнительной информации о Google Analytics"
+   },
+   "sqDiagnosis_rule_analytics_title": {
+      "description": "{Google analytics rule title}",
+      "message": "Google&trade; Analytics"
+   },
+   "sqDiagnosis_rule_canonical_tip": {
+      "description": "{Canonical rule tooltip. Can use some markdown for markup}",
+      "message": "Атрибут canonical link - это элемент HTML, благодаря которому веб-мастера избегают проблем с дублированием контента, определяя каноничную или предпочтительную версию страницы как часть оптимизации поисковой системы. Для получения дополнительной информации посетите [https://support.google.com/webmasters/answer/139066](эту статью Google)."
+   },
+   "sqDiagnosis_rule_canonical_title": {
+      "description": "{Canonical rule title}",
+      "message": "Каноническая"
+   },
+   "sqDiagnosis_rule_doctype_tip": {
+      "description": "{Doctype rule tooltip. Can use some markdown for markup}",
+      "message": "В случае указания [http://www.w3schools.com/tags/tag_DOCTYPE.asp](типа документа) веб-браузер будет корректно отображать контент вашего сайта."
+   },
+   "sqDiagnosis_rule_doctype_title": {
+      "description": "{Doctype rule title}",
+      "message": "Тип документа"
+   },
+   "sqDiagnosis_rule_encoding_tip": {
+      "description": "{Encoding rule tooltip. Can use some markdown for markup}",
+      "message": "Ознакомьтесь с данной [https://www.w3.org/International/tutorials/tutorial-char-enc/](статьей), чтобы узнать как добавить подходящую кодировку на ваш сайт."
+   },
+   "sqDiagnosis_rule_encoding_title": {
+      "description": "{Encoding rule title}",
+      "message": "Кодировка"
+   },
+   "sqDiagnosis_rule_favicon_tip": {
+      "description": "{Favicon rule tooltip. Can use some markdown for markup}",
+      "message": "Favicon сайта должен [http://www.howtojoomla.net/2007050865/how-tos/miscellaneous/how-to-change-your-favicon](соответствовать стилю вашего бренда).\n\nСовет: пример отличного значка, благодаря которому сайт хорошо запоминается посетителям, можно увидеть в [http://www.youtube.com/watch?v=0KDjjePkd2U](этом видеоролике)."
+   },
+   "sqDiagnosis_rule_favicon_title": {
+      "description": "{Favicon rule title}",
+      "message": "Favicon"
+   },
+   "sqDiagnosis_rule_flash_tip": {
+      "description": "{Flash rule tooltip. Can use some markdown for markup}",
+      "message": "Элементы Flash имеет смысл использовать лишь в некоторых случаях, когда вам требуется сделать страницу наиболее эффектной.\n\nВ целях поисковой оптимизации не рекомендуется использовать Flash.\n\nВозможно, в обозримом будущем что-то изменится, но на данный момент элементы Flash [http://www.beussery.com/blog/index.php/2008/10/google-flash-seo/](не индексируются) поисковыми системами.\n\nС элементами [http://en.wikipedia.org/wiki/Ajax_%28programming%29](AJAX) [http://googlewebmastercentral.blogspot.com/2009/10/proposal-for-making-ajax-crawlable.html](ситуация аналогична)."
+   },
+   "sqDiagnosis_rule_flash_title": {
+      "description": "{Flash rule title}",
+      "message": "Flash"
+   },
+   "sqDiagnosis_rule_frames_tip": {
+      "description": "{Frames ratio rule tooltip. Can use some markdown for markup}",
+      "message": "Поисковым системам сложно индексировать страницы с фреймами, поскольку они не соответствуют [http://www.google.com/support/webmasters/bin/answer.py?hl=en&amp;answer=34445](стандартным макетам страниц).\n\nЕсли вы оптимизируете свой сайт, старайтесь не использовать фреймы."
+   },
+   "sqDiagnosis_rule_frames_title": {
+      "description": "{Frames rule title}",
+      "message": "Фреймы"
+   },
+   "sqDiagnosis_rule_headings_tip": {
+      "description": "{Headings rule tooltip. Can use some markdown for markup}",
+      "message": "Заголовки могут содержать ключевые слова.\n\nОсновной заголовок (&lt;H1&gt;) должен содержать самые важные для вас ключевые слова.\n\nДля улучшения позиций в результатах поиска используйте только один заголовок &lt;H1&gt;."
+   },
+   "sqDiagnosis_rule_headings_title": {
+      "description": "{Meta headings rule title}",
+      "message": "Заголовки"
+   },
+   "sqDiagnosis_rule_images_tip": {
+      "description": "{Images rule tooltip. Can use some markdown for markup}",
+      "message": "Рекомендуем добавлять замещающий ALT текст для ваших изображений — это упростит их индексацию поисковыми системами.\n\nПоисковые системы распознают изображения принципиально иным образом. С помощью ALT текста можно довольно точно описать любое изображение.\n\nВ ALT тексте содержится описание изображений, чтобы они включались в результаты поиска изображений [http://images.google.com/](Google&trade;) и других поисковых систем.\n\nКаждое изображение на вашем сайте должно иметь [http://www.webcredible.co.uk/user-friendly-resources/web-accessibility/image-alt-text.shtml](индивидуальный ALT текст).\n\nБолее подробно о добавлении ALT текста можно прочитать [http://www.seosmarty.com/image-seo/](здесь).\n\nУчитывайте, что скорость загрузки страницы зависит от количества и размера содержащихся на ней изображений. Мы рекомендуем использовать не слишком большое количество изображений и обращать внимание на их размер.\n\nПолезный совет: предыдущие варианты дизайна любого сайта можно увидеть с помощью веб-сервиса [http://archive.org/web/](Wayback Machine)."
+   },
+   "sqDiagnosis_rule_images_title": {
+      "description": "{Images rule title}",
+      "message": "Изображения"
+   },
+   "sqDiagnosis_rule_keywords_tip": {
+      "description": "{Meta keywords rule tooltip. Can use some markdown for markup}",
+      "message": "[http://en.wikipedia.org/wiki/Meta_element#The_keywords_attribute](Метатег ключевых слов) — это слова или фразы, относящиеся к контенту вашего сайта. Этот тег активно использовался несколько лет назад, но сегодня он уже не так сильно влияет на позиции вашего сайта в поисковой выдаче."
+   },
+   "sqDiagnosis_rule_keywords_title": {
+      "description": "{Meta keywords rule title}",
+      "message": "Метатег ключевых слов"
+   },
+   "sqDiagnosis_rule_language_tip": {
+      "description": "{Language rule tooltip. Can use some markdown for markup}",
+      "message": "Некоторые рекомендации для многоязычных сайтов:\n\n&sdot; Укажите язык контента в HTML-коде каждой страницы.\n&sdot; Укажите код языка в URL (например, company.com/es/contact.html).\n&sdot; Если вы планируете сделать свой сайт многоязычным, воспользуйтесь [http://www.toprankblog.com/2009/10/top-10-pitfalls-of-international-seo/](этими советами)."
+   },
+   "sqDiagnosis_rule_language_title": {
+      "description": "{Language rule title}",
+      "message": "Язык"
+   },
+   "sqDiagnosis_rule_meta_tip": {
+      "description": "{Meta description rule tooltip. Can use some markdown for markup}",
+      "message": "[http://en.wikipedia.org/wiki/Meta_element#The_description_attribute](Метаописания) часто определяют, как ваша страница отображается в результатах поиска.\n\nНаиболее эффективные [http://en.wikipedia.org/wiki/Meta_element#The_description_attribute](метаописания) содержат от 160 до 300 символов.\n\nМетаописания должны быть емкими и включать в себя [http://googlewebmastercentral.blogspot.com/2007/09/improve-snippets-with-meta-description.html](наиболее важные ключевые слова).\n\nУбедитесь в том, что метаописание присутствует на каждой странице вашего сайта."
+   },
+   "sqDiagnosis_rule_meta_title": {
+      "description": "{Meta description rule title}",
+      "message": "Метаописание"
+   },
+   "sqDiagnosis_rule_microformats_tip": {
+      "description": "{Microformats rule tooltip. Can use some markdown for markup}",
+      "message": "[http://en.wikipedia.org/wiki/Microformat](Микроформат) — это способ разметки, который позволяет более эффективно структурировать данные, отправляемые в поисковые системы.\n\nИспользование микроформатов всегда [http://googlewebmastercentral.blogspot.com/2009/05/introducing-rich-snippets.html](улучшает) позиции в результатах выдачи Google."
+   },
+   "sqDiagnosis_rule_microformats_title": {
+      "description": "{Microformats rule title}",
+      "message": "Микроформаты"
+   },
+   "sqDiagnosis_rule_opengraph_tip": {
+      "description": "{Open Graph rule tooltip. Can use some markdown for markup}",
+      "message": "Протокол Open Graph позволяет любой веб-странице стать полноценным объектом в социальных сетях. Например, он используется на Facebook, чтобы разрешить любой веб-странице иметь такую же функциональность, как и у любого другого объекта на Facebook.\n\nДля получения дополнительной информации см. [http://ogp.me/](Протокол Open Graph)."
+   },
+   "sqDiagnosis_rule_opengraph_title": {
+      "description": "{OpenGraph rule title}",
+      "message": "Протокол Open Graph"
+   },
+   "sqDiagnosis_rule_robots_tip": {
+      "description": "{Robots.txt rule tooltip. Can use some markdown for markup}",
+      "message": "Этот файл ограничивает активность инструментов сканирования, используемых поисковыми системами, и препятствует их доступу к определенным страницам и каталогам.\n\nКроме того, [http://www.robotstxt.org/orig.html](файл robots.txt) определяет расположение карты сайта XML.\n\nЧтобы проверить файл robots.txt на наличие синтаксических ошибок, [http://tool.motoricerca.info/robots-checker.phtml](нажмите здесь)."
+   },
+   "sqDiagnosis_rule_robots_title": {
+      "description": "{Robots.txt rule title}",
+      "message": "Robots.txt"
+   },
+   "sqDiagnosis_rule_schemaorg_tip": {
+      "description": "{Schema.org rule tooltip. Can use some markdown for markup}",
+      "message": "Используя разметку на веб-страницах, вы можете значительно улучшить видимость своего сайта для поисковых систем и оптимизировать соотношение числа переходов к числу показов, что, в свою очередь, повысит позиции в поисковой выдаче.\n\nДля получения дополнительной информации см. [https://developers.google.com/search/docs/guides/intro-structured-data](Знакомство со структурированными данными)."
+   },
+   "sqDiagnosis_rule_schemaorg_title": {
+      "description": "{Schema.org rule title}",
+      "message": "Schema.org"
+   },
+   "sqDiagnosis_rule_sitemap_tip": {
+      "description": "{Meta viewport rule tooltip. Can use some markdown for markup}",
+      "message": "[http://en.wikipedia.org/wiki/Sitemaps](Карта сайта XML) содержит список URL, доступных для сканирования, а также другую информацию, например сведения о регулярности обновлений, времени последнего обновления и его важности.\n\nБлагодаря карте сайта XML поисковые системы более точно индексируют ваш сайт.\n\nХотя на этот счет и существуют [http://www.seomoz.org/blog/expert-advice-on-google-sitemaps-verify-but-dont-submit](разные мнения), мы советуем отправить карту сайта XML на рассмотрение разработчикам [http://www.google.com/webmasters/tools/](Google&trade; Webmasters Tools)."
+   },
+   "sqDiagnosis_rule_sitemap_title": {
+      "description": "{Sitemaps rule title}",
+      "message": "Карты сайта XML"
+   },
+   "sqDiagnosis_rule_text2html_tip": {
+      "description": "{Text/HTML ratio rule tooltip. Can use some markdown for markup}",
+      "message": "Соотношение количества текста к HTML не является фактором, напрямую влияющим на место в поисковой выдаче, но существует множество факторов, связанных с этим соотношением, отражающих преимущество хорошей оптимизации, косвенно приводящих к повышению места в поисковой выдаче. Ознакомьтесь с данной [https://www.woorank.com/en/blog/are-text-to-html-ratios-important](статьей) для получения дополнительной информации."
+   },
+   "sqDiagnosis_rule_text2html_title": {
+      "description": "{Text2Html ratio rule title}",
+      "message": "Соотношение длины текста и HTML-кода"
+   },
+   "sqDiagnosis_rule_title_tip": {
+      "description": "{Title rule tooltip. Can use some markdown for markup}",
+      "message": "Наиболее эффективные заголовки страниц содержат от 10 до 70 символов, включая пробелы.\n\nСледите за тем, чтобы ваши заголовки были емкими и содержали [https://www.semrush.com/blog/seoquake-5-keys-to-optimizing-your-title-tags/?utm_source=seoquake&utm_medium=toolbar&utm_campaign=regular&ref=174537735](самые важные ключевые слова).\n\nКаждая страница должна иметь уникальный заголовок.\n\nРекомендация: с помощью [http://www.seomofo.com/snippet-optimizer.html](оптимизатора описаний) можно посмотреть, как заголовки ваших страниц будут выглядеть в результатах поиска Google&trade; и других поисковых системах."
+   },
+   "sqDiagnosis_rule_title_title": {
+      "description": "{Title rule title}",
+      "message": "Название"
+   },
+   "sqDiagnosis_rule_twittercard_tip": {
+      "description": "{Twitter card rule tooltip. Can use some markdown for markup}",
+      "message": "С помощью разметки Twitter Cards можно добавлять в твиты фотографии, видеоконтент и мультимедийные средства для привлечения трафика на веб-сайт.\n\nДля получения дополнительной информации см. [https://dev.twitter.com/cards/overview](документацию Twitter)."
+   },
+   "sqDiagnosis_rule_twittercard_title": {
+      "description": "{Twitter card rule title}",
+      "message": "Twitter Cards"
+   },
+   "sqDiagnosis_rule_url_tip": {
+      "description": "{URL rule tooltip. Can use some markdown for markup}",
+      "message": "Поисковые системы и посетители смогут более эффективно взаимодействовать с вашим сайтом, если вы будете использовать URL, описывающие контент его страниц (например, http://www.company.com/companyinformation).\n\nURL очень важны для успешных кампаний по поисковой оптимизации. Используйте URL, благодаря которым [http://www.google.com/support/webmasters/bin/answer.py?hl=en&amp;answer=147959](Google&trade; сможет легко проиндексировать ваш сайт).\n\nНапример, для выбора подходящего имени домена вы можете воспользоваться удобным [http://instantdomainsearch.com/](сервисом). Если имя, которое вы выбрали, уже занято, изучите альтернативные варианты, используя функцию поиска на сайте [http://sedo.com](Sedo).\n\nЕсли вы зарегистрируете имя своего домена как торговую марку, другие компании не смогут им воспользоваться."
+   },
+   "sqDiagnosis_rule_url_title": {
+      "description": "{URL rule title}",
+      "message": "URL"
+   },
+   "sqDiagnosis_rule_viewport_tip": {
+      "description": "{Meta viewport rule tooltip. Can use some markdown for markup}",
+      "message": "Метатег viewport определяет, каким образом веб-страница отображается на мобильном устройстве. Без использования метатега viewport мобильные устройства будут отображать страницу стандартной ширины — как для экрана настольного компьютера, но в уменьшенном масштабе. Настройка окна просмотра позволяет регулировать ширину страницы и ее масштаб на различных устройствах.\n\nВ [https://developers.google.com/speed/docs/insights/ConfigureViewport](этой статье) можно получить более подробную информацию об окне просмотра."
+   },
+   "sqDiagnosis_rule_viewport_title": {
+      "description": "{Meta viewport title}",
+      "message": "Метатег окна просмотра"
+   },
+   "sqDiagnosis_schemaorg_average": {
+      "description": "{Diagnosis schema.org rule - average state}",
+      "message": "Мы обнаружили, что на этой странице используется разметка [http://schema.org](schema.org), однако не смогли определить ее типы.\n\nПроверить разметку можно с помощью [https://search.google.com/structured-data/testing-tool/#url={domain}](инструмента тестирования структурированных данных Google)."
+   },
+   "sqDiagnosis_schemaorg_bad": {
+      "description": "{Diagnosis schema.org rule - bad state}",
+      "message": "На вашей странице не используется разметка [http://schema.org](Schema.org).\n\nПроверить разметку можно с помощью [https://search.google.com/structured-data/testing-tool/#url={domain}](инструмента тестирования структурированных данных Google)."
+   },
+   "sqDiagnosis_schemaorg_good": {
+      "description": "{Diagnosis schema.org rule - good state}",
+      "message": "Отлично! Мы обнаружили несколько типов разметки [http://schema.org](schema.org).\n\nПроверить разметку можно с помощью [https://search.google.com/structured-data/testing-tool/#url={domain}](инструмента тестирования структурированных данных Google)."
+   },
+   "sqDiagnosis_semrush_provided": {
+      "description": "{Semrush banner link title}",
+      "message": "при помощи"
+   },
+   "sqDiagnosis_show": {
+      "description": "{View others data}",
+      "message": "Показать больше"
+   },
+   "sqDiagnosis_sitemaps_bad": {
+      "description": "{Diagnosis sitemap.xml rule - bad state}",
+      "message": "Ваш сайт не содержит карту сайта XML. Это может затруднять поисковую оптимизацию."
+   },
+   "sqDiagnosis_sitemaps_good": {
+      "description": "{Diagnosis sitemap.xml rule - good state}",
+      "message": "Отлично! Ваш сайт содержит карту сайта XML."
+   },
+   "sqDiagnosis_timeoutreached": {
+      "description": "{Diagnosis unable to process rule with connection timeout reason}",
+      "message": "Не удалось определить: время ожидания соединения истекло."
+   },
+   "sqDiagnosis_title": {
+      "description": "{Main diagnosis title}",
+      "message": "SEO-аудит страницы"
+   },
+   "sqDiagnosis_title_average": {
+      "description": "{Diagnosis title rule - average state}",
+      "message": "{len} символов — средне. Предпочтительна длина от 10 до 70 символов."
+   },
+   "sqDiagnosis_title_bad_not_long": {
+      "description": "{Diagnosis title rule - bad state too short}",
+      "message": "{len} символов — неприемлемо. Попробуйте удлинить заголовок до 10 символов."
+   },
+   "sqDiagnosis_title_bad_not_short": {
+      "description": "{Diagnosis title rule - bad state too long}",
+      "message": "{len} символов — неприемлемо. Попробуйте сократить заголовок до 70 символов."
+   },
+   "sqDiagnosis_title_good": {
+      "description": "{Diagnosis title rule - good state}",
+      "message": "{len} символов — оптимально."
+   },
+   "sqDiagnosis_title_mobile_rules": {
+      "description": "{Mobile compliance}",
+      "message": "Совместимость с мобильными устройствами"
+   },
+   "sqDiagnosis_title_page_rules": {
+      "description": "{Page analysis group title}",
+      "message": "Анализ страницы"
+   },
+   "sqDiagnosis_title_site_rules": {
+      "description": "{Site compliance group title}",
+      "message": "Соответствие сайта"
+   },
+   "sqDiagnosis_twittercard_bad": {
+      "description": "{Diagnosis twitter card rule - bad state}",
+      "message": "Мы обнаружили, что на этой странице присутствует разметка [https://dev.twitter.com/cards/overview](Twitter Cards), однако не смогли определить ее типы. Проверить разметку можно с помощью [https://cards-dev.twitter.com/validator](инструмента для проверки Twitter Card)."
+   },
+   "sqDiagnosis_twittercard_good": {
+      "description": "{Diagnosis twitter card rule - good state}",
+      "message": "Отлично! Мы обнаружили на вашей странице разметку [https://dev.twitter.com/cards/overview](Twitter Cards). Проверить разметку можно с помощью [https://cards-dev.twitter.com/validator](инструмента для проверки Twitter Card)."
+   },
+   "sqDiagnosis_twittercard_no": {
+      "description": "{Diagnosis twitter card rule - no state}",
+      "message": "На вашей странице отсутствует разметка [https://dev.twitter.com/cards/overview](Twitter Cards). Проверить разметку можно с помощью [https://cards-dev.twitter.com/validator](инструмента для проверки Twitter Card)."
+   },
+   "sqDiagnosis_unable2detect": {
+      "description": "{Diagnosis unable to process rule message}",
+      "message": "Не удалось определить"
+   },
+   "sqDiagnosis_url_average": {
+      "description": "{Not used}",
+      "message": "Ваш URL может быть слишком длинным."
+   },
+   "sqDiagnosis_url_bad": {
+      "description": "{Diagnosis url-length rule - bad state}",
+      "message": "{len} символов — неприемлемо. Более 200 символов."
+   },
+   "sqDiagnosis_url_good": {
+      "description": "{Diagnosis url-length rule - good state}",
+      "message": "{len} символов — оптимально."
+   },
+   "sqDiagnosis_viewport_default": {
+      "description": "{Diagnosis viewport rule - average state}",
+      "message": "Отлично! Эта страница содержит стандартное значение метатега viewport, совместимое с большинством мобильных браузеров."
+   },
+   "sqDiagnosis_viewport_no": {
+      "description": "{Diagnosis viewport rule - bad state}",
+      "message": "Метатег viewport на этой странице отсутствует или содержит фиктивное значение. Вероятно, на мобильных устройствах эта страница будет отображаться некорректно, что понизит ее позицию в результатах мобильного поиска."
+   },
+   "sqDiagnosis_viewport_some": {
+      "description": "{Diagnosis viewport rule - good state}",
+      "message": "На этой странице задан метатег viewport."
+   },
+   "sqDiagnosis_warning": {
+      "description": "{Counter for test with warnings}",
+      "message": "Предупреждения:"
+   },
+   "sqFeedback_email": {
+      "description": "{Common report need more features block email}",
+      "message": "mail@seoquaketeam.com"
+   },
+   "sqFeedback_link": {
+      "description": "{Common report need more features block link}",
+      "message": "Отправьте нам сообщение"
+   },
+   "sqFeedback_text_1": {
+      "description": "{Common report need more features block title}",
+      "message": "Нужны дополнительные функции?"
+   },
+   "sqFeedback_text_2": {
+      "description": "{Common report need more features block message}",
+      "message": "или напишите письмо на адрес:"
+   },
+   "sqGSC_connect": {
+      "description": "{Message on connect semrush button in header}",
+      "message": "Подключите учетную запись Semrush, чтобы узнать Domain Score"
+   },
+   "sqGSC_domain_score_tooltip": {
+      "description": "{Message for DS tooltip}",
+      "message": "Это показатель значимости домена по 100-балльной шкале (от 0 до 100). Он зависит от качества и объема ведущих на него ссылок. Чем он выше, тем домен качественнее. Рейтинг домена рассчитывается так же, как и рейтинг Google PageRank."
+   },
+   "sqGSC_export": {
+      "description": "{Message on export button}",
+      "message": "Экспортировать эту таблицу"
+   },
+   "sqGSC_notes_GOOGLE_ORGANIC": {
+      "description": "{Text for google organic update note}",
+      "message": "Обновления Google (органический поиск)"
+   },
+   "sqGSC_notes_GOOGLE_PAID": {
+      "description": "{Text for google paid update note}",
+      "message": "Обновления Google (платный поиск)"
+   },
+   "sqGSC_notes_UNCONFIRMED": {
+      "description": "{Text for google unconfirmed update note}",
+      "message": "Обновления Google (не подтвержденные)"
+   },
+   "sqGSC_notes_connect_button": {
+      "description": "{}",
+      "message": "Включить"
+   },
+   "sqGSC_notes_connect_message": {
+      "description": "{}",
+      "message": "Получить обновления Google при помощи SEOquake - "
+   },
+   "sqGSC_notes_counter": {
+      "description": "{}",
+      "message": "заметки"
+   },
+   "sqGSC_notes_counter_one": {
+      "description": "{}",
+      "message": "заметка"
+   },
+   "sqGSC_notes_dashboard_message": {
+      "description": "{Text for google dashboard small chart}",
+      "message": "Обновления, обнаруженные Semrush"
+   },
+   "sqGSC_notes_dashboard_no_data": {
+      "description": "{Text for google dashboard small chart}",
+      "message": "Отсутствуют обновления за выбранный период"
+   },
+   "sqGSC_notes_switch_message": {
+      "description": "{}",
+      "message": "SEOquake: обновления Google"
+   },
+   "sqGSC_onboarding_close": {
+      "description": "{}",
+      "message": "Выключить"
+   },
+   "sqGSC_onboarding_notes_text": {
+      "description": "{}",
+      "message": "*Представляем Заметки для обновления алгоритма Google*\n\nБудьте в курсе обновлений алгоритмов Google. С включенной функцией «Заметки», всю информацию об обновлениях Google можно увидеть на графиках Google Search Console."
+   },
+   "sqGSC_onboarding_ok": {
+      "description": "{}",
+      "message": "Отлично, спасибо!"
+   },
+   "sqGSC_onboarding_text": {
+      "description": "{}",
+      "message": "*Представляем показатели «Объем запросов домена» и «Надежность домена»!*\n\nДанные показатели позволяют с легкостью рассчитать важность и авторитетность конкретного домена, основываясь на количестве и качестве обратных ссылок, ведущих на него."
+   },
+   "sqGSC_trust_score_tooltip": {
+      "description": "{Message for TS tooltip}",
+      "message": "Это показатель авторитетности конкретного домена по 100-балльной шкале (чем он выше, тем выше уровень доверия). Он зависит от количества обратных ссылок на анализируемый домен с авторитетных сайтов. Если показатель Trust Score домена значительно ниже, чем Domain Score, это может говорить об искусственном завышении второго показателя. Получение обратных ссылок с таких сайтов может стать причиной санкций со стороны Google."
+   },
+   "sqLinkinfo_anchor": {
+      "description": "{Linkinfo report link anchor title}",
+      "message": "Анкор"
+   },
+   "sqLinkinfo_anchor_empty": {
+      "description": "{Linkinfo report link with empty anchor notice}",
+      "message": "Пустой анкор"
+   },
+   "sqLinkinfo_badge_hint": {
+      "description": "{Linkinfo report table repeats counter tooltip}",
+      "message": "Повторы ссылок одного типа и с тем же анкором"
+   },
+   "sqLinkinfo_button_configure": {
+      "description": "{Linkinfo report add/hide parameters button title}",
+      "message": "Добавить/скрыть параметры"
+   },
+   "sqLinkinfo_button_request": {
+      "description": "{Linkinfo report request all parameters button title}",
+      "message": "Запросить все параметры"
+   },
+   "sqLinkinfo_button_save": {
+      "description": "{Linkinfo report save as CSV button title}",
+      "message": "Сохранить в формате CSV"
+   },
+   "sqLinkinfo_count_hint": {
+      "description": "{Linkinfo report table more links tooltip}",
+      "message": "Для этого URL имеются другие ссылки. Нажмите для просмотра всех комбинаций типов ссылок и анкоров"
+   },
+   "sqLinkinfo_count_more": {
+      "description": "{Linkinfo report table more links link title when more then +1 link}",
+      "message": "+ {count} ссылок"
+   },
+   "sqLinkinfo_count_one": {
+      "description": "{Linkinfo report table more links link title when +1 link}",
+      "message": "+ {count} ссылка"
+   },
+   "sqLinkinfo_external": {
+      "description": "{Linkinfo report external links title}",
+      "message": "Внешние ссылки"
+   },
+   "sqLinkinfo_followLinks": {
+      "description": "{Linkinfo report follow links button title}",
+      "message": "Follow:"
+   },
+   "sqLinkinfo_formLinks": {
+      "description": "{Linkinfo report forms links button title}",
+      "message": "Формы:"
+   },
+   "sqLinkinfo_frameLinks": {
+      "description": "{Linkinfo report frames links button title}",
+      "message": "Фреймы:"
+   },
+   "sqLinkinfo_header_backlink": {
+      "description": "{Linkinfo table header backlinks}",
+      "message": "Параметры обратных ссылок"
+   },
+   "sqLinkinfo_header_backlink_title": {
+      "description": "{Linkinfo table header backlinks title}",
+      "message": "Параметры, связанные с обратными ссылками на данную ссылку"
+   },
+   "sqLinkinfo_header_domain": {
+      "description": "{Linkinfo table header domain}",
+      "message": "Параметры домена"
+   },
+   "sqLinkinfo_header_domain_title": {
+      "description": "{Linkinfo table header domain title}",
+      "message": "Параметры, связанные с доменом"
+   },
+   "sqLinkinfo_header_index": {
+      "description": "{Linkinfo table header index}",
+      "message": "#"
+   },
+   "sqLinkinfo_header_link": {
+      "description": "{Linkinfo table header link}",
+      "message": "Параметры ссылок"
+   },
+   "sqLinkinfo_header_link_title": {
+      "description": "{Linkinfo table header link title}",
+      "message": "Параметры, связанные с полной ссылкой"
+   },
+   "sqLinkinfo_header_url": {
+      "description": "{Linkinfo table header URL}",
+      "message": "URL"
+   },
+   "sqLinkinfo_imagesLinks": {
+      "description": "{Linkinfo report images links button title}",
+      "message": "Изображения:"
+   },
+   "sqLinkinfo_internal": {
+      "description": "{Linkinfo report internal links title}",
+      "message": "Внутренние ссылки"
+   },
+   "sqLinkinfo_noFollowLinks": {
+      "description": "{Linkinfo report no follow links button title}",
+      "message": "Nofollow:"
+   },
+   "sqLinkinfo_textLinks": {
+      "description": "{Linkinfo report text links button title}",
+      "message": "Текст:"
+   },
+   "sqLinkinfo_totalLinks": {
+      "description": "{Linkinfo report total links button title}",
+      "message": "Общее количество ссылок:"
+   },
+   "sqLinkinfo_type_form": {
+      "description": "{Linkinfo report link type form title}",
+      "message": "форма"
+   },
+   "sqLinkinfo_type_frame": {
+      "description": "{Linkinfo report link type frame title}",
+      "message": "фрейм"
+   },
+   "sqLinkinfo_type_image": {
+      "description": "{Linkinfo report link type image title}",
+      "message": "изображение"
+   },
+   "sqLinkinfo_type_text": {
+      "description": "{Linkinfo report link type text title}",
+      "message": "текст"
+   },
+   "sqOptionsSave": {
+      "description": "{Save message on button}",
+      "message": "Сохранить"
+   },
+   "sqOptionsSaving": {
+      "description": "{Saving process message on button}",
+      "message": "Сохранение..."
+   },
+   "sqOptions_general_clear_cache": {
+      "description": "{Options general clear cache button text}",
+      "message": "Очистить кэш"
+   },
+   "sqOptions_general_clear_cache_clearing": {
+      "description": "{Options general clear cache button text when clearing}",
+      "message": "Очистка..."
+   },
+   "sqOptions_general_core_disabled_field": {
+      "description": "{Options general core disabled field title}",
+      "message": "SEOquake активирован:"
+   },
+   "sqOptions_general_core_disabled_label": {
+      "description": "{Options general core disabled label title}",
+      "message": "Общий переключатель для всех плагинов"
+   },
+   "sqOptions_general_dropdown_panel_title": {
+      "description": "{Options general experimental features switch}",
+      "message": "Конфигурация раскрывающейся панели"
+   },
+   "sqOptions_general_experimental_label": {
+      "description": "{Options general experimental features switch}",
+      "message": "Включить экспериментальные функции"
+   },
+   "sqOptions_general_export_download": {
+      "message": "Получить файл"
+   },
+   "sqOptions_general_export_load_label": {
+      "message": "Импорт из файла:"
+   },
+   "sqOptions_general_export_load_title": {
+      "message": "Выбрать файл"
+   },
+   "sqOptions_general_export_save_label": {
+      "message": "Сохранить в файл:"
+   },
+   "sqOptions_general_filename_0": {
+      "description": "{Options general filename template first}",
+      "message": "\u003Cимяфайла>.csv"
+   },
+   "sqOptions_general_filename_1": {
+      "description": "{Options general filename template second}",
+      "message": "\u003Cимяфайла> - \u003Cдата>.csv"
+   },
+   "sqOptions_general_filename_2": {
+      "description": "{Options general filename template third}",
+      "message": "\u003Cимяфайла> - \u003Cдата> - \u003Cвремя>.csv"
+   },
+   "sqOptions_general_filename_field": {
+      "description": "{Options general filename template title}",
+      "message": "Шаблон имени файла для экспорта:"
+   },
+   "sqOptions_general_noanalytics_label": {
+      "description": "{Options general experimental features switch}",
+      "message": "Отключить сбор статистики использования.&nbsp;"
+   },
+   "sqOptions_general_noanalytics_link": {
+      "description": "{Options general experimental features switch}",
+      "message": "Подробнее"
+   },
+   "sqOptions_general_noanalytics_title": {
+      "description": "{Options general no analytics title}",
+      "message": "Без аналитики:"
+   },
+   "sqOptions_general_nofollow_field": {
+      "description": "{Options general nofollow field title}",
+      "message": "Выделять ссылки «nofollow»:"
+   },
+   "sqOptions_general_nofollow_label": {
+      "description": "{Options general nofollow field label}",
+      "message": "Будут выделены все ссылки с rel='nofollow\""
+   },
+   "sqOptions_general_panel_export_title": {
+      "message": "Экспорт/импорт ваших настроек"
+   },
+   "sqOptions_general_panel_mode_0": {
+      "description": "{Options general experimental features switch}",
+      "message": "При отображении"
+   },
+   "sqOptions_general_panel_mode_1": {
+      "description": "{Options general experimental features switch}",
+      "message": "По запросу"
+   },
+   "sqOptions_general_panel_mode_title": {
+      "description": "{Options general panel mode title}",
+      "message": "Загружать параметры:"
+   },
+   "sqOptions_general_panel_tips_label": {
+      "message": "Совет дня будет показан на специальной панели"
+   },
+   "sqOptions_general_panel_tips_title": {
+      "message": "Показывать советы:"
+   },
+   "sqOptions_general_request_delay_field": {
+      "description": "{Options general request delay title}",
+      "message": "Задержка запросов параметров:"
+   },
+   "sqOptions_general_title": {
+      "description": "{Options general title}",
+      "message": "Общие настройки"
+   },
+   "sqOptions_general_use_cache_field": {
+      "description": "{Options general use cache field}",
+      "message": "Включить кэширование параметров:"
+   },
+   "sqOptions_general_use_cache_label": {
+      "description": "{Options general use cache label}",
+      "message": "Результаты изменения параметров сохраняются в кэше до перезапуска браузера"
+   },
+   "sqOptions_gsc_disabled_label": {
+      "description": "{Options google search console disable switch label}",
+      "message": "Включить все функции."
+   },
+   "sqOptions_gsc_disabled_title": {
+      "description": "{Options google search console disable switch}",
+      "message": "Включить интеграцию с GSC:"
+   },
+   "sqOptions_gsc_feature_dsts": {
+      "description": "{Options google search console disable DS/TS metrics display}",
+      "message": "Включить показатели Domain Score и Trust Score."
+   },
+   "sqOptions_gsc_feature_notes": {
+      "description": "{Options google search console disable Notes display}",
+      "message": "Включить обновления Google."
+   },
+   "sqOptions_gsc_features_title": {
+      "description": "{Options google search console features list label}",
+      "message": "Возможности:"
+   },
+   "sqOptions_gsc_title": {
+      "description": "{Options google search console configuration panel title}",
+      "message": "Интеграция с Google Search Console"
+   },
+   "sqOptions_gsc_title_general": {
+      "description": "{Options google search console configuration panel general section title}",
+      "message": "Общие настройки"
+   },
+   "sqOptions_import_advanced_disabled": {
+      "description": "",
+      "message": "Дополнительные настройки отключены"
+   },
+   "sqOptions_import_advanced_disabled_ga": {
+      "description": "",
+      "message": "Отключить сбор данных Google Analitycs&nbsp;"
+   },
+   "sqOptions_import_bing_disabled": {
+      "description": "",
+      "message": "Плагин Bing отключен"
+   },
+   "sqOptions_import_bing_mode": {
+      "description": "",
+      "message": "Режим запроса плагина Bing"
+   },
+   "sqOptions_import_category_advanced": {
+      "description": "",
+      "message": "Дополнительные настройки"
+   },
+   "sqOptions_import_category_bing": {
+      "description": "",
+      "message": "Параметры SERP Bing"
+   },
+   "sqOptions_import_category_core": {
+      "description": "",
+      "message": "Общие параметры"
+   },
+   "sqOptions_import_category_google": {
+      "description": "",
+      "message": "Параметры SERP Google"
+   },
+   "sqOptions_import_category_gsc": {
+      "description": "{Google Search console integration configuration import category title}",
+      "message": "Интеграция с Google Search Console"
+   },
+   "sqOptions_import_category_nofollow": {
+      "description": "",
+      "message": "Настройки плагина nofollow"
+   },
+   "sqOptions_import_category_panel": {
+      "description": "",
+      "message": "Конфигурация панели"
+   },
+   "sqOptions_import_category_semrush": {
+      "description": "",
+      "message": "Панель SERP для Semrush"
+   },
+   "sqOptions_import_category_seobar": {
+      "description": "",
+      "message": "Параметры SEObar"
+   },
+   "sqOptions_import_category_yahoo": {
+      "description": "",
+      "message": "Параметры SERP Yahoo"
+   },
+   "sqOptions_import_category_yandex": {
+      "description": "",
+      "message": "Параметры SERP Яндекс"
+   },
+   "sqOptions_import_confirm_cancel": {
+      "description": "Submit button on import settings window",
+      "message": "Отмена"
+   },
+   "sqOptions_import_confirm_changes": {
+      "description": "{Header for changes table in import settings window for parameters block}",
+      "message": "Изменения"
+   },
+   "sqOptions_import_confirm_close": {
+      "description": "{Close button message}",
+      "message": "Закрыть"
+   },
+   "sqOptions_import_confirm_configuration_title": {
+      "description": "Title for configuration changes list",
+      "message": "Изменения конфигурации"
+   },
+   "sqOptions_import_confirm_current": {
+      "message": "Текущий"
+   },
+   "sqOptions_import_confirm_header": {
+      "description": "Header of import new settings window",
+      "message": "Подтвердить импорт новых настроек"
+   },
+   "sqOptions_import_confirm_new": {
+      "message": "Из файла"
+   },
+   "sqOptions_import_confirm_parameters": {
+      "description": "{Header for parameters block in import window}",
+      "message": "Параметр"
+   },
+   "sqOptions_import_confirm_parameters_delete": {
+      "message": "Удалить"
+   },
+   "sqOptions_import_confirm_parameters_differs": {
+      "message": "Отличается"
+   },
+   "sqOptions_import_confirm_parameters_new": {
+      "message": "Новые"
+   },
+   "sqOptions_import_confirm_parameters_title": {
+      "message": "Изменения параметров"
+   },
+   "sqOptions_import_confirm_submit": {
+      "description": "Submit button on import settings window",
+      "message": "Импорт"
+   },
+   "sqOptions_import_core_disable_highlight_sites": {
+      "description": "",
+      "message": "Выделять сайты в SERP"
+   },
+   "sqOptions_import_core_disable_serps_pos_numbers": {
+      "description": "",
+      "message": "Показывать номер позиции в SERP"
+   },
+   "sqOptions_import_core_disabled": {
+      "description": "",
+      "message": "SEOquake отключен"
+   },
+   "sqOptions_import_core_export_template": {
+      "description": "",
+      "message": "Шаблон имени файла для экспорта"
+   },
+   "sqOptions_import_core_highlight_sites": {
+      "description": "",
+      "message": "Выделять список сайтов"
+   },
+   "sqOptions_import_core_highlight_sites_color": {
+      "description": "",
+      "message": "Цвет выделения"
+   },
+   "sqOptions_import_core_request_delay": {
+      "description": "",
+      "message": "Задержка запроса"
+   },
+   "sqOptions_import_core_use_cache": {
+      "description": "",
+      "message": "Использовать кэш"
+   },
+   "sqOptions_import_google_disabled": {
+      "description": "",
+      "message": "Плагин Google отключен"
+   },
+   "sqOptions_import_google_gl": {
+      "description": "",
+      "message": "Язык результатов поиска Google"
+   },
+   "sqOptions_import_google_hl": {
+      "description": "",
+      "message": "Язык UI Google"
+   },
+   "sqOptions_import_google_mode": {
+      "description": "",
+      "message": "Режим запроса плагина Google"
+   },
+   "sqOptions_import_google_onboarding_keyword_difficulty": {
+      "description": "{}",
+      "message": "Не показывать справку по сложности ключевых слов"
+   },
+   "sqOptions_import_google_show_hlgl": {
+      "description": "",
+      "message": "Показывать конфигурацию HL/GL"
+   },
+   "sqOptions_import_google_show_keyword_difficulty": {
+      "description": "{}",
+      "message": "Показать сложность ключевого слова"
+   },
+   "sqOptions_import_gsc_disabled": {
+      "description": "{Google Search console disabled}",
+      "message": "Возможности отключены"
+   },
+   "sqOptions_import_nofollow_disabled": {
+      "description": "",
+      "message": "Плагин nofollow отключен"
+   },
+   "sqOptions_import_nothing": {
+      "description": "{Message when import file is same as current configuration}",
+      "message": "Файл содержит ту же конфигурацию"
+   },
+   "sqOptions_import_panel_mode": {
+      "description": "",
+      "message": "Режим запроса панели"
+   },
+   "sqOptions_import_semrush_disabled": {
+      "description": "",
+      "message": "Плагин Semrush отключен"
+   },
+   "sqOptions_import_semrush_mode": {
+      "description": "",
+      "message": "Режим запроса плагина Semrush"
+   },
+   "sqOptions_import_seobar_color": {
+      "description": "",
+      "message": "Стиль"
+   },
+   "sqOptions_import_seobar_densityLink": {
+      "description": "",
+      "message": "Показывать ссылку на отчет о плотности ключевых слов"
+   },
+   "sqOptions_import_seobar_diagnosisLink": {
+      "description": "",
+      "message": "Показывать ссылку на страницу результатов SEO-аудита"
+   },
+   "sqOptions_import_seobar_disabled": {
+      "description": "",
+      "message": "SEObar отключен"
+   },
+   "sqOptions_import_seobar_excludes": {
+      "description": "",
+      "message": "Фильтровать ресурсы"
+   },
+   "sqOptions_import_seobar_https": {
+      "description": "",
+      "message": "Показывать на ресурсах HTTPS"
+   },
+   "sqOptions_import_seobar_linkinfoLink": {
+      "description": "",
+      "message": "Показывать сведения о ссылках"
+   },
+   "sqOptions_import_seobar_mode": {
+      "description": "",
+      "message": "Режим запроса"
+   },
+   "sqOptions_import_seobar_open_minimized": {
+      "description": "",
+      "message": "Открыть в свернутом окне (не используется)"
+   },
+   "sqOptions_import_seobar_pageinfoLink": {
+      "description": "",
+      "message": "Показывать ссылку на общий отчет"
+   },
+   "sqOptions_import_seobar_pinned": {
+      "description": "{Pinned mode different on import}",
+      "message": "Показать SEObar в закрепленном режиме"
+   },
+   "sqOptions_import_seobar_position": {
+      "description": "",
+      "message": "Позиция"
+   },
+   "sqOptions_import_seobar_robotsLink": {
+      "description": "",
+      "message": "Показывать ссылку на файл robots.txt"
+   },
+   "sqOptions_import_seobar_sitemapLink": {
+      "description": "",
+      "message": "Показывать ссылку на файл sitemap.xml"
+   },
+   "sqOptions_import_yahoo_disabled": {
+      "description": "",
+      "message": "Плагин Yahoo отключен"
+   },
+   "sqOptions_import_yahoo_mode": {
+      "description": "",
+      "message": "Режим запроса плагина Yahoo"
+   },
+   "sqOptions_import_yandex_disabled": {
+      "description": "",
+      "message": "Плагин Яндекс отключен"
+   },
+   "sqOptions_import_yandex_mode": {
+      "description": "",
+      "message": "Режим запроса плагина Яндекс"
+   },
+   "sqOptions_menu_export": {
+      "description": "{Options page menu Export}",
+      "message": "Настройки экспорта"
+   },
+   "sqOptions_menu_general": {
+      "description": "{Options page menu General}",
+      "message": "Общие данные"
+   },
+   "sqOptions_menu_gsc": {
+      "description": "{Options page menu GSC}",
+      "message": "GSC"
+   },
+   "sqOptions_menu_guide": {
+      "description": "{Options page menu link to user guide}",
+      "message": "Руководство пользователя"
+   },
+   "sqOptions_menu_integration": {
+      "description": "{Options page menu Integration}",
+      "message": "Интеграция"
+   },
+   "sqOptions_menu_parameters": {
+      "description": "{Options page menu Parameters}",
+      "message": "Параметры"
+   },
+   "sqOptions_menu_seobar": {
+      "description": "{Options page menu Seobar}",
+      "message": "SEObar"
+   },
+   "sqOptions_menu_serp": {
+      "description": "{Options page menu SERP Overlay}",
+      "message": "Панель SERP"
+   },
+   "sqOptions_parameters_delete_confirm": {
+      "description": "{Confirm window text when user trying to delete parameter}",
+      "message": "Вы действительно хотите удалить этот параметр?"
+   },
+   "sqOptions_parameters_delete_custom_message": {
+      "description": "{Options parameters delete custom parameters confirm box text}",
+      "message": "Удалить все настраиваемые параметры?\nВсе ваши изменения будут потеряны."
+   },
+   "sqOptions_parameters_deleted_message": {
+      "description": "{Options parameters restore deleted parameters confirm box text}",
+      "message": "Восстановить удаленные параметры по умолчанию? Все ваши изменения будут потеряны."
+   },
+   "sqOptions_parameters_modified_and_deleted_message": {
+      "description": "{Options parameters restore modified and deleted parameters confirm box text}",
+      "message": "Восстановить параметры по умолчанию? Все ваши изменения будут потеряны."
+   },
+   "sqOptions_parameters_modified_message": {
+      "description": "{Options parameters restore modified parameters confirm box text}",
+      "message": "Восстановить измененные параметры по умолчанию? Все ваши изменения будут потеряны."
+   },
+   "sqOptions_parameters_new_parameter": {
+      "description": "{Options parameters new parameter button}",
+      "message": "Новый параметр"
+   },
+   "sqOptions_parameters_new_parameter_error": {
+      "description": "{Error message displayed if user trying to save parameter without required fields. TITLE, NAME, URL_R, URL_S should not be translated}",
+      "message": "Укажите ЗАГОЛОВОК и ИМЯ параметра. Для более эффективного использования параметра укажите значение URL_R или URL_S."
+   },
+   "sqOptions_parameters_parameter_window_0": {
+      "description": "{Options parameters edit window tooltip}",
+      "message": "имена уровней доменов"
+   },
+   "sqOptions_parameters_parameter_window_1": {
+      "description": "{Options parameters edit window tooltip}",
+      "message": "URL"
+   },
+   "sqOptions_parameters_parameter_window_10": {
+      "description": "{Options parameters edit window tooltip}",
+      "message": "позиция в SERP"
+   },
+   "sqOptions_parameters_parameter_window_2": {
+      "description": "{Options parameters edit window tooltip}",
+      "message": "домен"
+   },
+   "sqOptions_parameters_parameter_window_3": {
+      "description": "{Options parameters edit window tooltip}",
+      "message": "домен без www"
+   },
+   "sqOptions_parameters_parameter_window_4": {
+      "description": "{Options parameters edit window tooltip}",
+      "message": "домен 2 уровня"
+   },
+   "sqOptions_parameters_parameter_window_5": {
+      "description": "{Options parameters edit window tooltip}",
+      "message": "схема URL"
+   },
+   "sqOptions_parameters_parameter_window_6": {
+      "description": "{Options parameters edit window tooltip}",
+      "message": "путь URL"
+   },
+   "sqOptions_parameters_parameter_window_7": {
+      "description": "{Options parameters edit window tooltip}",
+      "message": "запрос URL"
+   },
+   "sqOptions_parameters_parameter_window_8": {
+      "description": "{Options parameters edit window tooltip}",
+      "message": "поиск ключевого слова"
+   },
+   "sqOptions_parameters_parameter_window_9": {
+      "description": "{Options parameters edit window tooltip}",
+      "message": "контрольная сумма Google PageRank"
+   },
+   "sqOptions_parameters_parameter_window_cancel": {
+      "description": "{Options parameters edit window cancel button title}",
+      "message": "Отмена"
+   },
+   "sqOptions_parameters_parameter_window_create_title": {
+      "description": "{Options parameters edit window create mode title}",
+      "message": "Создать параметр"
+   },
+   "sqOptions_parameters_parameter_window_delete": {
+      "description": "{Options parameters edit window delete button title}",
+      "message": "Удалить"
+   },
+   "sqOptions_parameters_parameter_window_edit_title": {
+      "description": "{Options parameters edit window edit mode title}",
+      "message": "Редактировать параметр"
+   },
+   "sqOptions_parameters_parameter_window_ok": {
+      "description": "{Options parameters edit window save button title}",
+      "message": "Сохранить"
+   },
+   "sqOptions_parameters_reset": {
+      "description": "{Options parameters reset parameters button}",
+      "message": "Восстановить параметры по умолчанию"
+   },
+   "sqOptions_parameters_restore_menu_delete": {
+      "description": "{Options parameters restore menu delete item}",
+      "message": "Удалить настраиваемые параметры"
+   },
+   "sqOptions_parameters_restore_menu_deleted": {
+      "description": "{Options parameters restore menu delete item}",
+      "message": "Только удаленные"
+   },
+   "sqOptions_parameters_restore_menu_modified": {
+      "description": "{Options parameters restore menu delete item}",
+      "message": "Только измененные"
+   },
+   "sqOptions_parameters_restore_menu_modified_and_deleted": {
+      "description": "{Options parameters restore menu delete item}",
+      "message": "Измененные и удаленные"
+   },
+   "sqOptions_parameters_table_all": {
+      "description": "{Options parameters table column all}",
+      "message": "Все"
+   },
+   "sqOptions_parameters_table_bing": {
+      "description": "{Options parameters table column seobar}",
+      "message": "Bing"
+   },
+   "sqOptions_parameters_table_external": {
+      "description": "{Options parameters table column seobar}",
+      "message": "Внешние"
+   },
+   "sqOptions_parameters_table_google": {
+      "description": "{Options parameters table column seobar}",
+      "message": "Google"
+   },
+   "sqOptions_parameters_table_internal": {
+      "description": "{Options parameters table column seobar}",
+      "message": "Внутренние"
+   },
+   "sqOptions_parameters_table_linkinfo": {
+      "description": "{Options parameters table column seobar}",
+      "message": "Сведения о ссылках"
+   },
+   "sqOptions_parameters_table_reports": {
+      "description": "{Options parameters table reports group header}",
+      "message": "Отчеты"
+   },
+   "sqOptions_parameters_table_semrush": {
+      "description": "{Options parameters table column seobar}",
+      "message": "Semrush"
+   },
+   "sqOptions_parameters_table_seobar": {
+      "description": "{Options parameters table column seobar}",
+      "message": "SEObar"
+   },
+   "sqOptions_parameters_table_serp": {
+      "description": "{Options parameters table serp group header}",
+      "message": "Панель SERP"
+   },
+   "sqOptions_parameters_table_yahoo": {
+      "description": "{Options parameters table column seobar}",
+      "message": "Yahoo"
+   },
+   "sqOptions_parameters_table_yandex": {
+      "description": "{Options parameters table column seobar}",
+      "message": "Яндекс"
+   },
+   "sqOptions_parameters_title": {
+      "description": "{Options parameters title}",
+      "message": "Конфигурация параметров"
+   },
+   "sqOptions_restore_default_message": {
+      "message": "Это действие приведет к восстановлению настроек по умолчанию. Продолжить?"
+   },
+   "sqOptions_restore_default_title": {
+      "description": "{Options restore default button text}",
+      "message": "Восстановить значения по умолчанию"
+   },
+   "sqOptions_seobar_color_dark": {
+      "description": "{Options SEObar preferences page color style dark}",
+      "message": "Темная"
+   },
+   "sqOptions_seobar_color_light": {
+      "description": "{Options SEObar preferences page color style light}",
+      "message": "Light"
+   },
+   "sqOptions_seobar_color_title": {
+      "description": "{Options SEObar preferences page color style}",
+      "message": "цветовая тема:"
+   },
+   "sqOptions_seobar_density_label": {
+      "description": "{Options SEObar preferences page density parameter label}",
+      "message": "Показывать ссылку на отчет о плотности"
+   },
+   "sqOptions_seobar_density_title": {
+      "description": "{Options SEObar preferences page density parameter}",
+      "message": "Ссылка на плотность:"
+   },
+   "sqOptions_seobar_diagnosis_label": {
+      "description": "{Options SEObar preferences page diagnosis parameter label}",
+      "message": "Показывать ссылку на результаты диагностики"
+   },
+   "sqOptions_seobar_diagnosis_title": {
+      "description": "{Options SEObar preferences page diagnosis parameter}",
+      "message": "Ссылка на диагностику:"
+   },
+   "sqOptions_seobar_disabled_label": {
+      "description": "{Options SEObar preferences page seobar global switch  label}",
+      "message": "Показывать SEObar на всех страницах"
+   },
+   "sqOptions_seobar_disabled_title": {
+      "description": "{Options SEObar preferences page seobar global switch}",
+      "message": "SEObar активирован:"
+   },
+   "sqOptions_seobar_exclude_list": {
+      "description": "{Options SEObar preferences page exclude list placeholder}",
+      "message": "Укажите сайты, для которых вы хотите скрыть SEObar."
+   },
+   "sqOptions_seobar_exclude_message": {
+      "description": "{Options SEObar preferences page exclude list message}",
+      "message": "Здесь можно указать имена доменов / регулярные выражения, определяющие домены, для которых SEObar будет скрыта."
+   },
+   "sqOptions_seobar_exclude_title": {
+      "description": "{Options SEObar preferences page exclude list title}",
+      "message": "Список исключений:"
+   },
+   "sqOptions_seobar_filters_title": {
+      "description": "{Options SEObar preferences page URL filters group}",
+      "message": "Фильтры URL"
+   },
+   "sqOptions_seobar_https_label": {
+      "description": "{Options SEObar preferences page https label}",
+      "message": "Показывать SEObar на ресурсах HTTPS (возможна смена знака статуса подключения)"
+   },
+   "sqOptions_seobar_https_title": {
+      "description": "{Options SEObar preferences page https switch}",
+      "message": "Показывать на HTTPS:"
+   },
+   "sqOptions_seobar_linkinfo_label": {
+      "description": "{Options SEObar preferences page linkinfo parameter label}",
+      "message": "Показывать ссылки на отчеты и счетчики внутренних/внешних ссылок на странице"
+   },
+   "sqOptions_seobar_linkinfo_title": {
+      "description": "{Options SEObar preferences page linkinfo parameter}",
+      "message": "Ссылка на сведения о ссылках:"
+   },
+   "sqOptions_seobar_load_mode_0": {
+      "description": "{Options SEObar preferences page load mode auto}",
+      "message": "При загрузке страницы"
+   },
+   "sqOptions_seobar_load_mode_1": {
+      "description": "{Options SEObar preferences page load mode by button}",
+      "message": "По запросу"
+   },
+   "sqOptions_seobar_load_title": {
+      "description": "{Options SEObar preferences page load mode}",
+      "message": "Загружать параметры:"
+   },
+   "sqOptions_seobar_loading_title": {
+      "description": "{Options SEObar preferences page seobar orientation and loading block}",
+      "message": "Загрузка и ориентация"
+   },
+   "sqOptions_seobar_match_list": {
+      "description": "{Options SEObar preferences page exclude list placeholder}",
+      "message": "Укажите сайты, для которых вы хотите включить SEObar."
+   },
+   "sqOptions_seobar_match_message": {
+      "description": "{Options SEObar preferences page exclude list message}",
+      "message": "Здесь можно указать домены, для которых панель SEObar будет активна. Панель будет отображаться только при переходе на эти домены."
+   },
+   "sqOptions_seobar_match_title": {
+      "description": "{Options SEObar preferences page exclude list title}",
+      "message": "Белый список доменов:"
+   },
+   "sqOptions_seobar_pageinfo_label": {
+      "description": "{Options SEObar preferences page pageinfo parameter label}",
+      "message": "Показывать ссылку на сведения о странице"
+   },
+   "sqOptions_seobar_pageinfo_title": {
+      "description": "{Options SEObar preferences page pageinfo parameter}",
+      "message": "Ссылка на сведения о странице:"
+   },
+   "sqOptions_seobar_parameters_title": {
+      "description": "{Options SEObar preferences page parameters group title}",
+      "message": "Параметры"
+   },
+   "sqOptions_seobar_pinned_label": {
+      "description": "{Options SEObar preference minimized mode description}",
+      "message": "Отображать SEObar в уменьшенном виде, при вертикальном отображении"
+   },
+   "sqOptions_seobar_pinned_title": {
+      "description": "{Options SEObar preference minimized mode}",
+      "message": "Отображать уменьшенным:"
+   },
+   "sqOptions_seobar_position_horizontal": {
+      "description": "{Options SEObar preferences page position horizontal top}",
+      "message": "Горизонтально вверху"
+   },
+   "sqOptions_seobar_position_horizontal_bottom": {
+      "description": "{Options SEObar preferences page position horizontal bottom}",
+      "message": "Горизонтально внизу"
+   },
+   "sqOptions_seobar_position_title": {
+      "description": "{Options SEObar preferences page position}",
+      "message": "Положение:"
+   },
+   "sqOptions_seobar_position_vertical_left": {
+      "description": "{Options SEObar preferences page position vertical left}",
+      "message": "Вертикально слева"
+   },
+   "sqOptions_seobar_position_vertical_right": {
+      "description": "{Options SEObar preferences page position vertical right}",
+      "message": "Вертикально справа"
+   },
+   "sqOptions_seobar_robots_label": {
+      "description": "{Options SEObar preferences page robots parameter label}",
+      "message": "Показывать результат диагностики robots.txt"
+   },
+   "sqOptions_seobar_robots_title": {
+      "description": "{Options SEObar preferences page robots parameter}",
+      "message": "Видимость robots.txt:"
+   },
+   "sqOptions_seobar_siteaudit_label": {
+      "description": "Options SEObar preferences page siteaudit parameter label",
+      "message": "Показать результаты отчета для инструмента Semrush «Аудит сайта»"
+   },
+   "sqOptions_seobar_siteaudit_title": {
+      "description": "Options SEObar preferences page siteaudit parameter",
+      "message": "Ссылка на инструмент Semrush «Аудит сайта»:"
+   },
+   "sqOptions_seobar_sitemap_label": {
+      "description": "{Options SEObar preferences page sitemap parameter label}",
+      "message": "Показывать результат диагностики sitemap.xml"
+   },
+   "sqOptions_seobar_sitemap_title": {
+      "description": "{Options SEObar preferences page sitemap parameter}",
+      "message": "Видимость sitemap.xml:"
+   },
+   "sqOptions_seobar_special_parameters_title": {
+      "description": "{Options SEObar preferences page special parameters group title}",
+      "message": "Особые параметры"
+   },
+   "sqOptions_seobar_title": {
+      "description": "{Options SEObar preferences page title}",
+      "message": "Настройки SEObar"
+   },
+   "sqOptions_serp_general_title": {
+      "description": "{Options SERP page general preferences title}",
+      "message": "Общие настройки"
+   },
+   "sqOptions_serp_highlight_blue": {
+      "description": "{Options SERP page highlight color blue}",
+      "message": "Светло-голубой"
+   },
+   "sqOptions_serp_highlight_color": {
+      "description": "{Options SERP page highlight color}",
+      "message": "Цвет выделения:"
+   },
+   "sqOptions_serp_highlight_field": {
+      "description": "{Options SERP page highlight enable checkbox}",
+      "message": "Включить выделение доменов:"
+   },
+   "sqOptions_serp_highlight_green": {
+      "description": "{Options SERP page highlight color green}",
+      "message": "Светло-зеленый"
+   },
+   "sqOptions_serp_highlight_import_button": {
+      "description": "{Options SERP page highlight list import button}",
+      "message": "Импортировать список"
+   },
+   "sqOptions_serp_highlight_import_message": {
+      "description": "{Options SERP page highlight list import message}",
+      "message": "Список доменов можно импортировать из файла. Для этого используйте обычный текстовый файл с кодировкой UTF-8. Каждая строка в нем должна содержать только одно значение. Размер файла не должен превышать 1 МБ."
+   },
+   "sqOptions_serp_highlight_label": {
+      "description": "{Options SERP page highlight label}",
+      "message": "Выделять в поисковой выдаче определенные домены"
+   },
+   "sqOptions_serp_highlight_list": {
+      "description": "{Options SERP page highlight list}",
+      "message": "Список выделяемых доменов:"
+   },
+   "sqOptions_serp_highlight_orange": {
+      "description": "{Options SERP page highlight color orange}",
+      "message": "Светло-оранжевый"
+   },
+   "sqOptions_serp_highlight_pink": {
+      "description": "{Options SERP page highlight color pink}",
+      "message": "Светло-розовый"
+   },
+   "sqOptions_serp_highlight_purple": {
+      "description": "{Options SERP page highlight color purple}",
+      "message": "Светло-пурпурный"
+   },
+   "sqOptions_serp_highlight_red": {
+      "description": "{Options SERP page highlight color red}",
+      "message": "Светло-красный"
+   },
+   "sqOptions_serp_highlight_title": {
+      "description": "{Options SERP page highlight block title}",
+      "message": "Выделение доменов"
+   },
+   "sqOptions_serp_highlight_turquoise": {
+      "description": "{Options SERP page highlight color turquoise}",
+      "message": "Светло-бирюзовый"
+   },
+   "sqOptions_serp_highlight_yellow": {
+      "description": "{Options SERP page highlight color yellow}",
+      "message": "Светло-желтый"
+   },
+   "sqOptions_serp_keyword_difficulty": {
+      "description": "{Options SERP page show keyword difficulty field title}",
+      "message": "Показать сложность ключевого слова:"
+   },
+   "sqOptions_serp_keyword_difficulty_label": {
+      "description": "{Options SERP page show keyword difficulty field label}",
+      "message": "Анализировать сложность ключевых слов для поисковой выдачи Google"
+   },
+   "sqOptions_serp_load_mode_0": {
+      "description": "{Options SERP page parameters load mode on show}",
+      "message": "При загрузке страницы"
+   },
+   "sqOptions_serp_load_mode_1": {
+      "description": "{Options SERP page parameters load mode by request}",
+      "message": "По запросу"
+   },
+   "sqOptions_serp_numbers": {
+      "description": "{Options SERP page show position numbers field title}",
+      "message": "Показывать номер:"
+   },
+   "sqOptions_serp_numbers_label": {
+      "description": "{Options SERP page show position numbers field label}",
+      "message": "Показывать позицию в поисковой выдачи"
+   },
+   "sqOptions_serp_parameters_load": {
+      "description": "{Options SERP page parameters load mode title}",
+      "message": "Загружать параметры:"
+   },
+   "sqOptions_serp_parameters_title": {
+      "description": "{Options SERP page parameters preferences section title}",
+      "message": "Настройки параметров"
+   },
+   "sqOptions_serp_show": {
+      "description": "{Options SERP page show overlay}",
+      "message": "Показывать в поисковой системе:"
+   },
+   "sqOptions_serp_show_bing": {
+      "description": "{Options SERP page show overlay on bing}",
+      "message": "Bing подключен"
+   },
+   "sqOptions_serp_show_google": {
+      "description": "{Options SERP page show overlay on google}",
+      "message": "Google подключен"
+   },
+   "sqOptions_serp_show_semrush": {
+      "description": "{Options SERP page show overlay on semrush}",
+      "message": "Semrush подключен"
+   },
+   "sqOptions_serp_show_yahoo": {
+      "description": "{Options SERP page show overlay on yahoo}",
+      "message": "Yahoo подключен"
+   },
+   "sqOptions_serp_show_yandex": {
+      "description": "{Options SERP page show overlay on yandex}",
+      "message": "Яндекс подключен"
+   },
+   "sqOptions_serp_tabs_title": {
+      "description": "{Options SERP page parameters title}",
+      "message": "Активные параметры панели SERP"
+   },
+   "sqOptions_serp_title": {
+      "description": "{Options SERP page title}",
+      "message": "Настройки панели SERP"
+   },
+   "sqOptions_serp_trust_score": {
+      "description": "{Options SERP page show domain trust metrics panel title}",
+      "message": "Отображать метрики Domain Trust:"
+   },
+   "sqOptions_serp_trust_score_label": {
+      "description": "{Options SERP page show domain trust metrics panel label}",
+      "message": "Включить отображение метрик Domain Trust в специальной панели"
+   },
+   "sqOptions_title": {
+      "description": "{Options page title}",
+      "message": "Настройки SEOquake"
+   },
+   "sqPageinfo_keywords_density": {
+      "description": "{Pageinfo report keywords density table density header}",
+      "message": "Плотность"
+   },
+   "sqPageinfo_keywords_foundin": {
+      "description": "{Pageinfo report keywords density table foundin header}",
+      "message": "Найдено в"
+   },
+   "sqPageinfo_keywords_keyword": {
+      "description": "{Pageinfo report keywords density table keyword header}",
+      "message": "Ключевое слово"
+   },
+   "sqPageinfo_keywords_repeats": {
+      "description": "{Pageinfo report keywords density table repeats header}",
+      "message": "Повторы"
+   },
+   "sqPageinfo_link_print": {
+      "description": "{Pageinfo report print button title}",
+      "message": " Печать"
+   },
+   "sqPageinfo_see_all_keywords": {
+      "description": "{Pageinfo report keywords density block see all link title}",
+      "message": "Показать все"
+   },
+   "sqPageinfo_title": {
+      "description": "{Pageinfo report title}",
+      "message": "Сведения о странице"
+   },
+   "sqPageinfo_title_backlinks_parameters": {
+      "description": "{Pageinfo report parameters block backlinks parameters title}",
+      "message": "Обратные ссылки:"
+   },
+   "sqPageinfo_title_basic": {
+      "description": "{Pageinfo report first block title}",
+      "message": "Основные сведения:"
+   },
+   "sqPageinfo_title_description": {
+      "description": "{Pageinfo report first block meta descripton field title}",
+      "message": "Метаописание:"
+   },
+   "sqPageinfo_title_domain_parameters": {
+      "description": "{Pageinfo report parameters block domain parameters title}",
+      "message": "Домен:"
+   },
+   "sqPageinfo_title_external": {
+      "description": "{Pageinfo report first block external links counter field title}",
+      "message": "Внешние ссылки:"
+   },
+   "sqPageinfo_title_internal": {
+      "description": "{Pageinfo report first block internal links counter field title}",
+      "message": "Внутренние ссылки:"
+   },
+   "sqPageinfo_title_keywords": {
+      "description": "{Pageinfo report first block meta keywords field title}",
+      "message": "Метатег ключевых слов:"
+   },
+   "sqPageinfo_title_keywords_density": {
+      "description": "{Pageinfo report keywords density block title}",
+      "message": "Плотность ключевого слова"
+   },
+   "sqPageinfo_title_other_parameters": {
+      "description": "{Pageinfo report parameters block other parameters title}",
+      "message": "Прочее:"
+   },
+   "sqPageinfo_title_page_parameters": {
+      "description": "{Pageinfo report parameters block page parameters title}",
+      "message": "Страница:"
+   },
+   "sqPageinfo_title_parameters": {
+      "description": "{Pageinfo report parameters block title}",
+      "message": "Параметры:"
+   },
+   "sqPageinfo_title_server": {
+      "description": "{Pageinfo report first block server field title}",
+      "message": "Сервер:"
+   },
+   "sqPageinfo_title_title": {
+      "description": "{Pageinfo report first block pagetitle field title}",
+      "message": "Заголовок:"
+   },
+   "sqPageinfo_total_2words": {
+      "description": "{Pageinfo report keywords density total 2-words phrases counter title}",
+      "message": "Комбинации из 2 слов: "
+   },
+   "sqPageinfo_total_3words": {
+      "description": "{Pageinfo report keywords density total 3-words phrases counter title}",
+      "message": "Комбинации из 3 слов: "
+   },
+   "sqPageinfo_total_4words": {
+      "description": "{Pageinfo report keywords density total 4-words phrases counter title}",
+      "message": "Комбинации из 4 слов: "
+   },
+   "sqPageinfo_total_words": {
+      "description": "{Pageinfo report keywords density total words counter title}",
+      "message": "Общее количество слов: "
+   },
+   "sqPanel_backlinks_connect": {
+      "description": "{Title for backlinks connect button}",
+      "message": "Подключиться к Semrush"
+   },
+   "sqPanel_backlinks_connect_message": {
+      "description": "{Connect SEMrush message. Some markdown can be used}",
+      "message": "Подключите свою *бесплатную* учетную запись Semrush\nи получите доступ к *Обзорному отчету по обратным ссылкам*"
+   },
+   "sqPanel_backlinks_domain": {
+      "description": "{Backlinks type pills switch to domain}",
+      "message": "Домен"
+   },
+   "sqPanel_backlinks_empty_header": {
+      "description": "{Backlinks empty data header}",
+      "message": "К сожалению, не удалось найти данные по вашему запросу"
+   },
+   "sqPanel_backlinks_empty_message": {
+      "description": "{Backlinks empty data message}",
+      "message": "Это могло произойти по нескольким причинам:"
+   },
+   "sqPanel_backlinks_empty_reason1": {
+      "description": "{Backlinks empty data message reason 1}",
+      "message": "Это новый сайт, который еще не был просканирован. Это произойдет в ближайшем будущем! Попробуйте проанализировать обратные ссылки на этот сайт через некоторое время."
+   },
+   "sqPanel_backlinks_empty_reason2": {
+      "description": "{Backlinks empty data message reason 2}",
+      "message": "Обратные ссылки на этот сайт отсутствуют. Пока еще никто не упоминал его."
+   },
+   "sqPanel_backlinks_empty_reason3": {
+      "description": "{Backlinks empty data message reason 2}",
+      "message": "Этого домена не существует."
+   },
+   "sqPanel_backlinks_error": {
+      "description": "{Some backlinks error message on unknown error}",
+      "message": "Сервис недоступен. Повторите попытку позже."
+   },
+   "sqPanel_backlinks_full_report": {
+      "description": "{Backlinks view full report button text}",
+      "message": "Полный отчет"
+   },
+   "sqPanel_backlinks_geo_domains": {
+      "description": "{Backlinks table geo domains header}",
+      "message": "Домены"
+   },
+   "sqPanel_backlinks_geo_title": {
+      "description": "{Backlinks table geo header}",
+      "message": "Страна"
+   },
+   "sqPanel_backlinks_referring_domains": {
+      "description": "{Backlinks domains message}",
+      "message": "Ссылающиеся домены"
+   },
+   "sqPanel_backlinks_referring_ips": {
+      "description": "{Backlinks ips message}",
+      "message": "Ссылающиеся IP"
+   },
+   "sqPanel_backlinks_referring_total": {
+      "description": "{Backlinks total message}",
+      "message": "Все обратные ссылки"
+   },
+   "sqPanel_backlinks_root_domain": {
+      "description": "{Backlinks type pills switch to root domain}",
+      "message": "Корневой домен"
+   },
+   "sqPanel_backlinks_scope": {
+      "description": "{Backlinks type pills switch to URL}",
+      "message": "Охват отчета: "
+   },
+   "sqPanel_backlinks_semrush_link": {
+      "description": "{Backlinks go to SEMrush link}",
+      "message": "Подробнее о Semrush"
+   },
+   "sqPanel_backlinks_semrush_text": {
+      "description": "{Backlings go to SEMrush text}",
+      "message": "или&nbsp;"
+   },
+   "sqPanel_backlinks_tld_domains": {
+      "description": "{Backlinks table TLD domains header}",
+      "message": "Домены"
+   },
+   "sqPanel_backlinks_tld_title": {
+      "description": "{Backlinks table TLD header}",
+      "message": "Распределение доменов первого уровня"
+   },
+   "sqPanel_backlinks_url": {
+      "description": "{Backlinks type pills switch to URL}",
+      "message": "URL"
+   },
+   "sqPanel_content_analysis_unavailable_message": {
+      "description": "{Message displayed if data analysis unavailable}",
+      "message": "Анализ контента недоступен."
+   },
+   "sqPanel_display_advertising_empty_text": {
+      "description": "{Display advertising empty text}",
+      "message": "К сожалению, не удалось найти какую-либо информацию===\n\nЭто новый домен, он пока отсутствует в наших базах данных."
+   },
+   "sqPanel_display_advertising_media_ads": {
+      "description": "{Display advertising panel percent bar left message}",
+      "message": "Медийная реклама"
+   },
+   "sqPanel_display_advertising_popular_media_ads": {
+      "description": "{Display advertising media ads row title}",
+      "message": "Популярная медийная реклама"
+   },
+   "sqPanel_display_advertising_popular_text_ads": {
+      "description": "{Display advertising text ads row title}",
+      "message": "Популярная текстовая реклама"
+   },
+   "sqPanel_display_advertising_show_more_ads": {
+      "description": "{Display advertising button to full report title}",
+      "message": "Показать больше объявлений"
+   },
+   "sqPanel_display_advertising_text_ads": {
+      "description": "{Display advertising panel percent bar right message}",
+      "message": "Текстовая реклама"
+   },
+   "sqPanel_display_advertising_total_ads": {
+      "description": "{Display advertising panel total ads header}",
+      "message": "Всего объявлений"
+   },
+   "sqPanel_display_advertising_total_avertisers": {
+      "description": "{Display advertising panel total Advertisers header}",
+      "message": "Всего рекламодателей"
+   },
+   "sqPanel_display_advertising_total_publishers": {
+      "description": "{Display advertising panel total publishers header}",
+      "message": "Всего площадок"
+   },
+   "sqPanel_feedback_button_title": {
+      "description": "{Panel feedback button title}",
+      "message": "Есть предложение?"
+   },
+   "sqPanel_feedback_error_close": {
+      "description": "{Feedback error panel close button text}",
+      "message": "Закрыть"
+   },
+   "sqPanel_feedback_error_message": {
+      "description": "{Feedback error panel message}",
+      "message": "При отправке сообщения произошла ошибка. Попробуйте отправить письмо на mail@seoquaketeam.com или оставить свой комментарий: "
+   },
+   "sqPanel_feedback_error_title": {
+      "description": "{Feedback error panel title}",
+      "message": "Ой! Что-то пошло не так"
+   },
+   "sqPanel_feedback_error_tryagain": {
+      "description": "{Feedback error panel tryagain button text}",
+      "message": "Повторите попытку"
+   },
+   "sqPanel_feedback_form_cancel_title": {
+      "description": "{Feedback form cancel button title}",
+      "message": "Закрыть"
+   },
+   "sqPanel_feedback_form_email_placeholder": {
+      "description": "{Feedback form field email placeholder}",
+      "message": "Email"
+   },
+   "sqPanel_feedback_form_link_prefix": {
+      "description": "{Feedback form store link prefix}",
+      "message": "или напишите отзыв:"
+   },
+   "sqPanel_feedback_form_submit_title": {
+      "description": "{Feedback form submit button title}",
+      "message": "Отправить"
+   },
+   "sqPanel_feedback_form_text_placeholder": {
+      "description": "{Feedback form field text placeholder}",
+      "message": "Я считаю, что..."
+   },
+   "sqPanel_feedback_form_title": {
+      "description": "{Feedback form title}",
+      "message": "Поделитесь своим мнением о SEOquake"
+   },
+   "sqPanel_feedback_sending_message": {
+      "description": "{Feedback sending panel title}",
+      "message": "Мы пересылаем ваш отзыв специалистам SEOquake."
+   },
+   "sqPanel_feedback_sending_title": {
+      "description": "{Feedback sending panel title}",
+      "message": "Ваш отзыв о SEOquake обрабатывается..."
+   },
+   "sqPanel_feedback_success_continue": {
+      "description": "{Feedback success panel title}",
+      "message": "Продолжить"
+   },
+   "sqPanel_feedback_success_message": {
+      "description": "{Feedback success panel title}",
+      "message": "Спасибо! Мы читаем все сообщения пользователей и отвечаем каждому."
+   },
+   "sqPanel_feedback_success_title": {
+      "description": "{Feedback success panel title}",
+      "message": "Вы поделились своим мнением о SEOquake"
+   },
+   "sqPanel_global_disabled": {
+      "message": "Плагин SEOquake отключен"
+   },
+   "sqPanel_global_enabled": {
+      "message": "SEOquake включен"
+   },
+   "sqPanel_menu_about": {
+      "description": "{Panel menu preferenes item}",
+      "message": "О SEOquake"
+   },
+   "sqPanel_menu_enable": {
+      "description": "{Panel menu core enabled switch}",
+      "message": "Включить SEOquake"
+   },
+   "sqPanel_menu_nofollow": {
+      "description": "{Panel menu nofollow enabled switch}",
+      "message": "Выделять ссылки «nofollow»"
+   },
+   "sqPanel_menu_preferences": {
+      "description": "{Panel menu preferenes item}",
+      "message": "Настройки..."
+   },
+   "sqPanel_menu_seobar": {
+      "description": "{Panel menu seobar enabled switch}",
+      "message": "Показать SEObar"
+   },
+   "sqPanel_menu_serpTitle": {
+      "description": "{Panel menu serp block title}",
+      "message": "Показать панель SERP:"
+   },
+   "sqPanel_module_title_density": {
+      "description": "{Panel density module link}",
+      "message": "Плотность"
+   },
+   "sqPanel_module_title_diagnosis": {
+      "description": "{Panel diagnosis module link}",
+      "message": "Диагностика"
+   },
+   "sqPanel_module_title_external": {
+      "description": "{Panel external module link}",
+      "message": "Внешние"
+   },
+   "sqPanel_module_title_internal": {
+      "description": "{Panel internal module link}",
+      "message": "Внутренние"
+   },
+   "sqPanel_module_title_linkinfo": {
+      "description": "{Panel linkinfo module link}",
+      "message": "Сравнение URL"
+   },
+   "sqPanel_module_title_pageinfo": {
+      "description": "{Panel pageinfo module link}",
+      "message": "Сведения о странице"
+   },
+   "sqPanel_nothing_to_analyze": {
+      "description": "{Message displayed for tabs which can not be analyzed}",
+      "message": "На этой странице отсутствуют данные для анализа"
+   },
+   "sqPanel_notice_1": {
+      "message": "We have updated the terms of our privacy policy. Please find them [https://www.seoquake.com/policy.html](here) for your review."
+   },
+   "sqPanel_semrush_unreachable": {
+      "message": "===\n\nСервис недоступен. Повторите попытку позже."
+   },
+   "sqPanel_tabs_backlinks": {
+      "description": "{Title for panel tab backlinks}",
+      "message": "Обратные ссылки"
+   },
+   "sqPanel_tabs_da": {
+      "description": "{Title for panel tab display advertising}",
+      "message": "Медийная реклама"
+   },
+   "sqPanel_tabs_parameters": {
+      "description": "{Title for panel tab parameters}",
+      "message": "Параметры"
+   },
+   "sqPanel_tabs_traffic": {
+      "description": "{Title for panel tab traffic analytics}",
+      "message": "Анализ трафика"
+   },
+   "sqPanel_tips_1": {
+      "message": "*Знаете ли вы* о возможности добавлять любые настраиваемые параметры? [https://www.seoquake.com/guide/parameters/create.html](Изучите наше руководство) или [parameters](создайте новый параметр) прямо сейчас!&nbsp;"
+   },
+   "sqPanel_tips_2": {
+      "message": "*Знаете ли вы* о возможности [general](экспортировать и импортировать настройки) в один клик?\n"
+   },
+   "sqPanel_tips_3": {
+      "message": "*Знаете ли вы* о возможности сортировки и экспорта поисковой выдачи в файл .csv?\n"
+   },
+   "sqPanel_tips_4": {
+      "message": "Слишком много проверок CAPTCHA? Попробуйте [serp](отключить любые показатели Google), которые вам не требуются.&nbsp;"
+   },
+   "sqPanel_tips_5": {
+      "message": "*Знаете ли вы* о возможности настраивать практически любые параметры плагина SEOquake в [general](разделе «Настройки»)?&nbsp;"
+   },
+   "sqPanel_tips_next": {
+      "message": "Следующий совет"
+   },
+   "sqPanel_top_no_title": {
+      "description": "{Top parameters title for parameter without title}",
+      "message": "Без названия"
+   },
+   "sqPanel_top_select": {
+      "description": "{Top parameters title for no parameter selected}",
+      "message": "Выбрать"
+   },
+   "sqPanel_traffic_analytics_connect_message": {
+      "description": "{Connect SEMrush message. Some markdown can be used}",
+      "message": "Подключите *бесплатную* учетную запись Semrush\nи получите доступ к отчету *Анализ трафика*"
+   },
+   "sqPanel_traffic_analytics_data_empty": {
+      "message": "===\n\nСервис недоступен. Повторите попытку позже."
+   },
+   "sqPanel_traffic_analytics_empty_header": {
+      "message": "К сожалению, для данного сайта не достаточно данных в нашей базе данных."
+   },
+   "sqPanel_traffic_analytics_empty_message": {
+      "message": "Это могло произойти по нескольким причинам:"
+   },
+   "sqPanel_traffic_analytics_empty_reason1": {
+      "message": "У сайта меньше тысячи уникальных посетителей в месяц. Это означает, что у нас недостаточно данных для точных расчетов."
+   },
+   "sqPanel_traffic_analytics_empty_reason2": {
+      "message": "Опечатка в имени домена. Проверьте, что имя домена указано верно."
+   },
+   "sqPanel_traffic_analytics_source_direct": {
+      "message": "Прямой"
+   },
+   "sqPanel_traffic_analytics_source_paid": {
+      "message": "Платный"
+   },
+   "sqPanel_traffic_analytics_source_referral": {
+      "message": "Переход"
+   },
+   "sqPanel_traffic_analytics_source_search": {
+      "message": "Поиск"
+   },
+   "sqPanel_traffic_analytics_source_social": {
+      "message": "Соцсети"
+   },
+   "sqPanel_try_this_link": {
+      "description": "{Message before link in nothing to analize}",
+      "message": "Попробуйте: "
+   },
+   "sqPanel_waiting": {
+      "description": "{Message on SEO Dashboard when page data is still loading.}",
+      "message": "Подготовка контента на странице..."
+   },
+   "sqSERPSemRush_connect_block": {
+      "description": "{SERP SEMrush panel connect SEMrush text}",
+      "message": "Получите *авторитетность домена*, *посещения* и *данные о вовлеченности* с бесплатным аккаунтом Semrush - [#connect](Подключить)"
+   },
+   "sqSERPSemRush_hint": {
+      "description": "{SERP SEMrush panel}",
+      "message": "*Domain Score* - это показатель для оценки качества и количества ссылок, указывающих на домен. Чем ближе это число к 100, тем выше качество домена.\n\n*Trust Score* - схожий показатель, используемый для оценки авторитетности домена, основанный на количестве доверенных обратных ссылок домена. Если Trust Score значительно ниже, чем Domain Score, это может означать большое количество не авторитетных обратных ссылок у домена."
+   },
+   "sqSERPSemRush_onboarding_text": {
+      "description": "{SERP SEMrush panel onboarding text} ",
+      "message": "*Представляем «Авторитетность домена» и «Данные о вовлеченности»!*\n\nПоказатель *Авторитетность домена* позволяет рассчитать важность и авторитетность сайта, основываясь на количестве и качестве его обратных ссылок.\n\nПоказатель *Посещения и Вовлеченность пользователей* отражает данные о присутствии в интернете сайта, и поведении пользователей."
+   },
+   "sqSERPTool_document_title": {
+      "description": "{SERPtool report title}",
+      "message": "SEOquake — инструмент для анализа поисковой выдачи"
+   },
+   "sqSERPTool_title": {
+      "description": "{SERPtool report h1 title}",
+      "message": "Ссылки в SERP"
+   },
+   "sqSemrush_connect": {
+      "description": "{Message on connect SEMrush button.}",
+      "message": "Подключиться к Semrush"
+   },
+   "sqSemrush_feedback_link": {
+      "description": "Message for feedback link",
+      "message": "Как можно улучшить интеграцию с Semrush?"
+   },
+   "sqSemrush_feedback_submit": {
+      "description": "Text on feedback send button",
+      "message": "Отправить"
+   },
+   "sqSemrush_feedback_success": {
+      "description": "Text for message send result",
+      "message": "Спасибо! Ваш отзыв успешно отправлен"
+   },
+   "sqSemrush_feedback_text_placeholder": {
+      "description": "Text placeholder in feedback textarea",
+      "message": "Поделиться идеями"
+   },
+   "sqSemrush_setup_siteaudit_button": {
+      "description": "Message on setup button",
+      "message": "Настроить"
+   },
+   "sqSemrush_setup_siteaudit_message": {
+      "description": "Message for siteaudit panel state when current domain does not have siteaudit",
+      "message": "Для домена {domain} не создана кампания по аудиту."
+   },
+   "sqSemrush_siteaudit_connect_1": {
+      "description": "First part of connect message",
+      "message": "Подключите свою учетную запись Semrush, чтобы просматривать результаты кампаний по аудиту сайта."
+   },
+   "sqSemrush_siteaudit_connect_2": {
+      "description": "Second part of connect message",
+      "message": "Это позволит вам быстро просматривать любую аналитику по нужным страницам."
+   },
+   "sqSemrush_siteaudit_connect_button": {
+      "description": "Connect button text",
+      "message": "Подключить"
+   },
+   "sqSemrush_siteaudit_connect_dontwant": {
+      "description": "Edit seobar settings message",
+      "message": "Хотите скрыть этот параметр на панели SEObar?"
+   },
+   "sqSemrush_siteaudit_connect_settings": {
+      "description": "Edit seobar settings link",
+      "message": "Редактировать настройки SEObar"
+   },
+   "sqSemrush_siteaudit_details_noerrors": {
+      "description": "Message when no errors on page",
+      "message": "На этой странице не были найдены какие-либо технические недочеты. Она в полном порядке!"
+   },
+   "sqSemrush_siteaudit_details_notparsed_1": {
+      "description": "Siteaudit no data message 1",
+      "message": "Во время последнего аудита эта страница не сканировалась."
+   },
+   "sqSemrush_siteaudit_details_notparsed_2": {
+      "description": "Siteaudit no data message 2",
+      "message": "В ходе следующего аудита попробуйте проверить большее количество страниц."
+   },
+   "sqSemrush_siteaudit_details_notparsed_link": {
+      "description": "Siteaudit no data configure link",
+      "message": "Проверить настройки аудита сайта"
+   },
+   "sqSemrush_siteaudit_details_viewdetails": {
+      "description": "View details buttons when no errors on page",
+      "message": "Подробнее"
+   },
+   "sqSeobar2_close": {
+      "description": "{Close seobar button tooltip text}",
+      "message": "Закрыть панель"
+   },
+   "sqSeobar2_close_button_close": {
+      "description": "{Title for close seobar panel button}",
+      "message": "Для других доменов"
+   },
+   "sqSeobar2_close_button_hide": {
+      "description": "{Title for hide seobar panel button}",
+      "message": "Для данного домена"
+   },
+   "sqSeobar2_close_header": {
+      "description": "{Heading message on close panel}",
+      "message": "Отключить SEObar"
+   },
+   "sqSeobar2_close_link_whitelist": {
+      "description": "{Title for seobar configure whitelist link}",
+      "message": "Здесь можно указать домены, для которых следует активировать панель SEObar"
+   },
+   "sqSeobar2_configuration": {
+      "description": "{seobar configuration panel link to main configuration}",
+      "message": "Дополнительные параметры"
+   },
+   "sqSeobar2_configuration_color": {
+      "description": "{Configuration panel color select title}",
+      "message": "цветовая тема"
+   },
+   "sqSeobar2_configuration_color_dark": {
+      "description": "{Configuration panel dark color pill title}",
+      "message": "Темная"
+   },
+   "sqSeobar2_configuration_color_light": {
+      "description": "{Configuration panel light color pill title}",
+      "message": "Light"
+   },
+   "sqSeobar2_configuration_more_settings": {
+      "description": "{seobar configuration panel link to main configuration}",
+      "message": "Дополнительные параметры"
+   },
+   "sqSeobar2_configuration_parameters_title": {
+      "description": "{Configuration panel parameters title}",
+      "message": "Параметры"
+   },
+   "sqSeobar2_configuration_position": {
+      "description": "{Configuration panel position select title}",
+      "message": "Положение панели SEObar"
+   },
+   "sqSeobar2_configuration_position_bottom": {
+      "message": "Горизонтально внизу"
+   },
+   "sqSeobar2_configuration_position_left": {
+      "description": "{Configuration panel left position pill title}",
+      "message": "Вертикально слева"
+   },
+   "sqSeobar2_configuration_position_right": {
+      "description": "{Configuration panel right position pill title}",
+      "message": "Вертикально справа"
+   },
+   "sqSeobar2_configuration_position_top": {
+      "description": "{Configuration panel top position pill title}",
+      "message": "Горизонтально вверху"
+   },
+   "sqSeobar2_configure": {
+      "description": "{Seobar cog button tooltip text}",
+      "message": "Настроить панель"
+   },
+   "sqSeobar2_density": {
+      "description": "{Density link title}",
+      "message": "Плотность"
+   },
+   "sqSeobar2_diagnosis": {
+      "description": "{Diagnosis link title}",
+      "message": "Диагностика"
+   },
+   "sqSeobar2_external": {
+      "description": "{External links title}",
+      "message": "Внешние ссылки"
+   },
+   "sqSeobar2_feedback_close": {
+      "description": "{Feedback cancel button title}",
+      "message": "Закрыть"
+   },
+   "sqSeobar2_feedback_no": {
+      "description": "{Feedback no button text}",
+      "message": "Нет"
+   },
+   "sqSeobar2_feedback_placeholder": {
+      "description": "{Feedback message box placeholder text}",
+      "message": "Ваши комментарии"
+   },
+   "sqSeobar2_feedback_question": {
+      "description": "{Feedback question}",
+      "message": "Вам удобно работать?"
+   },
+   "sqSeobar2_feedback_result": {
+      "description": "{Feedback result message}",
+      "message": "Спасибо! Ваш отзыв успешно отправлен."
+   },
+   "sqSeobar2_feedback_send": {
+      "description": "{Feedback send button title}",
+      "message": "Оставить отзыв"
+   },
+   "sqSeobar2_feedback_yes": {
+      "description": "{Feedback yes button text}",
+      "message": "Да"
+   },
+   "sqSeobar2_float_hide_hint": {
+      "message": "Нажмите «S» для скрытия SEObar"
+   },
+   "sqSeobar2_float_show_hint": {
+      "message": "Нажмите «S» для показа SEObar"
+   },
+   "sqSeobar2_internal": {
+      "description": "{Internal links title}",
+      "message": "Внутренние ссылки"
+   },
+   "sqSeobar2_more": {
+      "description": "{Horizontal seobar more date button title}",
+      "message": "Больше данных"
+   },
+   "sqSeobar2_pageinfo": {
+      "description": "{Pageinfo link title}",
+      "message": "Сводный отчет"
+   },
+   "sqSeobar2_parameters_group_backlinks": {
+      "description": "{Seobar parameters group backlinks title}",
+      "message": "Обратные ссылки"
+   },
+   "sqSeobar2_parameters_group_domain": {
+      "description": "{Seobar parameters group domain title}",
+      "message": "Домен"
+   },
+   "sqSeobar2_parameters_group_other": {
+      "description": "{Seobar parameters group other title}",
+      "message": "Другое"
+   },
+   "sqSeobar2_parameters_group_page": {
+      "description": "{Seobar parameters group page title}",
+      "message": "Страница"
+   },
+   "sqSeobar2_reload": {
+      "description": "{Load parameters values button title}",
+      "message": "Загрузить все параметры"
+   },
+   "sqSeobar2_robots": {
+      "description": "{Robots.txt magic parameter title}",
+      "message": "Robots.txt"
+   },
+   "sqSeobar2_siteaudit": {
+      "message": "Аудит сайта"
+   },
+   "sqSeobar2_sitemap": {
+      "description": "{Sitemap.xml magic parameter title}",
+      "message": "Sitemap.xml"
+   },
+   "sqSeobar2_switch_to_vertical": {
+      "description": "{More data dropdown message}",
+      "message": "Похоже, все ваши параметры не помещаются на SEObar. Для вашего удобства мы разработали новую вертикальную панель."
+   },
+   "sqSeobar2_switch_to_vertical_button": {
+      "description": "{More data dropdown button}",
+      "message": "Попробовать!"
+   },
+   "sqSeobar2_toggle": {
+      "description": "{Pin vertical seobar panel button title}",
+      "message": "Переключить панель"
+   },
+   "sqSerpOverlay_export": {
+      "message": "Экспорт в CSV"
+   },
+   "sqSerpOverlay_get_metrics": {
+      "message": "Получить показатели"
+   },
+   "sqSerpOverlay_hlgl_country": {
+      "message": "Страна"
+   },
+   "sqSerpOverlay_hlgl_group_common": {
+      "message": "Основные"
+   },
+   "sqSerpOverlay_hlgl_group_others": {
+      "message": "Другое"
+   },
+   "sqSerpOverlay_hlgl_language": {
+      "message": "Язык"
+   },
+   "sqSerpOverlay_hlgl_reset": {
+      "message": "Сброс"
+   },
+   "sqSerpOverlay_hlgl_set": {
+      "message": "Задать локаль"
+   },
+   "sqSerpOverlay_hlgl_title": {
+      "message": "Локаль"
+   },
+   "sqSerpOverlay_keyword_difficulty": {
+      "description": "{First part of keyword difficulty message}",
+      "message": "Сложность ключевого слова:"
+   },
+   "sqSerpOverlay_keyword_difficulty_db": {
+      "description": "{Database message for current detected database}",
+      "message": "(для {db} базы данных)"
+   },
+   "sqSerpOverlay_keyword_difficulty_full_report": {
+      "description": "{Second part of keyword difficulty message}",
+      "message": "&nbsp;&mdash&nbsp;[https://www.semrush.com/us/info/+(keyword)](полный отчет) по этому ключевому слову"
+   },
+   "sqSerpOverlay_keyword_difficulty_onboarding_close": {
+      "description": "{}",
+      "message": "Выключить"
+   },
+   "sqSerpOverlay_keyword_difficulty_onboarding_ok": {
+      "description": "{}",
+      "message": "Отлично, спасибо!"
+   },
+   "sqSerpOverlay_keyword_difficulty_onboarding_text": {
+      "description": "{}",
+      "message": "*Мы добавили Показатель сложности ключевого слова!*\n\nОн определяет, насколько сложно превзойти конкурентов в органическом поиске по определенному ключевому слову на текущей странице поисковой выдачи."
+   },
+   "sqSerpOverlay_parameters": {
+      "message": "Параметры"
+   },
+   "sqSerpOverlay_serptool": {
+      "message": "Отчет по поисковой выдаче"
+   },
+   "sqSerpOverlay_sort_ascending": {
+      "message": "по возрастанию"
+   },
+   "sqSerpOverlay_sort_by": {
+      "message": "по"
+   },
+   "sqSerpOverlay_sort_descending": {
+      "message": "по убыванию"
+   },
+   "sqSerpOverlay_sort_message": {
+      "message": "выберите параметр"
+   },
+   "sqSerpOverlay_sort_title": {
+      "message": "Сортировать данные на странице"
+   },
+   "sqSiteaudit_details_errors": {
+      "description": "{Error title for siteaudit page details}",
+      "message": "Ошибки"
+   },
+   "sqSiteaudit_details_warnings": {
+      "description": "{Warnings title for siteaudit page details}",
+      "message": "Предупреждения"
+   },
+   "unavailableHere": {
+      "description": "{Error when data is currently unavailable}",
+      "message": "Информация по этой странице недоступна. Попробуйте проанализировать другую страницу."
+   }
+}

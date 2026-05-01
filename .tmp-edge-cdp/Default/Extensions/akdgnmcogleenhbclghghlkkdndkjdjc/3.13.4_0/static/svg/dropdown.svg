@@ -1,0 +1,20 @@
+<svg
+        xmlns="http://www.w3.org/2000/svg"
+        xmlns:xlink="http://www.w3.org/1999/xlink"
+        width="12"
+        height="96"
+>
+    <defs>
+        <symbol id="a">
+            <path d="M5.5 9l-5.5-5.5 1.5-1.5 4 4 4-4 1.5 1.5z"/>
+        </symbol>
+    </defs>
+    <use xlink:href="#a" x="0" y="0" fill="#81938a" />
+    <use xlink:href="#a" x="0" y="12" fill="#fff" />
+    <use xlink:href="#a" x="0" y="24" fill="#adbabe" />
+    <use xlink:href="#a" x="0" y="36" fill="#64787e" />
+    <use xlink:href="#a" x="0" y="48" transform="matrix(-1,0,0,-1,11,107)" fill="#81938a" />
+    <use xlink:href="#a" x="0" y="60" transform="matrix(-1,0,0,-1,11,131)" fill="#fff" />
+    <use xlink:href="#a" x="0" y="72" transform="matrix(-1,0,0,-1,11,155)" fill="#adbabe" />
+    <use xlink:href="#a" x="0" y="84" transform="matrix(-1,0,0,-1,11,179)" fill="#64787e" />
+</svg>

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>SEOquake linkinfo</title>
+    <meta charset="utf-8"/>
+    <link rel="stylesheet" href="linkinfo.css" type="text/css">
+</head>
+<body>
+<header>
+    <div class="black-menu">
+    <nav class="container">
+        <a href="https://www.seoquake.com/guide/index.html" target="_blank" data-role="howto-link">How to use</a>
+        <a href="https://forms.gle/6frm8Fkr4F345HKN6" target="_blank" data-role="suggest-link">Have a suggestion?</a>
+    </nav>
+</div>
+
+    <div class="green-bg">
+        <div class="container">
+            <h1 data-role="title">Compare URLs/domains</h1>
+            <img src="static/common/top-logo.png" alt="SEOquake" class="top-logo"/>
+        </div>
+    </div>
+</header>
+    <main>
+        <section class="panel-visible">
+            <div class="sqtoolbar hidden container" data-role="toolbar">
+                <button data-role="button-request" class="sqbtn sqbtn-small sqbtn-gray sqbtn-transparent" title="Request all parameters" style="display:none;">Request all parameters</button><!--
+                 --><button data-role="button-save" class="sqbtn sqbtn-small sqbtn-gray sqbtn-transparent" title="Save data to csv file">Save as CSV</button><!--
+                 --><button data-role="button-configure" class="sqbtn sqbtn-small sqbtn-gray sqbtn-transparent" title="Configure parameters for this report">Add/hide parameters</button><!--
+                 --><button data-role="button-edit" class="sqbtn sqbtn-small pull-right">Change list</button>
+            </div>
+
+            <div class="block container" data-role="urls-block">
+                <p data-role="urls-to-check-2"><b data-role="urls-to-check-1">Insert URLs or domains to check</b> (one per line).</p>
+                <textarea data-role="urls"></textarea>
+                <div class="sqtoolbar"><!--
+                    --><button data-role="button-process" class="sqbtn">Process urls</button><!--
+                    --><button data-role="button-import" id="import_button" class="sqbtn sqbtn-gray sqbtn-transparent pull-right">Import links from CSV file</button><!--
+                --></div>
+                <input type="file" id="import_file_name" style="display: none"/>
+            </div>
+
+            <table data-role="linkinfo-table" class="linkinfo-table hidden">
+                <colgroup>
+                    <col width="50"/>
+                    <col width="500"/>
+                </colgroup>
+                <thead></thead>
+                <tbody></tbody>
+            </table>
+        </section>
+    </main>
+<footer></footer>
+    <script type="text/javascript" src="linkinfo.js"></script>
+</body>
+</html>

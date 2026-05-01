@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="12" height="48">
+    <defs>
+    <symbol id="a">
+    <path d="M5 0v2h2.8l-4.8 4.8 1.2 1.2 4.8-4.8v2.8h2v-6zm2 9h-5v-5h1v-2h-2c-.6 0-1 .5-1 1v7c0 .5.4 1 1 1h7c.6 0 1-.5 1-1v-2h-2v1z"/>
+    </symbol>
+    </defs>
+    <use xlink:href="#a" x="0" y="0" fill="#81938a" />
+    <use xlink:href="#a" x="0" y="12" fill="#fff" />
+    <use xlink:href="#a" x="0" y="24" fill="#adbabe" />
+    <use xlink:href="#a" x="0" y="36" fill="#64787e" />
+</svg>

@@ -1,0 +1,3493 @@
+{
+   "extDescription": {
+      "description": "{Extension description for extensions list}",
+      "message": "SEOquakeは、SEO Auditなどの便利なツールと共に、主要なSEO指標を提供する無料のプラグインです"
+   },
+   "extName": {
+      "description": "{Main extension title}",
+      "message": "SEOquake"
+   },
+   "magic_showPanelQuiz1": {
+      "description": "{Special configuration key, DO NOT TOUCH}",
+      "message": "0"
+   },
+   "magic_showPanelQuiz2": {
+      "description": "{Special configuration key, DO NOT TOUCH}",
+      "message": "1"
+   },
+   "menuDisabled": {
+      "description": "{Not used}",
+      "message": "無効"
+   },
+   "menuEnabled": {
+      "description": "{Not used}",
+      "message": "有効"
+   },
+   "menuItemAbout": {
+      "description": "{Not used}",
+      "message": "SEOquakeについて"
+   },
+   "menuItemDensity": {
+      "description": "{Context menu item for keywords Density}",
+      "message": "濃度..."
+   },
+   "menuItemDiagnosis": {
+      "description": "{Context menu item for Diagnosis tool}",
+      "message": "診断結果..."
+   },
+   "menuItemFeedback": {
+      "description": "{Not used}",
+      "message": "フィードバックを送信..."
+   },
+   "menuItemFullInfo": {
+      "description": "{Not used}",
+      "message": "さらに詳しく"
+   },
+   "menuItemHighlight": {
+      "description": "{Not used}",
+      "message": "no-followをハイライト"
+   },
+   "menuItemLinkInfo": {
+      "description": "{Context menu item for Compare URLs tool}",
+      "message": "URLを比較…"
+   },
+   "menuItemOptions": {
+      "description": "{Context menu item for configuration page}",
+      "message": "環境設定…"
+   },
+   "menuItemPageinfo": {
+      "description": "{Context menu item for Page info tool}",
+      "message": "ページ情報..."
+   },
+   "menuItemSEOBar": {
+      "description": "{Not used}",
+      "message": "SEOバー"
+   },
+   "menuItemSERPBing": {
+      "description": "{Not used}",
+      "message": "Bing"
+   },
+   "menuItemSERPGoogle": {
+      "description": "{Not used}",
+      "message": "Google"
+   },
+   "menuItemSERPYahoo": {
+      "description": "{Not used}",
+      "message": "Yahoo"
+   },
+   "menuItemSERPYandex": {
+      "description": "{Not used}",
+      "message": "Yandex"
+   },
+   "menuPlugins": {
+      "description": "{Not used}",
+      "message": "プラグイン"
+   },
+   "sqCaptcha_header": {
+      "description": "{Title for captcha page seoquake panel}",
+      "message": "SEOquakeが原因となっているようです"
+   },
+   "sqCaptcha_text": {
+      "description": "{Text for captcha page seoquake panel}",
+      "message": "SEOquakeは一度に複数のデータを収集しようとしているため、検索エンジンはこれをスパムの情報受信方法と見なしています。不要なパラメータを無効にするか、[https://www.seoquake.com/guide/troubleshooting.html]を無効にしてみてください（この問題の詳細については、ガイドをご覧ください）。"
+   },
+   "sqChangelog_close": {
+      "description": "{Hide changelog panel button}",
+      "message": "OK！"
+   },
+   "sqChangelog_title": {
+      "description": "{Header for changelog panel {version} and {date} will be automaticaly replaced}",
+      "message": "{date}からの{version} における変更点"
+   },
+   "sqCommon_error_window_close": {
+      "description": "{Common report error window close button title}",
+      "message": "閉じる"
+   },
+   "sqCommon_error_window_title": {
+      "description": "{Common report error window title}",
+      "message": "エラー処理リクエスト"
+   },
+   "sqCommon_howto_link": {
+      "description": "{Reports top menu How to use link}",
+      "message": "使用方法"
+   },
+   "sqCommon_menu_compare": {
+      "description": "{Common report menu item compare urls}",
+      "message": " URL/ドメインを比較"
+   },
+   "sqCommon_menu_density": {
+      "description": "{Common report menu item density}",
+      "message": "濃度"
+   },
+   "sqCommon_menu_diagnosis": {
+      "description": "{Common report menu item diagnosis}",
+      "message": "診断結果"
+   },
+   "sqCommon_menu_external": {
+      "description": "{Common report menu item external}",
+      "message": "外部"
+   },
+   "sqCommon_menu_internal": {
+      "description": "{Common report menu item internal}",
+      "message": "内部"
+   },
+   "sqCommon_menu_pageinfo": {
+      "description": "{Common report menu item page info}",
+      "message": "ページ情報"
+   },
+   "sqCommon_parameters_configure_window_cancel": {
+      "description": "{Parameters configure window cancel button title}",
+      "message": "取り消す"
+   },
+   "sqCommon_parameters_configure_window_save": {
+      "description": "{Parameters configure window save button title}",
+      "message": "保存"
+   },
+   "sqCommon_parameters_configure_window_title": {
+      "description": "{Parameters configure window title at common report}",
+      "message": "レポートのパラメータを追加／非表示"
+   },
+   "sqCommon_suggest_link": {
+      "description": "{Reports top menu Have a suggestion link}",
+      "message": "何かご提案がありますか？"
+   },
+   "sqCompare_button_configure": {
+      "description": "{Compare link save metrics button}",
+      "message": "パラメータを追加/非表示"
+   },
+   "sqCompare_button_configure_tooltip": {
+      "description": "{Compare link save metrics button title}",
+      "message": "このレポートのためにパラメータを設定"
+   },
+   "sqCompare_button_edit": {
+      "description": "{Compare link save metrics button}",
+      "message": "リストを変更"
+   },
+   "sqCompare_button_edit_tooltip": {
+      "description": "{Compare link save metrics button title}",
+      "message": "URLリストを変更"
+   },
+   "sqCompare_button_import": {
+      "description": "{Compare links import URLs from file button}",
+      "message": "CSVファイルからリンクをインポート"
+   },
+   "sqCompare_button_process": {
+      "description": "{Compare links process data button text}",
+      "message": "URLを処理"
+   },
+   "sqCompare_button_request": {
+      "description": "{Compare link request metrics button}",
+      "message": "すべてのパラメータをリクエスト"
+   },
+   "sqCompare_button_request_tooltip": {
+      "description": "{Compare link request metrics button title}",
+      "message": "すべてのパラメータをリクエスト"
+   },
+   "sqCompare_button_save": {
+      "description": "{Compare link save metrics button}",
+      "message": "CSVとして保存"
+   },
+   "sqCompare_button_save_tooltip": {
+      "description": "{Compare link save metrics button title}",
+      "message": "CSVファイルにデータを保存"
+   },
+   "sqCompare_document_title": {
+      "description": "{Compare links document title}",
+      "message": "SEOquakeリンク情報"
+   },
+   "sqCompare_title": {
+      "description": "{Compare links page title}",
+      "message": "URL/ドメインを比較"
+   },
+   "sqCompare_url_to_check_1": {
+      "description": "{Compare links textarea message bold text}",
+      "message": "チェックするURLまたはドメインを挿入"
+   },
+   "sqCompare_url_to_check_2": {
+      "description": "{Compare links textarea message normal text}",
+      "message": "（1行に1つのみ）"
+   },
+   "sqCountry_a1": {
+      "message": "匿名プロキシ"
+   },
+   "sqCountry_a2": {
+      "message": "衛星サービスのプロバイダー"
+   },
+   "sqCountry_ad": {
+      "message": "アンドラ"
+   },
+   "sqCountry_ae": {
+      "message": "アラブ首長国連邦"
+   },
+   "sqCountry_af": {
+      "message": "アフガニスタン"
+   },
+   "sqCountry_ag": {
+      "message": "アンティグア・バーブーダ"
+   },
+   "sqCountry_ai": {
+      "message": "アンギラ"
+   },
+   "sqCountry_al": {
+      "message": "アルバニア"
+   },
+   "sqCountry_am": {
+      "message": "アルメニア"
+   },
+   "sqCountry_ao": {
+      "message": "アンゴラ"
+   },
+   "sqCountry_ap": {
+      "message": "アジア太平洋地域"
+   },
+   "sqCountry_ar": {
+      "message": "アルゼンチン"
+   },
+   "sqCountry_at": {
+      "message": "オーストリア"
+   },
+   "sqCountry_au": {
+      "message": "オーストラリア"
+   },
+   "sqCountry_ax": {
+      "message": "オーランド諸島"
+   },
+   "sqCountry_az": {
+      "message": "アゼルバイジャン"
+   },
+   "sqCountry_ba": {
+      "message": "ボスニア・ヘルツェゴビナ"
+   },
+   "sqCountry_bb": {
+      "message": "バルバドス"
+   },
+   "sqCountry_bd": {
+      "message": "バングラデシュ"
+   },
+   "sqCountry_be": {
+      "message": "ベルギー"
+   },
+   "sqCountry_bf": {
+      "message": "ブルキナファソ"
+   },
+   "sqCountry_bg": {
+      "message": "ブルガリア"
+   },
+   "sqCountry_bh": {
+      "message": "バーレーン"
+   },
+   "sqCountry_bi": {
+      "message": "ブルンジ"
+   },
+   "sqCountry_bj": {
+      "message": "ベナン"
+   },
+   "sqCountry_bm": {
+      "message": "バミューダ"
+   },
+   "sqCountry_bn": {
+      "message": "ブルネイ"
+   },
+   "sqCountry_bo": {
+      "message": "ボリビア"
+   },
+   "sqCountry_br": {
+      "message": "ブラジル"
+   },
+   "sqCountry_bs": {
+      "message": "バハマ"
+   },
+   "sqCountry_bt": {
+      "message": "ブータン"
+   },
+   "sqCountry_bw": {
+      "message": "ボツワナ"
+   },
+   "sqCountry_by": {
+      "message": "ベラルーシ"
+   },
+   "sqCountry_bz": {
+      "message": "ベリーズ"
+   },
+   "sqCountry_ca": {
+      "message": "カナダ"
+   },
+   "sqCountry_cd": {
+      "message": "コンゴ民主共和国"
+   },
+   "sqCountry_cf": {
+      "message": "中央アフリカ共和国."
+   },
+   "sqCountry_cg": {
+      "message": "コンゴ"
+   },
+   "sqCountry_ch": {
+      "message": "スイス"
+   },
+   "sqCountry_ci": {
+      "message": "コートジボワール"
+   },
+   "sqCountry_cl": {
+      "message": "チリ"
+   },
+   "sqCountry_cm": {
+      "message": "カメルーン"
+   },
+   "sqCountry_cn": {
+      "message": "中国"
+   },
+   "sqCountry_co": {
+      "message": "コロンビア"
+   },
+   "sqCountry_cr": {
+      "message": "コスタリカ"
+   },
+   "sqCountry_cu": {
+      "message": "キューバ"
+   },
+   "sqCountry_cv": {
+      "message": "カーボヴェルデ"
+   },
+   "sqCountry_cw": {
+      "message": "キュラソー"
+   },
+   "sqCountry_cy": {
+      "message": "キプロス"
+   },
+   "sqCountry_cz": {
+      "message": "チェコ共和国"
+   },
+   "sqCountry_de": {
+      "message": "ドイツ"
+   },
+   "sqCountry_dj": {
+      "message": "ジブチ"
+   },
+   "sqCountry_dk": {
+      "message": "デンマーク"
+   },
+   "sqCountry_dm": {
+      "message": "ドミニカ"
+   },
+   "sqCountry_do": {
+      "message": "ドミニカ共和国"
+   },
+   "sqCountry_dz": {
+      "message": "アルジェリア"
+   },
+   "sqCountry_ec": {
+      "message": "エクアドル"
+   },
+   "sqCountry_ee": {
+      "message": "エストニア"
+   },
+   "sqCountry_eg": {
+      "message": "エジプト"
+   },
+   "sqCountry_eh": {
+      "message": "西サハラ"
+   },
+   "sqCountry_er": {
+      "message": "エリトリア"
+   },
+   "sqCountry_es": {
+      "message": "スペイン"
+   },
+   "sqCountry_et": {
+      "message": "エチオピア"
+   },
+   "sqCountry_eu": {
+      "message": "欧州連合"
+   },
+   "sqCountry_fi": {
+      "message": "フィンランド"
+   },
+   "sqCountry_fj": {
+      "message": "フィジー"
+   },
+   "sqCountry_fk": {
+      "message": "フォークランド諸島"
+   },
+   "sqCountry_fm": {
+      "message": "ミクロネシア連邦"
+   },
+   "sqCountry_fo": {
+      "message": "フェロー諸島"
+   },
+   "sqCountry_fr": {
+      "message": "フランス"
+   },
+   "sqCountry_ga": {
+      "message": "ガボン"
+   },
+   "sqCountry_gb": {
+      "message": "英国"
+   },
+   "sqCountry_ge": {
+      "message": "ジョージア"
+   },
+   "sqCountry_gg": {
+      "message": "ガーンジー"
+   },
+   "sqCountry_gh": {
+      "message": "ガーナ"
+   },
+   "sqCountry_gi": {
+      "message": "ジブラルタル"
+   },
+   "sqCountry_gl": {
+      "message": "グリーンランド"
+   },
+   "sqCountry_gm": {
+      "message": "ガンビア"
+   },
+   "sqCountry_gn": {
+      "message": "ギニア"
+   },
+   "sqCountry_gp": {
+      "message": "グアドループ"
+   },
+   "sqCountry_gq": {
+      "message": "ギニア"
+   },
+   "sqCountry_gr": {
+      "message": "ギリシャ"
+   },
+   "sqCountry_gs": {
+      "message": "サウスジョージア・サウスサンドウィッチ諸島"
+   },
+   "sqCountry_gt": {
+      "message": "グアテマラ"
+   },
+   "sqCountry_gu": {
+      "message": "グアム"
+   },
+   "sqCountry_gw": {
+      "message": "ギニア- ビサウ"
+   },
+   "sqCountry_gy": {
+      "message": "ガイアナ"
+   },
+   "sqCountry_hk": {
+      "message": "香港"
+   },
+   "sqCountry_hn": {
+      "message": "ホンジュラス"
+   },
+   "sqCountry_hr": {
+      "message": "クロアチア"
+   },
+   "sqCountry_ht": {
+      "message": "ハイチ"
+   },
+   "sqCountry_hu": {
+      "message": "ハンガリー"
+   },
+   "sqCountry_id": {
+      "message": "インドネシア"
+   },
+   "sqCountry_ie": {
+      "message": "アイルランド"
+   },
+   "sqCountry_il": {
+      "message": "イスラエル"
+   },
+   "sqCountry_im": {
+      "message": "マン島"
+   },
+   "sqCountry_in": {
+      "message": "インド"
+   },
+   "sqCountry_iq": {
+      "message": "イラク"
+   },
+   "sqCountry_ir": {
+      "message": "イラン"
+   },
+   "sqCountry_is": {
+      "message": "アイスランド"
+   },
+   "sqCountry_it": {
+      "message": "イタリア"
+   },
+   "sqCountry_jm": {
+      "message": "ジャマイカ"
+   },
+   "sqCountry_jo": {
+      "message": "ヨルダン"
+   },
+   "sqCountry_jp": {
+      "message": "日本"
+   },
+   "sqCountry_ke": {
+      "message": "ケニア"
+   },
+   "sqCountry_kg": {
+      "message": "キルギスタン"
+   },
+   "sqCountry_kh": {
+      "message": "カンボジア"
+   },
+   "sqCountry_km": {
+      "message": "コモロ"
+   },
+   "sqCountry_kn": {
+      "message": "セントキッツネイビス"
+   },
+   "sqCountry_kp": {
+      "message": "北朝鮮"
+   },
+   "sqCountry_kr": {
+      "message": "韓国"
+   },
+   "sqCountry_kw": {
+      "message": "クウェート"
+   },
+   "sqCountry_ky": {
+      "message": "ケイマン諸島"
+   },
+   "sqCountry_kz": {
+      "message": "カザフスタン"
+   },
+   "sqCountry_la": {
+      "message": "ラオス"
+   },
+   "sqCountry_lb": {
+      "message": "レバノン"
+   },
+   "sqCountry_lc": {
+      "message": "セントルシア"
+   },
+   "sqCountry_li": {
+      "message": "リヒテンシュタイン"
+   },
+   "sqCountry_lk": {
+      "message": "スリランカ"
+   },
+   "sqCountry_lr": {
+      "message": "リベリア"
+   },
+   "sqCountry_ls": {
+      "message": "レソト"
+   },
+   "sqCountry_lt": {
+      "message": "リトアニア"
+   },
+   "sqCountry_lu": {
+      "message": "ルクセンブルグ"
+   },
+   "sqCountry_lv": {
+      "message": "ラトビア"
+   },
+   "sqCountry_ly": {
+      "message": "リビア"
+   },
+   "sqCountry_ma": {
+      "message": "モロッコ"
+   },
+   "sqCountry_mc": {
+      "message": "モナコ"
+   },
+   "sqCountry_md": {
+      "message": "モルドバ"
+   },
+   "sqCountry_me": {
+      "message": "モンテネグロ"
+   },
+   "sqCountry_mg": {
+      "message": "マダガスカル"
+   },
+   "sqCountry_mk": {
+      "message": "マケドニア"
+   },
+   "sqCountry_ml": {
+      "message": "マリ"
+   },
+   "sqCountry_mm": {
+      "message": "ミャンマー"
+   },
+   "sqCountry_mn": {
+      "message": "モンゴル"
+   },
+   "sqCountry_mo": {
+      "message": "マカオ"
+   },
+   "sqCountry_mp": {
+      "message": "北マリアナ諸島"
+   },
+   "sqCountry_mr": {
+      "message": "モーリタニア"
+   },
+   "sqCountry_mt": {
+      "message": "マルタ"
+   },
+   "sqCountry_mu": {
+      "message": "モーリシャス"
+   },
+   "sqCountry_mv": {
+      "message": "モルディブ"
+   },
+   "sqCountry_mw": {
+      "message": "マラウイ"
+   },
+   "sqCountry_mx": {
+      "message": "メキシコ"
+   },
+   "sqCountry_my": {
+      "message": "マレーシア"
+   },
+   "sqCountry_mz": {
+      "message": "モザンビーク"
+   },
+   "sqCountry_na": {
+      "message": "ナミビア"
+   },
+   "sqCountry_nc": {
+      "message": "ニューカレドニア"
+   },
+   "sqCountry_ne": {
+      "message": "ニジェール"
+   },
+   "sqCountry_ng": {
+      "message": "ナイジェリア"
+   },
+   "sqCountry_ni": {
+      "message": "ニカラグア"
+   },
+   "sqCountry_nl": {
+      "message": "オランダ"
+   },
+   "sqCountry_no": {
+      "message": "ノルウェー"
+   },
+   "sqCountry_np": {
+      "message": "ネパール"
+   },
+   "sqCountry_nz": {
+      "message": "ニュージーランド"
+   },
+   "sqCountry_o1": {
+      "message": "その他"
+   },
+   "sqCountry_om": {
+      "message": "オマーン"
+   },
+   "sqCountry_pa": {
+      "message": "パナマ"
+   },
+   "sqCountry_pe": {
+      "message": "ペルー"
+   },
+   "sqCountry_pf": {
+      "message": "フランス領ポリネシア"
+   },
+   "sqCountry_pg": {
+      "message": "パプアニューギニア"
+   },
+   "sqCountry_ph": {
+      "message": "フィリピン"
+   },
+   "sqCountry_pk": {
+      "message": "パキスタン"
+   },
+   "sqCountry_pl": {
+      "message": "ポーランド"
+   },
+   "sqCountry_pm": {
+      "message": "サンピエール・エ・ミクロン"
+   },
+   "sqCountry_pr": {
+      "message": "プエルトリコ"
+   },
+   "sqCountry_ps": {
+      "message": "パレスチナ"
+   },
+   "sqCountry_pt": {
+      "message": "ポルトガル"
+   },
+   "sqCountry_py": {
+      "message": "パラグアイ"
+   },
+   "sqCountry_qa": {
+      "message": "カタール"
+   },
+   "sqCountry_ro": {
+      "message": "ルーマニア"
+   },
+   "sqCountry_rs": {
+      "message": "セルビア"
+   },
+   "sqCountry_ru": {
+      "message": "ロシア"
+   },
+   "sqCountry_rw": {
+      "message": "ルワンダ"
+   },
+   "sqCountry_sa": {
+      "message": "サウジアラビア"
+   },
+   "sqCountry_sb": {
+      "message": "ソロモン諸島"
+   },
+   "sqCountry_sc": {
+      "message": "セーシェル"
+   },
+   "sqCountry_sd": {
+      "message": "スーダン"
+   },
+   "sqCountry_se": {
+      "message": "スウェーデン"
+   },
+   "sqCountry_sg": {
+      "message": "シンガポール"
+   },
+   "sqCountry_si": {
+      "message": "スロベニア"
+   },
+   "sqCountry_sk": {
+      "message": "スロバキア"
+   },
+   "sqCountry_sl": {
+      "message": "シエラレオネ"
+   },
+   "sqCountry_sm": {
+      "message": "サンマリノ"
+   },
+   "sqCountry_sn": {
+      "message": "セネガル"
+   },
+   "sqCountry_so": {
+      "message": "ソマリア"
+   },
+   "sqCountry_sr": {
+      "message": "スリナム"
+   },
+   "sqCountry_ss": {
+      "message": "南スーダン"
+   },
+   "sqCountry_st": {
+      "message": "サントメ・プリンシペ"
+   },
+   "sqCountry_sv": {
+      "message": "エルサルバドル"
+   },
+   "sqCountry_sy": {
+      "message": "シリア"
+   },
+   "sqCountry_sz": {
+      "message": "スワジランド"
+   },
+   "sqCountry_td": {
+      "message": "チャド"
+   },
+   "sqCountry_tf": {
+      "message": "南極大陸"
+   },
+   "sqCountry_tg": {
+      "message": "トーゴ"
+   },
+   "sqCountry_th": {
+      "message": "タイ"
+   },
+   "sqCountry_tj": {
+      "message": "タジキスタン"
+   },
+   "sqCountry_tl": {
+      "message": "東ティモール民主共和国"
+   },
+   "sqCountry_tm": {
+      "message": "トルクメニスタン"
+   },
+   "sqCountry_tn": {
+      "message": "チュニジア"
+   },
+   "sqCountry_tr": {
+      "message": "トルコ"
+   },
+   "sqCountry_tt": {
+      "message": "トリニダード・トバゴ"
+   },
+   "sqCountry_tw": {
+      "message": "台湾"
+   },
+   "sqCountry_tz": {
+      "message": "タンザニア"
+   },
+   "sqCountry_ua": {
+      "message": "ウクライナ"
+   },
+   "sqCountry_ug": {
+      "message": "ウガンダ"
+   },
+   "sqCountry_us": {
+      "message": "米国"
+   },
+   "sqCountry_uy": {
+      "message": "ウルグアイ"
+   },
+   "sqCountry_uz": {
+      "message": "ウズベキスタン"
+   },
+   "sqCountry_va": {
+      "message": "教皇聖座（バチカン市国）"
+   },
+   "sqCountry_ve": {
+      "message": "ベネズエラ"
+   },
+   "sqCountry_vg": {
+      "message": "英領バージン諸島"
+   },
+   "sqCountry_vn": {
+      "message": "ベトナム"
+   },
+   "sqCountry_vu": {
+      "message": "バヌアツ"
+   },
+   "sqCountry_ws": {
+      "message": "サモア"
+   },
+   "sqCountry_ye": {
+      "message": "イエメン"
+   },
+   "sqCountry_za": {
+      "message": "南アフリカ"
+   },
+   "sqCountry_zm": {
+      "message": "ザンビア"
+   },
+   "sqCountry_zw": {
+      "message": "ジンバブエ"
+   },
+   "sqDensity_1word_link": {
+      "description": "",
+      "message": "１単語のキーワード表"
+   },
+   "sqDensity_2_word_phrases": {
+      "description": "",
+      "message": "２単語の語句：:"
+   },
+   "sqDensity_2_words_title": {
+      "description": "",
+      "message": "２単語の語句："
+   },
+   "sqDensity_2word_link": {
+      "description": "",
+      "message": "２単語のキーワード表"
+   },
+   "sqDensity_3_word_phrases": {
+      "description": "",
+      "message": "３単語の語句：:"
+   },
+   "sqDensity_3_words_title": {
+      "description": "",
+      "message": "３単語の語句："
+   },
+   "sqDensity_3word_link": {
+      "description": "",
+      "message": "３単語のキーワード表"
+   },
+   "sqDensity_4_word_phrases": {
+      "description": "",
+      "message": "４単語の語句：:"
+   },
+   "sqDensity_4_words_title": {
+      "description": "",
+      "message": "４単語の語句："
+   },
+   "sqDensity_4word_link": {
+      "description": "",
+      "message": "４単語のキーワード表"
+   },
+   "sqDensity_all_words_title": {
+      "description": "",
+      "message": "すべてのワード"
+   },
+   "sqDensity_bookmarks_title": {
+      "description": "",
+      "message": "ブックマーク"
+   },
+   "sqDensity_button_configure": {
+      "description": "",
+      "message": "ストップワードリストを設定"
+   },
+   "sqDensity_button_filter_apply": {
+      "description": "",
+      "message": "適用"
+   },
+   "sqDensity_button_filter_reset": {
+      "description": "",
+      "message": "リセット"
+   },
+   "sqDensity_button_save": {
+      "description": "",
+      "message": "CSVとして保存"
+   },
+   "sqDensity_configure_close": {
+      "message": "閉じる"
+   },
+   "sqDensity_configure_custom_list": {
+      "message": "カスタムストップワードリストを使用"
+   },
+   "sqDensity_configure_custom_list_placeholder": {
+      "message": "除外する単語を入力"
+   },
+   "sqDensity_configure_default_label": {
+      "message": "デフォルトを使用"
+   },
+   "sqDensity_configure_default_link": {
+      "message": "ストップワードリスト"
+   },
+   "sqDensity_configure_include_list": {
+      "message": "ホワイトリストを使用"
+   },
+   "sqDensity_configure_include_list_placeholder": {
+      "message": "含める単語を入力"
+   },
+   "sqDensity_configure_save": {
+      "message": "保存"
+   },
+   "sqDensity_configure_title": {
+      "message": "ストップワードリストを設定"
+   },
+   "sqDensity_contains": {
+      "description": "",
+      "message": "含む"
+   },
+   "sqDensity_filter_title": {
+      "description": "",
+      "message": "フィルタ"
+   },
+   "sqDensity_keywords_density": {
+      "description": "",
+      "message": "濃度"
+   },
+   "sqDensity_keywords_foundin": {
+      "description": "",
+      "message": "発見場所："
+   },
+   "sqDensity_keywords_keyword": {
+      "description": "",
+      "message": "キーワード"
+   },
+   "sqDensity_keywords_prominence": {
+      "description": "",
+      "message": "突出度"
+   },
+   "sqDensity_keywords_repeats": {
+      "description": "",
+      "message": "繰り返し"
+   },
+   "sqDensity_keywords_title": {
+      "description": "",
+      "message": "キーワードクラウド"
+   },
+   "sqDensity_original_link": {
+      "description": "",
+      "message": "元のテキスト"
+   },
+   "sqDensity_original_text": {
+      "description": "",
+      "message": "元のテキスト:"
+   },
+   "sqDensity_pageinfo_description_title": {
+      "description": "",
+      "message": "メタディスクリプション:"
+   },
+   "sqDensity_pageinfo_keywords_title": {
+      "description": "",
+      "message": "メタキーワード:"
+   },
+   "sqDensity_pageinfo_title": {
+      "description": "",
+      "message": "ページ情報"
+   },
+   "sqDensity_pageinfo_title_title": {
+      "description": "",
+      "message": "タイトル："
+   },
+   "sqDensity_regexp": {
+      "description": "",
+      "message": "正規表現"
+   },
+   "sqDensity_starts_with": {
+      "description": "",
+      "message": "以下でスタート："
+   },
+   "sqDensity_title": {
+      "description": "{Keywords density report title}",
+      "message": "キーワードの濃度"
+   },
+   "sqDensity_totalLinks": {
+      "description": "",
+      "message": "単語の合計"
+   },
+   "sqDensity_type_D_hint": {
+      "description": "{Keywords density tables found in page description tooltip}",
+      "message": "このキーワードはメタディスクリプションにあります"
+   },
+   "sqDensity_type_H1_hint": {
+      "description": "{Keywords density tables found in page h1 tooltip}",
+      "message": "このキーワードはメインH1ヘッダーにあります"
+   },
+   "sqDensity_type_K_hint": {
+      "description": "{Keywords density tables found in page keywords tooltip}",
+      "message": "このキーワードはメタキーワードにあります"
+   },
+   "sqDensity_type_T_hint": {
+      "description": "{Keywords density tables found in page title tooltip}",
+      "message": "このキーワードはページタイトルにあります"
+   },
+   "sqDiagnosis_audit_banner": {
+      "description": "{Semrush banner text}",
+      "message": "5分で無料の100ページの診断を得ましょう"
+   },
+   "sqDiagnosis_canonical_average": {
+      "description": "{Diagnosis canonical rule - average state}",
+      "message": "このページには正規タグは設定されていません。"
+   },
+   "sqDiagnosis_canonical_bad": {
+      "description": "{Diagnosis canonical rule - bad state}",
+      "message": "正規タグはこのページに設定されていますが、リーチできません。"
+   },
+   "sqDiagnosis_canonical_good": {
+      "description": "{Diagnosis canonical rule - good state}",
+      "message": "正規タグはこのページに設定されていて、リンクは正常に稼働しています。"
+   },
+   "sqDiagnosis_charset_bad_one": {
+      "description": "{Diagnosis charset rule - bad state}",
+      "message": "不適切な文字/言語コーディングは、SEOを弱めます。文字/言語コーディングを指定することで、ページをレンダリングする際の混乱を防ぎます。"
+   },
+   "sqDiagnosis_charset_good_one": {
+      "description": "{Diagnosis charset rule - good state}",
+      "message": "文字/言語エンコードを宣言すると、SEOが大幅に強化されます。また、ページをレンダリングする際の混乱を防ぎます。"
+   },
+   "sqDiagnosis_close": {
+      "description": "{Tips closed title}",
+      "message": "ヒント"
+   },
+   "sqDiagnosis_detecting": {
+      "description": "{Diagnosis slow rule processing message}",
+      "message": "検索中…"
+   },
+   "sqDiagnosis_doctype_bad": {
+      "description": "{Diagnosis doctype rule - bad state}",
+      "message": "書類タイプを特定していません。"
+   },
+   "sqDiagnosis_doctype_good": {
+      "description": "{Diagnosis doctype rule - good state}",
+      "message": "素晴らしい！書類タイプを特定しました。"
+   },
+   "sqDiagnosis_error": {
+      "description": "{Counter for failed tests}",
+      "message": "エラー："
+   },
+   "sqDiagnosis_error_message": {
+      "message": "エラー"
+   },
+   "sqDiagnosis_favicon_bad": {
+      "description": "{Diagnosis favicon rule - bad state}",
+      "message": "ぜひファビコンを持ってください。"
+   },
+   "sqDiagnosis_favicon_good": {
+      "description": "{Diagnosis favicon rule - good state}",
+      "message": "ファビコン画像があると便利です。"
+   },
+   "sqDiagnosis_feeds_bad": {
+      "description": "{Diagnosis feed rule - bad state}",
+      "message": "ページはフィードを提供していないようです。"
+   },
+   "sqDiagnosis_feeds_good": {
+      "description": "{Diagnosis feed rule - good state}",
+      "message": "ページはフィードを提供しているようです。"
+   },
+   "sqDiagnosis_feeds_notexact": {
+      "description": "{Diagnosis feed rule - average state}",
+      "message": "このページの正確なフィードは見つかりませんでしたが、サイト上でいくつか見つかりました。この調子です。"
+   },
+   "sqDiagnosis_flash_average": {
+      "description": "{Diagnosis flash rule - average state}",
+      "message": "ページにフラッシュが含まれていることがわかりましたが、十分なテキストコンテンツも含んでいます。"
+   },
+   "sqDiagnosis_flash_bad": {
+      "description": "{Diagnosis flash rule - bad state}",
+      "message": "ページには多くのフラッシュがあり、これとバランスを取るのに十分なテキストコンテンツがありません。これにより、SEOが大幅に低下します。"
+   },
+   "sqDiagnosis_flash_good": {
+      "description": "{Diagnosis flash rule - good state}",
+      "message": "該当なし"
+   },
+   "sqDiagnosis_frames_average": {
+      "description": "{Diagnosis frames rule - average state}",
+      "message": "ウェブサイトに1つのフレームがあることがわかりました。これらは通常、SEOを弱めます。"
+   },
+   "sqDiagnosis_frames_bad": {
+      "description": "{Diagnosis frames rule - bad state}",
+      "message": "ウェブサイトに1つのフレームがあることがわかりました。これらは通常、SEOを弱めます。"
+   },
+   "sqDiagnosis_frames_exists": {
+      "description": "{Diagnosis frames rule - average state}",
+      "message": "ウェブサイトにIFRAMEがあることがわかりました。通常、適切に使用されていれば、これはSEOにとって問題とはなりません。"
+   },
+   "sqDiagnosis_frames_good": {
+      "description": "{Diagnosis frames rule - good state}",
+      "message": "該当なし"
+   },
+   "sqDiagnosis_ganal_bad_one": {
+      "description": "{Diagnosis analytics rule - bad state}",
+      "message": "Google™Analyticsはウェブサイトをモニターしていません。この素晴らしいツールを活用することをお勧めします"
+   },
+   "sqDiagnosis_ganal_good_one": {
+      "description": "{Diagnosis analytics rule - good state}",
+      "message": "Google™Analyticsはウェブサイトをモニターしています。これは素晴らしいツールであり、活用する必要があります。"
+   },
+   "sqDiagnosis_headings_average": {
+      "description": "{Diagnosis headings rule - average state}",
+      "message": "ページにはHTML見出しがあります。"
+   },
+   "sqDiagnosis_headings_average_one": {
+      "description": "{Diagnosis headings rule - bad state}",
+      "message": "ページにはHTML見出しがありますが、\u003CH1>から\u003CH3>の見出しは表示されません。これを修正する必要があります。"
+   },
+   "sqDiagnosis_headings_bad": {
+      "description": "{Diagnosis headings rule - bad state}",
+      "message": "HTML見出しを入れましょう。"
+   },
+   "sqDiagnosis_headings_good": {
+      "description": "{Diagnosis headings rule - good state}",
+      "message": "いいですね！ページにはHTML見出し（\u003CH1>〜\u003CH3>）があり、1つの\u003CH1>見出しのみが使用されています。"
+   },
+   "sqDiagnosis_images_average": {
+      "description": "{Diagnosis images rule - average state}",
+      "message": "ALTを有していない画像は{withoutAlt}枚です。"
+   },
+   "sqDiagnosis_images_bad": {
+      "description": "{Diagnosis images rule - bad state}",
+      "message": "ALTを有していない画像は{withoutAlt}枚です。"
+   },
+   "sqDiagnosis_images_good": {
+      "description": "{Diagnosis images rule - good state}",
+      "message": "すべての画像がALT属性を有しています。"
+   },
+   "sqDiagnosis_internal_error": {
+      "description": "{Common error for processing diagnosis rule}",
+      "message": "パラメータソース処理の問題"
+   },
+   "sqDiagnosis_kwds_average_not_enough": {
+      "description": "{Diagnosis keywords rule all state}",
+      "message": "{len}字、{cLen}ワード。 "
+   },
+   "sqDiagnosis_kwds_average_too_long": {
+      "description": "{Diagnosis keywords rule all state}",
+      "message": "{len}字、{cLen}ワード。 "
+   },
+   "sqDiagnosis_kwds_average_too_many": {
+      "description": "{Diagnosis keywords rule all state}",
+      "message": "{len}字、{cLen}ワード。 "
+   },
+   "sqDiagnosis_kwds_average_too_short": {
+      "description": "{Diagnosis keywords rule all state}",
+      "message": "{len}字、{cLen}ワード。 "
+   },
+   "sqDiagnosis_kwds_bad": {
+      "description": "{Diagnosis keywords rule all state}",
+      "message": "{len}字、{cLen}ワード。 "
+   },
+   "sqDiagnosis_kwds_bad_more": {
+      "description": "{Diagnosis keywords rule all state}",
+      "message": "{len}字、{cLen}ワード。 "
+   },
+   "sqDiagnosis_kwds_bad_too_many": {
+      "description": "{Diagnosis keywords rule all state}",
+      "message": "{len}字、{cLen}ワード。 "
+   },
+   "sqDiagnosis_kwds_good": {
+      "description": "{Diagnosis keywords rule all state}",
+      "message": "{len}字、{cLen}ワード。 "
+   },
+   "sqDiagnosis_lang_average": {
+      "description": "{Diagnosis lang rule - average state}",
+      "message": "ウェブサイトの言語を指定しましたが、META言語タグでのみ指定しました。タグ* \u003Chtml> *の 'lang'属性は、より高い優先度を持ちます。"
+   },
+   "sqDiagnosis_lang_bad": {
+      "description": "{Diagnosis lang rule - bad state}",
+      "message": "ウェブサイトの言語を指定していません。"
+   },
+   "sqDiagnosis_lang_good": {
+      "description": "{Diagnosis lang rule - good state}",
+      "message": "素晴らしい！ウェブサイトの言語を指定できました。"
+   },
+   "sqDiagnosis_message": {
+      "description": "{Processing data message}",
+      "message": "処理中..."
+   },
+   "sqDiagnosis_meta_average": {
+      "description": "{Diagnosis meta description rule - average state}",
+      "message": "{len} 字—平均。最適な文字数は160-300字です。"
+   },
+   "sqDiagnosis_meta_bad_not_long": {
+      "description": "{Diagnosis meta description rule - bad state too short}",
+      "message": "{len}字ー160字以上でお願いします。"
+   },
+   "sqDiagnosis_meta_bad_not_short": {
+      "description": "{Diagnosis meta description rule - bad state too long}",
+      "message": "{len}字ー300字以内に収めてください。"
+   },
+   "sqDiagnosis_meta_good": {
+      "description": "{Diagnosis meta description rule - good state}",
+      "message": "{len}字ー最適"
+   },
+   "sqDiagnosis_microformats_average": {
+      "description": "{Diagnosis microformats rule - good state}",
+      "message": "このページでは、Microformatマークアップは使用していません。\n\n[https://search.google.com/structured-data/testing-tool/#url={domain}](Google構造化データテストツール）を使用してマークアップを検証できます。"
+   },
+   "sqDiagnosis_microformats_bad": {
+      "description": "{Diagnosis microformats rule - bad state}",
+      "message": "このページではMicroformatマークアップを使用していますが、一部のタグでは大文字と小文字が正しく使用されていません。 Google構造化データテストツールを使用してマークアップを検証してください。\n\n[https://search.google.com/structured-data/testing-tool/#url={domain}](Google構造化データテストツール）を使用してマークアップを検証できます。"
+   },
+   "sqDiagnosis_microformats_good": {
+      "description": "{Diagnosis microformats rule - good state}",
+      "message": "次のMicroformatタイプが見つかりました。\n\n[https://search.google.com/structured-data/testing-tool/#url={domain}](Google構造化データテストツール）を使用してマークアップを検証できます。"
+   },
+   "sqDiagnosis_more_checks_link": {
+      "description": "{Drop us a line link text}",
+      "message": "お電話をいただくか"
+   },
+   "sqDiagnosis_more_checks_text": {
+      "description": "{Drop us a line message text}",
+      "message": "さらにチェックが必要ですか？"
+   },
+   "sqDiagnosis_no_associated_feed": {
+      "description": "{Diagnosis feed rule - average state}",
+      "message": "関連フィードがありません。"
+   },
+   "sqDiagnosis_notfound": {
+      "description": "{Diagnosis not found message}",
+      "message": "見つかりませんでした。"
+   },
+   "sqDiagnosis_open": {
+      "description": "{Tips open title}",
+      "message": "ヒント"
+   },
+   "sqDiagnosis_opengraph_average": {
+      "description": "{Diagnosis opengraph rule - average state}",
+      "message": "このページにオープングラフオブジェクトがあることを検出しましたが、そのタイプを判別できませんでした。\n\n[https://developers.facebook.com/tools/debug/og/object/?q={location}](Facebook オブジェクトデバッガーツール）でマークアップを検証できます。"
+   },
+   "sqDiagnosis_opengraph_good": {
+      "description": "{Diagnosis opengraph rule - good state}",
+      "message": "素晴らしい！いくつかのオープングラフオブジェクトが見つかりました。\n\n[https://developers.facebook.com/tools/debug/og/object/?q={location}](Facebookオブジェクトデバッガーツール）でマークアップを検証できます。"
+   },
+   "sqDiagnosis_opengraph_no": {
+      "description": "{Diagnosis opengraph rule - bad state}",
+      "message": "ページにオープングラフオブジェクトがありません。\n\n[https://developers.facebook.com/tools/debug/og/object/?q={location}](Facebook オブジェクトデバッガーツール）でマークアップを検証できます。"
+   },
+   "sqDiagnosis_passed": {
+      "description": "{Counter for successfull tests}",
+      "message": "通過："
+   },
+   "sqDiagnosis_ratio_average_one": {
+      "description": "{Diagnosis text2html rule - average state}",
+      "message": "{ratio}% ーもうひといき。ウェブサイトにもっとテキストを追加しましょう。"
+   },
+   "sqDiagnosis_ratio_bad_one": {
+      "description": "{Diagnosis text2html rule - bad state}",
+      "message": "{ratio}%  — 残念ながらウェブサイトのテキストとHTMLコードの比率は15％未満です。ウェブサイトにもっとテキストを追加しましょう。"
+   },
+   "sqDiagnosis_ratio_good": {
+      "description": "{Diagnosis text2html rule - good state}",
+      "message": "{ratio}%  — 最適"
+   },
+   "sqDiagnosis_robots_bad": {
+      "description": "{Diagnosis robots.txt rule - bad state}",
+      "message": "ウェブサイトにrobots.txtファイルが含まれていません。これにより、SEOが弱くなる可能性があります。"
+   },
+   "sqDiagnosis_robots_good": {
+      "description": "{Diagnosis robots.txt rule - good state}",
+      "message": "いいですね。ウェブサイトにはrobots.txtファイルがあるようです。"
+   },
+   "sqDiagnosis_rule_analytics_tip": {
+      "description": "{Analytics rule tooltip. Can use some markdown for markup}",
+      "message": "Google Analyticsについてより詳しく知るにはこちらをフォローしてください： [https://moz.com/blog/absolute-beginners-guide-to-google-analytics](article) "
+   },
+   "sqDiagnosis_rule_analytics_title": {
+      "description": "{Google analytics rule title}",
+      "message": "Google&trade; Analytics"
+   },
+   "sqDiagnosis_rule_canonical_tip": {
+      "description": "{Canonical rule tooltip. Can use some markdown for markup}",
+      "message": "正規リンクタグは、検索エンジン最適化の一部として、ウェブページの「正規」または「優先」バージョンを指定することにより、ウェブマスターがコンテンツの重複問題を防ぐのに役立つHTML要素です。詳細については、[https：/ /support.google.com/webmasters/answer/139066]（こちらのGoogle記事）をご覧ください。"
+   },
+   "sqDiagnosis_rule_canonical_title": {
+      "description": "{Canonical rule title}",
+      "message": "Canonical"
+   },
+   "sqDiagnosis_rule_doctype_tip": {
+      "description": "{Doctype rule tooltip. Can use some markdown for markup}",
+      "message": "[http://www.w3schools.com/tags/tag_DOCTYPE.asp](書類タイプ）を指定すると、ウェブブラウザがコンテンツを正しくレンダリングするのに役立ちます。"
+   },
+   "sqDiagnosis_rule_doctype_title": {
+      "description": "{Doctype rule title}",
+      "message": "書類タイプ"
+   },
+   "sqDiagnosis_rule_encoding_tip": {
+      "description": "{Encoding rule tooltip. Can use some markdown for markup}",
+      "message": "この[https://www.w3.org/International/tutorials/tutorial-char-enc/]（記事）に従って、サイトに適切な文字エンコードを追加する方法を見つけてください。\n"
+   },
+   "sqDiagnosis_rule_encoding_title": {
+      "description": "{Encoding rule title}",
+      "message": "エンコード"
+   },
+   "sqDiagnosis_rule_favicon_tip": {
+      "description": "{Favicon rule tooltip. Can use some markdown for markup}",
+      "message": "ファビコンを確認 [http://www.howtojoomla.net/2007050865/how-tos/miscellaneous/how-to-change-your-favicon]（ブランドを反映）。\n\nヒント：訪問者にとってより良いエクスペリエンスを望むなら、[http://www.youtube.com/watch?v=0KDjjePkd2U]（この）素晴らしいファビコンをご覧ください。"
+   },
+   "sqDiagnosis_rule_favicon_title": {
+      "description": "{Favicon rule title}",
+      "message": "ファビコン"
+   },
+   "sqDiagnosis_rule_flash_tip": {
+      "description": "{Flash rule tooltip. Can use some markdown for markup}",
+      "message": "Flashは、ページの外観を改善するような特定の状況でのみ有効です。\n\nSEOを改善するには、フラッシュを全く使用しないでください。\n\n近い将来変更される可能性がありますが、現時点では、フラッシュ [http://www.beussery.com/blog/index.php/2008/10/google-flash-seo/]は検索エンジンに（インデックスされません）。\n\n[http://en.wikipedia.org/wiki/Ajax_%28programming%29](AJAX）も[http://googlewebmastercentral.blogspot.com/2009/10/proposal-for-making-ajax-crawlable.html]フラッシュと（同じカテゴリ）にあります。"
+   },
+   "sqDiagnosis_rule_flash_title": {
+      "description": "{Flash rule title}",
+      "message": "フラッシュ"
+   },
+   "sqDiagnosis_rule_frames_tip": {
+      "description": "{Frames ratio rule tooltip. Can use some markdown for markup}",
+      "message": "[http://www.google.com/support/webmasters/bin/answer.py?hl=ja&amp;answer=34445]（標準レイアウトのウェブサイト）に適合していないため、フレームのあるページをインデックスするのは検索エンジンにとって難しいです。\n\nウェブサイトを最適化するときは、フレームの使用を避ける必要があります。"
+   },
+   "sqDiagnosis_rule_frames_title": {
+      "description": "{Frames rule title}",
+      "message": "フレーム"
+   },
+   "sqDiagnosis_rule_headings_tip": {
+      "description": "{Headings rule tooltip. Can use some markdown for markup}",
+      "message": "見出しにキーワードを含めることができます。\n\n最初の見出し（＆lt; H1＆gt;）には最適なキーワードを含める必要があります。\n\nページごとに1つの＆lt; H1＆gt;見出しのみを使用するとSEOを強化します。\n"
+   },
+   "sqDiagnosis_rule_headings_title": {
+      "description": "{Meta headings rule title}",
+      "message": "ヘディング"
+   },
+   "sqDiagnosis_rule_images_tip": {
+      "description": "{Images rule tooltip. Can use some markdown for markup}",
+      "message": "\n検索エンジンが画像にインデックスを付けやすくするために、ALTテキストを画像に追加することをお勧めします。\n\n検索エンジンは、人のように画像を物理的に見ることはありません。 ALTテキストは、イメージを具体的に説明できるオプションです。\n\nALTテキストは、写真に説明を添付して、[http://images.google.com/]（Google＆trade;）およびその他の検索エンジンの画像結果に表示されるようにします。\n\nウェブサイトの画像に独自の[http://www.webcredible.co.uk/user-friendly-resources/web-accessibility/image-alt-text.shtml]（特定のALTテキスト）があることを確認してください。\n\nALTテキストを画像に割り当てる方法については、[http://www.seosmarty.com/image-seo/]（ここをクリック）をご覧ください。\n\nページの読み込み時間は、画像の数とサイズによって異なることに注意してください。できるだけ少なくしてください。"
+   },
+   "sqDiagnosis_rule_images_title": {
+      "description": "{Images rule title}",
+      "message": "画像"
+   },
+   "sqDiagnosis_rule_keywords_tip": {
+      "description": "{Meta keywords rule tooltip. Can use some markdown for markup}",
+      "message": "[http://en.wikipedia.org/wiki/Meta_element#The_keywords_attribute]（メタキーワード）は、サイトのコンテンツに関連する単語またはフレーズです。以前、このタグを利用しようとした人がいたため、以前のように検索ランキングに影響を与えていません。"
+   },
+   "sqDiagnosis_rule_keywords_title": {
+      "description": "{Meta keywords rule title}",
+      "message": "メタキーワード"
+   },
+   "sqDiagnosis_rule_language_tip": {
+      "description": "{Language rule tooltip. Can use some markdown for markup}",
+      "message": "多言語サイトに関するいくつかの提案を次に示します:\n\n\n＆sdot;各ページのHTMLコードでコンテンツ言語を指定する必要があります。\n＆sdot;また、URLで言語コードを規定する必要があります（例：company.com/es/contact.html）。\n＆sdot;多言語サイトの構築を計画している場合は、[http://www.toprankblog.com/2009/10/top-10-pitfalls-of-international-seo/]（こちら）にあるヒントを参照してください。"
+   },
+   "sqDiagnosis_rule_language_title": {
+      "description": "{Language rule title}",
+      "message": "言語"
+   },
+   "sqDiagnosis_rule_meta_tip": {
+      "description": "{Meta description rule tooltip. Can use some markdown for markup}",
+      "message": "\n[http://en.wikipedia.org/wiki/Meta_element#The_description_attribute]（メタディスクリプション）は、検索結果でのページの表示方法を決定することが多いため便利です。\n\n最適な効果を得るには、[http://en.wikipedia.org/wiki/Meta_element#The_description_attribute]（メタディスクリプション）の長さを160〜300文字にする必要があります。\n\nメタディスクリプションは簡潔で、[http://googlewebmastercentral.blogspot.com/2007/09/improve-snippets-with-meta-description.html]（ベストキーワード）を含める必要があります\n\nウェブサイトの各ページに独自のメタディスクリプションがあることを確認してください。"
+   },
+   "sqDiagnosis_rule_meta_title": {
+      "description": "{Meta description rule title}",
+      "message": "メタディスクリプション"
+   },
+   "sqDiagnosis_rule_microformats_tip": {
+      "description": "{Microformats rule tooltip. Can use some markdown for markup}",
+      "message": "[http://en.wikipedia.org/wiki/Microformat](Microformat）は、検索エンジンに送信されるデータをより効果的に構造化するために使用されるマークアップです。\n\nGoogleの検索結果の表示は、Microformatsにより常に[http://googlewebmastercentral.blogspot.com/2009/05/introducing-rich-snippets.html]（改善中）です。"
+   },
+   "sqDiagnosis_rule_microformats_title": {
+      "description": "{Microformats rule title}",
+      "message": "マイクロフォーマット"
+   },
+   "sqDiagnosis_rule_opengraph_tip": {
+      "description": "{Open Graph rule tooltip. Can use some markdown for markup}",
+      "message": "オープングラフプロトコルにより、あらゆるウェブページをソーシャルグラフのリッチオブジェクトにすることができます。例えば、これはFacebookで使用されていて、ウェブページがFacebookの他のオブジェクトと同じ機能を持つようにしています。\n\n詳細については、[http://ogp.me/]（The Open Graph protocol）を参照してください。"
+   },
+   "sqDiagnosis_rule_opengraph_title": {
+      "description": "{OpenGraph rule title}",
+      "message": "オープングラフ"
+   },
+   "sqDiagnosis_rule_robots_tip": {
+      "description": "{Robots.txt rule tooltip. Can use some markdown for markup}",
+      "message": "このファイルは、検索エンジンクローラーのアクティビティを制限し、特定のページやディレクトリへのアクセスを禁止します。\n\n[http://www.robotstxt.org/orig.html](robots.txtファイル）もXMLサイトマップを示します。\n\nrobots.txtファイルの構文エラーを確認するには、[http://tool.motoricerca.info/robots-checker.phtml]（ここをクリック）をクリックします。"
+   },
+   "sqDiagnosis_rule_robots_title": {
+      "description": "{Robots.txt rule title}",
+      "message": "Robots.txt"
+   },
+   "sqDiagnosis_rule_schemaorg_tip": {
+      "description": "{Schema.org rule tooltip. Can use some markdown for markup}",
+      "message": "ウェブページでマークアップデータを使用することは、検索エンジンへの可視性を高め、クリック率を高めるための有力な方法です。これにより、ランキングが向上する可能性があります。\n\n詳細については、[https://developers.google.com/search/docs/guides/intro-structured-data]（構造化データの紹介）を参照してください。"
+   },
+   "sqDiagnosis_rule_schemaorg_title": {
+      "description": "{Schema.org rule title}",
+      "message": "Schema.org"
+   },
+   "sqDiagnosis_rule_sitemap_tip": {
+      "description": "{Meta viewport rule tooltip. Can use some markdown for markup}",
+      "message": "\n[http://en.wikipedia.org/wiki/Sitemaps](XMLサイトマップ）には、クロールできるURLがリストされており、更新頻度、最終更新日、重要度などの他の情報が提供されることもあります。\n\nXMLサイトマップを使用すると、検索エンジンはウェブサイトをより正確にインデックスできます。\n\nすでに[http://www.seomoz.org/blog/expert-advice-on-google-sitemaps-verify-but-dont-submit]（議論がなされています）が、XMLサイトマップを[http： //www.google.com/webmasters/tools/](Google&trade; Webmastersツール）に提出することをお勧めします。"
+   },
+   "sqDiagnosis_rule_sitemap_title": {
+      "description": "{Sitemaps rule title}",
+      "message": "XLMサイトマップ"
+   },
+   "sqDiagnosis_rule_text2html_tip": {
+      "description": "{Text/HTML ratio rule tooltip. Can use some markdown for markup}",
+      "message": "HTMLに対するテキストの比率は、検索エンジンの直接的なランキング要因ではありませんが、SEOのベストプラクティスを示す比率に関連する多くの要因があるため、間接的に検索ランキングを高くする可能性があります。詳細については、この[https://www.woorank.com/en/blog/are-text-to-html-ratios-important]（記事）をご覧ください。"
+   },
+   "sqDiagnosis_rule_text2html_title": {
+      "description": "{Text2Html ratio rule title}",
+      "message": "テキスト／HTML比"
+   },
+   "sqDiagnosis_rule_title_tip": {
+      "description": "{Title rule tooltip. Can use some markdown for markup}",
+      "message": "最も効果的なページタイトルは、スペースを含めて約10〜70文字です。\n\nタイトルを簡潔にし、[https://www.semrush.com/blog/seoquake-5-keys-to-optimizing-your-title-tags/?utm_source=seoquake&utm_medium=toolbar&utm_campaign=regular&ref=174537735]（最高のキーワード）を含めるようにしてください。 。\n\n各ページには専用のタイトルが必要です。\n\nおすすめのツール：[http://www.seomofo.com/snippet-optimizer.html](snippet-optimizer）を使用すると、Google＆tradeでのタイトルの表示とその他の検索結果を確認できます。"
+   },
+   "sqDiagnosis_rule_title_title": {
+      "description": "{Title rule title}",
+      "message": "タイトル"
+   },
+   "sqDiagnosis_rule_twittercard_tip": {
+      "description": "{Twitter card rule tooltip. Can use some markdown for markup}",
+      "message": "Twitterカードを使用すると、豊富な写真、ビデオ、メディアエクスペリエンスをツイートに添付して、ウェブサイトへのトラフィックを増やすことができます。\n\n詳細については、[https://dev.twitter.com/cards/overview]（Twitterのドキュメント）を参照してください。"
+   },
+   "sqDiagnosis_rule_twittercard_title": {
+      "description": "{Twitter card rule title}",
+      "message": "Twitterカード"
+   },
+   "sqDiagnosis_rule_url_tip": {
+      "description": "{URL rule tooltip. Can use some markdown for markup}",
+      "message": "ページコンテンツを説明するURL（たとえば、ｈhttp：//www.company.com/companyinformation）を使用すると、検索エンジンと訪問者がウェブサイトとより効果的に対峙できます。\n\nSEOキャンペーンにとってURLは非常に重要です。必ず[http://www.google.com/support/webmasters/bin/answer.py?hl=ja&amp;answer=147959]（Google＆trade;が簡単にサイトのインデックスを行う）ことができるURLを使用してください。\n\n提案は次のとおりです。[http://instantdomainsearch.com/]（こちら）でよいドメイン名を検索できます。お目当ての名前が利用できない場合は、[http://sedo.com]（Sedo）を使用して代替案を見つけることを検討してください。\n\nドメイン名を商標登録すると、他人がブランドを盗んでしまうのを防ぎます。"
+   },
+   "sqDiagnosis_rule_url_title": {
+      "description": "{URL rule title}",
+      "message": "URL"
+   },
+   "sqDiagnosis_rule_viewport_tip": {
+      "description": "{Meta viewport rule tooltip. Can use some markdown for markup}",
+      "message": "ビューポートは、モバイルデバイスでのウェブページの表示方法を制御します。ビューポートがない場合、モバイルデバイスは、画面に合わせた一般的なデスクトップ画面幅でページをレンダリングします。ビューポートを設定すると、さまざまなデバイスでページの幅とスケーリングを制御できます。\n\nビューポートの詳細については、[https://developers.google.com/speed/docs/insights/ConfigureViewport]（この記事）をご覧ください。"
+   },
+   "sqDiagnosis_rule_viewport_title": {
+      "description": "{Meta viewport title}",
+      "message": "メタビューポート"
+   },
+   "sqDiagnosis_schemaorg_average": {
+      "description": "{Diagnosis schema.org rule - average state}",
+      "message": "このページでは[http://schema.org]（schema.org）マークアップを使用していることが検出されましたが、そのタイプは判別できませんでした。\n\n[https://search.google.com/structured-data/testing-tool/#url={domain}](Google構造化データテストツール）を使用してマークアップを検証できます。"
+   },
+   "sqDiagnosis_schemaorg_bad": {
+      "description": "{Diagnosis schema.org rule - bad state}",
+      "message": "ページは[http://schema.org]（Schema.org）マークアップを利用していません。\n\n[https://search.google.com/structured-data/testing-tool/#url={domain}](Google構造化データテストツール）を使用してマークアップを検証できます。"
+   },
+   "sqDiagnosis_schemaorg_good": {
+      "description": "{Diagnosis schema.org rule - good state}",
+      "message": "素晴らしい！いくつかの[http://schema.org]（schema.org）タイプが見つかりました。\n\n[https://search.google.com/structured-data/testing-tool/#url={domain}](Google構造化データテストツール）を使用してマークアップを検証できます。"
+   },
+   "sqDiagnosis_semrush_provided": {
+      "description": "{Semrush banner link title}",
+      "message": "提供："
+   },
+   "sqDiagnosis_show": {
+      "description": "{View others data}",
+      "message": "他を表示"
+   },
+   "sqDiagnosis_sitemaps_bad": {
+      "description": "{Diagnosis sitemap.xml rule - bad state}",
+      "message": "ウェブサイトにXMLサイトマップが含まれていません。これにより、SEOが弱くなる可能性があります。"
+   },
+   "sqDiagnosis_sitemaps_good": {
+      "description": "{Diagnosis sitemap.xml rule - good state}",
+      "message": "いいですね！ウェブサイトにはXMLサイトマップが含まれています。"
+   },
+   "sqDiagnosis_timeoutreached": {
+      "description": "{Diagnosis unable to process rule with connection timeout reason}",
+      "message": "検索できませんでした：接続タイムアウトに達しました。"
+   },
+   "sqDiagnosis_title": {
+      "description": "{Main diagnosis title}",
+      "message": "ページSEO診断"
+   },
+   "sqDiagnosis_title_average": {
+      "description": "{Diagnosis title rule - average state}",
+      "message": "{len} 字—平均。最適な文字数は10-70字です。"
+   },
+   "sqDiagnosis_title_bad_not_long": {
+      "description": "{Diagnosis title rule - bad state too short}",
+      "message": "{len}字ー短すぎます。10字以上でお願いします。"
+   },
+   "sqDiagnosis_title_bad_not_short": {
+      "description": "{Diagnosis title rule - bad state too long}",
+      "message": "{len}字ー長すぎます。70字以内に収めてください。"
+   },
+   "sqDiagnosis_title_good": {
+      "description": "{Diagnosis title rule - good state}",
+      "message": "{len}字ー最適"
+   },
+   "sqDiagnosis_title_mobile_rules": {
+      "description": "{Mobile compliance}",
+      "message": "モバイルコンプライアンス"
+   },
+   "sqDiagnosis_title_page_rules": {
+      "description": "{Page analysis group title}",
+      "message": "ページ分析"
+   },
+   "sqDiagnosis_title_site_rules": {
+      "description": "{Site compliance group title}",
+      "message": "サイトコンプライアンス"
+   },
+   "sqDiagnosis_twittercard_bad": {
+      "description": "{Diagnosis twitter card rule - bad state}",
+      "message": "このページには[https://dev.twitter.com/cards/overview](Twitterカード）があることが検出されましたが、そのタイプを判別できませんでした。 [https://cards-dev.twitter.com/validator]（Twitterカード検証ツール）でカードを検証できます。"
+   },
+   "sqDiagnosis_twittercard_good": {
+      "description": "{Diagnosis twitter card rule - good state}",
+      "message": "いいですね！ページに[https://dev.twitter.com/cards/overview](Twitterカード）が見つかりました。 [https://cards-dev.twitter.com/validator]（Twitterカード検証ツール）でカードを検証できます。"
+   },
+   "sqDiagnosis_twittercard_no": {
+      "description": "{Diagnosis twitter card rule - no state}",
+      "message": "ページには[https://dev.twitter.com/cards/overview](Twitterカード）はありません。 [https://cards-dev.twitter.com/validator]（Twitterカード検証ツール）でカードを検証できます。"
+   },
+   "sqDiagnosis_unable2detect": {
+      "description": "{Diagnosis unable to process rule message}",
+      "message": "検知できませんでした"
+   },
+   "sqDiagnosis_url_average": {
+      "description": "{Not used}",
+      "message": "URLが長すぎる可能性があります。"
+   },
+   "sqDiagnosis_url_bad": {
+      "description": "{Diagnosis url-length rule - bad state}",
+      "message": "{len}字ー短すぎます。200字以上でお願いします。"
+   },
+   "sqDiagnosis_url_good": {
+      "description": "{Diagnosis url-length rule - good state}",
+      "message": "{len}字ー最適"
+   },
+   "sqDiagnosis_viewport_default": {
+      "description": "{Diagnosis viewport rule - average state}",
+      "message": "いいですね！このページには、ほとんどのモバイルブラウザと互換性のある典型的なビューポートメタタグ値があります。"
+   },
+   "sqDiagnosis_viewport_no": {
+      "description": "{Diagnosis viewport rule - bad state}",
+      "message": "このページにはビューポートメタタグが無いか、値が空です。おそらく、モバイルデバイスでは見栄えが悪く、モバイル検索結果での位置が低くなります。"
+   },
+   "sqDiagnosis_viewport_some": {
+      "description": "{Diagnosis viewport rule - good state}",
+      "message": "このページにはビューポートメタタグセットがあります。"
+   },
+   "sqDiagnosis_warning": {
+      "description": "{Counter for test with warnings}",
+      "message": "警告:"
+   },
+   "sqFeedback_email": {
+      "description": "{Common report need more features block email}",
+      "message": "mail@seoquaketeam.com"
+   },
+   "sqFeedback_link": {
+      "description": "{Common report need more features block link}",
+      "message": "ご連絡ください"
+   },
+   "sqFeedback_text_1": {
+      "description": "{Common report need more features block title}",
+      "message": "より多くの機能が必要ですか？"
+   },
+   "sqFeedback_text_2": {
+      "description": "{Common report need more features block message}",
+      "message": "Eメールでご連絡ください："
+   },
+   "sqGSC_connect": {
+      "description": "{Message on connect semrush button in header}",
+      "message": "Semrushアカウントを接続し、Domain Scoreを取得"
+   },
+   "sqGSC_domain_score_tooltip": {
+      "description": "{Message for DS tooltip}",
+      "message": "この指標は、100ポイントのスケール（0〜100）を使用し、ドメインを指すリンクの品質と量に基づいてドメインの重要度を測定します。スコアが高いほど、ドメインの品質は高くなります。Domain Scoreは、GoogleのPageRankと同じ方法で計算されます"
+   },
+   "sqGSC_export": {
+      "description": "{Message on export button}",
+      "message": "このテーブルをエクスポート"
+   },
+   "sqGSC_notes_GOOGLE_ORGANIC": {
+      "description": "{Text for google organic update note}",
+      "message": "Google更新（オーガニック検索）"
+   },
+   "sqGSC_notes_GOOGLE_PAID": {
+      "description": "{Text for google paid update note}",
+      "message": "Google更新（有料）"
+   },
+   "sqGSC_notes_UNCONFIRMED": {
+      "description": "{Text for google unconfirmed update note}",
+      "message": "Google更新（未確認）"
+   },
+   "sqGSC_notes_connect_button": {
+      "description": "{}",
+      "message": "有効化"
+   },
+   "sqGSC_notes_connect_message": {
+      "description": "{}",
+      "message": "SEOquakeでGoogleアップデートを取得"
+   },
+   "sqGSC_notes_counter": {
+      "description": "{}",
+      "message": "注記"
+   },
+   "sqGSC_notes_counter_one": {
+      "description": "{}",
+      "message": "注記"
+   },
+   "sqGSC_notes_dashboard_message": {
+      "description": "{Text for google dashboard small chart}",
+      "message": "Semrushによって登録されたアップデート"
+   },
+   "sqGSC_notes_dashboard_no_data": {
+      "description": "{Text for google dashboard small chart}",
+      "message": "選択された期間にはアップデートはありません。"
+   },
+   "sqGSC_notes_switch_message": {
+      "description": "{}",
+      "message": "SEOquake：Googleアップデート"
+   },
+   "sqGSC_onboarding_close": {
+      "description": "{}",
+      "message": "オフにしてください"
+   },
+   "sqGSC_onboarding_notes_text": {
+      "description": "{}",
+      "message": "* Googleアルゴリズムの更新に関して*\n\nGoogleアルゴリズムの最新情報を入手してください。メモ機能を有効にすると、Google Search ConsoleのチャートにGoogleアップデートに関する情報が直接表示されます。"
+   },
+   "sqGSC_onboarding_ok": {
+      "description": "{}",
+      "message": "了解！"
+   },
+   "sqGSC_onboarding_text": {
+      "description": "{}",
+      "message": "*ドメインのボリュームと信頼の指標について*\n\nこれらの指標を使用すると、指すバックリンクの数と品質に基づいて、特定のドメインの重要性と信頼性を簡単に推定できます。"
+   },
+   "sqGSC_trust_score_tooltip": {
+      "description": "{Message for TS tooltip}",
+      "message": "この指標は、特定のドメインの信頼性を、100ポイントのスケール（信頼性の低いウェブサイトは「0」、信頼性の高いウェブサイトは「100」）で示したものです。この指標は、信頼されたウェブサイトからページに接続されたバックリンクの数に基づきます。ウェブサイトのTrust Scoreが、Domain Scoreより著しく低い場合、ページスコアが人為的に操作されていることが疑われます。こうしたウェブサイトからのバックリンクはGoogleによるペナルティの対象となることがあります。"
+   },
+   "sqLinkinfo_anchor": {
+      "description": "{Linkinfo report link anchor title}",
+      "message": "アンカー"
+   },
+   "sqLinkinfo_anchor_empty": {
+      "description": "{Linkinfo report link with empty anchor notice}",
+      "message": "空のアンカー"
+   },
+   "sqLinkinfo_badge_hint": {
+      "description": "{Linkinfo report table repeats counter tooltip}",
+      "message": "同じタイプとアンカーのリンクの繰り返し"
+   },
+   "sqLinkinfo_button_configure": {
+      "description": "{Linkinfo report add/hide parameters button title}",
+      "message": "パラメータを追加/非表示"
+   },
+   "sqLinkinfo_button_request": {
+      "description": "{Linkinfo report request all parameters button title}",
+      "message": "すべてのパラメータをリクエスト"
+   },
+   "sqLinkinfo_button_save": {
+      "description": "{Linkinfo report save as CSV button title}",
+      "message": "CSVとして保存"
+   },
+   "sqLinkinfo_count_hint": {
+      "description": "{Linkinfo report table more links tooltip}",
+      "message": "このURLにはさらにリンクがあります。クリックして、リンクタイプとアンカーのすべての組み合わせを表示します"
+   },
+   "sqLinkinfo_count_more": {
+      "description": "{Linkinfo report table more links link title when more then +1 link}",
+      "message": "他{count}個のリンク"
+   },
+   "sqLinkinfo_count_one": {
+      "description": "{Linkinfo report table more links link title when +1 link}",
+      "message": "他{count}個のリンク"
+   },
+   "sqLinkinfo_external": {
+      "description": "{Linkinfo report external links title}",
+      "message": "外部リンク"
+   },
+   "sqLinkinfo_followLinks": {
+      "description": "{Linkinfo report follow links button title}",
+      "message": "Follow:"
+   },
+   "sqLinkinfo_formLinks": {
+      "description": "{Linkinfo report forms links button title}",
+      "message": "フォーム:"
+   },
+   "sqLinkinfo_frameLinks": {
+      "description": "{Linkinfo report frames links button title}",
+      "message": "フレーム:"
+   },
+   "sqLinkinfo_header_backlink": {
+      "description": "{Linkinfo table header backlinks}",
+      "message": "バックリンクパラメータ"
+   },
+   "sqLinkinfo_header_backlink_title": {
+      "description": "{Linkinfo table header backlinks title}",
+      "message": "バックリンクから現在のリンクに関連するパラメータ"
+   },
+   "sqLinkinfo_header_domain": {
+      "description": "{Linkinfo table header domain}",
+      "message": "ドメインパラメータ"
+   },
+   "sqLinkinfo_header_domain_title": {
+      "description": "{Linkinfo table header domain title}",
+      "message": "リンクドメインに関連するパラメータ"
+   },
+   "sqLinkinfo_header_index": {
+      "description": "{Linkinfo table header index}",
+      "message": "#"
+   },
+   "sqLinkinfo_header_link": {
+      "description": "{Linkinfo table header link}",
+      "message": "リンクパラメータ"
+   },
+   "sqLinkinfo_header_link_title": {
+      "description": "{Linkinfo table header link title}",
+      "message": "完全なリンクに関連するパラメータ"
+   },
+   "sqLinkinfo_header_url": {
+      "description": "{Linkinfo table header URL}",
+      "message": "URL"
+   },
+   "sqLinkinfo_imagesLinks": {
+      "description": "{Linkinfo report images links button title}",
+      "message": "画像:"
+   },
+   "sqLinkinfo_internal": {
+      "description": "{Linkinfo report internal links title}",
+      "message": "内部リンク"
+   },
+   "sqLinkinfo_noFollowLinks": {
+      "description": "{Linkinfo report no follow links button title}",
+      "message": "No follow:"
+   },
+   "sqLinkinfo_textLinks": {
+      "description": "{Linkinfo report text links button title}",
+      "message": "テキスト:"
+   },
+   "sqLinkinfo_totalLinks": {
+      "description": "{Linkinfo report total links button title}",
+      "message": "リンク合計："
+   },
+   "sqLinkinfo_type_form": {
+      "description": "{Linkinfo report link type form title}",
+      "message": "フォーム"
+   },
+   "sqLinkinfo_type_frame": {
+      "description": "{Linkinfo report link type frame title}",
+      "message": "フレーム"
+   },
+   "sqLinkinfo_type_image": {
+      "description": "{Linkinfo report link type image title}",
+      "message": "画像"
+   },
+   "sqLinkinfo_type_text": {
+      "description": "{Linkinfo report link type text title}",
+      "message": "テキスト"
+   },
+   "sqOptionsSave": {
+      "description": "{Save message on button}",
+      "message": "保存"
+   },
+   "sqOptionsSaving": {
+      "description": "{Saving process message on button}",
+      "message": "保存しています..."
+   },
+   "sqOptions_general_clear_cache": {
+      "description": "{Options general clear cache button text}",
+      "message": "キャッシュを消去"
+   },
+   "sqOptions_general_clear_cache_clearing": {
+      "description": "{Options general clear cache button text when clearing}",
+      "message": "消去しています…"
+   },
+   "sqOptions_general_core_disabled_field": {
+      "description": "{Options general core disabled field title}",
+      "message": "SEOquakeオン"
+   },
+   "sqOptions_general_core_disabled_label": {
+      "description": "{Options general core disabled label title}",
+      "message": "すべてのプラグインのグローバルスイッチ"
+   },
+   "sqOptions_general_dropdown_panel_title": {
+      "description": "{Options general experimental features switch}",
+      "message": "パネル設定を選択"
+   },
+   "sqOptions_general_experimental_label": {
+      "description": "{Options general experimental features switch}",
+      "message": "実験的機能を有効にします"
+   },
+   "sqOptions_general_export_download": {
+      "message": "ファイルを取得"
+   },
+   "sqOptions_general_export_load_label": {
+      "message": "ファイルからインポート:"
+   },
+   "sqOptions_general_export_load_title": {
+      "message": "ファイルを選択"
+   },
+   "sqOptions_general_export_save_label": {
+      "message": "以下にファイルを保存："
+   },
+   "sqOptions_general_filename_0": {
+      "description": "{Options general filename template first}",
+      "message": "\u003Cfilename>.csv"
+   },
+   "sqOptions_general_filename_1": {
+      "description": "{Options general filename template second}",
+      "message": "\u003Cfilename> - \u003Cdate>.csv"
+   },
+   "sqOptions_general_filename_2": {
+      "description": "{Options general filename template third}",
+      "message": "\u003Cfilename> - \u003Cdate>.csv"
+   },
+   "sqOptions_general_filename_field": {
+      "description": "{Options general filename template title}",
+      "message": "ファイル名テンプレートをエクスポート:"
+   },
+   "sqOptions_general_noanalytics_label": {
+      "description": "{Options general experimental features switch}",
+      "message": "使用統計の収集を無効にします。＆nbsp;"
+   },
+   "sqOptions_general_noanalytics_link": {
+      "description": "{Options general experimental features switch}",
+      "message": "詳細情報"
+   },
+   "sqOptions_general_noanalytics_title": {
+      "description": "{Options general no analytics title}",
+      "message": "分析なし："
+   },
+   "sqOptions_general_nofollow_field": {
+      "description": "{Options general nofollow field title}",
+      "message": "no-followをハイライト:"
+   },
+   "sqOptions_general_nofollow_label": {
+      "description": "{Options general nofollow field label}",
+      "message": "すべてのリンクをrel = \"nofollow\"でマークします"
+   },
+   "sqOptions_general_panel_export_title": {
+      "message": "お客様の設定をエクスポート/インポート"
+   },
+   "sqOptions_general_panel_mode_0": {
+      "description": "{Options general experimental features switch}",
+      "message": "表示"
+   },
+   "sqOptions_general_panel_mode_1": {
+      "description": "{Options general experimental features switch}",
+      "message": "要求に応じて"
+   },
+   "sqOptions_general_panel_mode_title": {
+      "description": "{Options general panel mode title}",
+      "message": "パラメータをロード："
+   },
+   "sqOptions_general_panel_tips_label": {
+      "message": "パネルに今日のチップを表示"
+   },
+   "sqOptions_general_panel_tips_title": {
+      "message": "ツールチップを表示"
+   },
+   "sqOptions_general_request_delay_field": {
+      "description": "{Options general request delay title}",
+      "message": "パラメータリクエスト遅延："
+   },
+   "sqOptions_general_title": {
+      "description": "{Options general title}",
+      "message": "一般環境設定"
+   },
+   "sqOptions_general_use_cache_field": {
+      "description": "{Options general use cache field}",
+      "message": "パラメータのキャッシュを有効にする："
+   },
+   "sqOptions_general_use_cache_label": {
+      "description": "{Options general use cache label}",
+      "message": "ブラウザの再起動までパラメータの結果をキャッシュします"
+   },
+   "sqOptions_gsc_disabled_label": {
+      "description": "{Options google search console disable switch label}",
+      "message": "Включить все функции."
+   },
+   "sqOptions_gsc_disabled_title": {
+      "description": "{Options google search console disable switch}",
+      "message": "Включить интеграцию с GSC:"
+   },
+   "sqOptions_gsc_feature_dsts": {
+      "description": "{Options google search console disable DS/TS metrics display}",
+      "message": "Включить показатели Domain Score и Trust Score."
+   },
+   "sqOptions_gsc_feature_notes": {
+      "description": "{Options google search console disable Notes display}",
+      "message": "Включить обновления Google."
+   },
+   "sqOptions_gsc_features_title": {
+      "description": "{Options google search console features list label}",
+      "message": "Возможности:"
+   },
+   "sqOptions_gsc_title": {
+      "description": "{Options google search console configuration panel title}",
+      "message": "Интеграция с Google Search Console"
+   },
+   "sqOptions_gsc_title_general": {
+      "description": "{Options google search console configuration panel general section title}",
+      "message": "Общие настройки"
+   },
+   "sqOptions_import_advanced_disabled": {
+      "description": "",
+      "message": "詳細設定は無効になっています"
+   },
+   "sqOptions_import_advanced_disabled_ga": {
+      "description": "",
+      "message": "Google Analitycs gather&nbsp;を無効化"
+   },
+   "sqOptions_import_bing_disabled": {
+      "description": "",
+      "message": "Bingプラグインは無効です"
+   },
+   "sqOptions_import_bing_mode": {
+      "description": "",
+      "message": "Bingプラグインリクエストモード"
+   },
+   "sqOptions_import_category_advanced": {
+      "description": "",
+      "message": "高度設定"
+   },
+   "sqOptions_import_category_bing": {
+      "description": "",
+      "message": "Bing SERP設定"
+   },
+   "sqOptions_import_category_core": {
+      "description": "",
+      "message": "基本オプション"
+   },
+   "sqOptions_import_category_google": {
+      "description": "",
+      "message": "GoogleSERP設定"
+   },
+   "sqOptions_import_category_gsc": {
+      "description": "{Google Search console integration configuration import category title}",
+      "message": "Google Search Console統合"
+   },
+   "sqOptions_import_category_nofollow": {
+      "description": "",
+      "message": "Nofollowプラグイン設定"
+   },
+   "sqOptions_import_category_panel": {
+      "description": "",
+      "message": "パネル設定"
+   },
+   "sqOptions_import_category_semrush": {
+      "description": "",
+      "message": "Semrush SERPコピープラグイン"
+   },
+   "sqOptions_import_category_seobar": {
+      "description": "",
+      "message": "SEOバーオプション"
+   },
+   "sqOptions_import_category_yahoo": {
+      "description": "",
+      "message": "YandexSERP設定"
+   },
+   "sqOptions_import_category_yandex": {
+      "description": "",
+      "message": "YandexSERP設定"
+   },
+   "sqOptions_import_confirm_cancel": {
+      "description": "Submit button on import settings window",
+      "message": "取り消す"
+   },
+   "sqOptions_import_confirm_changes": {
+      "description": "{Header for changes table in import settings window for parameters block}",
+      "message": "変更"
+   },
+   "sqOptions_import_confirm_close": {
+      "description": "{Close button message}",
+      "message": "閉じる"
+   },
+   "sqOptions_import_confirm_configuration_title": {
+      "description": "Title for configuration changes list",
+      "message": "設定変更"
+   },
+   "sqOptions_import_confirm_current": {
+      "message": "現在"
+   },
+   "sqOptions_import_confirm_header": {
+      "description": "Header of import new settings window",
+      "message": "新しい設定のインポートを確認"
+   },
+   "sqOptions_import_confirm_new": {
+      "message": "ファイルから"
+   },
+   "sqOptions_import_confirm_parameters": {
+      "description": "{Header for parameters block in import window}",
+      "message": "パラメータ"
+   },
+   "sqOptions_import_confirm_parameters_delete": {
+      "message": "削除"
+   },
+   "sqOptions_import_confirm_parameters_differs": {
+      "message": "異なる"
+   },
+   "sqOptions_import_confirm_parameters_new": {
+      "message": "新規"
+   },
+   "sqOptions_import_confirm_parameters_title": {
+      "message": "パラメータ変更"
+   },
+   "sqOptions_import_confirm_submit": {
+      "description": "Submit button on import settings window",
+      "message": "インポート"
+   },
+   "sqOptions_import_core_disable_highlight_sites": {
+      "description": "",
+      "message": "SERPのサイトをハイライト"
+   },
+   "sqOptions_import_core_disable_serps_pos_numbers": {
+      "description": "",
+      "message": "SERPは順位番号を表示しています。"
+   },
+   "sqOptions_import_core_disabled": {
+      "description": "",
+      "message": "SEOquakeは無効です"
+   },
+   "sqOptions_import_core_export_template": {
+      "description": "",
+      "message": "ファイル名テンプレートをエクスポート"
+   },
+   "sqOptions_import_core_highlight_sites": {
+      "description": "",
+      "message": "サイトリストをハイライト"
+   },
+   "sqOptions_import_core_highlight_sites_color": {
+      "description": "",
+      "message": "ハイライトの色"
+   },
+   "sqOptions_import_core_request_delay": {
+      "description": "",
+      "message": "リクエストの遅延"
+   },
+   "sqOptions_import_core_use_cache": {
+      "description": "",
+      "message": "キャッシュを使用"
+   },
+   "sqOptions_import_google_disabled": {
+      "description": "",
+      "message": "Googleプラグインは無効です"
+   },
+   "sqOptions_import_google_gl": {
+      "description": "",
+      "message": "Google結果言語"
+   },
+   "sqOptions_import_google_hl": {
+      "description": "",
+      "message": "Google UI 言語"
+   },
+   "sqOptions_import_google_mode": {
+      "description": "",
+      "message": "Googleプラグインリクエストモード"
+   },
+   "sqOptions_import_google_onboarding_keyword_difficulty": {
+      "description": "{}",
+      "message": "キーワード難易度ヘルプを非表示"
+   },
+   "sqOptions_import_google_show_hlgl": {
+      "description": "",
+      "message": "HL/GL設定を表示"
+   },
+   "sqOptions_import_google_show_keyword_difficulty": {
+      "description": "{}",
+      "message": "キーワードの難易度を表示"
+   },
+   "sqOptions_import_gsc_disabled": {
+      "description": "{Google Search console disabled}",
+      "message": "機能が無効です"
+   },
+   "sqOptions_import_nofollow_disabled": {
+      "description": "",
+      "message": "Nofollowのプラグインは無効です"
+   },
+   "sqOptions_import_nothing": {
+      "description": "{Message when import file is same as current configuration}",
+      "message": "ファイルには同じ配置が含まれています"
+   },
+   "sqOptions_import_panel_mode": {
+      "description": "",
+      "message": "パネルリクエストモード"
+   },
+   "sqOptions_import_semrush_disabled": {
+      "description": "",
+      "message": "Semrushプラグインは無効です"
+   },
+   "sqOptions_import_semrush_mode": {
+      "description": "",
+      "message": "Semrushプラグインリクエストモード"
+   },
+   "sqOptions_import_seobar_color": {
+      "description": "",
+      "message": "スタイル"
+   },
+   "sqOptions_import_seobar_densityLink": {
+      "description": "",
+      "message": "キーワード濃度リンクを表示"
+   },
+   "sqOptions_import_seobar_diagnosisLink": {
+      "description": "",
+      "message": "ページSEO診断リンクを表示"
+   },
+   "sqOptions_import_seobar_disabled": {
+      "description": "",
+      "message": "SEOquakeは無効です"
+   },
+   "sqOptions_import_seobar_excludes": {
+      "description": "",
+      "message": "これらのリソースをフィルタ"
+   },
+   "sqOptions_import_seobar_https": {
+      "description": "",
+      "message": "HTTPリソースに表示"
+   },
+   "sqOptions_import_seobar_linkinfoLink": {
+      "description": "",
+      "message": "リンク情報データを表示"
+   },
+   "sqOptions_import_seobar_mode": {
+      "description": "",
+      "message": "モードをリクエスト"
+   },
+   "sqOptions_import_seobar_open_minimized": {
+      "description": "",
+      "message": "最小化されたものを開く（使用されていない）"
+   },
+   "sqOptions_import_seobar_pageinfoLink": {
+      "description": "",
+      "message": "共通のレポートリンクを表示"
+   },
+   "sqOptions_import_seobar_pinned": {
+      "description": "{Pinned mode different on import}",
+      "message": "固定モードのSEOバーを表示"
+   },
+   "sqOptions_import_seobar_position": {
+      "description": "",
+      "message": "検索順位"
+   },
+   "sqOptions_import_seobar_robotsLink": {
+      "description": "",
+      "message": "robots.txtリンクを表示"
+   },
+   "sqOptions_import_seobar_sitemapLink": {
+      "description": "",
+      "message": "sitemap.xmlリンクを表示"
+   },
+   "sqOptions_import_yahoo_disabled": {
+      "description": "",
+      "message": "Yahooプラグインは無効です"
+   },
+   "sqOptions_import_yahoo_mode": {
+      "description": "",
+      "message": "Yahooプラグインリクエストモード"
+   },
+   "sqOptions_import_yandex_disabled": {
+      "description": "",
+      "message": "Yandexプラグインは無効です"
+   },
+   "sqOptions_import_yandex_mode": {
+      "description": "",
+      "message": "Yandexプラグインリクエストモード"
+   },
+   "sqOptions_menu_export": {
+      "description": "{Options page menu Export}",
+      "message": "エクスポート設定"
+   },
+   "sqOptions_menu_general": {
+      "description": "{Options page menu General}",
+      "message": "全般"
+   },
+   "sqOptions_menu_gsc": {
+      "description": "{Options page menu GSC}",
+      "message": "GSC"
+   },
+   "sqOptions_menu_guide": {
+      "description": "{Options page menu link to user guide}",
+      "message": "ユーザーガイド"
+   },
+   "sqOptions_menu_integration": {
+      "description": "{Options page menu Integration}",
+      "message": "統合"
+   },
+   "sqOptions_menu_parameters": {
+      "description": "{Options page menu Parameters}",
+      "message": "パラメータ"
+   },
+   "sqOptions_menu_seobar": {
+      "description": "{Options page menu Seobar}",
+      "message": "SEOバー"
+   },
+   "sqOptions_menu_serp": {
+      "description": "{Options page menu SERP Overlay}",
+      "message": "SERP Overlay"
+   },
+   "sqOptions_parameters_delete_confirm": {
+      "description": "{Confirm window text when user trying to delete parameter}",
+      "message": "このパラメータを削除してもよろしいですか？"
+   },
+   "sqOptions_parameters_delete_custom_message": {
+      "description": "{Options parameters delete custom parameters confirm box text}",
+      "message": "すべてのカスタムパラメータを削除しますか？\nすべての変更は失われます。"
+   },
+   "sqOptions_parameters_deleted_message": {
+      "description": "{Options parameters restore deleted parameters confirm box text}",
+      "message": "削除されたデフォルトパラメータに戻しますか？すべての変更は失われます。"
+   },
+   "sqOptions_parameters_modified_and_deleted_message": {
+      "description": "{Options parameters restore modified and deleted parameters confirm box text}",
+      "message": "デフォルトパラメータに戻しますか？すべての変更は失われます。"
+   },
+   "sqOptions_parameters_modified_message": {
+      "description": "{Options parameters restore modified parameters confirm box text}",
+      "message": "修正デフォルトパラメータに戻しますか？すべての変更は失われます。"
+   },
+   "sqOptions_parameters_new_parameter": {
+      "description": "{Options parameters new parameter button}",
+      "message": "新しいパラメータ"
+   },
+   "sqOptions_parameters_new_parameter_error": {
+      "description": "{Error message displayed if user trying to save parameter without required fields. TITLE, NAME, URL_R, URL_S should not be translated}",
+      "message": "タイトルと名前を指定する必要があります。また、パラメータの恩恵を受けるために、URL_RまたはURL_Sを設定してください。"
+   },
+   "sqOptions_parameters_parameter_window_0": {
+      "description": "{Options parameters edit window tooltip}",
+      "message": "ドメインレベル名"
+   },
+   "sqOptions_parameters_parameter_window_1": {
+      "description": "{Options parameters edit window tooltip}",
+      "message": "url"
+   },
+   "sqOptions_parameters_parameter_window_10": {
+      "description": "{Options parameters edit window tooltip}",
+      "message": "SERPでの検索順位"
+   },
+   "sqOptions_parameters_parameter_window_2": {
+      "description": "{Options parameters edit window tooltip}",
+      "message": "ドメイン"
+   },
+   "sqOptions_parameters_parameter_window_3": {
+      "description": "{Options parameters edit window tooltip}",
+      "message": "wwwなしのドメイン"
+   },
+   "sqOptions_parameters_parameter_window_4": {
+      "description": "{Options parameters edit window tooltip}",
+      "message": "第2レベルドメイン"
+   },
+   "sqOptions_parameters_parameter_window_5": {
+      "description": "{Options parameters edit window tooltip}",
+      "message": "URLスキーム"
+   },
+   "sqOptions_parameters_parameter_window_6": {
+      "description": "{Options parameters edit window tooltip}",
+      "message": "URLパス"
+   },
+   "sqOptions_parameters_parameter_window_7": {
+      "description": "{Options parameters edit window tooltip}",
+      "message": "URLクエリ"
+   },
+   "sqOptions_parameters_parameter_window_8": {
+      "description": "{Options parameters edit window tooltip}",
+      "message": "キーワードを検索…"
+   },
+   "sqOptions_parameters_parameter_window_9": {
+      "description": "{Options parameters edit window tooltip}",
+      "message": "GooglePRチェックサム"
+   },
+   "sqOptions_parameters_parameter_window_cancel": {
+      "description": "{Options parameters edit window cancel button title}",
+      "message": "取り消す"
+   },
+   "sqOptions_parameters_parameter_window_create_title": {
+      "description": "{Options parameters edit window create mode title}",
+      "message": "パラメータを作成"
+   },
+   "sqOptions_parameters_parameter_window_delete": {
+      "description": "{Options parameters edit window delete button title}",
+      "message": "削除"
+   },
+   "sqOptions_parameters_parameter_window_edit_title": {
+      "description": "{Options parameters edit window edit mode title}",
+      "message": "パラメータを編集"
+   },
+   "sqOptions_parameters_parameter_window_ok": {
+      "description": "{Options parameters edit window save button title}",
+      "message": "保存"
+   },
+   "sqOptions_parameters_reset": {
+      "description": "{Options parameters reset parameters button}",
+      "message": "デフォルトパラメータに戻す"
+   },
+   "sqOptions_parameters_restore_menu_delete": {
+      "description": "{Options parameters restore menu delete item}",
+      "message": "カスタムパラメータを削除"
+   },
+   "sqOptions_parameters_restore_menu_deleted": {
+      "description": "{Options parameters restore menu delete item}",
+      "message": "削除のみ"
+   },
+   "sqOptions_parameters_restore_menu_modified": {
+      "description": "{Options parameters restore menu delete item}",
+      "message": "修正のみ"
+   },
+   "sqOptions_parameters_restore_menu_modified_and_deleted": {
+      "description": "{Options parameters restore menu delete item}",
+      "message": "修正済みおよび削除済み"
+   },
+   "sqOptions_parameters_table_all": {
+      "description": "{Options parameters table column all}",
+      "message": "すべて"
+   },
+   "sqOptions_parameters_table_bing": {
+      "description": "{Options parameters table column seobar}",
+      "message": "Bing"
+   },
+   "sqOptions_parameters_table_external": {
+      "description": "{Options parameters table column seobar}",
+      "message": "外部"
+   },
+   "sqOptions_parameters_table_google": {
+      "description": "{Options parameters table column seobar}",
+      "message": "Google"
+   },
+   "sqOptions_parameters_table_internal": {
+      "description": "{Options parameters table column seobar}",
+      "message": "内部"
+   },
+   "sqOptions_parameters_table_linkinfo": {
+      "description": "{Options parameters table column seobar}",
+      "message": "リンク情報"
+   },
+   "sqOptions_parameters_table_reports": {
+      "description": "{Options parameters table reports group header}",
+      "message": "レポート"
+   },
+   "sqOptions_parameters_table_semrush": {
+      "description": "{Options parameters table column seobar}",
+      "message": "Semrush"
+   },
+   "sqOptions_parameters_table_seobar": {
+      "description": "{Options parameters table column seobar}",
+      "message": "SEOバー"
+   },
+   "sqOptions_parameters_table_serp": {
+      "description": "{Options parameters table serp group header}",
+      "message": "SERP Overlay"
+   },
+   "sqOptions_parameters_table_yahoo": {
+      "description": "{Options parameters table column seobar}",
+      "message": "Yahoo"
+   },
+   "sqOptions_parameters_table_yandex": {
+      "description": "{Options parameters table column seobar}",
+      "message": "Yandex"
+   },
+   "sqOptions_parameters_title": {
+      "description": "{Options parameters title}",
+      "message": "パラメータ設定"
+   },
+   "sqOptions_restore_default_message": {
+      "message": "これにより、デフォルトの設定に戻します。続けますか？"
+   },
+   "sqOptions_restore_default_title": {
+      "description": "{Options restore default button text}",
+      "message": "デフォルトを復元"
+   },
+   "sqOptions_seobar_color_dark": {
+      "description": "{Options SEObar preferences page color style dark}",
+      "message": "ダーク"
+   },
+   "sqOptions_seobar_color_light": {
+      "description": "{Options SEObar preferences page color style light}",
+      "message": "ライト"
+   },
+   "sqOptions_seobar_color_title": {
+      "description": "{Options SEObar preferences page color style}",
+      "message": "カラースタイル："
+   },
+   "sqOptions_seobar_density_label": {
+      "description": "{Options SEObar preferences page density parameter label}",
+      "message": "濃度レポートのリンクを表示"
+   },
+   "sqOptions_seobar_density_title": {
+      "description": "{Options SEObar preferences page density parameter}",
+      "message": "濃度リンク："
+   },
+   "sqOptions_seobar_diagnosis_label": {
+      "description": "{Options SEObar preferences page diagnosis parameter label}",
+      "message": "ページ診断結果レポートのリンクを表示"
+   },
+   "sqOptions_seobar_diagnosis_title": {
+      "description": "{Options SEObar preferences page diagnosis parameter}",
+      "message": "診断リンク："
+   },
+   "sqOptions_seobar_disabled_label": {
+      "description": "{Options SEObar preferences page seobar global switch  label}",
+      "message": "すべてのページでSEOバーを表示"
+   },
+   "sqOptions_seobar_disabled_title": {
+      "description": "{Options SEObar preferences page seobar global switch}",
+      "message": "SEOバーは有効化されています："
+   },
+   "sqOptions_seobar_exclude_list": {
+      "description": "{Options SEObar preferences page exclude list placeholder}",
+      "message": "SEOバーを除外したいサイトのみ入力してください。"
+   },
+   "sqOptions_seobar_exclude_message": {
+      "description": "{Options SEObar preferences page exclude list message}",
+      "message": "SEOバーを表示しないドメインをマークするドメイン名/正規表現を入力できます。"
+   },
+   "sqOptions_seobar_exclude_title": {
+      "description": "{Options SEObar preferences page exclude list title}",
+      "message": "除外リスト："
+   },
+   "sqOptions_seobar_filters_title": {
+      "description": "{Options SEObar preferences page URL filters group}",
+      "message": "URLフィルタ"
+   },
+   "sqOptions_seobar_https_label": {
+      "description": "{Options SEObar preferences page https label}",
+      "message": "HTTPSリソースにSEOバーを表示（接続ステータスアイコンを変更できます）"
+   },
+   "sqOptions_seobar_https_title": {
+      "description": "{Options SEObar preferences page https switch}",
+      "message": "HTTPSに表示："
+   },
+   "sqOptions_seobar_linkinfo_label": {
+      "description": "{Options SEObar preferences page linkinfo parameter label}",
+      "message": "ページにレポートと内部/外部リンクのカウンターのリンクを表示する"
+   },
+   "sqOptions_seobar_linkinfo_title": {
+      "description": "{Options SEObar preferences page linkinfo parameter}",
+      "message": "リンク情報リンク："
+   },
+   "sqOptions_seobar_load_mode_0": {
+      "description": "{Options SEObar preferences page load mode auto}",
+      "message": "ページ読み込み"
+   },
+   "sqOptions_seobar_load_mode_1": {
+      "description": "{Options SEObar preferences page load mode by button}",
+      "message": "要求に応じて"
+   },
+   "sqOptions_seobar_load_title": {
+      "description": "{Options SEObar preferences page load mode}",
+      "message": "パラメータをロード："
+   },
+   "sqOptions_seobar_loading_title": {
+      "description": "{Options SEObar preferences page seobar orientation and loading block}",
+      "message": "ロードとオリエンテーション"
+   },
+   "sqOptions_seobar_match_list": {
+      "description": "{Options SEObar preferences page exclude list placeholder}",
+      "message": "SEOバーを含めたいサイトのみ入力してください。"
+   },
+   "sqOptions_seobar_match_message": {
+      "description": "{Options SEObar preferences page exclude list message}",
+      "message": "SEOバーを有効化するドメインを指定できます。 SEOバーはこれらのドメインでのみ表示されます。"
+   },
+   "sqOptions_seobar_match_title": {
+      "description": "{Options SEObar preferences page exclude list title}",
+      "message": "ホワイトリストのドメイン："
+   },
+   "sqOptions_seobar_pageinfo_label": {
+      "description": "{Options SEObar preferences page pageinfo parameter label}",
+      "message": "ページ情報レポートのリンクを表示"
+   },
+   "sqOptions_seobar_pageinfo_title": {
+      "description": "{Options SEObar preferences page pageinfo parameter}",
+      "message": "ページ情報リンク："
+   },
+   "sqOptions_seobar_parameters_title": {
+      "description": "{Options SEObar preferences page parameters group title}",
+      "message": "パラメータ"
+   },
+   "sqOptions_seobar_pinned_label": {
+      "description": "{Options SEObar preference minimized mode description}",
+      "message": "縦表示モードに最小化されたSEOバーを表示"
+   },
+   "sqOptions_seobar_pinned_title": {
+      "description": "{Options SEObar preference minimized mode}",
+      "message": "最小化を表示："
+   },
+   "sqOptions_seobar_position_horizontal": {
+      "description": "{Options SEObar preferences page position horizontal top}",
+      "message": "画面上水平"
+   },
+   "sqOptions_seobar_position_horizontal_bottom": {
+      "description": "{Options SEObar preferences page position horizontal bottom}",
+      "message": "画面下水平"
+   },
+   "sqOptions_seobar_position_title": {
+      "description": "{Options SEObar preferences page position}",
+      "message": "検索順位:"
+   },
+   "sqOptions_seobar_position_vertical_left": {
+      "description": "{Options SEObar preferences page position vertical left}",
+      "message": "画面左中"
+   },
+   "sqOptions_seobar_position_vertical_right": {
+      "description": "{Options SEObar preferences page position vertical right}",
+      "message": "画面右中"
+   },
+   "sqOptions_seobar_robots_label": {
+      "description": "{Options SEObar preferences page robots parameter label}",
+      "message": "robots.txt診断結果を表示"
+   },
+   "sqOptions_seobar_robots_title": {
+      "description": "{Options SEObar preferences page robots parameter}",
+      "message": "Robots.txt は表示されています："
+   },
+   "sqOptions_seobar_siteaudit_label": {
+      "description": "Options SEObar preferences page siteaudit parameter label",
+      "message": "Semrush Site Audit ツールのレポート結果を表示"
+   },
+   "sqOptions_seobar_siteaudit_title": {
+      "description": "Options SEObar preferences page siteaudit parameter",
+      "message": "Semrush Site Auditリンク："
+   },
+   "sqOptions_seobar_sitemap_label": {
+      "description": "{Options SEObar preferences page sitemap parameter label}",
+      "message": "sitemap.xml診断結果を表示"
+   },
+   "sqOptions_seobar_sitemap_title": {
+      "description": "{Options SEObar preferences page sitemap parameter}",
+      "message": "Sitemap.xmlは表示されています"
+   },
+   "sqOptions_seobar_special_parameters_title": {
+      "description": "{Options SEObar preferences page special parameters group title}",
+      "message": "特別なパラメータ"
+   },
+   "sqOptions_seobar_title": {
+      "description": "{Options SEObar preferences page title}",
+      "message": "SEOバー環境設定"
+   },
+   "sqOptions_serp_general_title": {
+      "description": "{Options SERP page general preferences title}",
+      "message": "一般環境設定"
+   },
+   "sqOptions_serp_highlight_blue": {
+      "description": "{Options SERP page highlight color blue}",
+      "message": "ライトブルー"
+   },
+   "sqOptions_serp_highlight_color": {
+      "description": "{Options SERP page highlight color}",
+      "message": "カラーをハイライト:"
+   },
+   "sqOptions_serp_highlight_field": {
+      "description": "{Options SERP page highlight enable checkbox}",
+      "message": "ハイライトドメインを有効化する："
+   },
+   "sqOptions_serp_highlight_green": {
+      "description": "{Options SERP page highlight color green}",
+      "message": "ライトグリーン"
+   },
+   "sqOptions_serp_highlight_import_button": {
+      "description": "{Options SERP page highlight list import button}",
+      "message": "リストをインポート"
+   },
+   "sqOptions_serp_highlight_import_message": {
+      "description": "{Options SERP page highlight list import message}",
+      "message": "ファイルからドメインのリストをインポートできます。 UTF-8エンコードのプレーンテキストファイルを使用してください。各値が別々の行に配置されていることを確認してください。ファイルサイズは1 MB未満である必要があります。"
+   },
+   "sqOptions_serp_highlight_label": {
+      "description": "{Options SERP page highlight label}",
+      "message": "SERPで特定のドメインをハイライト"
+   },
+   "sqOptions_serp_highlight_list": {
+      "description": "{Options SERP page highlight list}",
+      "message": "ハイライトリスト："
+   },
+   "sqOptions_serp_highlight_orange": {
+      "description": "{Options SERP page highlight color orange}",
+      "message": "ライトオレンジ"
+   },
+   "sqOptions_serp_highlight_pink": {
+      "description": "{Options SERP page highlight color pink}",
+      "message": "ライトピンク"
+   },
+   "sqOptions_serp_highlight_purple": {
+      "description": "{Options SERP page highlight color purple}",
+      "message": "ライトパープル"
+   },
+   "sqOptions_serp_highlight_red": {
+      "description": "{Options SERP page highlight color red}",
+      "message": "ライトレッド"
+   },
+   "sqOptions_serp_highlight_title": {
+      "description": "{Options SERP page highlight block title}",
+      "message": "ドメインをハイライト"
+   },
+   "sqOptions_serp_highlight_turquoise": {
+      "description": "{Options SERP page highlight color turquoise}",
+      "message": "ライトターコイズ"
+   },
+   "sqOptions_serp_highlight_yellow": {
+      "description": "{Options SERP page highlight color yellow}",
+      "message": "ライトイエロー"
+   },
+   "sqOptions_serp_keyword_difficulty": {
+      "description": "{Options SERP page show keyword difficulty field title}",
+      "message": "キーワードの難易度を表示:"
+   },
+   "sqOptions_serp_keyword_difficulty_label": {
+      "description": "{Options SERP page show keyword difficulty field label}",
+      "message": "GoogleSERPのキーワード難易度を有効化"
+   },
+   "sqOptions_serp_load_mode_0": {
+      "description": "{Options SERP page parameters load mode on show}",
+      "message": "ページ読み込み"
+   },
+   "sqOptions_serp_load_mode_1": {
+      "description": "{Options SERP page parameters load mode by request}",
+      "message": "要求に応じて"
+   },
+   "sqOptions_serp_numbers": {
+      "description": "{Options SERP page show position numbers field title}",
+      "message": "番号を表示："
+   },
+   "sqOptions_serp_numbers_label": {
+      "description": "{Options SERP page show position numbers field label}",
+      "message": "SERP結果の検索順位番号を表示"
+   },
+   "sqOptions_serp_parameters_load": {
+      "description": "{Options SERP page parameters load mode title}",
+      "message": "パラメータをロード："
+   },
+   "sqOptions_serp_parameters_title": {
+      "description": "{Options SERP page parameters preferences section title}",
+      "message": "パラメータ環境設定"
+   },
+   "sqOptions_serp_show": {
+      "description": "{Options SERP page show overlay}",
+      "message": "検索エンジンに表示："
+   },
+   "sqOptions_serp_show_bing": {
+      "description": "{Options SERP page show overlay on bing}",
+      "message": "Bingが有効化されています"
+   },
+   "sqOptions_serp_show_google": {
+      "description": "{Options SERP page show overlay on google}",
+      "message": "Googleが有効化されています"
+   },
+   "sqOptions_serp_show_semrush": {
+      "description": "{Options SERP page show overlay on semrush}",
+      "message": "Semrushが有効化されています"
+   },
+   "sqOptions_serp_show_yahoo": {
+      "description": "{Options SERP page show overlay on yahoo}",
+      "message": "Yahooが有効化されています"
+   },
+   "sqOptions_serp_show_yandex": {
+      "description": "{Options SERP page show overlay on yandex}",
+      "message": "Yandexが有効化されています"
+   },
+   "sqOptions_serp_tabs_title": {
+      "description": "{Options SERP page parameters title}",
+      "message": "SERP overlayのアクティブパラメータ"
+   },
+   "sqOptions_serp_title": {
+      "description": "{Options SERP page title}",
+      "message": "SERP Overlay環境設定"
+   },
+   "sqOptions_serp_trust_score": {
+      "description": "{Options SERP page show domain trust metrics panel title}",
+      "message": "Domain Trust指標を表示："
+   },
+   "sqOptions_serp_trust_score_label": {
+      "description": "{Options SERP page show domain trust metrics panel label}",
+      "message": "Domain Trust指標スペシャルパネルを有効化"
+   },
+   "sqOptions_title": {
+      "description": "{Options page title}",
+      "message": "SEOquake環境設定"
+   },
+   "sqPageinfo_keywords_density": {
+      "description": "{Pageinfo report keywords density table density header}",
+      "message": "濃度"
+   },
+   "sqPageinfo_keywords_foundin": {
+      "description": "{Pageinfo report keywords density table foundin header}",
+      "message": "発見場所："
+   },
+   "sqPageinfo_keywords_keyword": {
+      "description": "{Pageinfo report keywords density table keyword header}",
+      "message": "キーワード"
+   },
+   "sqPageinfo_keywords_repeats": {
+      "description": "{Pageinfo report keywords density table repeats header}",
+      "message": "繰り返し"
+   },
+   "sqPageinfo_link_print": {
+      "description": "{Pageinfo report print button title}",
+      "message": "印刷"
+   },
+   "sqPageinfo_see_all_keywords": {
+      "description": "{Pageinfo report keywords density block see all link title}",
+      "message": "全てを表示"
+   },
+   "sqPageinfo_title": {
+      "description": "{Pageinfo report title}",
+      "message": "ページ情報"
+   },
+   "sqPageinfo_title_backlinks_parameters": {
+      "description": "{Pageinfo report parameters block backlinks parameters title}",
+      "message": "バックリンク："
+   },
+   "sqPageinfo_title_basic": {
+      "description": "{Pageinfo report first block title}",
+      "message": "基本情報："
+   },
+   "sqPageinfo_title_description": {
+      "description": "{Pageinfo report first block meta descripton field title}",
+      "message": "メタディスクリプション:"
+   },
+   "sqPageinfo_title_domain_parameters": {
+      "description": "{Pageinfo report parameters block domain parameters title}",
+      "message": "ドメイン："
+   },
+   "sqPageinfo_title_external": {
+      "description": "{Pageinfo report first block external links counter field title}",
+      "message": "外部リンク:"
+   },
+   "sqPageinfo_title_internal": {
+      "description": "{Pageinfo report first block internal links counter field title}",
+      "message": "内部リンク:"
+   },
+   "sqPageinfo_title_keywords": {
+      "description": "{Pageinfo report first block meta keywords field title}",
+      "message": "メタキーワード:"
+   },
+   "sqPageinfo_title_keywords_density": {
+      "description": "{Pageinfo report keywords density block title}",
+      "message": "キーワードの濃度"
+   },
+   "sqPageinfo_title_other_parameters": {
+      "description": "{Pageinfo report parameters block other parameters title}",
+      "message": "その他："
+   },
+   "sqPageinfo_title_page_parameters": {
+      "description": "{Pageinfo report parameters block page parameters title}",
+      "message": "ページ："
+   },
+   "sqPageinfo_title_parameters": {
+      "description": "{Pageinfo report parameters block title}",
+      "message": "パラメータ:"
+   },
+   "sqPageinfo_title_server": {
+      "description": "{Pageinfo report first block server field title}",
+      "message": "サーバー:"
+   },
+   "sqPageinfo_title_title": {
+      "description": "{Pageinfo report first block pagetitle field title}",
+      "message": "タイトル："
+   },
+   "sqPageinfo_total_2words": {
+      "description": "{Pageinfo report keywords density total 2-words phrases counter title}",
+      "message": "合計２語句："
+   },
+   "sqPageinfo_total_3words": {
+      "description": "{Pageinfo report keywords density total 3-words phrases counter title}",
+      "message": "合計３語句："
+   },
+   "sqPageinfo_total_4words": {
+      "description": "{Pageinfo report keywords density total 4-words phrases counter title}",
+      "message": "合計４語句："
+   },
+   "sqPageinfo_total_words": {
+      "description": "{Pageinfo report keywords density total words counter title}",
+      "message": "単語合計数"
+   },
+   "sqPanel_backlinks_connect": {
+      "description": "{Title for backlinks connect button}",
+      "message": "Semrushを接続"
+   },
+   "sqPanel_backlinks_connect_message": {
+      "description": "{Connect Semrush message. Some markdown can be used}",
+      "message": "* Backlinks 概要*レポートにアクセスするには、*無料*のSemrushアカウントを接続します\n"
+   },
+   "sqPanel_backlinks_domain": {
+      "description": "{Backlinks type pills switch to domain}",
+      "message": "ドメイン"
+   },
+   "sqPanel_backlinks_empty_header": {
+      "description": "{Backlinks empty data header}",
+      "message": "お客様のリクエストに関連する情報は見つかりませんでした"
+   },
+   "sqPanel_backlinks_empty_message": {
+      "description": "{Backlinks empty data message}",
+      "message": "原因はいくつか考えられます："
+   },
+   "sqPanel_backlinks_empty_reason1": {
+      "description": "{Backlinks empty data message reason 1}",
+      "message": "これは新しいウェブサイトで、まだクロールされてません。ただ、近日中に必ずクロールします。後ほど再試行して、このウェブサイトのバックリンクを見つけてください。"
+   },
+   "sqPanel_backlinks_empty_reason2": {
+      "description": "{Backlinks empty data message reason 2}",
+      "message": "ウェブサイトにバックリンクがありません。誰も参照していません。"
+   },
+   "sqPanel_backlinks_empty_reason3": {
+      "description": "{Backlinks empty data message reason 2}",
+      "message": "このドメインは存在しません。"
+   },
+   "sqPanel_backlinks_error": {
+      "description": "{Some backlinks error message on unknown error}",
+      "message": "サービスに接続できません。後で再試行してください。"
+   },
+   "sqPanel_backlinks_full_report": {
+      "description": "{Backlinks view full report button text}",
+      "message": "完全なレポートを表示"
+   },
+   "sqPanel_backlinks_geo_domains": {
+      "description": "{Backlinks table geo domains header}",
+      "message": "ドメイン"
+   },
+   "sqPanel_backlinks_geo_title": {
+      "description": "{Backlinks table geo header}",
+      "message": "国"
+   },
+   "sqPanel_backlinks_referring_domains": {
+      "description": "{Backlinks domains message}",
+      "message": "リファラルドメイン"
+   },
+   "sqPanel_backlinks_referring_ips": {
+      "description": "{Backlinks ips message}",
+      "message": "リファラル IP"
+   },
+   "sqPanel_backlinks_referring_total": {
+      "description": "{Backlinks total message}",
+      "message": "バックリンクの合計"
+   },
+   "sqPanel_backlinks_root_domain": {
+      "description": "{Backlinks type pills switch to root domain}",
+      "message": "ルートドメイン："
+   },
+   "sqPanel_backlinks_scope": {
+      "description": "{Backlinks type pills switch to URL}",
+      "message": "レポートの範囲："
+   },
+   "sqPanel_backlinks_semrush_link": {
+      "description": "{Backlinks go to Semrush link}",
+      "message": "Semrushについてもっと知る"
+   },
+   "sqPanel_backlinks_semrush_text": {
+      "description": "{Backlings go to Semrush text}",
+      "message": "または&nbsp;"
+   },
+   "sqPanel_backlinks_tld_domains": {
+      "description": "{Backlinks table TLD domains header}",
+      "message": "ドメイン"
+   },
+   "sqPanel_backlinks_tld_title": {
+      "description": "{Backlinks table TLD header}",
+      "message": "TLD分布"
+   },
+   "sqPanel_backlinks_url": {
+      "description": "{Backlinks type pills switch to URL}",
+      "message": "URL"
+   },
+   "sqPanel_content_analysis_unavailable_message": {
+      "description": "{Message displayed if data analysis unavailable}",
+      "message": "コンテンツ分析は利用できません。"
+   },
+   "sqPanel_display_advertising_empty_text": {
+      "description": "{Display advertising empty text}",
+      "message": "情報が見つかりませんでした===\n\nこれは新しいドメインであり、我々のデータベースにはまだありません。"
+   },
+   "sqPanel_display_advertising_media_ads": {
+      "description": "{Display advertising panel percent bar left message}",
+      "message": "メディア広告"
+   },
+   "sqPanel_display_advertising_popular_media_ads": {
+      "description": "{Display advertising media ads row title}",
+      "message": "人気のメディア広告"
+   },
+   "sqPanel_display_advertising_popular_text_ads": {
+      "description": "{Display advertising text ads row title}",
+      "message": "人気のテキスト広告"
+   },
+   "sqPanel_display_advertising_show_more_ads": {
+      "description": "{Display advertising button to full report title}",
+      "message": "もっと広告を表示する"
+   },
+   "sqPanel_display_advertising_text_ads": {
+      "description": "{Display advertising panel percent bar right message}",
+      "message": "テキスト広告"
+   },
+   "sqPanel_display_advertising_total_ads": {
+      "description": "{Display advertising panel total ads header}",
+      "message": "広告の合計"
+   },
+   "sqPanel_display_advertising_total_avertisers": {
+      "description": "{Display advertising panel total Advertisers header}",
+      "message": "広告主の合計"
+   },
+   "sqPanel_display_advertising_total_publishers": {
+      "description": "{Display advertising panel total publishers header}",
+      "message": "広告媒体の合計"
+   },
+   "sqPanel_feedback_button_title": {
+      "description": "{Panel feedback button title}",
+      "message": "何かご提案がありますか？"
+   },
+   "sqPanel_feedback_error_close": {
+      "description": "{Feedback error panel close button text}",
+      "message": "閉じる"
+   },
+   "sqPanel_feedback_error_message": {
+      "description": "{Feedback error panel message}",
+      "message": "メッセージを送信しようとしてエラーが発生しました。 mail@seoquaketeam.comにメールを送信するか、下記にコメントを残してください。"
+   },
+   "sqPanel_feedback_error_title": {
+      "description": "{Feedback error panel title}",
+      "message": "エラーが発生しました"
+   },
+   "sqPanel_feedback_error_tryagain": {
+      "description": "{Feedback error panel tryagain button text}",
+      "message": "もう一度お試しください"
+   },
+   "sqPanel_feedback_form_cancel_title": {
+      "description": "{Feedback form cancel button title}",
+      "message": "閉じる"
+   },
+   "sqPanel_feedback_form_email_placeholder": {
+      "description": "{Feedback form field email placeholder}",
+      "message": "Eメール"
+   },
+   "sqPanel_feedback_form_link_prefix": {
+      "description": "{Feedback form store link prefix}",
+      "message": "下記にフィードバックを記入してください："
+   },
+   "sqPanel_feedback_form_submit_title": {
+      "description": "{Feedback form submit button title}",
+      "message": "提案!"
+   },
+   "sqPanel_feedback_form_text_placeholder": {
+      "description": "{Feedback form field text placeholder}",
+      "message": "申し上げたいのは…"
+   },
+   "sqPanel_feedback_form_title": {
+      "description": "{Feedback form title}",
+      "message": "SEOquakeについて感想をお聞かせください"
+   },
+   "sqPanel_feedback_sending_message": {
+      "description": "{Feedback sending panel title}",
+      "message": "SEOquakeチームにフィードバックをお送りください。"
+   },
+   "sqPanel_feedback_sending_title": {
+      "description": "{Feedback sending panel title}",
+      "message": "SEOquakeについて感想をお聞かせください..."
+   },
+   "sqPanel_feedback_success_continue": {
+      "description": "{Feedback success panel title}",
+      "message": "続行"
+   },
+   "sqPanel_feedback_success_message": {
+      "description": "{Feedback success panel title}",
+      "message": "ご回答に感謝いたします。すべてのいただいたメッセージに目を通し、ご連絡いたします。"
+   },
+   "sqPanel_feedback_success_title": {
+      "description": "{Feedback success panel title}",
+      "message": "SEOquakeについての感想をお聞かせいただき、ありがとうございます"
+   },
+   "sqPanel_global_disabled": {
+      "message": "SEOquakeは無効です"
+   },
+   "sqPanel_global_enabled": {
+      "message": "SEOquake有効"
+   },
+   "sqPanel_menu_about": {
+      "description": "{Panel menu preferenes item}",
+      "message": "SEOquakeについて"
+   },
+   "sqPanel_menu_enable": {
+      "description": "{Panel menu core enabled switch}",
+      "message": "SEOquakeをオンにする"
+   },
+   "sqPanel_menu_nofollow": {
+      "description": "{Panel menu nofollow enabled switch}",
+      "message": "no-followをハイライト"
+   },
+   "sqPanel_menu_preferences": {
+      "description": "{Panel menu preferenes item}",
+      "message": "環境設定…"
+   },
+   "sqPanel_menu_seobar": {
+      "description": "{Panel menu seobar enabled switch}",
+      "message": "SEOバーを表示"
+   },
+   "sqPanel_menu_serpTitle": {
+      "description": "{Panel menu serp block title}",
+      "message": "SERP overlayを表示："
+   },
+   "sqPanel_module_title_density": {
+      "description": "{Panel density module link}",
+      "message": "濃度"
+   },
+   "sqPanel_module_title_diagnosis": {
+      "description": "{Panel diagnosis module link}",
+      "message": "診断結果"
+   },
+   "sqPanel_module_title_external": {
+      "description": "{Panel external module link}",
+      "message": "外部"
+   },
+   "sqPanel_module_title_internal": {
+      "description": "{Panel internal module link}",
+      "message": "内部"
+   },
+   "sqPanel_module_title_linkinfo": {
+      "description": "{Panel linkinfo module link}",
+      "message": "URLを比較"
+   },
+   "sqPanel_module_title_pageinfo": {
+      "description": "{Panel pageinfo module link}",
+      "message": "ページ情報"
+   },
+   "sqPanel_nothing_to_analyze": {
+      "description": "{Message displayed for tabs which can not be analyzed}",
+      "message": "このページには分析するものはありません"
+   },
+   "sqPanel_notice_1": {
+      "message": "We have updated the terms of our privacy policy. Please find them [https://www.seoquake.com/policy.html](here) for your review."
+   },
+   "sqPanel_semrush_unreachable": {
+      "message": "===\n\nサービスに接続できません。後で再試行してください。"
+   },
+   "sqPanel_tabs_backlinks": {
+      "description": "{Title for panel tab backlinks}",
+      "message": "バックリンク"
+   },
+   "sqPanel_tabs_da": {
+      "description": "{Title for panel tab display advertising}",
+      "message": "ディスプレイ広告"
+   },
+   "sqPanel_tabs_parameters": {
+      "description": "{Title for panel tab parameters}",
+      "message": "パラメータ"
+   },
+   "sqPanel_tabs_traffic": {
+      "description": "{Title for panel tab traffic analytics}",
+      "message": "トラフィック分析"
+   },
+   "sqPanel_tips_1": {
+      "message": "ご希望のカスタムパラメータを追加できることを*ご存知*ですか？ [https://www.seoquake.com/guide/parameters/create.html]（ガイドを参照）または[parameters]（新しいパラメーターを作成）で今すぐ！"
+   },
+   "sqPanel_tips_2": {
+      "message": "*ワンクリックで[一般]（設定のエクスポートとインポート）ができることを*ご存知*ですか？"
+   },
+   "sqPanel_tips_3": {
+      "message": "SERPを.csvファイルにソートおよびエクスポートできることを*ご存知*ですか？"
+   },
+   "sqPanel_tips_4": {
+      "message": "キャプチャが多すぎますか？不要な[serp]（Google指標を無効化）をお試しください。"
+   },
+   "sqPanel_tips_5": {
+      "message": "  [一般]（[設定]セクション）でSEOquakeのほぼすべての側面を設定できることを*ご存じ*ですか？"
+   },
+   "sqPanel_tips_next": {
+      "message": "次のヒント"
+   },
+   "sqPanel_top_no_title": {
+      "description": "{Top parameters title for parameter without title}",
+      "message": "タイトルなし"
+   },
+   "sqPanel_top_select": {
+      "description": "{Top parameters title for no parameter selected}",
+      "message": "選択"
+   },
+   "sqPanel_traffic_analytics_connect_message": {
+      "description": "{Connect Semrush message. Some markdown can be used}",
+      "message": "*トラフィック分析*レポートにアクセスするには、*無料*のSemrushアカウントを接続します\n"
+   },
+   "sqPanel_traffic_analytics_data_empty": {
+      "message": "===\n\nサービスに接続できません。後で再試行してください。"
+   },
+   "sqPanel_traffic_analytics_empty_header": {
+      "message": "我々のデータベースには、このウェブサイトの十分なデータがありません。"
+   },
+   "sqPanel_traffic_analytics_empty_message": {
+      "message": "原因はいくつか考えられます："
+   },
+   "sqPanel_traffic_analytics_empty_reason1": {
+      "message": "このウェブサイトの月間ユニーク訪問者数が1000人未満であるため、データが不足し正確な推定値の測定が難しくなっています。"
+   },
+   "sqPanel_traffic_analytics_empty_reason2": {
+      "message": "ドメイン名の誤入力。正しく入力されていることを確認してください。"
+   },
+   "sqPanel_traffic_analytics_source_direct": {
+      "message": "直接"
+   },
+   "sqPanel_traffic_analytics_source_paid": {
+      "message": "リスティング広告"
+   },
+   "sqPanel_traffic_analytics_source_referral": {
+      "message": "参照元"
+   },
+   "sqPanel_traffic_analytics_source_search": {
+      "message": "検索"
+   },
+   "sqPanel_traffic_analytics_source_social": {
+      "message": "SNS"
+   },
+   "sqPanel_try_this_link": {
+      "description": "{Message before link in nothing to analize}",
+      "message": "こちらを試す："
+   },
+   "sqPanel_waiting": {
+      "description": "{Message on SEO Dashboard when page data is still loading.}",
+      "message": "ページコンテンツの準備完了を待っています…"
+   },
+   "sqSERPSemRush_connect_block": {
+      "description": "{SERP Semrush panel connect Semrush text}",
+      "message": "無料のSemrushアカウントで*ドメインオーソリティ*、*閲覧数*および*エンゲージメントデータ*を取得-[#connect]（接続）"
+   },
+   "sqSERPSemRush_hint": {
+      "description": "{SERP Semrush panel}",
+      "message": "*Domain Score*は、ドメインを指すリンクの品質と量を測定する指標です。スコアが100に近いほど、ドメインの品質は高くなります。\n\n*Trust Score*は、ドメインが持つ信頼できるバックリンクの数に基づいてドメインの信頼性を測定するために使用される同様の指標です。信頼スコアがドメインスコアよりも著しく低い場合、ドメインに大量の信頼できないバックリンクがあることを示している可能性があります。"
+   },
+   "sqSERPSemRush_onboarding_text": {
+      "description": "{SERP Semrush panel onboarding text} ",
+      "message": "*ドメインオーソリティとエンゲージメントデータについて*\n\n*ドメインオーソリティ*指標により、ウェブサイトのバックリンクの数と品質に基づいてウェブサイトの重要性と信頼性を推定できます。\n\n*閲覧数とユーザーエンゲージメント*指標は、ウェブサイトのオンラインプレゼンスと視聴者の行動に関するインサイトを提供します。"
+   },
+   "sqSERPTool_document_title": {
+      "description": "{SERPtool report title}",
+      "message": "SEOquakeSERPツール"
+   },
+   "sqSERPTool_title": {
+      "description": "{SERPtool report h1 title}",
+      "message": "SERPリンク"
+   },
+   "sqSemrush_connect": {
+      "description": "{Message on connect Semrush button.}",
+      "message": "Semrushを接続"
+   },
+   "sqSemrush_feedback_link": {
+      "description": "Message for feedback link",
+      "message": "Semrushのインテグレーションをどうやったら改善できますか？"
+   },
+   "sqSemrush_feedback_submit": {
+      "description": "Text on feedback send button",
+      "message": "送信"
+   },
+   "sqSemrush_feedback_success": {
+      "description": "Text for message send result",
+      "message": "ありがとうございます。フィードバックは送信されました"
+   },
+   "sqSemrush_feedback_text_placeholder": {
+      "description": "Text placeholder in feedback textarea",
+      "message": "意見を共有する"
+   },
+   "sqSemrush_setup_siteaudit_button": {
+      "description": "Message on setup button",
+      "message": "セットアップ"
+   },
+   "sqSemrush_setup_siteaudit_message": {
+      "description": "Message for siteaudit panel state when current domain does not have siteaudit",
+      "message": "{domain}には診断キャンペーンは設定されていません。"
+   },
+   "sqSemrush_siteaudit_connect_1": {
+      "description": "First part of connect message",
+      "message": "Semrushアカウントを接続して、サイト診断キャンペーンのデータを表示します。"
+   },
+   "sqSemrush_siteaudit_connect_2": {
+      "description": "Second part of connect message",
+      "message": "これにより、ページ上のすべての問題をすばやく表示できます。"
+   },
+   "sqSemrush_siteaudit_connect_button": {
+      "description": "Connect button text",
+      "message": "接続"
+   },
+   "sqSemrush_siteaudit_connect_dontwant": {
+      "description": "Edit seobar settings message",
+      "message": "SEOでこのパラメータを表示させないようにしますか？"
+   },
+   "sqSemrush_siteaudit_connect_settings": {
+      "description": "Edit seobar settings link",
+      "message": "SEOバー設定を編集"
+   },
+   "sqSemrush_siteaudit_details_noerrors": {
+      "description": "Message when no errors on page",
+      "message": "このページには問題は見つかりませんでした。健全なページです！"
+   },
+   "sqSemrush_siteaudit_details_notparsed_1": {
+      "description": "Siteaudit no data message 1",
+      "message": "前回の診断時にこのページはクロールされませんでした。"
+   },
+   "sqSemrush_siteaudit_details_notparsed_2": {
+      "description": "Siteaudit no data message 2",
+      "message": "次回の診断時にはもっと多くのページを診断するようにする"
+   },
+   "sqSemrush_siteaudit_details_notparsed_link": {
+      "description": "Siteaudit no data configure link",
+      "message": "Site Audit設定を確認"
+   },
+   "sqSemrush_siteaudit_details_viewdetails": {
+      "description": "View details buttons when no errors on page",
+      "message": "詳細を表示"
+   },
+   "sqSeobar2_close": {
+      "description": "{Close seobar button tooltip text}",
+      "message": "パネルを閉じる"
+   },
+   "sqSeobar2_close_button_close": {
+      "description": "{Title for close seobar panel button}",
+      "message": "すべてのドメイン"
+   },
+   "sqSeobar2_close_button_hide": {
+      "description": "{Title for hide seobar panel button}",
+      "message": "このドメイン"
+   },
+   "sqSeobar2_close_header": {
+      "description": "{Heading message on close panel}",
+      "message": "SEOバーを無効化"
+   },
+   "sqSeobar2_close_link_whitelist": {
+      "description": "{Title for seobar configure whitelist link}",
+      "message": "SEOバーを有効化したいドメインを特定することができます"
+   },
+   "sqSeobar2_configuration": {
+      "description": "{seobar configuration panel link to main configuration}",
+      "message": "その他の設定"
+   },
+   "sqSeobar2_configuration_color": {
+      "description": "{Configuration panel color select title}",
+      "message": "カラーテーマ"
+   },
+   "sqSeobar2_configuration_color_dark": {
+      "description": "{Configuration panel dark color pill title}",
+      "message": "ダーク"
+   },
+   "sqSeobar2_configuration_color_light": {
+      "description": "{Configuration panel light color pill title}",
+      "message": "ライト"
+   },
+   "sqSeobar2_configuration_more_settings": {
+      "description": "{seobar configuration panel link to main configuration}",
+      "message": "その他の設定"
+   },
+   "sqSeobar2_configuration_parameters_title": {
+      "description": "{Configuration panel parameters title}",
+      "message": "パラメータ"
+   },
+   "sqSeobar2_configuration_position": {
+      "description": "{Configuration panel position select title}",
+      "message": "SEOバー場所"
+   },
+   "sqSeobar2_configuration_position_bottom": {
+      "message": "画面下横"
+   },
+   "sqSeobar2_configuration_position_left": {
+      "description": "{Configuration panel left position pill title}",
+      "message": "画面左縦"
+   },
+   "sqSeobar2_configuration_position_right": {
+      "description": "{Configuration panel right position pill title}",
+      "message": "画面右縦"
+   },
+   "sqSeobar2_configuration_position_top": {
+      "description": "{Configuration panel top position pill title}",
+      "message": "画面上横"
+   },
+   "sqSeobar2_configure": {
+      "description": "{Seobar cog button tooltip text}",
+      "message": "パネルを設定"
+   },
+   "sqSeobar2_density": {
+      "description": "{Density link title}",
+      "message": "濃度"
+   },
+   "sqSeobar2_diagnosis": {
+      "description": "{Diagnosis link title}",
+      "message": "診断結果"
+   },
+   "sqSeobar2_external": {
+      "description": "{External links title}",
+      "message": "外部リンク"
+   },
+   "sqSeobar2_feedback_close": {
+      "description": "{Feedback cancel button title}",
+      "message": "閉じる"
+   },
+   "sqSeobar2_feedback_no": {
+      "description": "{Feedback no button text}",
+      "message": "いいえ"
+   },
+   "sqSeobar2_feedback_placeholder": {
+      "description": "{Feedback message box placeholder text}",
+      "message": "お送りいただけるフィードバックは何でも"
+   },
+   "sqSeobar2_feedback_question": {
+      "description": "{Feedback question}",
+      "message": "本製品はお役に立っていますか？"
+   },
+   "sqSeobar2_feedback_result": {
+      "description": "{Feedback result message}",
+      "message": "ありがとうございます。フィードバックは送信されました。"
+   },
+   "sqSeobar2_feedback_send": {
+      "description": "{Feedback send button title}",
+      "message": "フィードバックを送信"
+   },
+   "sqSeobar2_feedback_yes": {
+      "description": "{Feedback yes button text}",
+      "message": "はい"
+   },
+   "sqSeobar2_float_hide_hint": {
+      "message": "SEOバーを隠すにはSを押してください"
+   },
+   "sqSeobar2_float_show_hint": {
+      "message": "SEOバーを表示するにはSを押してください"
+   },
+   "sqSeobar2_internal": {
+      "description": "{Internal links title}",
+      "message": "内部リンク"
+   },
+   "sqSeobar2_more": {
+      "description": "{Horizontal seobar more date button title}",
+      "message": "その他のデータ"
+   },
+   "sqSeobar2_pageinfo": {
+      "description": "{Pageinfo link title}",
+      "message": "サマリーレポート"
+   },
+   "sqSeobar2_parameters_group_backlinks": {
+      "description": "{Seobar parameters group backlinks title}",
+      "message": "バックリンク"
+   },
+   "sqSeobar2_parameters_group_domain": {
+      "description": "{Seobar parameters group domain title}",
+      "message": "ドメイン"
+   },
+   "sqSeobar2_parameters_group_other": {
+      "description": "{Seobar parameters group other title}",
+      "message": "その他"
+   },
+   "sqSeobar2_parameters_group_page": {
+      "description": "{Seobar parameters group page title}",
+      "message": "ページ"
+   },
+   "sqSeobar2_reload": {
+      "description": "{Load parameters values button title}",
+      "message": "すべてのパラメータをロード："
+   },
+   "sqSeobar2_robots": {
+      "description": "{Robots.txt magic parameter title}",
+      "message": "Robots.txt"
+   },
+   "sqSeobar2_siteaudit": {
+      "message": "Site Audit"
+   },
+   "sqSeobar2_sitemap": {
+      "description": "{Sitemap.xml magic parameter title}",
+      "message": "Sitemap.xml"
+   },
+   "sqSeobar2_switch_to_vertical": {
+      "description": "{More data dropdown message}",
+      "message": "パラメーターがSEOバーの幅に合わないようです。便宜上、新しい縦レイアウトのSEOバーを作成しました。"
+   },
+   "sqSeobar2_switch_to_vertical_button": {
+      "description": "{More data dropdown button}",
+      "message": "お試しください。"
+   },
+   "sqSeobar2_toggle": {
+      "description": "{Pin vertical seobar panel button title}",
+      "message": "トグルパネル"
+   },
+   "sqSerpOverlay_export": {
+      "message": "CSVにエクスポート"
+   },
+   "sqSerpOverlay_get_metrics": {
+      "message": "指標を取得"
+   },
+   "sqSerpOverlay_hlgl_country": {
+      "message": "国"
+   },
+   "sqSerpOverlay_hlgl_group_common": {
+      "message": "メイン"
+   },
+   "sqSerpOverlay_hlgl_group_others": {
+      "message": "その他"
+   },
+   "sqSerpOverlay_hlgl_language": {
+      "message": "言語"
+   },
+   "sqSerpOverlay_hlgl_reset": {
+      "message": "リセット"
+   },
+   "sqSerpOverlay_hlgl_set": {
+      "message": "場所を設定"
+   },
+   "sqSerpOverlay_hlgl_title": {
+      "message": "ローカル"
+   },
+   "sqSerpOverlay_keyword_difficulty": {
+      "description": "{First part of keyword difficulty message}",
+      "message": "キーワードの難易度："
+   },
+   "sqSerpOverlay_keyword_difficulty_db": {
+      "description": "{Database message for current detected database}",
+      "message": "({db}データベース用)"
+   },
+   "sqSerpOverlay_keyword_difficulty_full_report": {
+      "description": "{Second part of keyword difficulty message}",
+      "message": "&nbsp;&mdash&nbsp;このキーワードに[https://www.semrush.com/us/info/+(keyword)](full report) 表示"
+   },
+   "sqSerpOverlay_keyword_difficulty_onboarding_close": {
+      "description": "{}",
+      "message": "オフにしてください"
+   },
+   "sqSerpOverlay_keyword_difficulty_onboarding_ok": {
+      "description": "{}",
+      "message": "了解！"
+   },
+   "sqSerpOverlay_keyword_difficulty_onboarding_text": {
+      "description": "{}",
+      "message": "*キーワードの難易度スコアにようこそ*\n\nこちらは、現在のSERPページ内の特定のキーワードについて、オーガニック検索で競合他社の位置を把握することがどれほど難しいかを推定できるようになっています。"
+   },
+   "sqSerpOverlay_parameters": {
+      "message": "パラメータ"
+   },
+   "sqSerpOverlay_serptool": {
+      "message": "SERPレポート"
+   },
+   "sqSerpOverlay_sort_ascending": {
+      "message": "上昇"
+   },
+   "sqSerpOverlay_sort_by": {
+      "message": " "
+   },
+   "sqSerpOverlay_sort_descending": {
+      "message": "下降"
+   },
+   "sqSerpOverlay_sort_message": {
+      "message": "パラメータを選択"
+   },
+   "sqSerpOverlay_sort_title": {
+      "message": "このページをソート"
+   },
+   "sqSiteaudit_details_errors": {
+      "description": "{Error title for siteaudit page details}",
+      "message": "エラー"
+   },
+   "sqSiteaudit_details_warnings": {
+      "description": "{Warnings title for siteaudit page details}",
+      "message": "警告"
+   },
+   "unavailableHere": {
+      "description": "{Error when data is currently unavailable}",
+      "message": "このページの情報は利用できません。他のページをお試しください。"
+   }
+}

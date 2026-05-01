@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SEOquake preferences</title>
+    <link type="text/css" rel="stylesheet" href="options.css"/>
+</head>
+<body>
+<header>
+    <div class="main-menu">
+        <nav class="main-menu-container">
+            <a href="#general" class="active" rel="general">General</a>
+            <a href="#serp" rel="serp">SERP Overlay</a>
+            <a href="#seobar" rel="seobar">Seobar</a>
+            <a href="#parameters" rel="parameters">Parameters</a>
+            <a href="#integration" rel="integration">Integration</a>
+            <a href="https://www.seoquake.com/guide/index.html" class="guide-link" target="_blank">User manual</a>
+            <span class="right-block">
+                <img src="static/svg/logo-big.min.svg" alt="SEOquake" class="top-logo"/>
+                <button class="sqbtn sqbtn-gray sqbtn-transparent sqbtn-small" id="restore_defaults">Restore default</button>
+            </span>
+        </nav>
+    </div>
+</header>
+<main>
+    <section id="general_block">
+        <header class="container">
+    <h2 data-role="title">General Preferences</h2>
+</header>
+<div class="block container">
+    <div>
+        <div class="row checkboxes">
+            <div class="message" data-role="core-disabled-title">SEOquake is enabled:</div>
+            <div class="field">
+                <input type="checkbox" id="core-disabled"/><label for="core-disabled" data-role="core-disabled-label">Global switch for all plugins</label>
+            </div>
+        </div>
+
+        <div class="row checkboxes">
+            <div class="message" data-role="use-cache-title">Enable parameters caching:</div>
+            <div class="field">
+                <input type="checkbox" id="use-cache"/><label for="use-cache" data-role="use-cache-label">Will cache parameter results until browser restart</label><br/>
+                <button id="button-clear-cache" class="sqbtn sqbtn-gray sqbtn-small">Clear cache</button>
+            </div>
+        </div>
+
+        <div class="row selectbox">
+            <div class="message">
+                <label for="request-delay" data-role="request-delay-title">Parameters requests delay:</label>
+            </div>
+            <div class="field">
+                <select id="request-delay">
+                    <option value="100">100</option>
+                    <option value="200">200</option>
+                    <option value="300">300</option>
+                    <option value="500">500</option>
+                    <option value="700">700</option>
+                    <option value="900">900</option>
+                    <option value="1200">1200</option>
+                    <option value="1500">1500</option>
+                    <option value="2000">2000</option>
+                    <option value="2500">2500</option>
+                    <option value="3000">3000</option>
+                </select>
+                &nbsp;(ms)
+            </div>
+        </div>
+
+        <div class="row selectbox">
+            <div class="message">
+                <label for="filename-template" data-role="filename-template-title">Export filename template:</label>
+            </div>
+            <div class="field">
+                <select id="filename-template">
+                    <option value="0" data-role="filename-template-0">&lt;filename&gt;.csv</option>
+                    <option value="1" data-role="filename-template-1">&lt;filename&gt; - &lt;date&gt;.csv</option>
+                    <option value="2" data-role="filename-template-2">&lt;filename&gt; - &lt;date&gt; - &lt;time&gt;.csv</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="row checkboxes">
+            <div class="message" data-role="nofollow-disabled-title">Highlight no follow:</div>
+            <div class="field">
+                <input type="checkbox" id="nofollow-disabled"/><label for="nofollow-disabled" data-role="nofollow-disabled-label">Will mark all links with rel="nofollow"</label>
+            </div>
+        </div>
+
+        <div id="experiments" class="hidden">
+            <div class="row checkboxes">
+                <div class="message" data-role="noanalytics-title">No analytics:</div>
+                <div class="field">
+                    <input type="checkbox" name="ga_switch" id="ga_switch"/><label for="ga_switch" data-role="noanalytics-label">Disable gathering of usage statistics. <a href="https://www.seoquake.com/pages/policy.php" target="_blank" data-role="noanalytics-link">More information</a></label>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="experiments-switch row checkboxes">
+        <input type="checkbox" id="experiments_switch" value="1"/><label for="experiments_switch" data-role="experiments-switch-label">Enable experimental features</label>
+    </div>
+</div>
+<div class="block container">
+    <div class="block-header" data-role="dropdown-panel-title">Dropdown panel configuration</div>
+    <div>
+        <div class="row radios">
+            <div class="message" data-role="panel-mode-title">Load parameters:</div>
+            <div class="field">
+                <input type="radio" name="panel-mode" value="0" id="panel-mode-0"/><label for="panel-mode-0" data-role="panel-mode-0">On show</label><br/>
+                <input type="radio" name="panel-mode" value="1" id="panel-mode-1"/><label for="panel-mode-1" data-role="panel-mode-1">By request</label>
+            </div>
+        </div>
+        <div class="row checkboxes">
+            <div class="message" data-role="panel-tips-title">Show tips:</div>
+            <div class="field">
+                <input type="checkbox" id="panel-tips"/><label for="panel-tips" data-role="panel-tips-label">Show tips of the day in panel</label>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="block container">
+    <div class="block-header" data-role="export-panel-title">Export/import your settings</div>
+    <div>
+        <div class="row" style="display: none;">
+            <div class="message"><label for="export-email">Send to email:</label></div>
+            <div class="field">
+                <input type="text" id="export-email" readonly/><button class="sqbtn sqbtn-small sqbtn-disabled" id="export-send">Send</button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="message" data-role="export-save-title">Save to file:</div>
+            <div class="field">
+                <button class="sqbtn sqbtn-small" id="export-download">Get file</button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="message" data-role="export-load-title">Import from file:</div>
+            <div class="field">
+                <label class="sqbtn sqbtn-small export-upload" data-role="export-load-file-title"><input type="file" id="export-upload"/>Select file</label>
+            </div>
+        </div>
+    </div>
+</div>
+
+    </section>
+    <section id="serp_block">
+        <header class="container">
+    <h2 data-role="title">SERP Overlay preferences</h2>
+</header>
+<div class="container block">
+    <div class="block-header" data-role="general-title">General preferences</div>
+    <div>
+        <div class="row checkboxes">
+            <div class="message" data-role="numbers">Show numbers:</div>
+            <div class="field">
+                <input type="checkbox" id="disable_serps_pos_numbers"/>
+                <label for="disable_serps_pos_numbers" data-role="numbers-label">Show position numbers of SERP results</label>
+            </div>
+        </div>
+        <div class="row checkboxes">
+            <div class="message" data-role="keyword-difficulty">Show keyword difficulty:</div>
+            <div class="field">
+                <input type="checkbox" id="show_keyword_difficulty"/>
+                <label for="show_keyword_difficulty" data-role="keyword-difficulty-label">Enable keyword difficulty for Google SERP</label>
+            </div>
+        </div>
+        <div class="row checkboxes">
+            <div class="message" data-role="show">Show in search engine:</div>
+            <div class="field">
+                <input type="checkbox" id="google-disabled"/><label for="google-disabled" data-role="show-google">Google enabled</label><br/>
+                <input type="checkbox" id="yahoo-disabled"/><label for="yahoo-disabled" data-role="show-yahoo">Yahoo enabled</label><br/>
+                <input type="checkbox" id="bing-disabled"/><label for="bing-disabled" data-role="show-bing">Bing enabled</label><br/>
+                <input type="checkbox" id="yandex-disabled"/><label for="yandex-disabled" data-role="show-yandex">Yandex enabled</label><br/>
+                <input type="checkbox" id="semrush-disabled"/><label for="semrush-disabled" data-role="show-semrush">SEMrush enabled</label><br/>
+            </div>
+        </div>
+        <div class="row checkboxes hidden">
+            <div class="message" data-role="trust-score">Show Domain Trust metrics:</div>
+            <div class="field">
+                <input type="checkbox" id="show_semrush_panel"/>
+                <label for="show_semrush_panel" data-role="trust-score-label">Enable Domain Trust metrics special panel</label>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container block">
+    <div class="block-header" data-role="parameters-title">Parameters preferences</div>
+    <div>
+        <div class="row radios">
+            <div class="message" data-role="parameters-load">Load parameters:</div>
+            <div class="field">
+                <input type="radio" name="serps-all-mode" value="0" id="serps-all-mode-0"/><label for="serps-all-mode-0" data-role="load-mode-0">On page load</label><br/>
+                <input type="radio" name="serps-all-mode" value="1" id="serps-all-mode-1"/><label for="serps-all-mode-1" data-role="load-mode-1">By request</label>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="searchbar-parameters-container" class="container block"></div>
+<div class="container block">
+    <div class="block-header" data-role="highlight-title">Highlight domains</div>
+    <div>
+        <div class="row checkboxes">
+            <div class="message" data-role="highlight-field">Enable highlight domains:</div>
+            <div class="field">
+                <input type="checkbox" id="disable-highlight-sites"/>
+                <label for="disable-highlight-sites" data-role="highlight-label">Highlight particular domains in SERP</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="message" data-role="highlight-list">Highlight list:</div>
+            <div class="field"><textarea id="highlight-sites">Enter here sites you want to highlight.</textarea></div>
+        </div>
+        <div class="row hidden" id="import_highlight">
+            <div class="message"> </div>
+            <div class="field">
+                <p data-role="highlight-import-message">You can import a list of domains from a file. Please use a plain text file with
+                    UTF-8 encoding. Make sure that each value is placed on a separate line.
+                    The file size should be less than 1 MB.</p>
+                <button class="sqbtn sqbtn-small sqbtn-gray sqbtn-gray" id="import_highlight_button">Import list</button>
+                <input type="file" id="import_file_name" style="display: none"/>
+            </div>
+        </div>
+        <div class="row selectbox">
+            <div class="message" data-role="highlight-color">Highlight color:</div>
+            <div class="field"><select id="highlight-sites-color">
+                <option value="#ea9999" class="light_red" data-role="highlight-red">Light Red</option>
+                <option value="#f9cb9c" class="light_orange" data-role="highlight-orange">Light Orange</option>
+                <option value="#ffe599" class="light_yellow" data-role="highlight-yellow">Light Yellow</option>
+                <option value="#b6d7a8" class="light_green" data-role="highlight-green">Light Green</option>
+                <option value="#a2c4c9" class="light_turquoise" data-role="highlight-turquoise">Light Turquoise</option>
+                <option value="#9fc5e8" class="light_blue" data-role="highlight-blue">Light Blue</option>
+                <option value="#b4a7d6" class="light_purple" data-role="highlight-purple">Light Purple</option>
+                <option value="#d5a6bd" class="light_pink" data-role="highlight-pink">Light Pink</option>
+            </select></div>
+        </div>
+    </div>
+</div>
+
+    </section>
+    <section id="seobar_block">
+        <header class="container">
+    <h2 data-role="title">Seobar preferences</h2>
+</header>
+<div class="block container">
+    <div class="block-header" data-role="loading-title">Loading and orientation</div>
+    <div>
+        <div class="row checkboxes">
+            <div class="message" data-role="disabled-title">Seobar enabled:</div>
+            <div class="field">
+                <input type="checkbox" id="seobar-disabled"/><label for="seobar-disabled" data-role="disabled-label">Show seobar on all pages</label>
+            </div>
+        </div>
+
+        <div class="row checkboxes">
+            <div class="message" data-role="https-title">Show on HTTPS:</div>
+            <div class="field">
+                <input type="checkbox" id="seobar-https"/><label for="seobar-https" data-role="https-label">Show Seobar on HTTPS resources (could change connection status icon)</label>
+            </div>
+        </div>
+
+        <div class="row radios">
+            <div class="message" data-role="load-title">Load parameters:</div>
+            <div class="field">
+                <input type="radio" name="seobar-mode" value="0" id="seobar-mode-0"/><label for="seobar-mode-0" data-role="load-mode-0">On page load</label><br/>
+                <input type="radio" name="seobar-mode" value="1" id="seobar-mode-1"/><label for="seobar-mode-1" data-role="load-mode-1">By request</label>
+            </div>
+        </div>
+
+        <div class="row positions">
+            <div class="message" data-role="position-title">Position:</div>
+            <div class="field">
+                <div>
+                    <input type="radio" name="seobar-position" value="top" id="seobar-position-top">
+                    <label for="seobar-position-top" data-role="position-horizontal">Horizontal top</label>
+                </div>
+                <div>
+                    <input type="radio" name="seobar-position" value="bottom" id="seobar-position-bottom">
+                    <label for="seobar-position-bottom" data-role="position-horizontal-bottom">Horizontal bottom</label>
+                </div>
+                <div>
+                    <input type="radio" name="seobar-position" value="left" id="seobar-position-left">
+                    <label for="seobar-position-left" data-role="position-vertical-left">Vertical left</label>
+                </div>
+                <div>
+                    <input type="radio" name="seobar-position" value="right" id="seobar-position-right">
+                    <label for="seobar-position-right" data-role="position-vertical-right">Vertical right</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="row radios">
+            <div class="message" data-role="color-title">Color style:</div>
+            <div class="field">
+                <input type="radio" name="seobar-color" value="white" id="seobar-color-white"/><label for="seobar-color-white" data-role="color-light">Light</label><br/>
+                <input type="radio" name="seobar-color" value="green" id="seobar-color-green"/><label for="seobar-color-green" data-role="color-dark">Dark</label>
+            </div>
+        </div>
+
+        <div class="row checkboxes">
+            <div class="message" data-role="pinned-title">Show minimized:</div>
+            <div class="field">
+                <input type="checkbox" id="seobar-pinned"/><label for="seobar-pinned" data-role="pinned-label">Display SEObar minimized in vertical display mode</label>
+            </div>
+        </div>
+
+        <div class="row positions" style="display: none;">
+            <div class="message">Position:</div>
+            <div class="field">
+                <div>
+                    <input type="radio" name="seobar-style" value="horizontal-inpage" id="seobar-style-0">
+                    <label for="seobar-style-0">Horizontal inside page</label>
+                </div>
+                <div>
+                    <input type="radio" name="seobar-style" value="horizontal-fixed-top" id="seobar-style-1">
+                    <label for="seobar-style-1">Horizontal fixed top</label>
+                </div>
+                <div>
+                    <input type="radio" name="seobar-style" value="horizontal-fixed-bottom" id="seobar-style-2">
+                    <label for="seobar-style-2">Horizontal fixed bottom</label>
+                </div>
+                <div>
+                    <input type="radio" name="seobar-style" value="vertical-top-left" id="seobar-style-3">
+                    <label for="seobar-style-3">Vertical top left</label>
+                </div>
+                <div>
+                    <input type="radio" name="seobar-style" value="vertical-top-right" id="seobar-style-4">
+                    <label for="seobar-style-4">Vertical top right</label>
+                </div>
+                <div>
+                    <input type="radio" name="seobar-style" value="vertical-bottom-left" id="seobar-style-5">
+                    <label for="seobar-style-5">Vertical bottom left</label>
+                </div>
+                <div>
+                    <input type="radio" name="seobar-style" value="vertical-bottom-right" id="seobar-style-6">
+                    <label for="seobar-style-6">Vertical bottom right</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="row checkboxes" style="display: none">
+            <div class="message">Open minimized:</div>
+            <div class="field">
+                <input type="checkbox" id="seobar-open-minimized"/><label for="seobar-open-minimized">In vertical positions will show seobar minimized</label>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="block container">
+    <div class="block-header" data-role="parameters-title">Parameters</div>
+    <div class="block-body" id="seobar-parameters-container"></div>
+</div>
+<div class="block container">
+    <div class="block-header" data-role="special-parameters-title">Special parameters</div>
+    <div>
+        <div class="row checkboxes">
+            <div class="message" data-role="pageinfo-title">Pageinfo link:</div>
+            <div class="field">
+                <input type="checkbox" id="seobar-pageinfoLink"/><label for="seobar-pageinfoLink" data-role="pageinfo-label">Show link to pageinfo report</label>
+            </div>
+        </div>
+        <div class="row checkboxes">
+            <div class="message" data-role="density-title">Density link:</div>
+            <div class="field">
+                <input type="checkbox" id="seobar-densityLink"/><label for="seobar-densityLink" data-role="density-label">Show link to density report</label>
+            </div>
+        </div>
+        <div class="row checkboxes">
+            <div class="message" data-role="diagnosis-title">Diagnosis link:</div>
+            <div class="field">
+                <input type="checkbox" id="seobar-diagnosisLink"/><label for="seobar-diagnosisLink" data-role="diagnosis-label">Show link to page diagnosis report</label>
+            </div>
+        </div>
+        <div class="row checkboxes">
+            <div class="message" data-role="robots-title">Robots.txt visible:</div>
+            <div class="field">
+                <input type="checkbox" id="seobar-robotsLink"/><label for="seobar-robotsLink" data-role="robots-label">Show robots.txt diagnosis result</label>
+            </div>
+        </div>
+        <div class="row checkboxes">
+            <div class="message" data-role="sitemap-title">Sitemap.xml visible:</div>
+            <div class="field">
+                <input type="checkbox" id="seobar-sitemapLink"/><label for="seobar-sitemapLink" data-role="sitemap-label">Show sitemap.xml diagnosis result</label>
+            </div>
+        </div>
+        <div class="row checkboxes">
+            <div class="message" data-role="linkinfo-title">Linkinfo link:</div>
+            <div class="field">
+                <input type="checkbox" id="seobar-linkinfoLink"/><label for="seobar-linkinfoLink" data-role="linkinfo-label">Show links to reports and counters of internal/external links on page</label>
+            </div>
+        </div>
+        <div class="row checkboxes">
+            <div class="message" data-role="siteaudit-title">SEMrush Site Audit link:</div>
+            <div class="field">
+                <input type="checkbox" id="seobar-siteaditLink"/><label for="seobar-siteaditLink" data-role="siteaudit-label">Show report result for SEMrush Site Audit tool</label>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container block">
+    <div class="block-header" data-role="filters-title">URL filters</div>
+    <div>
+        <div class="row">
+            <div class="message" data-role="exclude-title">Exclude list:</div>
+            <div class="field">
+                <textarea id="seobar-exclude" placeholder="Enter sites you want to seobar to be excluded."></textarea>
+                <p data-role="exclude-message">You can enter domain names/regular expression which marks the domain where seobar should not be shown.</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="message" data-role="match-title">Whitelisted domains:</div>
+            <div class="field">
+                <textarea id="seobar-match" placeholder="Enter sites you want to seobar to be included only."></textarea>
+                <p data-role="match-message">You can specify domains for which you'd like to enable the SEObar. SEObar will be shown only on these domains.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+    </section>
+    <section id="parameters_block">
+        <header class="container">
+    <h2 data-role="title">Parameters configuration</h2>
+</header>
+<div class="sqtoolbar container">
+    <button id="button-create-parameter" class="sqbtn sqbtn-small">New parameter</button>
+    <button class="sqbtn sqbtn-small sqbtn-transparent sqbtn-gray pull-right" id="button-restore-parameters">Restore default parameters</button>
+</div>
+<div id="parameters-table-container" class="container"></div>
+
+    </section>
+    <section id="integration_block">
+        <header class="container">
+    <h2>SEOQUAKE INTEGRATIONS</h2>
+</header>
+<div class="block container">
+    <div class="block-header block-header-small">Available integrations:</div>
+    <div class="block-body integration">
+        <div class="integration-item">
+            <div class="integration-item_row">
+                <div class="integration-item-icon"><svg xmlns="http://www.w3.org/2000/svg" width="113" height="15"><defs><clipPath id="a"><path d="M0 0h25v14.960938H0Zm0 0"/></clipPath></defs><path d="M77.285156 5.851562c0-1.839843-1.125-3.175781-3.285156-3.175781h-6.980469v9.523438H69.3125v-3.25h2.714844l2.65625 3.25h2.585937v-.207031l-2.585937-3.097657c1.625-.332031 2.601562-1.519531 2.601562-3.042969Zm-3.539062 1.175782h-4.425782v-2.375h4.425782c.816406 0 1.34375.433594 1.34375 1.1875 0 .773437-.507813 1.1875-1.34375 1.1875ZM111.9375 2.675781h-2.152344v3.617188h-5.773437V2.675781h-2.320313v9.53125h2.320313V8.449219h5.773437v3.757812h2.152344Zm-51.050781 0-2.554688 8.015625h-.140625L55.625 2.675781h-4.085938v9.535157h2.1875V4.378906h.132813l2.554687 7.832032H59.9375L62.5 4.378906h.132812v7.832032h2.253907V2.675781Zm-24.96875 3.898438c-.804688-.082031-2.320313-.222657-3.125-.308594-.800781-.085937-1.261719-.320313-1.261719-.847656 0-.507813.488281-.933594 2.460938-.933594 1.75 0 3.355468.375 4.753906 1.054687V3.410156c-1.398438-.667968-2.949219-1-4.875-1-2.703125 0-4.574219 1.132813-4.574219 3.054688 0 1.621094 1.097656 2.503906 3.296875 2.75.796875.085937 2.152344.207031 3.101562.285156 1.03125.082031 1.332032.402344 1.332032.875 0 .648438-.722656 1.042969-2.554688 1.042969-1.859375 0-3.746094-.609375-5.089844-1.46875v2.195312c1.078126.726563 2.9375 1.339844 5.015626 1.339844 2.949218 0 4.847656-1.140625 4.847656-3.183594.015625-1.546875-.996094-2.480469-3.328125-2.726562Zm4.847656-3.898438v9.535157H49.625v-1.953126h-6.671875V8.328125h6.558594V6.398438h-6.554688V4.625H49.625V2.675781Zm56.179687 3.898438c-.804687-.082031-2.320312-.222657-3.125-.308594-.800781-.085937-1.261718-.320313-1.261718-.847656 0-.507813.492187-.933594 2.460937-.933594 1.75 0 3.355469.375 4.753907 1.054687V3.410156c-1.398438-.667968-2.949219-1-4.875-1-2.703126 0-4.574219 1.132813-4.574219 3.054688 0 1.621094 1.097656 2.503906 3.296875 2.75.796875.085937 2.152344.207031 3.101562.285156 1.03125.082031 1.332032.402344 1.332032.875 0 .648438-.722657 1.042969-2.554688 1.042969-1.859375 0-3.746094-.609375-5.089844-1.46875v2.195312c1.078125.726563 2.941406 1.339844 5.015625 1.339844 2.949219 0 4.847657-1.140625 4.847657-3.183594.015624-1.546875-.996094-2.480469-3.328126-2.726562ZM86.472656 2.675781v4.878907c0 1.847656-1.117187 2.863281-2.796875 2.863281-1.691406 0-2.800781-.996094-2.800781-2.890625V2.675781h-2.28125v4.632813c0 3.457031 2.152344 5.171875 5.117188 5.171875 2.847656 0 5.054687-1.636719 5.054687-5.058594V2.675781Zm0 0"/><g clip-path="url(#a)"><path d="M21.445312 7.386719c0 .460937-.234374.535156-.816406.535156-.621094 0-.734375-.101563-.800781-.574219-.121094-1.195312-.929687-2.214844-2.28125-2.324218-.433594-.039063-.535156-.199219-.535156-.738282 0-.5.074219-.734375.460937-.734375 2.347656.011719 3.972656 1.902344 3.972656 3.835938Zm3.417969 0C24.863281 3.796875 22.441406 0 16.84375 0h-11.125c-.222656 0-.363281.113281-.363281.320312 0 .113282.082031.214844.160156.273438.402344.320312 1.003906.679688 1.792969 1.074219.769531.386719 1.371094.640625 1.972656.886719.253906.101562.347656.214843.347656.355468 0 .199219-.140625.320313-.414062.320313H.386719C.121094 3.230469 0 3.402344 0 3.570312c0 .140626.046875.265626.167969.386719.714843.753907 1.859375 1.65625 3.523437 2.703125 1.519532.945313 3.085938 1.8125 4.695313 2.589844.246093.113281.320312.246094.320312.386719-.007812.160156-.132812.292969-.414062.292969H4.246094c-.226563 0-.359375.121093-.359375.3125 0 .101562.085937.234374.199219.335937.921874.839844 2.394531 1.753906 4.359374 2.59375 2.621094 1.121094 5.277344 1.789063 8.265626 1.789063 5.664062 0 8.152343-4.25 8.152343-7.574219Zm-7.390625 5.097656c-2.78125 0-5.101562-2.273437-5.101562-5.097656 0-2.789063 2.320312-5.023438 5.101562-5.023438 2.855469 0 5.078125 2.234375 5.078125 5.023438-.007812 2.824219-2.234375 5.097656-5.078125 5.097656Zm0 0" fill="#ff642d"/></g></svg></div>
+                <div class="integration-item-info">
+                    <p>SEMrush is a powerful and versatile competitive intelligence suite for online marketing, from SEO and PPC to social media and video advertising research. Connect your free account to get access to the following additional features:</p>
+                </div>
+                <div class="integration-actions" id="semrush_actions">
+                    <button class="sqbtn sqbtn-big" id="semrush_oauth">Connect free SEMrush account</button>
+                    <p id="semrush_oauth_message">or <a href="https://www.semrush.com/lp/sem/en/?utm_source=seoquake&utm_medium=dashboard&utm_campaign=connect_semrush&ref=174537735" target="_blank">Learn more about SEMrush</a></p>
+                    <button class="sqbtn sqbtn-big sqbtn-transparent sqbtn-gray" id="semrush_cancelintegration">Cancel</button>
+                    <div class="loader"><span></span></div>
+                </div>
+                <div class="integration-item-details" id="semrush_details">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16"><path d="M9.1 7.7c1.1-.5 1.9-1.7 1.9-3.2 0-1.9-.6-3.5-3-3.5s-3 1.6-3 3.5c0 1.5.8 2.7 1.9 3.2-.7 2.5-4.9 2.3-4.9 4.7v1.6h12v-1.6c0-2.4-4.2-2.2-4.9-4.7z"/></svg>
+
+                    <div>
+                        <span id="semrush_account"></span>
+                        <a href="#" id="semrush_projects">Projects</a>
+                    </div>
+                </div>
+            </div>
+            <div class="integration-item_row">
+                <div class="integration-item-description-item">
+                    <img src="static/backlinks.png" width="417" height="174"/>
+                    <h3>Advanced Backlinks report</h3>
+                    <p>Want to know who's referring to your site and from where? It's easy with the new Backlinks Overview tab.</p>
+                </div>
+                <div class="integration-item-description-item">
+                    <img src="static/ta.png" width="417" height="174"/>
+                    <h3>Traffic Data</h3>
+                    <p>Get an instant overview of main metrics for almost any website. Easily identify strengths and weaknesses of your competitor or prospective customer.</p>
+                </div>
+            </div>
+            <div class="integration-item_row">
+                <div class="integration-item-description-item">
+                    <img src="static/audit.png" width="417" height="174"/>
+                    <h3>Site Audit Tool Integration</h3>
+                    <p>See all issues discovered by the Site Audit tool right on your website’s pages.</p>
+                </div>
+                <div class="integration-item-description-item hidden">
+                    <img src="static/trust.png" width="417" height="174"/>
+                    <h3>Trust Score powered SERPs</h3>
+                    <p>Evaluate Domain and Trust scores for each domain within your SERP. Sort and export your results.</p>
+                </div>
+            </div>
+            <div class="integration-item_row" id="semrush_bottom_actions">
+                <div class="integration-actions">
+                    <button class="sqbtn sqbtn-big" id="semrush_bottom_oauth">Connect free SEMrush account</button>
+                    <p>or <a href="https://www.semrush.com/lp/sem/en/?utm_source=seoquake&utm_medium=dashboard&utm_campaign=connect_semrush&ref=174537735" target="_blank">Learn more about SEMrush</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="block-body integration block-body-gray">
+        <div class="integration-item">
+            <p class="integration-item-notice">Want to connect other services? Please tell us what you need via <a href="mailto:mail@seoquaketeam.com">mail@seoquaketeam.com</a></p>
+        </div>
+    </div>
+</div>
+<template id="semrush_projects_list">
+    <div class="projects-list">
+        <div class="top-arrow"></div>
+        <div class="projects-filter">
+            <p class="message">Showing the first found 50 projects out of <span></span>.<br/>
+                See all in <a href="https://www.semrush.com/projects/" target="_blank">SEMrush</a>.</p>
+            <div class="sqtoolbar">
+                <a class="sqbtn sqbtn-small sqbtn-switch sqbtn-gray sqbtn-pressed">All <span></span></a>
+                <a class="sqbtn sqbtn-small sqbtn-switch sqbtn-gray"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16"><path d="M11.5 8l-1.7 2.6-1 1.5-.7-1.7-2.2-5-1 2.1-.3.5h-3.8c.1.2.3.4.5.6l4.7 5.2s1 1.2 2 1.2l2-1.2 4.8-5.2.5-.6h-3.8zm-7.5-1l2-4 3 7 2-3h4.7c.2-.5.3-1 .3-1.5 0-2.5-2-4.5-4.5-4.5-1.4 0-2.7.7-3.5 1.7-.8-1-2.1-1.7-3.5-1.7-2.5 0-4.5 2-4.5 4.5 0 .5.1 1 .3 1.5h3.7z"/></svg> With Site Audit <span></span></a>
+            </div>
+        </div>
+        <div class="projects"></div>
+    </div>
+</template>
+<template id="semrush_project_item">
+    <div class="project-list-item">
+        <a href="#" class="project-link" title="Open project"></a>
+        <a href="#" class="site-link" target="_blank" title="Open site"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16"><path d="M9 1v2h2.6l-6.3 6.3 1.4 1.4 6.3-6.3v2.6h2v-6zm2 12h-8v-8h4v-2h-4c-1.1 0-2 .9-2 2v8c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2v-4h-2v4z"/></svg></a>
+        <span class="flag-siteaudit hidden" title="Siteaudit enabled"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16"><path d="M11.5 8l-1.7 2.6-1 1.5-.7-1.7-2.2-5-1 2.1-.3.5h-3.8c.1.2.3.4.5.6l4.7 5.2s1 1.2 2 1.2l2-1.2 4.8-5.2.5-.6h-3.8zm-7.5-1l2-4 3 7 2-3h4.7c.2-.5.3-1 .3-1.5 0-2.5-2-4.5-4.5-4.5-1.4 0-2.7.7-3.5 1.7-.8-1-2.1-1.7-3.5-1.7-2.5 0-4.5 2-4.5 4.5 0 .5.1 1 .3 1.5h3.7z"/></svg><span class="value"></span></span>
+    </div>
+</template>
+
+    </section>
+</main>
+
+<footer class="green-bg">
+    <div class="container">
+        Copyright 2006 &dash; <script type="text/javascript" src="./year.js"></script> Semrush Inc
+    </div>
+</footer>
+
+<script type="text/javascript" src="options.js"></script>
+</body>
+</html>

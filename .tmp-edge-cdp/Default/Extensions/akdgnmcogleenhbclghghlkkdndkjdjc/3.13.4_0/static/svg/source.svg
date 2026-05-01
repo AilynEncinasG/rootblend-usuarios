@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="12" height="12">
+  <defs>
+    <symbol id="a">
+<path d="M6.5 1l-2 10h1l2-10zm2 1.5L12 6 8.5 9.5l-.75-.75L10.5 6 7.75 3.25zm-5 0L0 6l3.5 3.5.75-.75L1.5 6l2.75-2.75z"/>
+    </symbol>
+  </defs>
+  <use xlink:href="#a" x="0" y="0" fill="#81928a" />
+</svg>

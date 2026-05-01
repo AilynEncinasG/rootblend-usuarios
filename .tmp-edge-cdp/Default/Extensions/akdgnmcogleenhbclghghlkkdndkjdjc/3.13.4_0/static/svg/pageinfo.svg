@@ -1,0 +1,16 @@
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  xmlns:xlink="http://www.w3.org/1999/xlink"
+  width="12"
+  height="48"
+>
+  <defs>
+    <symbol id="a">
+      <path d="M6 0c-3.3 0-6 2.7-6 6s2.7 6 6 6 6-2.7 6-6-2.7-6-6-6zm-1 2h2v2h-2v-2zm3 8h-4v-1h1v-3h-1v-1h3v4h1v1z"/>
+    </symbol>
+  </defs>
+  <use xlink:href="#a" x="0" y="0" fill="#81938a" />
+  <use xlink:href="#a" x="0" y="12" fill="#fff" />
+  <use xlink:href="#a" x="0" y="24" fill="#adbabe" />
+  <use xlink:href="#a" x="0" y="36" fill="#64787e" />
+</svg>

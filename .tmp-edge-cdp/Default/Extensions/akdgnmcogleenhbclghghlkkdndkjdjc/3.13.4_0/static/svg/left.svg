@@ -1,0 +1,16 @@
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  xmlns:xlink="http://www.w3.org/1999/xlink"
+  width="16"
+  height="64"
+>
+  <defs>
+    <symbol id="a">
+      <path d="M11 13.5L5 8l6-5.5z"/>
+    </symbol>
+  </defs>
+  <use xlink:href="#a" x="0" y="0" fill="#81938a" />
+  <use xlink:href="#a" x="0" y="16" fill="#fff" />
+  <use xlink:href="#a" x="0" y="32" fill="#adbabe" />
+  <use xlink:href="#a" x="0" y="48" fill="#64787e" />
+</svg>

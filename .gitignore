@@ -7,7 +7,8 @@ Thumbs.db
 *.tmp
 *.swp
 *.swo
-
+.tmp-edge-cdp/
+node_modules/
 # =========================
 # ENV / SECRETOS
 # =========================

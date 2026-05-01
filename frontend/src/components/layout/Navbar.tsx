@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { FiSearch, FiBell } from "react-icons/fi";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { StyledNavbar, LogoImage } from "../../styles/GlobalStyles";
 import Logo from "../../assets/Logo.png";
 import UserMenu from "./UserMenu";
@@ -75,7 +75,9 @@ const AuthLink = styled(Link)<{ $variant?: "primary" | "ghost" }>`
 `;
 
 export const Navbar = () => {
+  const navigate = useNavigate();
   const [loggedIn, setLoggedIn] = useState(isAuthenticated());
+  const [query, setQuery] = useState("");
 
   useEffect(() => {
     function handleAuthChanged() {
@@ -106,9 +108,9 @@ export const Navbar = () => {
         <LogoImage src={Logo} alt="RootBlend Logo" />
       </Link>
 
-      <SearchBar>
+      <SearchBar as="form" onSubmit={(event) => { event.preventDefault(); const value = query.trim(); navigate(value ? `/search?q=${encodeURIComponent(value)}` : "/search"); }}>
         <FiSearch color="rgba(255,255,255,0.5)" />
-        <input type="text" placeholder="Buscar transmisiones..." />
+        <input type="text" placeholder="Buscar transmisiones..." value={query} onChange={(event) => setQuery(event.target.value)} />
       </SearchBar>
 
       <RightActions>
@@ -124,13 +126,9 @@ export const Navbar = () => {
           </>
         ) : (
           <>
-            <FiBell
-              size={20}
-              style={{
-                cursor: "pointer",
-                color: "rgba(255,255,255,0.7)",
-              }}
-            />
+            <Link to="/notifications" title="Notificaciones" style={{ color: "rgba(255,255,255,0.7)", display: "grid", placeItems: "center" }}>
+              <FiBell size={20} />
+            </Link>
             <UserMenu />
           </>
         )}

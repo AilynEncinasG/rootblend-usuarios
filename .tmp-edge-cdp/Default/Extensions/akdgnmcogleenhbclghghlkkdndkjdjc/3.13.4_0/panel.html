@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="panel.css" type="text/css">
+    <script type="text/javascript" src="panel.js"></script>
+</head>
+<body class="small">
+<header class="container">
+    <div class="main-menu">
+        <nav><!--
+            --><a href="#pageinfo" rel="pageinfo" data-role="moduleLink">Page info</a><!--
+            --><a href="#diagnosis" rel="diagnosis" data-role="moduleLink">Diagnosis</a><!--
+            --><a href="#internal" rel="internal" data-role="moduleLink">Internal</a><!--
+            --><a href="#external" rel="external" data-role="moduleLink">External</a><!--
+            --><a href="#density" rel="density" data-role="moduleLink">Density</a><!--
+            --><a href="#compare" rel="linkinfo" data-role="moduleLink">Compare URLs</a><!--
+            --><div class="pull-right"><!--
+                --><span data-role="switch"><button class="seoquake-slider-button">Switch</button></span><!--
+                --><span data-role="options"><a href="#options" rel="options" class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16"><path d="M14 8c0-.4 0-.7-.1-1.1l2.1-1.2-2-3.5-2.1 1.2c-.5-.4-1.2-.8-1.9-1.1v-2.3h-4v2.3c-.7.3-1.4.7-1.9 1.2l-2.1-1.2-2 3.4 2.1 1.2c-.1.4-.1.7-.1 1.1s0 .7.1 1.1l-2.1 1.2 2 3.5 2.1-1.2c.5.4 1.2.8 1.9 1.1v2.3h4v-2.3c.7-.3 1.4-.6 1.9-1.1l2.1 1.2 2-3.5-2.1-1.2c.1-.4.1-.7.1-1.1zm-6 4c-2.2 0-4-1.8-4-4s1.8-4 4-4 4 1.8 4 4-1.8 4-4 4z"/><circle cx="8" cy="8" r="2"/></svg></a></span><!--
+            --></div><!--
+        --></nav>
+    </div>
+</header>
+
+<div class="container">
+    <div id="dataPanel"></div>
+    <div id="messagePanel" class="hidden withPadding">
+        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22"><path d="M11 1c-5.5 0-10 4.5-10 10s4.5 10 10 10 10-4.5 10-10-4.5-10-10-10zm0 18c-4.4 0-8-3.6-8-8s3.6-8 8-8 8 3.6 8 8-3.6 8-8 8zm2.5-12l-2.5 2.5-2.5-2.5-1.5 1.5 2.5 2.5-2.5 2.5 1.5 1.5 2.5-2.5 2.5 2.5 1.5-1.5-2.5-2.5 2.5-2.5z"/></svg>
+        <div class="content"></div>
+        <div class="random-link"></div>
+    </div>
+</div>
+<footer class="container withPadding"><!--
+    --><span data-role="feedback"><a href="https://forms.gle/6frm8Fkr4F345HKN6" rel="feedback" target="_blank" class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16"><path d="M14 1h-12c-1.1 0-2 .9-2 2v7c0 1.1.9 2 2 2h2v3l4-3h6c1.1 0 2-.9 2-2v-7c0-1.1-.9-2-2-2zm-6 8h-5v-1h5v1zm5-2h-10v-1h10v1zm0-2h-10v-1h10v1z"/></svg> Have a suggestion?</a></span><!--
+    --><div class="feedbackHint chrome-icon"><span>Feedback on</span><a href="https://chrome.google.com/webstore/detail/seoquake/akdgnmcogleenhbclghghlkkdndkjdjc/reviews">Chrome Store</a></div><!--
+--></footer>
+</body>
+</html>

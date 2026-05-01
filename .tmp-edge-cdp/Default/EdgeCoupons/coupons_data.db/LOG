@@ -1,0 +1,5 @@
+2026/05/01-12:11:49.346 5fd8 Creating DB C:\Users\denil\OneDrive\Desktop\rootblend\.tmp-edge-cdp\Default\EdgeCoupons/coupons_data.db since it was missing.
+2026/05/01-12:11:49.351 5fd8 Reusing MANIFEST C:\Users\denil\OneDrive\Desktop\rootblend\.tmp-edge-cdp\Default\EdgeCoupons/coupons_data.db/MANIFEST-000001
+2026/05/01-12:11:49.988 36cc Level-0 table #5: started
+2026/05/01-12:11:49.991 36cc Level-0 table #5: 682140 bytes OK
+2026/05/01-12:11:49.992 36cc Delete type=0 #3
