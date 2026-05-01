@@ -2,11 +2,52 @@ import styled, { createGlobalStyle, keyframes } from "styled-components";
 import { Link } from "react-router-dom";
 import fondoImage from "../assets/Fondo.png"; // Ajusta la ruta según tu carpeta
 
+
 export const GlobalStyle = createGlobalStyle`
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    html, body, #root { width: 100%; height: 100%; }
-    body { font-family: 'Plus Jakarta Sans', sans-serif; color: #ffffff; background: #000; }
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html, body, #root {
+    min-height: 100%;
+    font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    background:
+      radial-gradient(circle at top left, rgba(0,229,255,0.08), transparent 22%),
+      radial-gradient(circle at top right, rgba(124,58,237,0.10), transparent 18%),
+      linear-gradient(180deg, #050815 0%, #040612 100%);
+    color: #ffffff;
+  }
+
+  body {
+    overflow-x: hidden;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  button, input, select, textarea {
+    font: inherit;
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #070b18;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: rgba(0,229,255,0.25);
+    border-radius: 999px;
+  }
 `;
+
 
 export const float = keyframes`
     0%, 100% { transform: translateY(0); }
@@ -240,3 +281,4 @@ export const Thumbnail = styled.div`
     font-weight: 900;
   }
 `;
+
