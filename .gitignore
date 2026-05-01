@@ -8,6 +8,15 @@ Thumbs.db
 *.swp
 *.swo
 .tmp-edge-cdp/
+.tmp-edge-cdp/
+.tmp*/
+Default/
+GPUCache/
+Crashpad/
+IndexedDB/
+Local Storage/
+Session Storage/
+Service Worker/
 node_modules/
 # =========================
 # ENV / SECRETOS
