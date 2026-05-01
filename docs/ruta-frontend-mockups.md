@@ -20,19 +20,22 @@ Este frontend esta armado con datos mock para que puedas navegar la experiencia 
 - `/login` login mock. Cualquier dato inicia sesion.
 - `/register` registro mock. Crea sesion local.
 - `/forgot-password` recuperar contrasena.
+- `/reset-password` y `/reset-password/demo-token` nueva contrasena demo.
 - `/account/menu` menu de usuario.
 - `/profile` perfil personal.
 - `/profile/edit` editar perfil.
 - `/settings` preferencias de cuenta.
 - `/notifications` notificaciones.
-- `/subscriptions` seguidos y suscripciones.
+- `/following` canales seguidos.
+- `/subscriptions` canales suscritos.
 
-La campana del navbar abre un panel desplegable de notificaciones sin cambiar de pagina. El avatar abre un menu desplegable con Inicio, Perfil, Activar canal, Panel creador, Configuracion, Cambiar contrasena y Cerrar sesion.
+La campana del navbar abre un panel desplegable de notificaciones sin cambiar de pagina. El avatar abre un menu desplegable tipo Twitch con Inicio, Perfil, Mi canal, Activar canal, Panel creador, Estadisticas, Configuracion, Notificaciones, Seguidos, Suscripciones, Cambiar contrasena y Cerrar sesion.
 
 ## Creador streamer
 
 - `/creator/activate` activar canal de creador. Mantiene la regla: streamer o podcaster, no ambos.
 - `/creator/dashboard` redirecciona segun el rol elegido.
+- `/stats` redirecciona a estadisticas de streamer o podcaster segun el rol elegido.
 - `/creator/streamer/dashboard` panel del streamer.
 - `/creator/streamer` alias directo del panel streamer.
 - `/creator/streamer/streams/new` crear/configurar stream.
@@ -67,14 +70,14 @@ Si el usuario activo eligio `podcaster`, cualquier intento de entrar a `/creator
 
 ## Estados y demo distribuida
 
-- `/loading-demo` skeleton global.
-- `/no-streams` sin streams en vivo.
-- `/empty-search` sin resultados de busqueda.
-- `/service-down` servicio no disponible parcialmente.
-- `/gateway-error` error 502 amigable.
+- `/loading` y `/loading-demo` skeleton global.
+- `/empty/streams` y `/no-streams` sin streams en vivo.
+- `/empty/search` y `/empty-search` sin resultados de busqueda.
+- `/partial-unavailable` y `/service-down` servicio no disponible parcialmente.
+- `/502` y `/gateway-error` error 502 amigable.
 - `/confirm-delete` confirmacion de eliminacion.
 - `/invalid-file` archivo invalido.
-- `/access-restricted` acceso restringido.
+- `/restricted` y `/access-restricted` acceso restringido.
 - `/system-status` panel visual de estado de servicios.
 
 ## Moderacion
@@ -90,9 +93,9 @@ Si el usuario activo eligio `podcaster`, cualquier intento de entrar a `/creator
 - `/moderation` panel del moderador.
 - `/moderation/permissions` permisos y funciones del moderador.
 
-Un usuario puede ser solo moderador, o moderador y streamer, o moderador y podcaster. La moderacion no cambia su tipo de creador. Los permisos de moderador son por canal: si otro canal tambien quiere a ese usuario como moderador, el duenio de ese otro canal debe asignarlo.
+Un usuario puede ser solo moderador, o moderador y streamer, o moderador y podcaster. La moderacion no cambia su tipo de creador. Los permisos de moderador son por canal: si otro canal tambien quiere a ese usuario como moderador, el duenio de ese otro canal debe asignarlo. Para probar el caso "solo moderador" en demo, inicia sesion como `GamerX`, porque viene como moderador inicial del canal mock.
 
-En `/streams/cyberpunk-2077`, cada mensaje del chat tiene un boton de acciones. Al abrirlo aparecen: hacer moderador, eliminar mensaje, silenciar usuario y bloquear usuario.
+En `/streams/cyberpunk-2077`, cada mensaje del chat tiene un boton de acciones. Al abrirlo aparecen: ver perfil, hacer moderador, eliminar mensaje, silenciar usuario y bloquear usuario.
 
 ## Checklist rapido
 

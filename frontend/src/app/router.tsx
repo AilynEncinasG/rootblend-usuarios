@@ -73,6 +73,34 @@ import SanctionsPage from "../modules/moderation/pages/SanctionsPage";
 import ModeratorDashboardPage from "../modules/moderation/pages/ModeratorDashboardPage";
 import ModeratorPermissionsPage from "../modules/moderation/pages/ModeratorPermissionsPage";
 
+const MODERATORS_KEY = "rootblend:moderators:cyberpunk-2077";
+
+function getRouteUserLabel() {
+  const rawUser = localStorage.getItem("auth_user");
+
+  if (!rawUser) return "usuario_123";
+
+  try {
+    const user = JSON.parse(rawUser) as { nombre_visible?: string; correo?: string };
+    return user.nombre_visible || user.correo || "usuario_123";
+  } catch {
+    return "usuario_123";
+  }
+}
+
+function getRouteModerators() {
+  const stored = localStorage.getItem(MODERATORS_KEY);
+
+  if (!stored) return ["GamerX", "PixelKing", "LunaVibes"];
+
+  try {
+    const parsed = JSON.parse(stored) as string[];
+    return Array.isArray(parsed) ? parsed : ["GamerX", "PixelKing", "LunaVibes"];
+  } catch {
+    return ["GamerX", "PixelKing", "LunaVibes"];
+  }
+}
+
 function Private({ children }: { children: ReactNode }) {
   return <ProtectedRoute>{children}</ProtectedRoute>;
 }
@@ -81,7 +109,7 @@ function GuestOnly({ children }: { children: ReactNode }) {
   return <AuthOnlyRoute>{children}</AuthOnlyRoute>;
 }
 
-function CreatorOnly({
+function CreatorRoute({
   role,
   children,
 }: {
@@ -104,6 +132,31 @@ function CreatorOnly({
   }
 
   return <>{children}</>;
+}
+
+function StreamerRoute({ children }: { children: ReactNode }) {
+  return (
+    <Private>
+      <CreatorRoute role="streamer">{children}</CreatorRoute>
+    </Private>
+  );
+}
+
+function PodcasterRoute({ children }: { children: ReactNode }) {
+  return (
+    <Private>
+      <CreatorRoute role="podcaster">{children}</CreatorRoute>
+    </Private>
+  );
+}
+
+function ModeratorRoute({ children }: { children: ReactNode }) {
+  const currentRole = localStorage.getItem("creator_role");
+  const moderators = getRouteModerators();
+  const userLabel = getRouteUserLabel();
+  const canModerate = currentRole === "streamer" || moderators.includes(userLabel);
+
+  return <Private>{canModerate ? children : <Navigate to="/restricted" replace />}</Private>;
 }
 
 export function AppRouter() {
@@ -139,31 +192,31 @@ export function AppRouter() {
       <Route path="/creator/activate" element={<Private><CreatorActivatePage /></Private>} />
       <Route path="/creator/dashboard" element={<Private><CreatorDashboardRedirectPage /></Private>} />
       <Route path="/stats" element={<Private><StatsRedirectPage /></Private>} />
-      <Route path="/creator/streamer" element={<Private><CreatorOnly role="streamer"><StreamerDashboardPage /></CreatorOnly></Private>} />
-      <Route path="/creator/streamer/dashboard" element={<Private><CreatorOnly role="streamer"><StreamerDashboardPage /></CreatorOnly></Private>} />
-      <Route path="/creator/streamer/create-stream" element={<Private><CreatorOnly role="streamer"><CreateStreamPage /></CreatorOnly></Private>} />
-      <Route path="/creator/streamer/streams/new" element={<Private><CreatorOnly role="streamer"><CreateStreamPage /></CreatorOnly></Private>} />
-      <Route path="/creator/streamer/control" element={<Private><CreatorOnly role="streamer"><LiveControlPage /></CreatorOnly></Private>} />
-      <Route path="/creator/streamer/live-control" element={<Private><CreatorOnly role="streamer"><LiveControlPage /></CreatorOnly></Private>} />
-      <Route path="/creator/streamer/channel" element={<Private><CreatorOnly role="streamer"><EditChannelPage /></CreatorOnly></Private>} />
-      <Route path="/creator/streamer/channel/edit" element={<Private><CreatorOnly role="streamer"><EditChannelPage /></CreatorOnly></Private>} />
-      <Route path="/creator/streamer/stats" element={<Private><CreatorOnly role="streamer"><StreamStatsPage /></CreatorOnly></Private>} />
-      <Route path="/creator/streamer/highlights" element={<Private><CreatorOnly role="streamer"><HighlightsPage /></CreatorOnly></Private>} />
-      <Route path="/creator/streamer/highlights/new" element={<Private><CreatorOnly role="streamer"><HighlightUploadPage /></CreatorOnly></Private>} />
-      <Route path="/creator/streamer/highlights/:highlightId/edit" element={<Private><CreatorOnly role="streamer"><HighlightEditPage /></CreatorOnly></Private>} />
+      <Route path="/creator/streamer" element={<StreamerRoute><StreamerDashboardPage /></StreamerRoute>} />
+      <Route path="/creator/streamer/dashboard" element={<StreamerRoute><StreamerDashboardPage /></StreamerRoute>} />
+      <Route path="/creator/streamer/create-stream" element={<StreamerRoute><CreateStreamPage /></StreamerRoute>} />
+      <Route path="/creator/streamer/streams/new" element={<StreamerRoute><CreateStreamPage /></StreamerRoute>} />
+      <Route path="/creator/streamer/control" element={<StreamerRoute><LiveControlPage /></StreamerRoute>} />
+      <Route path="/creator/streamer/live-control" element={<StreamerRoute><LiveControlPage /></StreamerRoute>} />
+      <Route path="/creator/streamer/channel" element={<StreamerRoute><EditChannelPage /></StreamerRoute>} />
+      <Route path="/creator/streamer/channel/edit" element={<StreamerRoute><EditChannelPage /></StreamerRoute>} />
+      <Route path="/creator/streamer/stats" element={<StreamerRoute><StreamStatsPage /></StreamerRoute>} />
+      <Route path="/creator/streamer/highlights" element={<StreamerRoute><HighlightsPage /></StreamerRoute>} />
+      <Route path="/creator/streamer/highlights/new" element={<StreamerRoute><HighlightUploadPage /></StreamerRoute>} />
+      <Route path="/creator/streamer/highlights/:highlightId/edit" element={<StreamerRoute><HighlightEditPage /></StreamerRoute>} />
 
-      <Route path="/creator/podcaster" element={<Private><CreatorOnly role="podcaster"><PodcasterDashboardPage /></CreatorOnly></Private>} />
-      <Route path="/creator/podcaster/dashboard" element={<Private><CreatorOnly role="podcaster"><PodcasterDashboardPage /></CreatorOnly></Private>} />
-      <Route path="/creator/podcaster/create-podcast" element={<Private><CreatorOnly role="podcaster"><CreatePodcastPage /></CreatorOnly></Private>} />
-      <Route path="/creator/podcaster/podcasts/new" element={<Private><CreatorOnly role="podcaster"><CreatePodcastPage /></CreatorOnly></Private>} />
-      <Route path="/creator/podcaster/podcasts/:podcastId/manage" element={<Private><CreatorOnly role="podcaster"><ManagePodcastPage /></CreatorOnly></Private>} />
-      <Route path="/creator/podcaster/podcasts/:podcastId" element={<Private><CreatorOnly role="podcaster"><ManagePodcastPage /></CreatorOnly></Private>} />
-      <Route path="/creator/podcaster/episodes/new" element={<Private><CreatorOnly role="podcaster"><UploadEpisodePage /></CreatorOnly></Private>} />
-      <Route path="/creator/podcaster/episodes" element={<Private><CreatorOnly role="podcaster"><EpisodesListPage /></CreatorOnly></Private>} />
-      <Route path="/creator/podcaster/stats" element={<Private><CreatorOnly role="podcaster"><PodcastStatsPage /></CreatorOnly></Private>} />
-      <Route path="/creator/podcaster/history" element={<Private><CreatorOnly role="podcaster"><PodcastHistoryPage /></CreatorOnly></Private>} />
-      <Route path="/creator/podcaster/episodes/:episodeId/edit" element={<Private><CreatorOnly role="podcaster"><EditEpisodePage /></CreatorOnly></Private>} />
-      <Route path="/creator/podcaster/episodes/:episodeId/delete" element={<Private><CreatorOnly role="podcaster"><DeleteEpisodePage /></CreatorOnly></Private>} />
+      <Route path="/creator/podcaster" element={<PodcasterRoute><PodcasterDashboardPage /></PodcasterRoute>} />
+      <Route path="/creator/podcaster/dashboard" element={<PodcasterRoute><PodcasterDashboardPage /></PodcasterRoute>} />
+      <Route path="/creator/podcaster/create-podcast" element={<PodcasterRoute><CreatePodcastPage /></PodcasterRoute>} />
+      <Route path="/creator/podcaster/podcasts/new" element={<PodcasterRoute><CreatePodcastPage /></PodcasterRoute>} />
+      <Route path="/creator/podcaster/podcasts/:podcastId/manage" element={<PodcasterRoute><ManagePodcastPage /></PodcasterRoute>} />
+      <Route path="/creator/podcaster/podcasts/:podcastId" element={<PodcasterRoute><ManagePodcastPage /></PodcasterRoute>} />
+      <Route path="/creator/podcaster/episodes/new" element={<PodcasterRoute><UploadEpisodePage /></PodcasterRoute>} />
+      <Route path="/creator/podcaster/episodes" element={<PodcasterRoute><EpisodesListPage /></PodcasterRoute>} />
+      <Route path="/creator/podcaster/stats" element={<PodcasterRoute><PodcastStatsPage /></PodcasterRoute>} />
+      <Route path="/creator/podcaster/history" element={<PodcasterRoute><PodcastHistoryPage /></PodcasterRoute>} />
+      <Route path="/creator/podcaster/episodes/:episodeId/edit" element={<PodcasterRoute><EditEpisodePage /></PodcasterRoute>} />
+      <Route path="/creator/podcaster/episodes/:episodeId/delete" element={<PodcasterRoute><DeleteEpisodePage /></PodcasterRoute>} />
 
       <Route path="/interactions" element={<Private><InteractionsPage /></Private>} />
 
@@ -183,16 +236,16 @@ export function AppRouter() {
       <Route path="/access-restricted" element={<AccessRestrictedPage />} />
       <Route path="/system-status" element={<SystemStatusPage />} />
 
-      <Route path="/moderation/assign" element={<Private><AssignModeratorPage /></Private>} />
-      <Route path="/moderation/assign/confirm" element={<Private><ConfirmModeratorPage /></Private>} />
-      <Route path="/moderation/assigned" element={<Private><ModeratorAssignedPage /></Private>} />
-      <Route path="/moderation/moderators" element={<Private><ModeratorsListPage /></Private>} />
-      <Route path="/moderation/delete-message" element={<Private><DeleteMessagePage /></Private>} />
-      <Route path="/moderation/silence" element={<Private><SilenceUserPage /></Private>} />
-      <Route path="/moderation/block" element={<Private><BlockUserPage /></Private>} />
-      <Route path="/moderation/sanctions" element={<Private><SanctionsPage /></Private>} />
-      <Route path="/moderation" element={<Private><ModeratorDashboardPage /></Private>} />
-      <Route path="/moderation/permissions" element={<Private><ModeratorPermissionsPage /></Private>} />
+      <Route path="/moderation/assign" element={<ModeratorRoute><AssignModeratorPage /></ModeratorRoute>} />
+      <Route path="/moderation/assign/confirm" element={<ModeratorRoute><ConfirmModeratorPage /></ModeratorRoute>} />
+      <Route path="/moderation/assigned" element={<ModeratorRoute><ModeratorAssignedPage /></ModeratorRoute>} />
+      <Route path="/moderation/moderators" element={<ModeratorRoute><ModeratorsListPage /></ModeratorRoute>} />
+      <Route path="/moderation/delete-message" element={<ModeratorRoute><DeleteMessagePage /></ModeratorRoute>} />
+      <Route path="/moderation/silence" element={<ModeratorRoute><SilenceUserPage /></ModeratorRoute>} />
+      <Route path="/moderation/block" element={<ModeratorRoute><BlockUserPage /></ModeratorRoute>} />
+      <Route path="/moderation/sanctions" element={<ModeratorRoute><SanctionsPage /></ModeratorRoute>} />
+      <Route path="/moderation" element={<ModeratorRoute><ModeratorDashboardPage /></ModeratorRoute>} />
+      <Route path="/moderation/permissions" element={<ModeratorRoute><ModeratorPermissionsPage /></ModeratorRoute>} />
 
       <Route path="/404" element={<NotFoundPage />} />
       <Route path="*" element={<Navigate to="/404" replace />} />

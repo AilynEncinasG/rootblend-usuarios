@@ -84,6 +84,12 @@ const pageLinks = [
 ];
 
 function loginMock(email: string) {
+  const fallbackName = "usuario_123";
+  const cleanEmail = email.trim() || `${fallbackName}@rootblend.dev`;
+  const visibleName = cleanEmail.includes("@")
+    ? cleanEmail.split("@")[0] || fallbackName
+    : cleanEmail || fallbackName;
+
   saveAuthSession({
     access_token: "mock_access_token_rootblend",
     refresh_token: "mock_refresh_token_rootblend",
@@ -91,7 +97,8 @@ function loginMock(email: string) {
     expires_in: 3600,
     usuario: {
       ...demoUser,
-      correo: email || demoUser.correo,
+      correo: cleanEmail,
+      nombre_visible: visibleName,
     },
   });
 }
@@ -247,14 +254,29 @@ export function RootShell({ active = "home", children, rightPanel }: ShellProps)
                     <DropdownMenuLink to="/profile" onClick={() => setMenuOpen(false)}>
                       <FiUser /> Perfil
                     </DropdownMenuLink>
+                    <DropdownMenuLink to="/channels/cyberpunk-2077" onClick={() => setMenuOpen(false)}>
+                      <FiEye /> Mi canal
+                    </DropdownMenuLink>
                     <DropdownMenuLink to="/creator/activate" onClick={() => setMenuOpen(false)}>
                       <FiRadio /> Activar canal
                     </DropdownMenuLink>
                     <DropdownMenuLink to="/creator/dashboard" onClick={() => setMenuOpen(false)}>
                       <FiGrid /> Panel creador
                     </DropdownMenuLink>
+                    <DropdownMenuLink to="/stats" onClick={() => setMenuOpen(false)}>
+                      <FiActivity /> Estadisticas
+                    </DropdownMenuLink>
                     <DropdownMenuLink to="/settings" onClick={() => setMenuOpen(false)}>
                       <FiSettings /> Configuracion
+                    </DropdownMenuLink>
+                    <DropdownMenuLink to="/notifications" onClick={() => setMenuOpen(false)}>
+                      <FiBell /> Notificaciones
+                    </DropdownMenuLink>
+                    <DropdownMenuLink to="/following" onClick={() => setMenuOpen(false)}>
+                      <FiUsers /> Seguidos
+                    </DropdownMenuLink>
+                    <DropdownMenuLink to="/subscriptions" onClick={() => setMenuOpen(false)}>
+                      <FiStar /> Suscripciones
                     </DropdownMenuLink>
                     <DropdownMenuLink to="/change-password" onClick={() => setMenuOpen(false)}>
                       <FiLock /> Cambiar contrasena
@@ -488,6 +510,11 @@ function ChatPanel({ allowInput = true }: { allowInput?: boolean }) {
     setActiveMessageId(null);
   }
 
+  function viewProfile(user: string) {
+    setActionFeedback(`Vista demo del perfil de ${user}. En backend abrira el perfil publico real.`);
+    setActiveMessageId(null);
+  }
+
   return (
     <ChatBox>
       <PanelHeader>
@@ -522,6 +549,9 @@ function ChatPanel({ allowInput = true }: { allowInput?: boolean }) {
             </ChatActionButton>
             {activeMessageId === item.id && (
               <ChatActionMenu>
+                <button type="button" onClick={() => viewProfile(item.user)}>
+                  <FiEye /> Ver perfil
+                </button>
                 <button type="button" onClick={() => assignModerator(item.user)}>
                   <FiShield /> Hacer moderador
                 </button>
@@ -626,7 +656,7 @@ export function HomePage() {
           <HeroOverlay>
             <LiveBadge>EN VIVO</LiveBadge>
             <h3>Cyberpunk 2077: Phantom Liberty</h3>
-            <p>PixelNate · 5.2K espectadores</p>
+            <p>PixelNate - 5.2K espectadores</p>
           </HeroOverlay>
         </HeroMedia>
       </HeroGrid>
@@ -643,6 +673,43 @@ export function HomePage() {
             <StreamCard key={stream.id} stream={stream} />
           ))}
         </CardGrid>
+      </Section>
+
+      <Section title="Streams destacados" action={<TextLink to="/streams">Explorar</TextLink>}>
+        <CardGrid>
+          {streams.slice(0, 3).map((stream) => (
+            <StreamCard key={`featured-${stream.id}`} stream={stream} />
+          ))}
+        </CardGrid>
+      </Section>
+
+      <Section title="Canales recomendados" action={<TextLink to="/channels/cyberpunk-2077">Ver canal</TextLink>}>
+        <PodcastGrid>
+          {recommendedChannels.map((channel, index) => {
+            const stream = streams[index % streams.length];
+            return (
+              <PodcastTile key={channel.name} to={`/channels/${stream.id}`}>
+                <Avatar>{channel.avatar}</Avatar>
+                <div>
+                  <CardTitle>{channel.name}</CardTitle>
+                  <Muted>{channel.subtitle} - {channel.viewers} espectadores</Muted>
+                </div>
+                <FiArrowRight />
+              </PodcastTile>
+            );
+          })}
+        </PodcastGrid>
+      </Section>
+
+      <Section title="Categorias populares" action={<TextLink to="/categories">Ver todas</TextLink>}>
+        <CategoryGrid>
+          {categories.slice(0, 4).map((category) => (
+            <CategoryCard key={category.id} to={`/streams?category=${encodeURIComponent(category.name)}`} $image={category.image}>
+              <span>{category.name}</span>
+              <small>{category.viewers} espectadores activos</small>
+            </CategoryCard>
+          ))}
+        </CategoryGrid>
       </Section>
 
       <Section title="Podcasts destacados" action={<TextLink to="/podcasts">Ver todos</TextLink>}>
@@ -747,9 +814,25 @@ export function CategoriesPage() {
 export function SearchResultsPage() {
   const [params] = useSearchParams();
   const query = params.get("q") || "";
-  const results = streams.filter((stream) =>
-    `${stream.title} ${stream.channel} ${stream.category}`.toLowerCase().includes(query.toLowerCase())
+  const normalizedQuery = query.toLowerCase();
+  const streamResults = streams.filter((stream) =>
+    `${stream.title} ${stream.channel} ${stream.category}`.toLowerCase().includes(normalizedQuery)
   );
+  const channelResults = recommendedChannels.filter((channel) =>
+    `${channel.name} ${channel.subtitle}`.toLowerCase().includes(normalizedQuery)
+  );
+  const podcastResults = podcasts.filter((podcast) =>
+    `${podcast.title} ${podcast.creator} ${podcast.category}`.toLowerCase().includes(normalizedQuery)
+  );
+  const categoryResults = categories.filter((category) =>
+    `${category.name} ${category.viewers}`.toLowerCase().includes(normalizedQuery)
+  );
+  const hasResults =
+    !query ||
+    streamResults.length > 0 ||
+    channelResults.length > 0 ||
+    podcastResults.length > 0 ||
+    categoryResults.length > 0;
 
   return (
     <RootShell active="streams">
@@ -758,23 +841,50 @@ export function SearchResultsPage() {
         <h1>{query ? `Resultados para "${query}"` : "Resultados de busqueda"}</h1>
         <p>Streams, canales, podcasts y categorias aparecen juntos para navegar rapido.</p>
       </PageHeading>
-      {query && results.length === 0 ? (
+      {!hasResults ? (
         <EmptyPanel icon={<FiSearch />} title="No encontramos resultados" text="Verifica la ortografia o usa palabras mas generales." />
       ) : (
         <>
           <Section title="Streams encontrados">
             <CardGrid>
-              {(results.length ? results : streams.slice(0, 4)).map((stream) => (
+              {(streamResults.length ? streamResults : streams.slice(0, 4)).map((stream) => (
                 <StreamCard key={stream.id} stream={stream} />
               ))}
             </CardGrid>
           </Section>
+          <Section title="Canales encontrados">
+            <PodcastGrid>
+              {(channelResults.length ? channelResults : recommendedChannels.slice(0, 4)).map((channel, index) => {
+                const stream = streams[index % streams.length];
+                return (
+                  <PodcastTile key={channel.name} to={`/channels/${stream.id}`}>
+                    <Avatar>{channel.avatar}</Avatar>
+                    <div>
+                      <CardTitle>{channel.name}</CardTitle>
+                      <Muted>{channel.subtitle} - {channel.viewers} espectadores</Muted>
+                    </div>
+                    <FiArrowRight />
+                  </PodcastTile>
+                );
+              })}
+            </PodcastGrid>
+          </Section>
           <Section title="Podcasts relacionados">
             <PodcastGrid>
-              {podcasts.slice(0, 3).map((podcast) => (
+              {(podcastResults.length ? podcastResults : podcasts.slice(0, 3)).map((podcast) => (
                 <PodcastCard key={podcast.id} podcast={podcast} />
               ))}
             </PodcastGrid>
+          </Section>
+          <Section title="Categorias relacionadas">
+            <CategoryGrid>
+              {(categoryResults.length ? categoryResults : categories.slice(0, 4)).map((category) => (
+                <CategoryCard key={category.id} to={`/streams?category=${encodeURIComponent(category.name)}`} $image={category.image}>
+                  <span>{category.name}</span>
+                  <small>{category.viewers} espectadores activos</small>
+                </CategoryCard>
+              ))}
+            </CategoryGrid>
           </Section>
         </>
       )}
@@ -792,7 +902,7 @@ export function ChannelPage() {
         <Avatar $large>{stream.avatar}</Avatar>
         <div>
           <h1>{stream.channel}</h1>
-          <p>{stream.handle} · {stream.category} · 24.5K seguidores</p>
+          <p>{stream.handle} - {stream.category} - 24.5K seguidores</p>
           <ButtonRow>
             <PrimaryLink to={`/streams/${stream.id}`}><FiPlay /> Ver directo</PrimaryLink>
             <GhostLink to="/subscriptions"><FiHeart /> Suscribirse</GhostLink>
@@ -833,9 +943,21 @@ export function StreamDetailPage() {
   const [following, setFollowing] = useState(false);
   const [subscribed, setSubscribed] = useState(false);
   const [playing, setPlaying] = useState(true);
+  const loggedIn = isAuthenticated();
 
   return (
-    <RootShell active="streams" rightPanel={<ChatPanel />}>
+    <RootShell active="streams" rightPanel={<ChatPanel allowInput={loggedIn} />}>
+      {!loggedIn && (
+        <AlertPanel>
+          <FiLock />
+          <div>
+            <strong>Modo visitante</strong>
+            <p>Puedes ver el directo y leer el chat. Para escribir, seguir o suscribirte necesitas iniciar sesion.</p>
+          </div>
+          <PrimaryLink to="/login">Iniciar sesion</PrimaryLink>
+          <GhostLink to="/register">Registrarse</GhostLink>
+        </AlertPanel>
+      )}
       <PlayerPanel>
         <VideoFrame $image={stream.image}>
           <LiveBadge>EN VIVO</LiveBadge>
@@ -852,18 +974,27 @@ export function StreamDetailPage() {
           <Avatar $large>{stream.avatar}</Avatar>
           <InfoMain>
             <h1>{stream.title}</h1>
-            <p>{stream.channel} · {stream.description}</p>
+            <p>{stream.channel} - {stream.description}</p>
             <TagRow>
               {stream.tags.map((tag) => <MetaTag key={tag}>{tag}</MetaTag>)}
             </TagRow>
           </InfoMain>
           <ButtonRow>
-            <GhostButton type="button" onClick={() => setFollowing((value) => !value)}>
-              <FiHeart /> {following ? "Siguiendo" : "Seguir"}
-            </GhostButton>
-            <PrimaryButton type="button" onClick={() => setSubscribed((value) => !value)}>
-              <FiStar /> {subscribed ? "Suscrito" : "Suscribirse"}
-            </PrimaryButton>
+            {loggedIn ? (
+              <>
+                <GhostButton type="button" onClick={() => setFollowing((value) => !value)}>
+                  <FiHeart /> {following ? "Siguiendo" : "Seguir"}
+                </GhostButton>
+                <PrimaryButton type="button" onClick={() => setSubscribed((value) => !value)}>
+                  <FiStar /> {subscribed ? "Suscrito" : "Suscribirse"}
+                </PrimaryButton>
+              </>
+            ) : (
+              <>
+                <GhostLink to="/login"><FiHeart /> Seguir</GhostLink>
+                <PrimaryLink to="/register"><FiStar /> Suscribirse</PrimaryLink>
+              </>
+            )}
           </ButtonRow>
         </StreamInfo>
       </PlayerPanel>
@@ -924,7 +1055,7 @@ export function StreamGuestPage() {
           <Avatar $large>{stream.avatar}</Avatar>
           <InfoMain>
             <h1>{stream.title}</h1>
-            <p>{stream.channel} · {stream.description}</p>
+            <p>{stream.channel} - {stream.description}</p>
             <TagRow>
               {stream.tags.map((tag) => <MetaTag key={tag}>{tag}</MetaTag>)}
             </TagRow>
@@ -1015,7 +1146,7 @@ export function PodcastDetailPage() {
         <div>
           <Eyebrow>Podcast destacado</Eyebrow>
           <h1>{podcast.title}</h1>
-          <p>{podcast.creator} · {podcast.category}</p>
+          <p>{podcast.creator} - {podcast.category}</p>
           <ButtonRow>
             <PrimaryButton type="button" onClick={() => setCurrentEpisode(podcast.episodes[0]?.title || podcast.title)}>
               <FiPlay /> Reproducir
@@ -1281,28 +1412,69 @@ export function NotificationsPage() {
 }
 
 export function SubscriptionsPage() {
+  const [items, setItems] = useState(() => streams.slice(1, 4));
+  const [pendingCancel, setPendingCancel] = useState<StreamItem | null>(null);
+
   return (
     <RootShell active="home">
-      <PageHeading><Eyebrow>Comunidad</Eyebrow><h1>Seguidos y suscripciones</h1><p>Administra los canales que sigues y tus beneficios.</p></PageHeading>
-      <InfoGrid>
-        <Panel><PanelHeader><strong>Seguidos</strong></PanelHeader>{streams.slice(0, 4).map((stream) => <FollowRow key={stream.id} stream={stream} action="Siguiendo" />)}</Panel>
-        <Panel><PanelHeader><strong>Suscripciones</strong></PanelHeader>{streams.slice(1, 4).map((stream) => <FollowRow key={stream.id} stream={stream} action="Suscrito" />)}</Panel>
-      </InfoGrid>
+      <PageHeading><Eyebrow>Comunidad</Eyebrow><h1>Suscripciones</h1><p>Administra los canales suscritos, beneficios y cancelaciones demo.</p></PageHeading>
+      <Panel>
+        <PanelHeader><strong>Canales suscritos</strong><Link to="/following">Ver seguidos</Link></PanelHeader>
+        {items.map((stream) => (
+          <NotificationRow key={stream.id} $accent="#a855f7">
+            <Avatar>{stream.avatar}</Avatar>
+            <div>
+              <strong>{stream.channel}</strong>
+              <small>Plan comunidad - vence el 30/06/2026</small>
+            </div>
+            <ButtonRow>
+              <GhostLink to={`/channels/${stream.id}`}>Ver canal</GhostLink>
+              <DangerButton type="button" onClick={() => setPendingCancel(stream)}>Cancelar</DangerButton>
+            </ButtonRow>
+          </NotificationRow>
+        ))}
+      </Panel>
+      {pendingCancel && (
+        <DialogCard>
+          <FiAlertTriangle size={34} />
+          <h2>Cancelar suscripcion</h2>
+          <p>Se cancelara la suscripcion demo a {pendingCancel.channel}. El acceso se conserva hasta el vencimiento.</p>
+          <ButtonRow>
+            <GhostButton type="button" onClick={() => setPendingCancel(null)}>Volver</GhostButton>
+            <DangerButton
+              type="button"
+              onClick={() => {
+                setItems((current) => current.filter((stream) => stream.id !== pendingCancel.id));
+                setPendingCancel(null);
+              }}
+            >
+              Confirmar
+            </DangerButton>
+          </ButtonRow>
+        </DialogCard>
+      )}
     </RootShell>
   );
 }
 
 export function FollowingPage() {
+  const [items, setItems] = useState(() => streams.slice(0, 6));
+
   return (
     <RootShell active="home">
       <PageHeading><Eyebrow>Comunidad</Eyebrow><h1>Canales seguidos</h1><p>Vista separada para administrar solo los canales que sigues.</p></PageHeading>
       <Panel>
         <PanelHeader><strong>Siguiendo ahora</strong><Link to="/subscriptions">Ver suscripciones</Link></PanelHeader>
-        {streams.slice(0, 6).map((stream) => (
+        {items.map((stream) => (
           <NotificationRow key={stream.id} $accent="#00e5ff">
             <Avatar>{stream.avatar}</Avatar>
-            <div><strong>{stream.channel}</strong><small>{stream.category} · {stream.viewers} espectadores</small></div>
-            <GhostLink to={`/channels/${stream.id}`}>Ver canal</GhostLink>
+            <div><strong>{stream.channel}</strong><small>{stream.category} - {stream.viewers} espectadores</small></div>
+            <ButtonRow>
+              <GhostLink to={`/channels/${stream.id}`}>Ver canal</GhostLink>
+              <GhostButton type="button" onClick={() => setItems((current) => current.filter((item) => item.id !== stream.id))}>
+                Dejar de seguir
+              </GhostButton>
+            </ButtonRow>
           </NotificationRow>
         ))}
       </Panel>
@@ -1310,36 +1482,55 @@ export function FollowingPage() {
   );
 }
 
-function FollowRow({ stream, action }: { stream: StreamItem; action: string }) {
-  return (
-    <SideListItem to={`/streams/${stream.id}`}>
-      <Avatar>{stream.avatar}</Avatar>
-      <span>{stream.channel}</span>
-      <small>{action}</small>
-    </SideListItem>
-  );
-}
-
 export function CreatorActivatePage() {
   const navigate = useNavigate();
-  const [role, setRole] = useState("streamer");
+  const existingRole = getCreatorRole();
+  const [role, setRole] = useState<CreatorRole>(existingRole || "streamer");
 
   function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    setCreatorRole(role as CreatorRole);
+    if (existingRole) {
+      navigate(existingRole === "streamer" ? "/creator/streamer" : "/creator/podcaster");
+      return;
+    }
+
+    setCreatorRole(role);
     navigate(role === "streamer" ? "/creator/streamer" : "/creator/podcaster");
+  }
+
+  function resetDemoRole() {
+    localStorage.removeItem(CREATOR_ROLE_KEY);
+    setRole("streamer");
   }
 
   return (
     <RootShell active="creator">
-      <FormPanel title="Activa tu canal de creador" subtitle="Escoge un solo tipo de canal: streamer o podcaster." button="Continuar" onSubmit={submit}>
+      {existingRole && (
+        <AlertPanel>
+          <FiLock />
+          <div>
+            <strong>Ya tienes un canal activo como {existingRole}</strong>
+            <p>Una cuenta solo puede ser streamer o podcaster. El panel contrario se redirige al rol activo.</p>
+          </div>
+          <PrimaryLink to={existingRole === "streamer" ? "/creator/streamer" : "/creator/podcaster"}>
+            Ir a mi panel
+          </PrimaryLink>
+          <GhostButton type="button" onClick={resetDemoRole}>Reiniciar demo</GhostButton>
+        </AlertPanel>
+      )}
+      <FormPanel
+        title="Activa tu canal de creador"
+        subtitle="Escoge un solo tipo de canal: streamer o podcaster."
+        button={existingRole ? "Ir al panel activo" : "Continuar"}
+        onSubmit={submit}
+      >
         <ProgressSteps><span>Informacion</span><span>Tipo de canal</span><span>Listo</span></ProgressSteps>
-        <Label>Nombre del canal</Label><Field><FiRadio /><input defaultValue="NeoPlayer" /></Field>
-        <Label>URL personalizada</Label><Field><FiLinkIcon /> <input defaultValue="rootblend/neoplayer" /></Field>
-        <Label>Descripcion del canal</Label><TextArea defaultValue="Streams de juegos, tecnologia y charlas epicas." />
+        <Label>Nombre del canal</Label><Field><FiRadio /><input defaultValue="NeoPlayer" disabled={Boolean(existingRole)} /></Field>
+        <Label>URL personalizada</Label><Field><FiLinkIcon /> <input defaultValue="rootblend/neoplayer" disabled={Boolean(existingRole)} /></Field>
+        <Label>Descripcion del canal</Label><TextArea defaultValue="Streams de juegos, tecnologia y charlas epicas." disabled={Boolean(existingRole)} />
         <ChoiceGrid>
-          <ChoiceButton type="button" $active={role === "streamer"} onClick={() => setRole("streamer")}><FiRadio /> Streamer</ChoiceButton>
-          <ChoiceButton type="button" $active={role === "podcaster"} onClick={() => setRole("podcaster")}><FiMic /> Podcaster</ChoiceButton>
+          <ChoiceButton type="button" $active={role === "streamer"} disabled={Boolean(existingRole)} onClick={() => setRole("streamer")}><FiRadio /> Streamer</ChoiceButton>
+          <ChoiceButton type="button" $active={role === "podcaster"} disabled={Boolean(existingRole)} onClick={() => setRole("podcaster")}><FiMic /> Podcaster</ChoiceButton>
         </ChoiceGrid>
       </FormPanel>
     </RootShell>
@@ -1768,9 +1959,12 @@ export function ModeratorAssignedPage() {
 export function ModeratorsListPage() {
   const [moderators, setModerators] = useState<string[]>(() => getModerators());
   const [newModerator, setNewModerator] = useState("NeoModerator");
+  const [pendingRemove, setPendingRemove] = useState<string | null>(null);
+  const ownerMode = getCreatorRole() === "streamer";
 
   function addModerator(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    if (!ownerMode) return;
     const cleanName = newModerator.trim();
     if (!cleanName) return;
 
@@ -1789,17 +1983,29 @@ export function ModeratorsListPage() {
   return (
     <ModerationScreen title="Lista de moderadores" subtitle="Gestiona los moderadores de tu canal.">
       <Panel>
-        <ModeratorToolbar onSubmit={addModerator}>
-          <Field>
-            <FiUser />
-            <input
-              value={newModerator}
-              onChange={(event) => setNewModerator(event.target.value)}
-              placeholder="Nombre del usuario"
-            />
-          </Field>
-          <PrimaryButton type="submit"><FiPlus /> Agregar moderador</PrimaryButton>
-        </ModeratorToolbar>
+        {ownerMode ? (
+          <ModeratorToolbar onSubmit={addModerator}>
+            <Field>
+              <FiUser />
+              <input
+                value={newModerator}
+                onChange={(event) => setNewModerator(event.target.value)}
+                placeholder="Nombre del usuario"
+              />
+            </Field>
+            <PrimaryButton type="submit"><FiPlus /> Agregar moderador</PrimaryButton>
+            <GhostLink to="/moderation/permissions">Ver permisos</GhostLink>
+          </ModeratorToolbar>
+        ) : (
+          <AlertPanel>
+            <FiLock />
+            <div>
+              <strong>Modo moderador</strong>
+              <p>Puedes revisar la lista, pero solo el duenio streamer agrega o quita moderadores.</p>
+            </div>
+            <GhostLink to="/moderation/permissions">Ver permisos</GhostLink>
+          </AlertPanel>
+        )}
 
         <AlertPanel>
           <FiShield />
@@ -1817,15 +2023,38 @@ export function ModeratorsListPage() {
               <Avatar>{name.slice(0, 2).toUpperCase()}</Avatar>
               <div>
                 <strong>{name}</strong>
-                <small>Activo · Canal Cyberpunk 2077</small>
+                <small>Activo - Canal Cyberpunk 2077</small>
               </div>
-              <DangerButton type="button" onClick={() => removeModerator(name)}>
-                Quitar rol
-              </DangerButton>
+              {ownerMode ? (
+                <DangerButton type="button" onClick={() => setPendingRemove(name)}>
+                  Quitar rol
+                </DangerButton>
+              ) : (
+                <ServicePill $status="Operativo">Activo</ServicePill>
+              )}
             </NotificationRow>
           ))
         )}
       </Panel>
+      {pendingRemove && (
+        <DialogCard>
+          <FiAlertTriangle size={34} />
+          <h2>Quitar moderador</h2>
+          <p>{pendingRemove} perdera permisos de moderacion solo en este canal.</p>
+          <ButtonRow>
+            <GhostButton type="button" onClick={() => setPendingRemove(null)}>Cancelar</GhostButton>
+            <DangerButton
+              type="button"
+              onClick={() => {
+                removeModerator(pendingRemove);
+                setPendingRemove(null);
+              }}
+            >
+              Quitar rol
+            </DangerButton>
+          </ButtonRow>
+        </DialogCard>
+      )}
     </ModerationScreen>
   );
 }
@@ -1888,7 +2117,9 @@ export function ModeratorDashboardPage() {
         <PrimaryLink to="/moderation/delete-message"><FiTrash2 /> Eliminar mensaje</PrimaryLink>
         <GhostLink to="/moderation/silence"><FiVolume2 /> Silenciar usuario</GhostLink>
         <DangerLink to="/moderation/block"><FiXCircle /> Bloquear usuario</DangerLink>
+        <GhostLink to="/moderation/moderators"><FiUsers /> Moderadores</GhostLink>
         <GhostLink to="/moderation/sanctions"><FiShield /> Sanciones</GhostLink>
+        <GhostLink to="/moderation/permissions"><FiLock /> Permisos</GhostLink>
       </QuickActions>
       <MetricGrid>
         <StatCard label="Mensajes reportados" value="12" trend="Ultimas 24h" />
@@ -1905,7 +2136,7 @@ export function ModeratorPermissionsPage() {
     <ModerationScreen title="Permisos y funciones del moderador" subtitle="Resumen claro de lo que puede y no puede hacer.">
       <InfoGrid>
         <Panel><PanelHeader><strong>Lo que si pueden hacer</strong></PanelHeader>{["Eliminar mensajes inapropiados", "Silenciar usuarios", "Bloquear usuarios toxicos", "Gestionar orden del chat"].map((item) => <PermissionLine key={item}><FiCheckCircle /> {item}</PermissionLine>)}</Panel>
-        <Panel><PanelHeader><strong>Lo que no pueden hacer</strong></PanelHeader>{["Iniciar directos", "Editar canal", "Ver estadisticas privadas"].map((item) => <PermissionLine key={item}><FiXCircle /> {item}</PermissionLine>)}</Panel>
+        <Panel><PanelHeader><strong>Lo que no pueden hacer</strong></PanelHeader>{["Iniciar directos", "Finalizar directos", "Editar canal", "Ver estadisticas privadas", "Administrar podcast", "Cambiar propietario"].map((item) => <PermissionLine key={item}><FiXCircle /> {item}</PermissionLine>)}</Panel>
       </InfoGrid>
     </ModerationScreen>
   );
