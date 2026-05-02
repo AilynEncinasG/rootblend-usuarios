@@ -1,4 +1,4 @@
-import { type FormEvent, type ReactNode, useMemo, useState } from "react";
+import { type FormEvent, type ReactNode, useEffect, useMemo, useState } from "react";
 import { Link, Navigate, useNavigate, useParams, useSearchParams } from "react-router-dom";
 import styled from "styled-components";
 import {
@@ -62,8 +62,17 @@ import {
   saveAuthSession,
   loginUser,
   registerUser,
+  forgotPassword,
+  resetPassword,
+  changePassword,
   logoutUser,
 } from "../auth/services/authService";
+import {
+  getMe,
+  updateProfile,
+  getPreferences,
+  updatePreferences,
+} from "../../services/userService";
 
 type ShellProps = {
   active?: string;
@@ -1460,21 +1469,104 @@ export function RegisterPage() {
 }
 
 export function ForgotPasswordPage() {
-  const [sent, setSent] = useState(false);
+  const [email, setEmail] = useState("denilson.test3@gmail.com");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
+  const [recoveryToken, setRecoveryToken] = useState("");
+
+  async function submit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+
+    setLoading(true);
+    setError("");
+    setSuccessMessage("");
+    setRecoveryToken("");
+
+    try {
+      const result = await forgotPassword(email);
+
+      if (!result.success) {
+        setError(
+          formatApiError(
+            result.errors,
+            result.message || "No se pudo enviar la recuperación."
+          )
+        );
+        return;
+      }
+
+      setSuccessMessage(result.message || "Solicitud de recuperación generada.");
+
+      if (result.data?.token_recuperacion) {
+        setRecoveryToken(result.data.token_recuperacion);
+      }
+    } catch (error) {
+      console.error("FORGOT_PASSWORD_ERROR", error);
+      setError("No se pudo conectar con el servicio de usuarios.");
+    } finally {
+      setLoading(false);
+    }
+  }
 
   return (
     <AuthScreen $image={brandAssets.loginView}>
-      <AuthCard onSubmit={(event) => { event.preventDefault(); setSent(true); }}>
+      <AuthCard onSubmit={submit}>
         <BrandBlock>
           <FiMail />
-          <h1>Recupera tu contrasena</h1>
-          <p>Te enviaremos un enlace para restablecerla.</p>
+          <h1>Recupera tu contraseña</h1>
+          <p>Solicita un token de recuperación para restablecer tu contraseña.</p>
         </BrandBlock>
-        <Label>Correo electronico</Label>
-        <Field><FiMail /><input defaultValue="ejemplo@correo.com" /></Field>
-        <PrimaryButton type="submit">Enviar enlace</PrimaryButton>
-        {sent && <SuccessBox><FiCheckCircle /> Revisa tu bandeja de entrada.</SuccessBox>}
-        <GhostLink to="/login">Volver al inicio de sesion</GhostLink>
+
+        <Label>Correo electrónico</Label>
+        <Field>
+          <FiMail />
+          <input
+            value={email}
+            onChange={(event) => setEmail(event.target.value)}
+          />
+        </Field>
+
+        {error && (
+          <AlertPanel>
+            <FiAlertTriangle />
+            <div>
+              <strong>Error</strong>
+              <p>{error}</p>
+            </div>
+          </AlertPanel>
+        )}
+
+        {successMessage && (
+          <SuccessBox>
+            <FiCheckCircle /> {successMessage}
+          </SuccessBox>
+        )}
+
+        {recoveryToken && (
+          <AlertPanel>
+            <FiLock />
+            <div>
+              <strong>Token de recuperación demo</strong>
+              <p>{recoveryToken}</p>
+              <p>
+                Copia este token y úsalo en la pantalla de nueva contraseña.
+              </p>
+            </div>
+          </AlertPanel>
+        )}
+
+        <PrimaryButton type="submit" disabled={loading}>
+          {loading ? "Solicitando..." : "Enviar recuperación"}
+        </PrimaryButton>
+
+        {recoveryToken && (
+          <GhostLink to={`/reset-password?token=${encodeURIComponent(recoveryToken)}`}>
+            Ir a restablecer contraseña
+          </GhostLink>
+        )}
+
+        <GhostLink to="/login">Volver al inicio de sesión</GhostLink>
       </AuthCard>
     </AuthScreen>
   );
@@ -1482,12 +1574,62 @@ export function ForgotPasswordPage() {
 
 export function ResetPasswordPage() {
   const navigate = useNavigate();
-  const [saved, setSaved] = useState(false);
+  const [params] = useSearchParams();
 
-  function submit(event: FormEvent<HTMLFormElement>) {
+  const [token, setToken] = useState(params.get("token") || "");
+  const [passwordNueva, setPasswordNueva] = useState("Rootblend2027");
+  const [confirmPassword, setConfirmPassword] = useState("Rootblend2027");
+
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
+
+  async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    setSaved(true);
-    window.setTimeout(() => navigate("/login"), 900);
+
+    if (!token.trim()) {
+      setError("Debes ingresar el token de recuperación.");
+      return;
+    }
+
+    if (passwordNueva.length < 8) {
+      setError("La nueva contraseña debe tener al menos 8 caracteres.");
+      return;
+    }
+
+    if (passwordNueva !== confirmPassword) {
+      setError("La confirmación no coincide con la nueva contraseña.");
+      return;
+    }
+
+    setLoading(true);
+    setError("");
+    setSuccessMessage("");
+
+    try {
+      const result = await resetPassword(token.trim(), passwordNueva);
+
+      if (!result.success) {
+        setError(
+          formatApiError(
+            result.errors,
+            result.message || "No se pudo restablecer la contraseña."
+          )
+        );
+        return;
+      }
+
+      setSuccessMessage("Contraseña restablecida correctamente. Redirigiendo al login...");
+
+      window.setTimeout(() => {
+        navigate("/login", { replace: true });
+      }, 1200);
+    } catch (error) {
+      console.error("RESET_PASSWORD_ERROR", error);
+      setError("No se pudo conectar con el servicio de usuarios.");
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
@@ -1495,16 +1637,61 @@ export function ResetPasswordPage() {
       <AuthCard onSubmit={submit}>
         <BrandBlock>
           <FiLock />
-          <h1>Nueva contrasena</h1>
-          <p>Completa el segundo paso de recuperacion antes de volver al login.</p>
+          <h1>Nueva contraseña</h1>
+          <p>Usa el token de recuperación para definir una nueva contraseña.</p>
         </BrandBlock>
-        <Label>Nueva contrasena</Label>
-        <Field><FiLock /><input type="password" defaultValue="rootblend2026" /></Field>
-        <Label>Confirmar contrasena</Label>
-        <Field><FiLock /><input type="password" defaultValue="rootblend2026" /></Field>
-        <PrimaryButton type="submit">Guardar nueva contrasena</PrimaryButton>
-        {saved && <SuccessBox><FiCheckCircle /> Contrasena actualizada. Redirigiendo al login...</SuccessBox>}
-        <GhostLink to="/login">Volver al inicio de sesion</GhostLink>
+
+        <Label>Token de recuperación</Label>
+        <Field>
+          <FiLock />
+          <input
+            value={token}
+            onChange={(event) => setToken(event.target.value)}
+            placeholder="Pega aquí el token"
+          />
+        </Field>
+
+        <Label>Nueva contraseña</Label>
+        <Field>
+          <FiLock />
+          <input
+            type="password"
+            value={passwordNueva}
+            onChange={(event) => setPasswordNueva(event.target.value)}
+          />
+        </Field>
+
+        <Label>Confirmar contraseña</Label>
+        <Field>
+          <FiLock />
+          <input
+            type="password"
+            value={confirmPassword}
+            onChange={(event) => setConfirmPassword(event.target.value)}
+          />
+        </Field>
+
+        {error && (
+          <AlertPanel>
+            <FiAlertTriangle />
+            <div>
+              <strong>Error</strong>
+              <p>{error}</p>
+            </div>
+          </AlertPanel>
+        )}
+
+        {successMessage && (
+          <SuccessBox>
+            <FiCheckCircle /> {successMessage}
+          </SuccessBox>
+        )}
+
+        <PrimaryButton type="submit" disabled={loading}>
+          {loading ? "Restableciendo..." : "Guardar nueva contraseña"}
+        </PrimaryButton>
+
+        <GhostLink to="/login">Volver al inicio de sesión</GhostLink>
       </AuthCard>
     </AuthScreen>
   );
@@ -1542,65 +1729,733 @@ export function UserMenuPage() {
 }
 
 export function ProfilePage() {
+  const [profileData, setProfileData] = useState<{
+    usuario: {
+      id_usuario: number;
+      correo: string;
+      estado: string;
+      fecha_registro: string | null;
+      ultimo_acceso: string | null;
+    };
+    perfil: {
+      id_perfil: number | null;
+      nombre_visible: string | null;
+      foto_perfil: string | null;
+      biografia: string | null;
+      fecha_nacimiento: string | null;
+    };
+  } | null>(null);
+
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  const storedUser = getStoredUser() as {
+    correo?: string;
+    nombre_visible?: string;
+    estado?: string;
+  } | null;
+
+  useEffect(() => {
+    let active = true;
+
+    async function loadProfile() {
+      setLoading(true);
+      setError("");
+
+      try {
+        const result = await getMe();
+
+        if (!active) return;
+
+        if (!result.success || !result.data) {
+          setError(result.message || "No se pudo cargar el perfil.");
+          return;
+        }
+
+        setProfileData(result.data);
+      } catch (error) {
+        console.error("PROFILE_LOAD_ERROR", error);
+
+        if (active) {
+          setError("No se pudo conectar con el servicio de usuarios.");
+        }
+      } finally {
+        if (active) {
+          setLoading(false);
+        }
+      }
+    }
+
+    loadProfile();
+
+    return () => {
+      active = false;
+    };
+  }, []);
+
+  const displayName =
+    profileData?.perfil.nombre_visible ||
+    storedUser?.nombre_visible ||
+    storedUser?.correo ||
+    "Usuario ROOTBLEND";
+
+  const email =
+    profileData?.usuario.correo ||
+    storedUser?.correo ||
+    "correo@rootblend.dev";
+
+  const estado =
+    profileData?.usuario.estado ||
+    storedUser?.estado ||
+    "activo";
+
+  const bio =
+    profileData?.perfil.biografia ||
+    "Aun no tienes una biografia configurada. Edita tu perfil para personalizar tu presentacion publica.";
+
+  const fechaRegistro =
+    profileData?.usuario.fecha_registro ||
+    "Pendiente de sincronizar";
+
+  const ultimoAcceso =
+    profileData?.usuario.ultimo_acceso ||
+    "Pendiente de sincronizar";
+
   return (
     <RootShell active="home" rightPanel={<DemoRightPanel />}>
+      {loading && (
+        <AlertPanel>
+          <FiRefreshCw />
+          <div>
+            <strong>Cargando perfil</strong>
+            <p>Consultando tus datos reales desde usuarios-service.</p>
+          </div>
+        </AlertPanel>
+      )}
+
+      {error && (
+        <AlertPanel>
+          <FiAlertTriangle />
+          <div>
+            <strong>Error al cargar perfil</strong>
+            <p>{error}</p>
+          </div>
+        </AlertPanel>
+      )}
+
       <ChannelHero $image={brandAssets.channelView}>
-        <Avatar $large>U</Avatar>
+        <Avatar $large>
+          {displayName.slice(0, 1).toUpperCase()}
+        </Avatar>
+
         <div>
-          <h1>usuario_123</h1>
-          <p>Amante de los videojuegos, la musica y las buenas charlas.</p>
-          <ButtonRow><PrimaryLink to="/profile/edit"><FiEdit3 /> Editar perfil</PrimaryLink><GhostLink to="/subscriptions">Seguidos</GhostLink></ButtonRow>
+          <h1>{displayName}</h1>
+          <p>{bio}</p>
+
+          <ButtonRow>
+            <PrimaryLink to="/profile/edit">
+              <FiEdit3 /> Editar perfil
+            </PrimaryLink>
+
+            <GhostLink to="/settings">
+              <FiSettings /> Preferencias
+            </GhostLink>
+          </ButtonRow>
         </div>
       </ChannelHero>
+
       <MetricGrid>
-        <StatCard label="Siguiendo" value="128" trend="+4 esta semana" />
-        <StatCard label="Seguidores" value="354" trend="+12%" />
-        <StatCard label="Suscripciones" value="12" trend="Activas" />
-        <StatCard label="Streams vistos" value="86" trend="Mes actual" />
+        <StatCard label="Estado" value={estado} trend="Cuenta" />
+        <StatCard label="Correo" value={email} trend="Usuario real" />
+        <StatCard label="Registro" value={String(fechaRegistro).slice(0, 10)} trend="Fecha" />
+        <StatCard label="Ultimo acceso" value={String(ultimoAcceso).slice(0, 10)} trend="Sesion" />
       </MetricGrid>
+
+      <InfoGrid>
+        <Panel>
+          <PanelHeader>
+            <strong>Datos de usuario</strong>
+          </PanelHeader>
+
+          <TwoCol>
+            <span>ID usuario</span>
+            <strong>{profileData?.usuario.id_usuario || "—"}</strong>
+
+            <span>Correo</span>
+            <strong>{email}</strong>
+
+            <span>Estado</span>
+            <strong>{estado}</strong>
+
+            <span>Fecha de registro</span>
+            <strong>{String(fechaRegistro)}</strong>
+
+            <span>Ultimo acceso</span>
+            <strong>{String(ultimoAcceso)}</strong>
+          </TwoCol>
+        </Panel>
+
+        <Panel>
+          <PanelHeader>
+            <strong>Perfil publico</strong>
+            <Link to="/profile/edit">Editar</Link>
+          </PanelHeader>
+
+          <TwoCol>
+            <span>Nombre visible</span>
+            <strong>{displayName}</strong>
+
+            <span>Foto de perfil</span>
+            <strong>{profileData?.perfil.foto_perfil || "Sin foto"}</strong>
+
+            <span>Fecha nacimiento</span>
+            <strong>{profileData?.perfil.fecha_nacimiento || "No configurada"}</strong>
+          </TwoCol>
+
+          <p>{bio}</p>
+        </Panel>
+      </InfoGrid>
+
       <Section title="Streams recientes">
-        <CardGrid>{streams.slice(0, 3).map((stream) => <StreamCard key={stream.id} stream={stream} />)}</CardGrid>
+        <CardGrid>
+          {streams.slice(0, 3).map((stream) => (
+            <StreamCard key={stream.id} stream={stream} />
+          ))}
+        </CardGrid>
       </Section>
     </RootShell>
   );
 }
 
 export function EditProfilePage() {
+  const navigate = useNavigate();
+
+  const [nombreVisible, setNombreVisible] = useState("");
+  const [fotoPerfil, setFotoPerfil] = useState("");
+  const [biografia, setBiografia] = useState("");
+  const [fechaNacimiento, setFechaNacimiento] = useState("");
+
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
+
+  useEffect(() => {
+    let active = true;
+
+    async function loadProfile() {
+      setLoading(true);
+      setError("");
+
+      try {
+        const result = await getMe();
+
+        if (!active) return;
+
+        if (!result.success || !result.data) {
+          setError(result.message || "No se pudo cargar el perfil.");
+          return;
+        }
+
+        setNombreVisible(result.data.perfil.nombre_visible || "");
+        setFotoPerfil(result.data.perfil.foto_perfil || "");
+        setBiografia(result.data.perfil.biografia || "");
+        setFechaNacimiento(result.data.perfil.fecha_nacimiento || "");
+      } catch (error) {
+        console.error("PROFILE_EDIT_LOAD_ERROR", error);
+
+        if (active) {
+          setError("No se pudo conectar con el servicio de usuarios.");
+        }
+      } finally {
+        if (active) {
+          setLoading(false);
+        }
+      }
+    }
+
+    loadProfile();
+
+    return () => {
+      active = false;
+    };
+  }, []);
+
+  function updateStoredUserName(nextName: string) {
+    const raw = localStorage.getItem("auth_user");
+
+    if (!raw) return;
+
+    try {
+      const parsed = JSON.parse(raw);
+      localStorage.setItem(
+        "auth_user",
+        JSON.stringify({
+          ...parsed,
+          nombre_visible: nextName,
+        })
+      );
+
+      window.dispatchEvent(new Event("auth-changed"));
+    } catch {
+      // No hacemos nada si el usuario local no se puede parsear.
+    }
+  }
+
+  async function submit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+
+    setSaving(true);
+    setError("");
+    setSuccessMessage("");
+
+    try {
+      const payload: {
+        nombre_visible?: string;
+        foto_perfil?: string;
+        biografia?: string;
+        fecha_nacimiento?: string;
+      } = {
+        nombre_visible: nombreVisible.trim(),
+        foto_perfil: fotoPerfil.trim(),
+        biografia: biografia.trim(),
+      };
+
+      if (fechaNacimiento) {
+        payload.fecha_nacimiento = fechaNacimiento;
+      }
+
+      const result = await updateProfile(payload);
+
+      if (!result.success) {
+        setError(
+          formatApiError(
+            result.errors,
+            result.message || "No se pudo actualizar el perfil."
+          )
+        );
+        return;
+      }
+
+      updateStoredUserName(nombreVisible.trim());
+      setSuccessMessage("Perfil actualizado correctamente.");
+    } catch (error) {
+      console.error("PROFILE_UPDATE_ERROR", error);
+      setError("No se pudo conectar con el servicio de usuarios.");
+    } finally {
+      setSaving(false);
+    }
+  }
+
   return (
     <RootShell active="home">
-      <FormPanel title="Editar perfil" subtitle="Actualiza tu informacion visible dentro de ROOTBLEND." button="Guardar cambios">
-        <ProfileHeader><Avatar $large>U</Avatar><GhostButton type="button">Cambiar foto</GhostButton></ProfileHeader>
-        <Label>Nombre de usuario</Label><Field><FiUser /><input defaultValue="usuario_123" /></Field>
-        <Label>Nombre visible</Label><Field><FiStar /><input defaultValue="Usuario 123" /></Field>
-        <Label>Biografia</Label><TextArea defaultValue="Amante de los videojuegos, la musica y las buenas charlas." />
-      </FormPanel>
+      <FormCard onSubmit={submit}>
+        <PageHeading>
+          <Eyebrow>Perfil real</Eyebrow>
+          <h1>Editar perfil</h1>
+          <p>
+            Actualiza tu informacion publica. Estos datos se guardan en
+            usuarios-service usando tu JWT.
+          </p>
+        </PageHeading>
+
+        {loading && (
+          <AlertPanel>
+            <FiRefreshCw />
+            <div>
+              <strong>Cargando perfil</strong>
+              <p>Consultando datos actuales del usuario.</p>
+            </div>
+          </AlertPanel>
+        )}
+
+        {error && (
+          <AlertPanel>
+            <FiAlertTriangle />
+            <div>
+              <strong>Error</strong>
+              <p>{error}</p>
+            </div>
+          </AlertPanel>
+        )}
+
+        {successMessage && (
+          <SuccessBox>
+            <FiCheckCircle /> {successMessage}
+          </SuccessBox>
+        )}
+
+        <ProfileHeader>
+          <Avatar $large>
+            {(nombreVisible || "U").slice(0, 1).toUpperCase()}
+          </Avatar>
+
+          <GhostButton type="button">
+            Vista previa de perfil
+          </GhostButton>
+        </ProfileHeader>
+
+        <Label>Nombre visible</Label>
+        <Field>
+          <FiUser />
+          <input
+            value={nombreVisible}
+            onChange={(event) => setNombreVisible(event.target.value)}
+            placeholder="Ejemplo: Denilson"
+          />
+        </Field>
+
+        <Label>URL o nombre de foto de perfil</Label>
+        <Field>
+          <FiFile />
+          <input
+            value={fotoPerfil}
+            onChange={(event) => setFotoPerfil(event.target.value)}
+            placeholder="https://... o archivo-perfil.png"
+          />
+        </Field>
+
+        <Label>Fecha de nacimiento</Label>
+        <Field>
+          <FiClock />
+          <input
+            type="date"
+            value={fechaNacimiento}
+            onChange={(event) => setFechaNacimiento(event.target.value)}
+          />
+        </Field>
+
+        <Label>Biografia</Label>
+        <TextArea
+          value={biografia}
+          onChange={(event) => setBiografia(event.target.value)}
+          placeholder="Cuentale a la comunidad quien eres..."
+        />
+
+        <ButtonRow>
+          <GhostButton type="button" onClick={() => navigate("/profile")}>
+            Cancelar
+          </GhostButton>
+
+          <PrimaryButton type="submit" disabled={saving || loading}>
+            <FiSave /> {saving ? "Guardando..." : "Guardar cambios"}
+          </PrimaryButton>
+        </ButtonRow>
+      </FormCard>
     </RootShell>
   );
 }
 
 export function SettingsPage() {
+  const [tema, setTema] = useState<"claro" | "oscuro">("oscuro");
+  const [idioma, setIdioma] = useState<"es" | "en">("es");
+  const [autoplay, setAutoplay] = useState(true);
+  const [recibirNotificaciones, setRecibirNotificaciones] = useState(true);
+
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
+
+  useEffect(() => {
+    let active = true;
+
+    async function loadPreferences() {
+      setLoading(true);
+      setError("");
+
+      try {
+        const result = await getPreferences();
+
+        if (!active) return;
+
+        if (!result.success || !result.data) {
+          setError(result.message || "No se pudieron cargar las preferencias.");
+          return;
+        }
+
+        const preferences = result.data.preferencias;
+
+        setTema(preferences.tema);
+        setIdioma(preferences.idioma);
+        setAutoplay(Boolean(preferences.autoplay));
+        setRecibirNotificaciones(Boolean(preferences.recibir_notificaciones));
+      } catch (error) {
+        console.error("PREFERENCES_LOAD_ERROR", error);
+
+        if (active) {
+          setError("No se pudo conectar con el servicio de usuarios.");
+        }
+      } finally {
+        if (active) {
+          setLoading(false);
+        }
+      }
+    }
+
+    loadPreferences();
+
+    return () => {
+      active = false;
+    };
+  }, []);
+
+  async function submit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+
+    setSaving(true);
+    setError("");
+    setSuccessMessage("");
+
+    try {
+      const result = await updatePreferences({
+        tema,
+        idioma,
+        autoplay,
+        recibir_notificaciones: recibirNotificaciones,
+      });
+
+      if (!result.success) {
+        setError(
+          formatApiError(
+            result.errors,
+            result.message || "No se pudieron actualizar las preferencias."
+          )
+        );
+        return;
+      }
+
+      setSuccessMessage("Preferencias actualizadas correctamente.");
+    } catch (error) {
+      console.error("PREFERENCES_UPDATE_ERROR", error);
+      setError("No se pudo conectar con el servicio de usuarios.");
+    } finally {
+      setSaving(false);
+    }
+  }
+
   return (
     <RootShell active="home">
-      <FormPanel title="Preferencias de cuenta" subtitle="Gestiona privacidad, idioma, reproduccion y notificaciones." button="Guardar preferencias">
-        <Tabs><FilterChip $active>Cuenta</FilterChip><FilterChip>Privacidad</FilterChip><FilterChip>Apariencia</FilterChip><FilterChip>Reproduccion</FilterChip></Tabs>
-        <Label>Tema</Label><Select defaultValue="Oscuro"><option>Oscuro</option><option>Claro</option></Select>
-        <Label>Idioma</Label><Select defaultValue="Espanol"><option>Espanol</option><option>English</option></Select>
-        <ToggleLine><span>Reproduccion automatica</span><input type="checkbox" defaultChecked /></ToggleLine>
-        <ToggleLine><span>Notificaciones por correo</span><input type="checkbox" defaultChecked /></ToggleLine>
-        <ToggleLine><span>Mostrar contenido +18</span><input type="checkbox" /></ToggleLine>
-      </FormPanel>
+      <FormCard onSubmit={submit}>
+        <PageHeading>
+          <Eyebrow>Preferencias reales</Eyebrow>
+          <h1>Configuración</h1>
+          <p>
+            Gestiona idioma, tema, reproducción automática y notificaciones.
+            Estos datos se guardan en usuarios-service usando tu JWT.
+          </p>
+        </PageHeading>
+
+        {loading && (
+          <AlertPanel>
+            <FiRefreshCw />
+            <div>
+              <strong>Cargando preferencias</strong>
+              <p>Consultando configuración real del usuario.</p>
+            </div>
+          </AlertPanel>
+        )}
+
+        {error && (
+          <AlertPanel>
+            <FiAlertTriangle />
+            <div>
+              <strong>Error</strong>
+              <p>{error}</p>
+            </div>
+          </AlertPanel>
+        )}
+
+        {successMessage && (
+          <SuccessBox>
+            <FiCheckCircle /> {successMessage}
+          </SuccessBox>
+        )}
+
+        <Tabs>
+          <FilterChip $active>Cuenta</FilterChip>
+          <FilterChip>Privacidad</FilterChip>
+          <FilterChip>Apariencia</FilterChip>
+          <FilterChip>Reproducción</FilterChip>
+        </Tabs>
+
+        <Label>Tema</Label>
+        <Select
+          value={tema}
+          onChange={(event) => setTema(event.target.value as "claro" | "oscuro")}
+          disabled={loading || saving}
+        >
+          <option value="oscuro">Oscuro</option>
+          <option value="claro">Claro</option>
+        </Select>
+
+        <Label>Idioma</Label>
+        <Select
+          value={idioma}
+          onChange={(event) => setIdioma(event.target.value as "es" | "en")}
+          disabled={loading || saving}
+        >
+          <option value="es">Español</option>
+          <option value="en">English</option>
+        </Select>
+
+        <ToggleLine>
+          <span>Reproducción automática</span>
+          <input
+            type="checkbox"
+            checked={autoplay}
+            disabled={loading || saving}
+            onChange={(event) => setAutoplay(event.target.checked)}
+          />
+        </ToggleLine>
+
+        <ToggleLine>
+          <span>Recibir notificaciones</span>
+          <input
+            type="checkbox"
+            checked={recibirNotificaciones}
+            disabled={loading || saving}
+            onChange={(event) => setRecibirNotificaciones(event.target.checked)}
+          />
+        </ToggleLine>
+
+        <ButtonRow>
+          <GhostLink to="/profile">Volver al perfil</GhostLink>
+
+          <PrimaryButton type="submit" disabled={loading || saving}>
+            <FiSave /> {saving ? "Guardando..." : "Guardar preferencias"}
+          </PrimaryButton>
+        </ButtonRow>
+      </FormCard>
     </RootShell>
   );
 }
 
 export function ChangePasswordPage() {
+  const [passwordActual, setPasswordActual] = useState("");
+  const [passwordNueva, setPasswordNueva] = useState("Rootblend2026");
+  const [confirmPassword, setConfirmPassword] = useState("Rootblend2026");
+
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
+
+  async function submit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+
+    if (!passwordActual.trim()) {
+      setError("Debes ingresar tu contraseña actual.");
+      return;
+    }
+
+    if (passwordNueva.length < 8) {
+      setError("La nueva contraseña debe tener al menos 8 caracteres.");
+      return;
+    }
+
+    if (passwordNueva !== confirmPassword) {
+      setError("La confirmación no coincide con la nueva contraseña.");
+      return;
+    }
+
+    setSaving(true);
+    setError("");
+    setSuccessMessage("");
+
+    try {
+      const result = await changePassword(passwordActual, passwordNueva);
+
+      if (!result.success) {
+        setError(
+          formatApiError(
+            result.errors,
+            result.message || "No se pudo cambiar la contraseña."
+          )
+        );
+        return;
+      }
+
+      setPasswordActual("");
+      setPasswordNueva("");
+      setConfirmPassword("");
+      setSuccessMessage("Contraseña actualizada correctamente.");
+    } catch (error) {
+      console.error("CHANGE_PASSWORD_ERROR", error);
+      setError("No se pudo conectar con el servicio de usuarios.");
+    } finally {
+      setSaving(false);
+    }
+  }
+
   return (
     <RootShell active="home">
-      <FormPanel title="Cambiar contrasena" subtitle="Usa una clave fuerte y distinta a tus claves anteriores." button="Actualizar contrasena">
-        <Label>Contrasena actual</Label><Field><FiLock /><input type="password" defaultValue="12345678" /></Field>
-        <Label>Nueva contrasena</Label><Field><FiLock /><input type="password" defaultValue="rootblend2026" /></Field>
-        <Label>Confirmar nueva contrasena</Label><Field><FiLock /><input type="password" defaultValue="rootblend2026" /></Field>
-      </FormPanel>
+      <FormCard onSubmit={submit}>
+        <PageHeading>
+          <Eyebrow>Seguridad real</Eyebrow>
+          <h1>Cambiar contraseña</h1>
+          <p>
+            Actualiza tu contraseña usando el servicio real de usuarios y tu JWT
+            activo.
+          </p>
+        </PageHeading>
+
+        {error && (
+          <AlertPanel>
+            <FiAlertTriangle />
+            <div>
+              <strong>Error</strong>
+              <p>{error}</p>
+            </div>
+          </AlertPanel>
+        )}
+
+        {successMessage && (
+          <SuccessBox>
+            <FiCheckCircle /> {successMessage}
+          </SuccessBox>
+        )}
+
+        <Label>Contraseña actual</Label>
+        <Field>
+          <FiLock />
+          <input
+            type="password"
+            value={passwordActual}
+            onChange={(event) => setPasswordActual(event.target.value)}
+            placeholder="Ingresa tu contraseña actual"
+          />
+        </Field>
+
+        <Label>Nueva contraseña</Label>
+        <Field>
+          <FiLock />
+          <input
+            type="password"
+            value={passwordNueva}
+            onChange={(event) => setPasswordNueva(event.target.value)}
+            placeholder="Ejemplo: Rootblend2026"
+          />
+        </Field>
+
+        <Label>Confirmar nueva contraseña</Label>
+        <Field>
+          <FiLock />
+          <input
+            type="password"
+            value={confirmPassword}
+            onChange={(event) => setConfirmPassword(event.target.value)}
+            placeholder="Repite la nueva contraseña"
+          />
+        </Field>
+
+        <ButtonRow>
+          <GhostLink to="/profile">Volver al perfil</GhostLink>
+
+          <PrimaryButton type="submit" disabled={saving}>
+            <FiSave /> {saving ? "Actualizando..." : "Actualizar contraseña"}
+          </PrimaryButton>
+        </ButtonRow>
+      </FormCard>
     </RootShell>
   );
 }
