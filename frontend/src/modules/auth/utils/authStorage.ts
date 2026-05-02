@@ -7,16 +7,13 @@ const ACCESS_TOKEN_KEYS = [
   "session_token",
 ];
 
-const REFRESH_TOKEN_KEYS = [
-  "refresh_token",
-  "refresh",
-];
+const REFRESH_TOKEN_KEYS = ["refresh_token", "refresh"];
 
 const AUTH_USER_KEYS = [
+  "auth_user",
   "user",
   "usuario",
   "currentUser",
-  "auth_user",
   "profile",
 ];
 
@@ -52,7 +49,9 @@ export function getStoredUser() {
   for (const key of AUTH_USER_KEYS) {
     const rawValue = localStorage.getItem(key) || sessionStorage.getItem(key);
 
-    if (!rawValue) continue;
+    if (!rawValue) {
+      continue;
+    }
 
     try {
       return JSON.parse(rawValue);

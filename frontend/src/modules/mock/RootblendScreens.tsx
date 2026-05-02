@@ -58,7 +58,12 @@ import {
   type StreamItem,
 } from "./rootblendMock";
 import { clearAuthStorage, getStoredUser, isAuthenticated } from "../auth/utils/authStorage";
-import { saveAuthSession } from "../auth/services/authService";
+import {
+  saveAuthSession,
+  loginUser,
+  registerUser,
+  logoutUser,
+} from "../auth/services/authService";
 
 type ShellProps = {
   active?: string;
@@ -101,6 +106,24 @@ function loginMock(email: string) {
       nombre_visible: visibleName,
     },
   });
+}
+
+function formatApiError(errors: unknown, fallback: string) {
+  if (!errors || typeof errors !== "object") {
+    return fallback;
+  }
+
+  const firstValue = Object.values(errors as Record<string, unknown>)[0];
+
+  if (Array.isArray(firstValue) && firstValue.length > 0) {
+    return String(firstValue[0]);
+  }
+
+  if (typeof firstValue === "string") {
+    return firstValue;
+  }
+
+  return fallback;
 }
 
 function getUserLabel() {
@@ -284,13 +307,14 @@ export function RootShell({ active = "home", children, rightPanel }: ShellProps)
                     </DropdownMenuLink>
                     <DropdownMenuLink
                       to="/"
-                      onClick={() => {
+                      onClick={async () => {
+                        await logoutUser();
                         clearAuthStorage();
                         setMenuOpen(false);
                         navigate("/");
                       }}
                     >
-                      <FiLogOut /> Cerrar sesion
+                      <FiLogOut /> Cerrar sesión
                     </DropdownMenuLink>
                   </DropdownPanel>
                 )}
@@ -1183,13 +1207,44 @@ export function PodcastDetailPage() {
 
 export function LoginPage() {
   const navigate = useNavigate();
-  const [email, setEmail] = useState("usuario_123@rootblend.dev");
-  const [password, setPassword] = useState("12345678");
 
-  function submit(event: FormEvent<HTMLFormElement>) {
+  const [email, setEmail] = useState("usuario_123@rootblend.dev");
+  const [password, setPassword] = useState("Rootblend2026");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+
+    setLoading(true);
+    setError("");
+
+    try {
+      const result = await loginUser(email, password);
+
+      if (!result.success || !result.data) {
+        setError(
+          formatApiError(
+            result.errors,
+            result.message || "No se pudo iniciar sesión."
+          )
+        );
+        return;
+      }
+
+      saveAuthSession(result.data);
+      navigate("/", { replace: true });
+    } catch (error) {
+      console.error("LOGIN_ERROR", error);
+      setError("No se pudo conectar con el servicio de usuarios.");
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  function demoLogin() {
     loginMock(email);
-    navigate("/");
+    navigate("/", { replace: true });
   }
 
   return (
@@ -1198,15 +1253,56 @@ export function LoginPage() {
         <BrandBlock>
           <img src={brandAssets.logo} alt="ROOTBLEND" />
           <h1>ROOT<span>BLEND</span></h1>
-          <p>Inicia sesion en tu cuenta</p>
+          <p>Inicia sesión en tu cuenta</p>
         </BrandBlock>
-        <Label>Correo electronico</Label>
-        <Field><FiMail /><input value={email} onChange={(event) => setEmail(event.target.value)} /></Field>
-        <Label>Contrasena</Label>
-        <Field><FiLock /><input type="password" value={password} onChange={(event) => setPassword(event.target.value)} /></Field>
-        <FormLine><label><input type="checkbox" /> Recordarme</label><Link to="/forgot-password">Olvidaste tu contrasena?</Link></FormLine>
-        <PrimaryButton type="submit">Iniciar sesion</PrimaryButton>
-        <Muted>¿No tienes cuenta? <Link to="/register">Registrate</Link></Muted>
+
+        <Label>Correo electrónico</Label>
+        <Field>
+          <FiMail />
+          <input
+            value={email}
+            onChange={(event) => setEmail(event.target.value)}
+          />
+        </Field>
+
+        <Label>Contraseña</Label>
+        <Field>
+          <FiLock />
+          <input
+            type="password"
+            value={password}
+            onChange={(event) => setPassword(event.target.value)}
+          />
+        </Field>
+
+        <FormLine>
+          <label>
+            <input type="checkbox" /> Recordarme
+          </label>
+          <Link to="/forgot-password">¿Olvidaste tu contraseña?</Link>
+        </FormLine>
+
+        {error && (
+          <AlertPanel>
+            <FiAlertTriangle />
+            <div>
+              <strong>Error de inicio de sesión</strong>
+              <p>{error}</p>
+            </div>
+          </AlertPanel>
+        )}
+
+        <PrimaryButton type="submit" disabled={loading}>
+          {loading ? "Conectando..." : "Iniciar sesión"}
+        </PrimaryButton>
+
+        <GhostButton type="button" onClick={demoLogin}>
+          Entrar en modo demo
+        </GhostButton>
+
+        <Muted>
+          ¿No tienes cuenta? <Link to="/register">Regístrate</Link>
+        </Muted>
       </AuthCard>
     </AuthScreen>
   );
@@ -1214,13 +1310,67 @@ export function LoginPage() {
 
 export function RegisterPage() {
   const navigate = useNavigate();
-  const [role, setRole] = useState("viewer");
 
-  function submit(event: FormEvent<HTMLFormElement>) {
+  const [email, setEmail] = useState("nuevo_usuario@rootblend.dev");
+  const [password, setPassword] = useState("Rootblend2026");
+  const [confirmPassword, setConfirmPassword] = useState("Rootblend2026");
+  const [role, setRole] = useState<"viewer" | "streamer" | "podcaster">("viewer");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    loginMock("nuevo_usuario@rootblend.dev");
-    localStorage.setItem("creator_role", role);
-    navigate("/");
+
+    if (password !== confirmPassword) {
+      setError("Las contraseñas no coinciden.");
+      return;
+    }
+
+    setLoading(true);
+    setError("");
+
+    try {
+      const result = await registerUser(email, password);
+
+      if (!result.success) {
+        setError(
+          formatApiError(
+            result.errors,
+            result.message || "No se pudo registrar el usuario."
+          )
+        );
+        return;
+      }
+
+      if (role === "streamer" || role === "podcaster") {
+        localStorage.setItem("creator_role", role);
+        window.dispatchEvent(new Event("creator-role-changed"));
+      }
+
+      const loginResult = await loginUser(email, password);
+
+      if (loginResult.success && loginResult.data) {
+        saveAuthSession(loginResult.data);
+
+        navigate(
+          role === "streamer"
+            ? "/creator/streamer"
+            : role === "podcaster"
+              ? "/creator/podcaster"
+              : "/",
+          { replace: true }
+        );
+
+        return;
+      }
+
+      navigate("/login", { replace: true });
+    } catch (error) {
+      console.error("REGISTER_ERROR", error);
+      setError("No se pudo conectar con el servicio de usuarios.");
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
@@ -1229,21 +1379,81 @@ export function RegisterPage() {
         <BrandBlock>
           <img src={brandAssets.logo} alt="ROOTBLEND" />
           <h1>Crea tu cuenta</h1>
-          <p>Unete a la comunidad de ROOTBLEND</p>
+          <p>Únete a la comunidad de ROOTBLEND</p>
         </BrandBlock>
-        <Label>Nombre de usuario</Label>
-        <Field><FiUser /><input defaultValue="usuario_123" /></Field>
-        <Label>Correo electronico</Label>
-        <Field><FiMail /><input defaultValue="ejemplo@correo.com" /></Field>
-        <Label>Contrasena</Label>
-        <Field><FiLock /><input type="password" defaultValue="12345678" /></Field>
+
+        <Label>Correo electrónico</Label>
+        <Field>
+          <FiMail />
+          <input
+            value={email}
+            onChange={(event) => setEmail(event.target.value)}
+          />
+        </Field>
+
+        <Label>Contraseña</Label>
+        <Field>
+          <FiLock />
+          <input
+            type="password"
+            value={password}
+            onChange={(event) => setPassword(event.target.value)}
+          />
+        </Field>
+
+        <Label>Confirmar contraseña</Label>
+        <Field>
+          <FiLock />
+          <input
+            type="password"
+            value={confirmPassword}
+            onChange={(event) => setConfirmPassword(event.target.value)}
+          />
+        </Field>
+
         <ChoiceGrid>
-          <ChoiceButton type="button" $active={role === "viewer"} onClick={() => setRole("viewer")}>Viewer</ChoiceButton>
-          <ChoiceButton type="button" $active={role === "streamer"} onClick={() => setRole("streamer")}>Streamer</ChoiceButton>
-          <ChoiceButton type="button" $active={role === "podcaster"} onClick={() => setRole("podcaster")}>Podcaster</ChoiceButton>
+          <ChoiceButton
+            type="button"
+            $active={role === "viewer"}
+            onClick={() => setRole("viewer")}
+          >
+            Viewer
+          </ChoiceButton>
+
+          <ChoiceButton
+            type="button"
+            $active={role === "streamer"}
+            onClick={() => setRole("streamer")}
+          >
+            Streamer
+          </ChoiceButton>
+
+          <ChoiceButton
+            type="button"
+            $active={role === "podcaster"}
+            onClick={() => setRole("podcaster")}
+          >
+            Podcaster
+          </ChoiceButton>
         </ChoiceGrid>
-        <PrimaryButton type="submit">Crear cuenta</PrimaryButton>
-        <Muted>¿Ya tienes cuenta? <Link to="/login">Iniciar sesion</Link></Muted>
+
+        {error && (
+          <AlertPanel>
+            <FiAlertTriangle />
+            <div>
+              <strong>Error de registro</strong>
+              <p>{error}</p>
+            </div>
+          </AlertPanel>
+        )}
+
+        <PrimaryButton type="submit" disabled={loading}>
+          {loading ? "Creando cuenta..." : "Crear cuenta"}
+        </PrimaryButton>
+
+        <Muted>
+          ¿Ya tienes cuenta? <Link to="/login">Iniciar sesión</Link>
+        </Muted>
       </AuthCard>
     </AuthScreen>
   );
@@ -1661,13 +1871,25 @@ export function PodcasterDashboardPage() {
         <StatCard label="Duracion promedio" value="48m 32s" trend="+6%" />
       </MetricGrid>
       <QuickActions>
-      <QuickActions>
-        <PrimaryLink to="/creator/podcaster/create-podcast"><FiPlus /> Crear podcast</PrimaryLink>
-        <GhostLink to="/creator/podcaster/episodes/new"><FiUpload /> Subir episodio</GhostLink>
-        <GhostLink to="/creator/podcaster/episodes"><FiHeadphones /> Episodios</GhostLink>
-        <GhostLink to="/creator/podcaster/stats"><FiActivity /> Estadisticas</GhostLink>
-        <GhostLink to="/creator/podcaster/history"><FiClock /> Historial</GhostLink>
-      </QuickActions>
+        <PrimaryLink to="/creator/podcaster/create-podcast">
+          <FiPlus /> Crear podcast
+        </PrimaryLink>
+
+        <GhostLink to="/creator/podcaster/episodes/new">
+          <FiUpload /> Subir episodio
+        </GhostLink>
+
+        <GhostLink to="/creator/podcaster/episodes">
+          <FiHeadphones /> Episodios
+        </GhostLink>
+
+        <GhostLink to="/creator/podcaster/stats">
+          <FiActivity /> Estadisticas
+        </GhostLink>
+
+        <GhostLink to="/creator/podcaster/history">
+          <FiClock /> Historial
+        </GhostLink>
       </QuickActions>
     </CreatorScreen>
   );
