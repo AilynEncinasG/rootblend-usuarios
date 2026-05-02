@@ -1,8 +1,14 @@
+import json
+
+from django.conf import settings
+from django.core.mail import send_mail
 from django.views import View
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
+
 from apps.common.auth import get_authenticated_user
 from apps.common.responses import success_response, error_response
+
 from .serializers import (
     RegisterSerializer,
     LoginSerializer,
@@ -10,6 +16,7 @@ from .serializers import (
     ForgotPasswordSerializer,
     ResetPasswordSerializer,
 )
+
 from .services import (
     register_user,
     login_user,
@@ -19,7 +26,6 @@ from .services import (
     reset_password,
     refresh_access_token,
 )
-import json
 
 
 @method_decorator(csrf_exempt, name="dispatch")
@@ -99,7 +105,7 @@ class LoginView(View):
                     "id_usuario": usuario.id_usuario,
                     "correo": usuario.correo,
                     "estado": usuario.estado,
-                }
+                },
             },
             status=200,
         )
@@ -232,18 +238,49 @@ class ForgotPasswordView(View):
         recuperacion, errors = forgot_password(correo=correo)
 
         if errors:
+            # Respuesta genérica para no revelar si un correo existe o no.
+            return success_response(
+                message="Si el correo existe, enviamos instrucciones de recuperacion.",
+                data={},
+                status=200,
+            )
+
+        reset_link = f"{settings.FRONTEND_URL}/reset-password?token={recuperacion.token}"
+
+        subject = "Recupera tu contraseña - ROOTBLEND"
+
+        message = f"""
+Hola,
+
+Recibimos una solicitud para restablecer tu contraseña en ROOTBLEND.
+
+Haz clic en este enlace para crear una nueva contraseña:
+
+{reset_link}
+
+Si no solicitaste este cambio, puedes ignorar este correo.
+
+Este enlace expira por seguridad.
+"""
+
+        try:
+            send_mail(
+                subject,
+                message,
+                settings.DEFAULT_FROM_EMAIL,
+                [recuperacion.usuario.correo],
+                fail_silently=False,
+            )
+        except Exception as exc:
             return error_response(
-                message="No se pudo iniciar la recuperacion de contraseña.",
-                errors=errors,
-                status=400,
+                message="No se pudo enviar el correo de recuperacion.",
+                errors={"email": [str(exc)]},
+                status=500,
             )
 
         return success_response(
-            message="Solicitud de recuperacion creada correctamente.",
-            data={
-                "token_recuperacion": recuperacion.token,
-                "expiracion": recuperacion.expiracion.isoformat(),
-            },
+            message="Si el correo existe, enviamos instrucciones de recuperacion.",
+            data={},
             status=200,
         )
 
