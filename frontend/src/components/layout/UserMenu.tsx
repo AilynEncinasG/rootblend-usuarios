@@ -21,6 +21,9 @@ import {
   getStoredUser,
   isAuthenticated,
 } from "../../modules/auth/utils/authStorage";
+import { getMyChannel, type Canal } from "../../modules/streams/services/streamsService";
+
+type CreatorRole = "streamer" | "podcaster";
 
 const MenuWrapper = styled.div`
   position: relative;
@@ -167,35 +170,30 @@ const LogoutButton = styled.button`
   }
 `;
 
-function getCreatorRole() {
-  return localStorage.getItem("creator_role");
+function getChannelRole(channel?: Canal | null): CreatorRole | null {
+  const role = channel?.tipo_canal?.nombre_tipo;
+  return role === "streamer" || role === "podcaster" ? role : null;
 }
 
-function getCreatorPanelPath() {
-  const role = getCreatorRole();
-
-  if (role === "podcaster") {
-    return "/creator/podcaster";
+function syncCreatorRole(role: CreatorRole | null) {
+  if (role) {
+    localStorage.setItem("creator_role", role);
+  } else {
+    localStorage.removeItem("creator_role");
   }
 
-  if (role === "streamer") {
-    return "/creator/streamer";
-  }
+  window.dispatchEvent(new Event("creator-role-changed"));
+}
 
+function getCreatorPanelPath(role: CreatorRole | null) {
+  if (role === "podcaster") return "/creator/podcaster";
+  if (role === "streamer") return "/creator/streamer";
   return "/creator/activate";
 }
 
-function getCreatorLabel() {
-  const role = getCreatorRole();
-
-  if (role === "podcaster") {
-    return "Panel podcaster";
-  }
-
-  if (role === "streamer") {
-    return "Panel streamer";
-  }
-
+function getCreatorLabel(role: CreatorRole | null) {
+  if (role === "podcaster") return "Panel podcaster";
+  if (role === "streamer") return "Panel streamer";
   return "Activar canal";
 }
 
@@ -205,7 +203,8 @@ export default function UserMenu() {
 
   const [open, setOpen] = useState(false);
   const [loggedIn, setLoggedIn] = useState(isAuthenticated());
-  const [creatorRole, setCreatorRole] = useState(getCreatorRole());
+  const [creatorRole, setCreatorRole] = useState<CreatorRole | null>(null);
+  const [channelName, setChannelName] = useState("");
 
   const user = loggedIn ? getStoredUser() : null;
 
@@ -219,14 +218,39 @@ export default function UserMenu() {
   const email = user?.correo || user?.email || "Cuenta ROOTBLEND";
   const initial = String(displayName).charAt(0).toUpperCase();
 
+  async function loadCreatorState() {
+    if (!isAuthenticated()) {
+      setCreatorRole(null);
+      setChannelName("");
+      return;
+    }
+
+    try {
+      const result = await getMyChannel();
+      const role = getChannelRole(result.canal);
+      syncCreatorRole(role);
+      setCreatorRole(role);
+      setChannelName(result.canal?.nombre_canal || "");
+    } catch (error) {
+      console.error("USER_MENU_CHANNEL_ERROR", error);
+      syncCreatorRole(null);
+      setCreatorRole(null);
+      setChannelName("");
+    }
+  }
+
   function refreshAuthState() {
     const sessionState = isAuthenticated();
     setLoggedIn(sessionState);
-    setCreatorRole(getCreatorRole());
 
     if (!sessionState) {
       setOpen(false);
+      setCreatorRole(null);
+      setChannelName("");
+      return;
     }
+
+    void loadCreatorState();
   }
 
   function closeMenu() {
@@ -238,16 +262,14 @@ export default function UserMenu() {
     localStorage.removeItem("creator_role");
     setLoggedIn(false);
     setOpen(false);
-
+    setCreatorRole(null);
+    setChannelName("");
     navigate("/", { replace: true });
   }
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
-      if (
-        wrapperRef.current &&
-        !wrapperRef.current.contains(event.target as Node)
-      ) {
+      if (wrapperRef.current && !wrapperRef.current.contains(event.target as Node)) {
         setOpen(false);
       }
     }
@@ -255,6 +277,8 @@ export default function UserMenu() {
     function handleStorageChange() {
       refreshAuthState();
     }
+
+    refreshAuthState();
 
     window.addEventListener("storage", handleStorageChange);
     window.addEventListener("auth-changed", handleStorageChange);
@@ -269,9 +293,7 @@ export default function UserMenu() {
     };
   }, []);
 
-  if (!loggedIn) {
-    return null;
-  }
+  if (!loggedIn) return null;
 
   return (
     <MenuWrapper ref={wrapperRef}>
@@ -289,7 +311,6 @@ export default function UserMenu() {
         <Dropdown>
           <UserHeader>
             <HeaderAvatar>{initial}</HeaderAvatar>
-
             <UserInfo>
               <strong>{displayName}</strong>
               <span>{email}</span>
@@ -300,9 +321,9 @@ export default function UserMenu() {
             Canal activo:{" "}
             <strong>
               {creatorRole === "streamer"
-                ? "Streamer"
+                ? `Streamer${channelName ? ` - ${channelName}` : ""}`
                 : creatorRole === "podcaster"
-                  ? "Podcaster"
+                  ? `Podcaster${channelName ? ` - ${channelName}` : ""}`
                   : "Sin canal"}
             </strong>
             <br />
@@ -312,73 +333,38 @@ export default function UserMenu() {
           <MenuList>
             <MenuSectionTitle>Principal</MenuSectionTitle>
 
-            <MenuLink to="/" onClick={closeMenu}>
-              <FiHome />
-              Inicio
-            </MenuLink>
-
-            <MenuLink to="/profile" onClick={closeMenu}>
-              <FiUser />
-              Ver mi perfil
-            </MenuLink>
-
-            <MenuLink to="/notifications" onClick={closeMenu}>
-              <FiBell />
-              Notificaciones
-            </MenuLink>
-
-            <MenuLink to="/following" onClick={closeMenu}>
-              <FiHeart />
-              Seguidos
-            </MenuLink>
-
-            <MenuLink to="/subscriptions" onClick={closeMenu}>
-              <FiCreditCard />
-              Suscripciones
-            </MenuLink>
+            <MenuLink to="/" onClick={closeMenu}><FiHome />Inicio</MenuLink>
+            <MenuLink to="/profile" onClick={closeMenu}><FiUser />Ver mi perfil</MenuLink>
+            <MenuLink to="/notifications" onClick={closeMenu}><FiBell />Notificaciones</MenuLink>
+            <MenuLink to="/following" onClick={closeMenu}><FiHeart />Seguidos</MenuLink>
+            <MenuLink to="/subscriptions" onClick={closeMenu}><FiCreditCard />Suscripciones</MenuLink>
 
             <MenuSectionTitle>Creador</MenuSectionTitle>
 
-            <MenuLink to={getCreatorPanelPath()} onClick={closeMenu}>
+            <MenuLink to={getCreatorPanelPath(creatorRole)} onClick={closeMenu}>
               {creatorRole === "podcaster" ? <FiMic /> : <FiRadio />}
-              {getCreatorLabel()}
+              {getCreatorLabel(creatorRole)}
             </MenuLink>
 
-            <MenuLink to="/stats" onClick={closeMenu}>
-              <FiActivity />
-              Estadísticas
-            </MenuLink>
+            <MenuLink to="/stats" onClick={closeMenu}><FiActivity />Estadisticas</MenuLink>
 
             {creatorRole === "streamer" && (
               <MenuLink to="/moderation/moderators" onClick={closeMenu}>
-                <FiShield />
-                Moderadores de mi chat
+                <FiShield />Moderadores de mi chat
               </MenuLink>
             )}
 
             {!creatorRole && (
               <MenuLink to="/creator/activate" onClick={closeMenu}>
-                <FiGrid />
-                Activar canal de creador
+                <FiGrid />Activar canal de creador
               </MenuLink>
             )}
 
             <MenuSectionTitle>Cuenta</MenuSectionTitle>
+            <MenuLink to="/settings" onClick={closeMenu}><FiSettings />Configuracion</MenuLink>
+            <MenuLink to="/change-password" onClick={closeMenu}><FiLock />Cambiar contrasena</MenuLink>
 
-            <MenuLink to="/settings" onClick={closeMenu}>
-              <FiSettings />
-              Configuración
-            </MenuLink>
-
-            <MenuLink to="/change-password" onClick={closeMenu}>
-              <FiLock />
-              Cambiar contraseña
-            </MenuLink>
-
-            <LogoutButton type="button" onClick={handleLogout}>
-              <FiLogOut />
-              Cerrar sesión
-            </LogoutButton>
+            <LogoutButton type="button" onClick={handleLogout}><FiLogOut />Cerrar sesion</LogoutButton>
           </MenuList>
         </Dropdown>
       )}

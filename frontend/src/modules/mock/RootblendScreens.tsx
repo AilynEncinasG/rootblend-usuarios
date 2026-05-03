@@ -53,6 +53,7 @@ import {
   serviceStatuses,
   stats,
   streams,
+  type Category,
   type ChatMessage,
   type PodcastItem,
   type StreamItem,
@@ -73,7 +74,21 @@ import {
   getPreferences,
   updatePreferences,
 } from "../../services/userService";
-
+import {
+  getLiveStreams,
+  getFeaturedStreams,
+  getCategories as getBackendCategories,
+  getChannels as getBackendChannels,
+  getStreamById,
+  getMyChannel,
+  activateChannel,
+  createStream,
+  startStream,
+  finishStream,
+  type Stream as BackendStream,
+  type Categoria as BackendCategory,
+  type Canal as BackendCanal,
+} from "../streams/services/streamsService";
 type ShellProps = {
   active?: string;
   children: ReactNode;
@@ -133,6 +148,71 @@ function formatApiError(errors: unknown, fallback: string) {
   }
 
   return fallback;
+}
+
+function getInitials(value: string) {
+  const clean = value.trim();
+
+  if (!clean) {
+    return "RB";
+  }
+
+  const parts = clean.split(/\s+/);
+
+  if (parts.length === 1) {
+    return parts[0].slice(0, 2).toUpperCase();
+  }
+
+  return `${parts[0][0]}${parts[1][0]}`.toUpperCase();
+}
+
+function backendStreamToCard(stream: BackendStream): StreamItem {
+  return {
+    id: String(stream.id_stream),
+    title: stream.titulo,
+    channel: stream.canal.nombre_canal,
+    handle: `@${stream.canal.nombre_canal.toLowerCase().replace(/\s+/g, "")}`,
+    category: stream.categoria.nombre,
+    viewers: "0",
+    avatar: getInitials(stream.canal.nombre_canal),
+    image: brandAssets.streamView,
+    tags: [
+      stream.categoria.nombre,
+      stream.configuracion?.resolucion || "720p",
+      stream.estado === "en_vivo" ? "En vivo" : stream.estado,
+    ],
+    description:
+      stream.descripcion ||
+      "Este stream todavía no tiene descripción configurada.",
+  };
+}
+
+function backendCategoryToCard(
+  category: BackendCategory,
+  liveStreams: StreamItem[]
+): Category {
+  const activeCount = liveStreams.filter(
+    (stream) => stream.category === category.nombre
+  ).length;
+
+  return {
+    id: String(category.id_categoria),
+    name: category.nombre,
+    icon: "grid",
+    viewers: String(activeCount),
+    color: "#00e5ff",
+    image: brandAssets.categoriesView,
+  };
+}
+
+function backendChannelToCard(channel: BackendCanal) {
+  return {
+    name: channel.nombre_canal,
+    subtitle: channel.tipo_canal.nombre_tipo,
+    viewers: "0",
+    avatar: getInitials(channel.nombre_canal),
+    id: String(channel.id_canal),
+  };
 }
 
 function getUserLabel() {
@@ -634,28 +714,40 @@ function StatCard({ label, value, trend }: { label: string; value: string; trend
   );
 }
 
-function DemoRightPanel() {
+function DemoRightPanel({ liveStreams = [] }: { liveStreams?: StreamItem[] }) {
   return (
     <SidePanel>
       <PanelHeader>
         <strong>Ahora en vivo</strong>
         <Link to="/streams">Ver todos</Link>
       </PanelHeader>
-      {streams.slice(0, 4).map((stream) => (
-        <SideListItem key={stream.id} to={`/streams/${stream.id}`}>
-          <Avatar>{stream.avatar}</Avatar>
-          <span>{stream.channel}</span>
-          <small>{stream.viewers}</small>
-        </SideListItem>
-      ))}
+
+      {liveStreams.length === 0 ? (
+        <EmptyPanel
+          icon={<FiWifiOff />}
+          title="Sin directos"
+          text="Cuando un streamer inicie transmisión, aparecerá aquí."
+        />
+      ) : (
+        liveStreams.slice(0, 4).map((stream) => (
+          <SideListItem key={stream.id} to={`/streams/${stream.id}`}>
+            <Avatar>{stream.avatar}</Avatar>
+            <span>{stream.channel}</span>
+            <small>{stream.viewers}</small>
+          </SideListItem>
+        ))
+      )}
+
       <Divider />
+
       <PanelHeader>
-        <strong>Estado demo</strong>
+        <strong>Estado del sistema</strong>
         <Link to="/system-status">Abrir</Link>
       </PanelHeader>
-      <ServicePill $status="Degradado">
-        <FiAlertTriangle />
-        estadisticas-service degradado
+
+      <ServicePill $status="Operativo">
+        <FiCheckCircle />
+        canales-streaming-service conectado
       </ServicePill>
     </SidePanel>
   );
@@ -664,89 +756,237 @@ function DemoRightPanel() {
 export function HomePage() {
   const loggedIn = isAuthenticated();
 
+  const [liveStreams, setLiveStreams] = useState<StreamItem[]>([]);
+  const [featuredStreams, setFeaturedStreams] = useState<StreamItem[]>([]);
+  const [backendCategories, setBackendCategories] = useState<Category[]>([]);
+  const [backendChannels, setBackendChannels] = useState<
+    ReturnType<typeof backendChannelToCard>[]
+  >([]);
+
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    let active = true;
+
+    async function loadHomeData() {
+      setLoading(true);
+      setError("");
+
+      try {
+        const [live, featured, categoriesResult, channelsResult] =
+          await Promise.all([
+            getLiveStreams(),
+            getFeaturedStreams(),
+            getBackendCategories(),
+            getBackendChannels(),
+          ]);
+
+        if (!active) return;
+
+        const liveCards = live.map(backendStreamToCard);
+
+        setLiveStreams(liveCards);
+        setFeaturedStreams(featured.map(backendStreamToCard));
+        setBackendCategories(
+          categoriesResult.map((category) =>
+            backendCategoryToCard(category, liveCards)
+          )
+        );
+        setBackendChannels(channelsResult.map(backendChannelToCard));
+      } catch (error) {
+        console.error("HOME_STREAMS_LOAD_ERROR", error);
+
+        if (active) {
+          setError(
+            "No se pudo conectar con canales-streaming-service. Revisa el gateway o el servicio de canales."
+          );
+        }
+      } finally {
+        if (active) {
+          setLoading(false);
+        }
+      }
+    }
+
+    loadHomeData();
+
+    return () => {
+      active = false;
+    };
+  }, []);
+
+  const heroStream = liveStreams[0];
   return (
-    <RootShell active="home" rightPanel={loggedIn ? <DemoRightPanel /> : undefined}>
+    <RootShell
+      active="home"
+      rightPanel={loggedIn ? <DemoRightPanel liveStreams={liveStreams} /> : undefined}
+    >
+      {error && (
+        <AlertPanel>
+          <FiAlertTriangle />
+          <div>
+            <strong>Servicio de canales no disponible</strong>
+            <p>{error}</p>
+          </div>
+        </AlertPanel>
+      )}
+
       <HeroGrid>
         <HeroCopy>
-          <Eyebrow>{loggedIn ? "Home logueado" : "ROOTBLEND"}</Eyebrow>
+          <Eyebrow>{loggedIn ? "Home logueado" : "MEZCLA DE RAÍCES"}</Eyebrow>
           <h1>
             Explora transmisiones <span>en vivo</span>
           </h1>
           <p>
-            Descubre streams, canales y podcasts de creadores increibles en todo
-            tipo de categorias.
+            Descubre streams, canales y podcasts de creadores reales registrados
+            en la plataforma.
           </p>
+
           <ButtonRow>
             <PrimaryLink to="/streams">
               Explorar en vivo <FiPlay />
             </PrimaryLink>
+
             <GhostLink to="/podcasts">
-              <FiHeadphones /> Explorar podcasts
+              <FiHeadphones /> Podcasts de explorar
             </GhostLink>
           </ButtonRow>
         </HeroCopy>
+
         <HeroMedia $image={brandAssets.publicHome}>
           <FeaturedFlag>DESTACADO</FeaturedFlag>
+
           <HeroOverlay>
-            <LiveBadge>EN VIVO</LiveBadge>
-            <h3>Cyberpunk 2077: Phantom Liberty</h3>
-            <p>PixelNate - 5.2K espectadores</p>
+            {heroStream ? (
+              <>
+                <LiveBadge>EN VIVO</LiveBadge>
+                <h3>{heroStream.title}</h3>
+                <p>{heroStream.channel}</p>
+              </>
+            ) : (
+              <>
+                <h3>No hay transmisiones en vivo</h3>
+                <p>Cuando un streamer inicie directo, aparecerá aquí.</p>
+              </>
+            )}
           </HeroOverlay>
         </HeroMedia>
       </HeroGrid>
 
+      {loading && (
+        <AlertPanel>
+          <FiRefreshCw />
+          <div>
+            <strong>Cargando streams</strong>
+            <p>Consultando canales-streaming-service.</p>
+          </div>
+        </AlertPanel>
+      )}
+
       <FilterRow>
-        {["Todas", "Juego de azar", "Just Chatting", "Videojuegos", "Musica", "Deportes", "Tecnologia", "Podcasts"].map((item, index) => (
-          <FilterChip key={item} $active={index === 0}>{item}</FilterChip>
+        <FilterChip $active>Todas</FilterChip>
+        {backendCategories.map((category) => (
+          <FilterChip key={category.id}>{category.name}</FilterChip>
         ))}
       </FilterRow>
 
-      <Section title="Transmisiones en vivo" action={<TextLink to="/streams">Ver todas</TextLink>}>
-        <CardGrid>
-          {streams.map((stream) => (
-            <StreamCard key={stream.id} stream={stream} />
-          ))}
-        </CardGrid>
+      <Section
+        title="Transmisiones en vivo"
+        action={<TextLink to="/streams">Ver todas</TextLink>}
+      >
+        {liveStreams.length === 0 ? (
+          <EmptyPanel
+            icon={<FiWifiOff />}
+            title="No hay streams en vivo"
+            text="Todavía ningún streamer inició transmisión. Puedes explorar categorías o podcasts mientras tanto."
+          />
+        ) : (
+          <CardGrid>
+            {liveStreams.map((stream) => (
+              <StreamCard key={stream.id} stream={stream} />
+            ))}
+          </CardGrid>
+        )}
       </Section>
 
-      <Section title="Streams destacados" action={<TextLink to="/streams">Explorar</TextLink>}>
-        <CardGrid>
-          {streams.slice(0, 3).map((stream) => (
-            <StreamCard key={`featured-${stream.id}`} stream={stream} />
-          ))}
-        </CardGrid>
+      <Section
+        title="Transmisiones destacadas"
+        action={<TextLink to="/streams">Explorar</TextLink>}
+      >
+        {featuredStreams.length === 0 ? (
+          <EmptyPanel
+            icon={<FiStar />}
+            title="No hay transmisiones destacadas"
+            text="Cuando un creador marque un stream como destacado, aparecerá en esta sección."
+          />
+        ) : (
+          <CardGrid>
+            {featuredStreams.map((stream) => (
+              <StreamCard key={`featured-${stream.id}`} stream={stream} />
+            ))}
+          </CardGrid>
+        )}
       </Section>
 
-      <Section title="Canales recomendados" action={<TextLink to="/channels/cyberpunk-2077">Ver canal</TextLink>}>
-        <PodcastGrid>
-          {recommendedChannels.map((channel, index) => {
-            const stream = streams[index % streams.length];
-            return (
-              <PodcastTile key={channel.name} to={`/channels/${stream.id}`}>
+      <Section
+        title="Canales registrados"
+        action={<TextLink to="/channels/1">Ver canal</TextLink>}
+      >
+        {backendChannels.length === 0 ? (
+          <EmptyPanel
+            icon={<FiUsers />}
+            title="No hay canales creados"
+            text="Los canales aparecerán aquí cuando los usuarios activen su canal de creador."
+          />
+        ) : (
+          <PodcastGrid>
+            {backendChannels.map((channel) => (
+              <PodcastTile key={channel.id} to={`/channels/${channel.id}`}>
                 <Avatar>{channel.avatar}</Avatar>
+
                 <div>
                   <CardTitle>{channel.name}</CardTitle>
-                  <Muted>{channel.subtitle} - {channel.viewers} espectadores</Muted>
+                  <Muted>{channel.subtitle}</Muted>
                 </div>
+
                 <FiArrowRight />
               </PodcastTile>
-            );
-          })}
-        </PodcastGrid>
+            ))}
+          </PodcastGrid>
+        )}
       </Section>
 
-      <Section title="Categorias populares" action={<TextLink to="/categories">Ver todas</TextLink>}>
-        <CategoryGrid>
-          {categories.slice(0, 4).map((category) => (
-            <CategoryCard key={category.id} to={`/streams?category=${encodeURIComponent(category.name)}`} $image={category.image}>
-              <span>{category.name}</span>
-              <small>{category.viewers} espectadores activos</small>
-            </CategoryCard>
-          ))}
-        </CategoryGrid>
+      <Section
+        title="Categorías"
+        action={<TextLink to="/categories">Ver todas</TextLink>}
+      >
+        {backendCategories.length === 0 ? (
+          <EmptyPanel
+            icon={<FiGrid />}
+            title="No hay categorías"
+            text="Aún no hay categorías registradas en canales-streaming-service."
+          />
+        ) : (
+          <CategoryGrid>
+            {backendCategories.slice(0, 4).map((category) => (
+              <CategoryCard
+                key={category.id}
+                to={`/streams?category=${encodeURIComponent(category.name)}`}
+                $image={category.image}
+              >
+                <span>{category.name}</span>
+                <small>{category.viewers} streams activos</small>
+              </CategoryCard>
+            ))}
+          </CategoryGrid>
+        )}
       </Section>
 
-      <Section title="Podcasts destacados" action={<TextLink to="/podcasts">Ver todos</TextLink>}>
+      <Section
+        title="Podcasts destacados"
+        action={<TextLink to="/podcasts">Ver todos</TextLink>}
+      >
         <PodcastGrid>
           {podcasts.map((podcast) => (
             <PodcastCard key={podcast.id} podcast={podcast} />
@@ -755,9 +995,23 @@ export function HomePage() {
       </Section>
 
       <FeatureStrip>
-        <FeatureItem><FiZap /> <span>En vivo 24/7</span><small>Siempre hay algo increible pasando.</small></FeatureItem>
-        <FeatureItem><FiUsers /> <span>Comunidad global</span><small>Conecta, chatea y forma parte.</small></FeatureItem>
-        <FeatureItem><FiStar /> <span>Apoya a creadores</span><small>Suscribete y se parte del crecimiento.</small></FeatureItem>
+        <FeatureItem>
+          <FiZap />
+          <span>En vivo cuando existan directos</span>
+          <small>Los directos dependen del backend real.</small>
+        </FeatureItem>
+
+        <FeatureItem>
+          <FiUsers />
+          <span>Canales reales</span>
+          <small>Solo aparecen canales creados por usuarios.</small>
+        </FeatureItem>
+
+        <FeatureItem>
+          <FiStar />
+          <span>Arquitectura distribuida</span>
+          <small>Frontend consume servicios por gateway.</small>
+        </FeatureItem>
       </FeatureStrip>
     </RootShell>
   );
@@ -765,82 +1019,230 @@ export function HomePage() {
 
 export function ExploreStreamsPage() {
   const [params] = useSearchParams();
+
   const initialCategory = params.get("category") || "Todos";
+
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState(initialCategory);
-  const [visibleCount, setVisibleCount] = useState(12);
-  const repeatedStreams = [...streams, ...streams, ...streams].map((stream, index) => ({
-    ...stream,
-    id: `${stream.id}-${index}`,
-  }));
+  const [liveStreams, setLiveStreams] = useState<StreamItem[]>([]);
+  const [backendCategories, setBackendCategories] = useState<Category[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    let active = true;
+
+    async function loadStreams() {
+      setLoading(true);
+      setError("");
+
+      try {
+        const [live, categoriesResult] = await Promise.all([
+          getLiveStreams(),
+          getBackendCategories(),
+        ]);
+
+        if (!active) return;
+
+        const liveCards = live.map(backendStreamToCard);
+
+        setLiveStreams(liveCards);
+        setBackendCategories(
+          categoriesResult.map((item) => backendCategoryToCard(item, liveCards))
+        );
+      } catch (error) {
+        console.error("EXPLORE_STREAMS_LOAD_ERROR", error);
+
+        if (active) {
+          setError("No se pudieron cargar las transmisiones reales.");
+        }
+      } finally {
+        if (active) {
+          setLoading(false);
+        }
+      }
+    }
+
+    loadStreams();
+
+    return () => {
+      active = false;
+    };
+  }, []);
 
   const filtered = useMemo(() => {
-    return repeatedStreams.filter((stream) => {
+    return liveStreams.filter((stream) => {
       const text = `${stream.title} ${stream.channel} ${stream.category}`.toLowerCase();
       const bySearch = text.includes(search.toLowerCase());
       const byCategory = category === "Todos" || stream.category === category;
+
       return bySearch && byCategory;
     });
-  }, [category, repeatedStreams, search]);
+  }, [category, liveStreams, search]);
 
   return (
     <RootShell active="streams">
       <PageHeading>
         <Eyebrow>Explorar</Eyebrow>
         <h1>Explorar transmisiones en vivo</h1>
-        <p>Busca por categoria, streamer o titulo y entra a cualquier directo.</p>
+        <p>
+          Esta sección ahora muestra únicamente streams reales con estado en vivo.
+        </p>
       </PageHeading>
+
+      {error && (
+        <AlertPanel>
+          <FiAlertTriangle />
+          <div>
+            <strong>Error al cargar streams</strong>
+            <p>{error}</p>
+          </div>
+        </AlertPanel>
+      )}
+
+      {loading && (
+        <AlertPanel>
+          <FiRefreshCw />
+          <div>
+            <strong>Cargando</strong>
+            <p>Consultando streams reales desde canales-streaming-service.</p>
+          </div>
+        </AlertPanel>
+      )}
+
       <Toolbar>
         <InputWrap>
           <FiSearch />
-          <input value={search} onChange={(event) => setSearch(event.target.value)} placeholder="Buscar stream..." />
+          <input
+            value={search}
+            onChange={(event) => setSearch(event.target.value)}
+            placeholder="Buscar stream real..."
+          />
         </InputWrap>
-        <Select value={category} onChange={(event) => setCategory(event.target.value)}>
-          {["Todos", "Gaming", "Musica", "Tecnologia", "Deportes", "Videojuegos", "Juego de azar"].map((item) => (
-            <option key={item}>{item}</option>
+
+        <Select
+          value={category}
+          onChange={(event) => setCategory(event.target.value)}
+        >
+          <option>Todos</option>
+          {backendCategories.map((item) => (
+            <option key={item.id}>{item.name}</option>
           ))}
         </Select>
       </Toolbar>
-      <CardGrid>
-        {filtered.slice(0, visibleCount).map((stream) => (
-          <StreamCard key={stream.id} stream={stream} />
-        ))}
-      </CardGrid>
-      {filtered.length === 0 && <EmptyPanel icon={<FiSearch />} title="No encontramos resultados" text="Prueba con otra palabra o cambia los filtros." />}
-      {filtered.length > visibleCount && (
-        <Centered>
-          <GhostButton type="button" onClick={() => setVisibleCount((count) => count + 6)}>
-            Cargar mas transmisiones
-          </GhostButton>
-        </Centered>
+
+      {filtered.length === 0 ? (
+        <EmptyPanel
+          icon={<FiWifiOff />}
+          title="No hay streams en vivo"
+          text="Cuando un streamer inicie una transmisión, aparecerá en este listado."
+        />
+      ) : (
+        <CardGrid>
+          {filtered.map((stream) => (
+            <StreamCard key={stream.id} stream={stream} />
+          ))}
+        </CardGrid>
       )}
     </RootShell>
   );
 }
 
 export function CategoriesPage() {
+  const [backendCategories, setBackendCategories] = useState<Category[]>([]);
+  const [liveStreams, setLiveStreams] = useState<StreamItem[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    let active = true;
+
+    async function loadCategories() {
+      setLoading(true);
+      setError("");
+
+      try {
+        const [categoriesResult, live] = await Promise.all([
+          getBackendCategories(),
+          getLiveStreams(),
+        ]);
+
+        if (!active) return;
+
+        const liveCards = live.map(backendStreamToCard);
+
+        setLiveStreams(liveCards);
+        setBackendCategories(
+          categoriesResult.map((item) => backendCategoryToCard(item, liveCards))
+        );
+      } catch (error) {
+        console.error("CATEGORIES_LOAD_ERROR", error);
+
+        if (active) {
+          setError("No se pudieron cargar las categorías reales.");
+        }
+      } finally {
+        if (active) {
+          setLoading(false);
+        }
+      }
+    }
+
+    loadCategories();
+
+    return () => {
+      active = false;
+    };
+  }, []);
+
   return (
-    <RootShell active="categories" rightPanel={<DemoRightPanel />}>
+    <RootShell active="categories" rightPanel={<DemoRightPanel liveStreams={liveStreams} />}>
       <PageHeading>
         <Eyebrow>Descubrimiento</Eyebrow>
-        <h1>Explora por categorias</h1>
-        <p>Elige un interes y salta directamente al contenido activo.</p>
+        <h1>Explora por categorías</h1>
+        <p>Las categorías vienen desde canales-streaming-service.</p>
       </PageHeading>
-      <CategoryGrid>
-        {categories.map((category) => (
-          <CategoryCard key={category.id} to={`/streams?category=${encodeURIComponent(category.name)}`} $image={category.image}>
-            <span>{category.name}</span>
-            <small>{category.viewers} espectadores activos</small>
-          </CategoryCard>
-        ))}
-      </CategoryGrid>
-      <Section title="Categorias destacadas" action={<TextLink to="/streams">Ver todo el catalogo</TextLink>}>
-        <PodcastGrid>
-          {podcasts.map((podcast) => (
-            <PodcastCard key={podcast.id} podcast={podcast} />
+
+      {error && (
+        <AlertPanel>
+          <FiAlertTriangle />
+          <div>
+            <strong>Error al cargar categorías</strong>
+            <p>{error}</p>
+          </div>
+        </AlertPanel>
+      )}
+
+      {loading && (
+        <AlertPanel>
+          <FiRefreshCw />
+          <div>
+            <strong>Cargando categorías</strong>
+            <p>Consultando backend real.</p>
+          </div>
+        </AlertPanel>
+      )}
+
+      {backendCategories.length === 0 ? (
+        <EmptyPanel
+          icon={<FiGrid />}
+          title="No hay categorías disponibles"
+          text="Crea categorías en canales-streaming-service para que aparezcan aquí."
+        />
+      ) : (
+        <CategoryGrid>
+          {backendCategories.map((category) => (
+            <CategoryCard
+              key={category.id}
+              to={`/streams?category=${encodeURIComponent(category.name)}`}
+              $image={category.image}
+            >
+              <span>{category.name}</span>
+              <small>{category.viewers} streams activos</small>
+            </CategoryCard>
           ))}
-        </PodcastGrid>
-      </Section>
+        </CategoryGrid>
+      )}
     </RootShell>
   );
 }
@@ -973,60 +1375,205 @@ export function ChannelPage() {
 
 export function StreamDetailPage() {
   const { streamId } = useParams();
-  const stream = streams.find((item) => item.id === streamId) || firstStream();
+
+  const [stream, setStream] = useState<StreamItem | null>(null);
+  const [backendStream, setBackendStream] = useState<BackendStream | null>(null);
+  const [relatedStreams, setRelatedStreams] = useState<StreamItem[]>([]);
+
   const [following, setFollowing] = useState(false);
   const [subscribed, setSubscribed] = useState(false);
   const [playing, setPlaying] = useState(true);
+
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
   const loggedIn = isAuthenticated();
 
+  useEffect(() => {
+    let active = true;
+
+    async function loadStreamDetail() {
+      setLoading(true);
+      setError("");
+
+      if (!streamId || Number.isNaN(Number(streamId))) {
+        setError("Stream inválido.");
+        setLoading(false);
+        return;
+      }
+
+      try {
+        const [detail, live] = await Promise.all([
+          getStreamById(Number(streamId)),
+          getLiveStreams(),
+        ]);
+
+        if (!active) return;
+
+        setBackendStream(detail);
+        setStream(backendStreamToCard(detail));
+        setRelatedStreams(
+          live
+            .filter((item) => item.id_stream !== detail.id_stream)
+            .map(backendStreamToCard)
+        );
+      } catch (error) {
+        console.error("STREAM_DETAIL_LOAD_ERROR", error);
+
+        if (active) {
+          setError("No se pudo cargar el stream real desde canales-streaming-service.");
+        }
+      } finally {
+        if (active) {
+          setLoading(false);
+        }
+      }
+    }
+
+    loadStreamDetail();
+
+    return () => {
+      active = false;
+    };
+  }, [streamId]);
+
+  if (loading) {
+    return (
+      <RootShell active="streams">
+        <AlertPanel>
+          <FiRefreshCw />
+          <div>
+            <strong>Cargando stream</strong>
+            <p>Consultando información real del stream.</p>
+          </div>
+        </AlertPanel>
+      </RootShell>
+    );
+  }
+
+  if (error || !stream || !backendStream) {
+    return (
+      <RootShell active="streams">
+        <EmptyPanel
+          icon={<FiAlertTriangle />}
+          title="Stream no disponible"
+          text={error || "El stream no existe o fue eliminado."}
+        />
+
+        <ButtonRow>
+          <PrimaryLink to="/streams">Volver a transmisiones</PrimaryLink>
+          <GhostLink to="/">Ir al inicio</GhostLink>
+        </ButtonRow>
+      </RootShell>
+    );
+  }
+
+  const isLive = backendStream.estado === "en_vivo";
+  const isFinished = backendStream.estado === "finalizado";
+
   return (
-    <RootShell active="streams" rightPanel={<ChatPanel allowInput={loggedIn} />}>
-      {!loggedIn && (
+    <RootShell
+      active="streams"
+      rightPanel={isLive ? <ChatPanel allowInput={loggedIn} /> : undefined}
+    >
+      {!loggedIn && isLive && (
         <AlertPanel>
           <FiLock />
           <div>
             <strong>Modo visitante</strong>
-            <p>Puedes ver el directo y leer el chat. Para escribir, seguir o suscribirte necesitas iniciar sesion.</p>
+            <p>
+              Puedes ver el directo y leer el chat. Para escribir, seguir o
+              suscribirte necesitas iniciar sesión.
+            </p>
           </div>
-          <PrimaryLink to="/login">Iniciar sesion</PrimaryLink>
+          <PrimaryLink to="/login">Iniciar sesión</PrimaryLink>
           <GhostLink to="/register">Registrarse</GhostLink>
         </AlertPanel>
       )}
+
+      {isFinished && (
+        <AlertPanel>
+          <FiAlertTriangle />
+          <div>
+            <strong>Stream finalizado</strong>
+            <p>
+              Esta transmisión ya terminó. Puedes volver a transmisiones para ver
+              directos activos.
+            </p>
+          </div>
+          <PrimaryLink to="/streams">Ver streams en vivo</PrimaryLink>
+        </AlertPanel>
+      )}
+
       <PlayerPanel>
         <VideoFrame $image={stream.image}>
-          <LiveBadge>EN VIVO</LiveBadge>
+          {isLive ? (
+            <LiveBadge>EN VIVO</LiveBadge>
+          ) : (
+            <FeaturedFlag>{backendStream.estado}</FeaturedFlag>
+          )}
+
           <VideoControls>
-            <RoundButton type="button" onClick={() => setPlaying((value) => !value)}>
-              {playing ? <FiPause /> : <FiPlay />}
+            <RoundButton
+              type="button"
+              onClick={() => setPlaying((value) => !value)}
+              disabled={!isLive}
+            >
+              {playing && isLive ? <FiPause /> : <FiPlay />}
             </RoundButton>
-            <Progress><span /></Progress>
+
+            <Progress>
+              <span style={{ width: isLive ? "64%" : "0%" }} />
+            </Progress>
+
             <FiVolume2 />
             <FiMoreVertical />
           </VideoControls>
         </VideoFrame>
+
         <StreamInfo>
           <Avatar $large>{stream.avatar}</Avatar>
+
           <InfoMain>
             <h1>{stream.title}</h1>
-            <p>{stream.channel} - {stream.description}</p>
+            <p>
+              {stream.channel} -{" "}
+              {stream.description || "Este stream todavía no tiene descripción."}
+            </p>
+
             <TagRow>
-              {stream.tags.map((tag) => <MetaTag key={tag}>{tag}</MetaTag>)}
+              {stream.tags.map((tag) => (
+                <MetaTag key={tag}>{tag}</MetaTag>
+              ))}
             </TagRow>
           </InfoMain>
+
           <ButtonRow>
             {loggedIn ? (
               <>
-                <GhostButton type="button" onClick={() => setFollowing((value) => !value)}>
+                <GhostButton
+                  type="button"
+                  onClick={() => setFollowing((value) => !value)}
+                >
                   <FiHeart /> {following ? "Siguiendo" : "Seguir"}
                 </GhostButton>
-                <PrimaryButton type="button" onClick={() => setSubscribed((value) => !value)}>
+
+                <PrimaryButton
+                  type="button"
+                  onClick={() => setSubscribed((value) => !value)}
+                >
                   <FiStar /> {subscribed ? "Suscrito" : "Suscribirse"}
                 </PrimaryButton>
               </>
             ) : (
               <>
-                <GhostLink to="/login"><FiHeart /> Seguir</GhostLink>
-                <PrimaryLink to="/register"><FiStar /> Suscribirse</PrimaryLink>
+                <GhostLink to="/login">
+                  <FiHeart /> Seguir
+                </GhostLink>
+
+                <PrimaryLink to="/register">
+                  <FiStar /> Suscribirse
+                </PrimaryLink>
               </>
             )}
           </ButtonRow>
@@ -1035,25 +1582,63 @@ export function StreamDetailPage() {
 
       <InfoGrid>
         <Panel>
-          <PanelHeader><strong>Sobre el canal</strong></PanelHeader>
-          <p>Directo activo con chat en vivo, acciones de viewer y datos listos para conectar al backend.</p>
+          <PanelHeader>
+            <strong>Sobre el canal</strong>
+          </PanelHeader>
+
+          <p>
+            {backendStream.canal.nombre_canal} ·{" "}
+            {backendStream.descripcion ||
+              "Este directo todavía no tiene descripción configurada."}
+          </p>
         </Panel>
+
         <Panel>
-          <PanelHeader><strong>Datos del stream</strong></PanelHeader>
+          <PanelHeader>
+            <strong>Datos del stream</strong>
+          </PanelHeader>
+
           <TwoCol>
-            <span>Categoria</span><strong>{stream.category}</strong>
-            <span>Espectadores</span><strong>{stream.viewers}</strong>
-            <span>Fecha de inicio</span><strong>Hoy, 20:45</strong>
+            <span>Estado</span>
+            <strong>{backendStream.estado}</strong>
+
+            <span>Categoría</span>
+            <strong>{backendStream.categoria.nombre}</strong>
+
+            <span>Calidad</span>
+            <strong>{backendStream.calidad_actual || "720p"}</strong>
+
+            <span>Fecha de inicio</span>
+            <strong>
+              {backendStream.fecha_inicio
+                ? new Date(backendStream.fecha_inicio).toLocaleString()
+                : "Todavía no iniciado"}
+            </strong>
+
+            <span>Fecha de fin</span>
+            <strong>
+              {backendStream.fecha_fin
+                ? new Date(backendStream.fecha_fin).toLocaleString()
+                : "Sin finalizar"}
+            </strong>
           </TwoCol>
         </Panel>
       </InfoGrid>
 
       <Section title="Transmisiones relacionadas">
-        <CardGrid>
-          {streams.filter((item) => item.id !== stream.id).slice(0, 4).map((item) => (
-            <StreamCard key={item.id} stream={item} />
-          ))}
-        </CardGrid>
+        {relatedStreams.length === 0 ? (
+          <EmptyPanel
+            icon={<FiWifiOff />}
+            title="No hay transmisiones relacionadas"
+            text="Cuando existan otros directos en vivo aparecerán aquí."
+          />
+        ) : (
+          <CardGrid>
+            {relatedStreams.slice(0, 4).map((item) => (
+              <StreamCard key={item.id} stream={item} />
+            ))}
+          </CardGrid>
+        )}
       </Section>
     </RootShell>
   );

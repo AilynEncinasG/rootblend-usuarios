@@ -1,6 +1,7 @@
+import { type ReactNode, useEffect, useState } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
-import { type ReactNode } from "react";
 import { AuthOnlyRoute, ProtectedRoute } from "./routeGuards";
+import { getMyChannel, type Canal } from "../modules/streams/services/streamsService";
 
 import HomePage from "../modules/public/pages/HomePage";
 import ExploreStreamsPage from "../modules/streams/pages/ExploreStreamsPage";
@@ -75,6 +76,23 @@ import ModeratorPermissionsPage from "../modules/moderation/pages/ModeratorPermi
 
 const MODERATORS_KEY = "rootblend:moderators:cyberpunk-2077";
 
+type CreatorRole = "streamer" | "podcaster";
+
+function getChannelRole(channel?: Canal | null): CreatorRole | null {
+  const role = channel?.tipo_canal?.nombre_tipo;
+  return role === "streamer" || role === "podcaster" ? role : null;
+}
+
+function syncCreatorRole(role: CreatorRole | null) {
+  if (role) {
+    localStorage.setItem("creator_role", role);
+  } else {
+    localStorage.removeItem("creator_role");
+  }
+
+  window.dispatchEvent(new Event("creator-role-changed"));
+}
+
 function getRouteUserLabel() {
   const rawUser = localStorage.getItem("auth_user");
 
@@ -109,16 +127,59 @@ function GuestOnly({ children }: { children: ReactNode }) {
   return <AuthOnlyRoute>{children}</AuthOnlyRoute>;
 }
 
+function RouteLoading({ text = "Consultando permisos..." }: { text?: string }) {
+  return <div style={{ minHeight: "60vh", display: "grid", placeItems: "center", color: "#fff" }}>{text}</div>;
+}
+
 function CreatorRoute({
   role,
   children,
 }: {
-  role: "streamer" | "podcaster";
+  role: CreatorRole;
   children: ReactNode;
 }) {
-  const currentRole = localStorage.getItem("creator_role");
+  const [loading, setLoading] = useState(true);
+  const [currentRole, setCurrentRole] = useState<CreatorRole | null>(null);
+  const [failed, setFailed] = useState(false);
 
-  if (currentRole !== "streamer" && currentRole !== "podcaster") {
+  useEffect(() => {
+    let active = true;
+
+    async function loadRole() {
+      setLoading(true);
+      setFailed(false);
+
+      try {
+        const result = await getMyChannel();
+        if (!active) return;
+
+        const backendRole = getChannelRole(result.canal);
+        syncCreatorRole(backendRole);
+        setCurrentRole(backendRole);
+      } catch (error) {
+        console.error("CREATOR_ROUTE_ERROR", error);
+        if (active) {
+          syncCreatorRole(null);
+          setCurrentRole(null);
+          setFailed(true);
+        }
+      } finally {
+        if (active) setLoading(false);
+      }
+    }
+
+    loadRole();
+
+    return () => {
+      active = false;
+    };
+  }, []);
+
+  if (loading) {
+    return <RouteLoading />;
+  }
+
+  if (failed || !currentRole) {
     return <Navigate to="/creator/activate" replace />;
   }
 
@@ -151,10 +212,42 @@ function PodcasterRoute({ children }: { children: ReactNode }) {
 }
 
 function ModeratorRoute({ children }: { children: ReactNode }) {
-  const currentRole = localStorage.getItem("creator_role");
+  const [loading, setLoading] = useState(true);
+  const [isStreamerOwner, setIsStreamerOwner] = useState(false);
   const moderators = getRouteModerators();
   const userLabel = getRouteUserLabel();
-  const canModerate = currentRole === "streamer" || moderators.includes(userLabel);
+  const canModerate = isStreamerOwner || moderators.includes(userLabel);
+
+  useEffect(() => {
+    let active = true;
+
+    async function loadOwnerStatus() {
+      setLoading(true);
+
+      try {
+        const result = await getMyChannel();
+        if (!active) return;
+
+        const role = getChannelRole(result.canal);
+        syncCreatorRole(role);
+        setIsStreamerOwner(role === "streamer");
+      } catch {
+        if (active) setIsStreamerOwner(false);
+      } finally {
+        if (active) setLoading(false);
+      }
+    }
+
+    loadOwnerStatus();
+
+    return () => {
+      active = false;
+    };
+  }, []);
+
+  if (loading) {
+    return <Private><RouteLoading text="Consultando permisos de moderacion..." /></Private>;
+  }
 
   return <Private>{canModerate ? children : <Navigate to="/restricted" replace />}</Private>;
 }

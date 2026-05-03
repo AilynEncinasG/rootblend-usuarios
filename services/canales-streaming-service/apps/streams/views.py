@@ -101,7 +101,7 @@ def streams_destacados(request):
     streams = (
         Stream.objects.select_related("canal", "canal__tipo_canal", "categoria")
         .prefetch_related("configuracion")
-        .filter(destacado=True)
+        .filter(destacado=True, estado=Stream.EN_VIVO)
         .order_by("-fecha_inicio", "-id")
     )
 
