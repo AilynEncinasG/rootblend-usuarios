@@ -6,6 +6,10 @@ from .views import (
     finalizar_stream,
     iniciar_stream,
     listar_streams,
+    mis_streams,
+    obs_config,
+    rotate_key,
+    signal_status,
     streams_destacados,
     streams_en_vivo,
 )
@@ -14,8 +18,12 @@ urlpatterns = [
     path("", listar_streams, name="listar-streams"),
     path("en-vivo/", streams_en_vivo, name="streams-en-vivo"),
     path("destacados/", streams_destacados, name="streams-destacados"),
+    path("mis-streams/", mis_streams, name="mis-streams"),
     path("crear/", crear_stream, name="crear-stream"),
     path("<int:stream_id>/", detalle_stream, name="detalle-stream"),
     path("<int:stream_id>/iniciar/", iniciar_stream, name="iniciar-stream"),
     path("<int:stream_id>/finalizar/", finalizar_stream, name="finalizar-stream"),
+    path("<int:stream_id>/obs-config/", obs_config, name="obs-config"),
+    path("<int:stream_id>/rotate-key/", rotate_key, name="rotate-key"),
+    path("<int:stream_id>/signal-status/", signal_status, name="signal-status"),
 ]

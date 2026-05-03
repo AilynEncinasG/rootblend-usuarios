@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import {
@@ -218,7 +218,7 @@ export default function UserMenu() {
   const email = user?.correo || user?.email || "Cuenta ROOTBLEND";
   const initial = String(displayName).charAt(0).toUpperCase();
 
-  async function loadCreatorState() {
+  const loadCreatorState = useCallback(async () => {
     if (!isAuthenticated()) {
       setCreatorRole(null);
       setChannelName("");
@@ -237,9 +237,9 @@ export default function UserMenu() {
       setCreatorRole(null);
       setChannelName("");
     }
-  }
+  }, []);
 
-  function refreshAuthState() {
+  const refreshAuthState = useCallback(() => {
     const sessionState = isAuthenticated();
     setLoggedIn(sessionState);
 
@@ -251,7 +251,7 @@ export default function UserMenu() {
     }
 
     void loadCreatorState();
-  }
+  }, [loadCreatorState]);
 
   function closeMenu() {
     setOpen(false);
@@ -278,7 +278,7 @@ export default function UserMenu() {
       refreshAuthState();
     }
 
-    refreshAuthState();
+    queueMicrotask(refreshAuthState);
 
     window.addEventListener("storage", handleStorageChange);
     window.addEventListener("auth-changed", handleStorageChange);
@@ -291,7 +291,7 @@ export default function UserMenu() {
       window.removeEventListener("creator-role-changed", handleStorageChange);
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, []);
+  }, [refreshAuthState]);
 
   if (!loggedIn) return null;
 

@@ -33,22 +33,51 @@ export type Stream = {
   fecha_fin?: string | null;
   calidad_actual?: string | null;
   destacado: boolean;
+
+  stream_key?: string | null;
+  ingest_url?: string | null;
+  playback_url?: string | null;
+  thumbnail_url?: string | null;
+  viewer_count?: number;
+  signal_status?: "sin_senal" | "conectado" | "desconectado" | "error" | null;
+  last_signal_at?: string | null;
+
   canal: {
     id_canal: number;
     nombre_canal: string;
     id_usuario_propietario: number;
     tipo_canal: string;
   };
+
   categoria: {
     id_categoria: number;
     nombre: string;
   };
+
   configuracion?: {
     resolucion?: string | null;
     bitrate?: number | null;
     latencia_modo?: string | null;
     audio_activo?: boolean | null;
   };
+};
+
+export type StreamObsConfig = {
+  id_stream: number;
+  server: string;
+  stream_key: string;
+  ingest_url: string;
+  playback_url: string;
+  signal_status: Stream["signal_status"];
+  last_signal_at?: string | null;
+};
+
+export type StreamSignalStatus = {
+  id_stream: number;
+  estado: Stream["estado"];
+  signal_status: Stream["signal_status"];
+  last_signal_at?: string | null;
+  viewer_count: number;
 };
 
 type ApiListResponse<T> = {
@@ -85,6 +114,17 @@ export async function getFeaturedStreams(): Promise<Stream[]> {
 export async function getAllStreams(): Promise<Stream[]> {
   const response = await apiRequest<ApiListResponse<Stream>>(
     "/streams/streams/"
+  );
+
+  return response.data.results;
+}
+
+export async function getMyStreams(): Promise<Stream[]> {
+  const response = await apiRequest<ApiListResponse<Stream>>(
+    "/streams/streams/mis-streams/",
+    {
+      auth: true,
+    }
   );
 
   return response.data.results;
@@ -199,6 +239,37 @@ export async function finishStream(id: number): Promise<Stream> {
       method: "POST",
       auth: true,
     }
+  );
+
+  return response.data;
+}
+
+export async function getStreamObsConfig(id: number): Promise<StreamObsConfig> {
+  const response = await apiRequest<ApiItemResponse<StreamObsConfig>>(
+    `/streams/streams/${id}/obs-config/`,
+    {
+      auth: true,
+    }
+  );
+
+  return response.data;
+}
+
+export async function rotateStreamKey(id: number): Promise<StreamObsConfig> {
+  const response = await apiRequest<ApiItemResponse<StreamObsConfig>>(
+    `/streams/streams/${id}/rotate-key/`,
+    {
+      method: "POST",
+      auth: true,
+    }
+  );
+
+  return response.data;
+}
+
+export async function getStreamSignalStatus(id: number): Promise<StreamSignalStatus> {
+  const response = await apiRequest<ApiItemResponse<StreamSignalStatus>>(
+    `/streams/streams/${id}/signal-status/`
   );
 
   return response.data;

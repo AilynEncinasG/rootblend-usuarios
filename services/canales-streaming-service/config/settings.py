@@ -93,3 +93,13 @@ CORS_ALLOWED_ORIGINS = os.getenv(
     "CORS_ALLOWED_ORIGINS",
     "http://localhost:5173,http://127.0.0.1:5173"
 ).split(",")
+
+STREAM_RTMP_SERVER = os.getenv("STREAM_RTMP_SERVER", "rtmp://localhost:1935/live")
+STREAM_PLAYBACK_BASE_URL = os.getenv(
+    "STREAM_PLAYBACK_BASE_URL",
+    "http://localhost:8888/live",
+)
+STREAM_PLAYBACK_PROBE_BASE_URL = os.getenv(
+    "STREAM_PLAYBACK_PROBE_BASE_URL",
+    STREAM_PLAYBACK_BASE_URL,
+)

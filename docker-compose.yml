@@ -14,6 +14,22 @@ services:
       start_period: 20s
     restart: unless-stopped
 
+  media-server:
+    image: bluenviron/mediamtx:latest
+    container_name: rootblend-media-server
+    environment:
+      MTX_RTMP: "yes"
+      MTX_RTMPADDRESS: ":1935"
+      MTX_HLS: "yes"
+      MTX_HLSADDRESS: ":8888"
+      MTX_WEBRTC: "yes"
+      MTX_WEBRTCADDRESS: ":8889"
+    ports:
+      - "1935:1935"
+      - "8888:8888"
+      - "8889:8889"
+    restart: unless-stopped
+
   usuarios-service:
     build:
       context: ./services/usuarios-service
@@ -36,8 +52,14 @@ services:
     container_name: rootblend-canales-streaming-service
     env_file:
       - ./services/canales-streaming-service/.env
+    environment:
+      STREAM_RTMP_SERVER: rtmp://localhost:1935/live
+      STREAM_PLAYBACK_BASE_URL: http://localhost:8888/live
+      STREAM_PLAYBACK_PROBE_BASE_URL: http://media-server:8888/live
     ports:
       - "8001:8001"
+    depends_on:
+      - media-server
     healthcheck:
       test: ["CMD-SHELL", "python -c \"import urllib.request; urllib.request.urlopen('http://127.0.0.1:8001/api/health/')\""]
       interval: 20s

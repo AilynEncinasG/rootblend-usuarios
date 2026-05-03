@@ -5,12 +5,17 @@ import { RootShell } from "../../../mock/RootblendScreens";
 import { FiAlertTriangle, FiCheckCircle, FiLock, FiPlus, FiRadio, FiRefreshCw } from "react-icons/fi";
 import {
   finishStream,
-  getAllStreams,
   getMyChannel,
+  getMyStreams,
+  getStreamObsConfig,
+  getStreamSignalStatus,
+  rotateStreamKey,
   startStream,
   type Canal,
   type Stream,
+  type StreamObsConfig,
 } from "../../../streams/services/streamsService";
+import LiveVideoPlayer from "../../../../components/stream/LiveVideoPlayer";
 
 type CreatorRole = "streamer" | "podcaster";
 
@@ -37,6 +42,8 @@ export default function LiveControlPage() {
   const [actionLoading, setActionLoading] = useState(false);
   const [error, setError] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
+  const [obsConfig, setObsConfig] = useState<StreamObsConfig | null>(null);
+  const [showKey, setShowKey] = useState(false);
 
   async function loadControlData() {
     setLoading(true);
@@ -45,7 +52,7 @@ export default function LiveControlPage() {
     try {
       const [channelResult, streamsResult] = await Promise.all([
         getMyChannel(),
-        getAllStreams(),
+        getMyStreams(),
       ]);
 
       const currentChannel = channelResult.canal;
@@ -60,16 +67,12 @@ export default function LiveControlPage() {
 
       syncCreatorRole(getChannelRole(currentChannel));
 
-      const ownedStreams = streamsResult.filter(
-        (stream) => stream.canal.id_canal === currentChannel.id_canal
-      );
-
-      setStreams(ownedStreams);
+      setStreams(streamsResult);
 
       const selected =
-        ownedStreams.find((stream) => stream.estado === "en_vivo") ||
-        ownedStreams.find((stream) => stream.estado === "programado") ||
-        ownedStreams[0] ||
+        streamsResult.find((stream) => stream.estado === "en_vivo") ||
+        streamsResult.find((stream) => stream.estado === "programado") ||
+        streamsResult[0] ||
         null;
 
       setSelectedStreamId(selected?.id_stream || null);
@@ -89,6 +92,51 @@ export default function LiveControlPage() {
   const isLive = selectedStream?.estado === "en_vivo";
   const isProgrammed = selectedStream?.estado === "programado";
 
+  async function loadObsConfig(streamId: number | null) {
+    if (!streamId) {
+      setObsConfig(null);
+      return;
+    }
+
+    try {
+      const config = await getStreamObsConfig(streamId);
+      setObsConfig(config);
+    } catch (error) {
+      console.error("OBS_CONFIG_ERROR", error);
+      setObsConfig(null);
+    }
+  }
+
+  useEffect(() => {
+    loadObsConfig(selectedStreamId);
+  }, [selectedStreamId]);
+
+  useEffect(() => {
+    if (!selectedStreamId || !isLive) return undefined;
+
+    const intervalId = window.setInterval(async () => {
+      try {
+        const status = await getStreamSignalStatus(selectedStreamId);
+        setStreams((current) =>
+          current.map((stream) =>
+            stream.id_stream === selectedStreamId
+              ? {
+                  ...stream,
+                  signal_status: status.signal_status,
+                  last_signal_at: status.last_signal_at,
+                  viewer_count: status.viewer_count,
+                }
+              : stream
+          )
+        );
+      } catch (error) {
+        console.error("SIGNAL_STATUS_ERROR", error);
+      }
+    }, 8000);
+
+    return () => window.clearInterval(intervalId);
+  }, [isLive, selectedStreamId]);
+
   async function handleStart() {
     if (!selectedStream) {
       setError("Primero debes crear o seleccionar un stream programado.");
@@ -103,6 +151,7 @@ export default function LiveControlPage() {
       await startStream(selectedStream.id_stream);
       setSuccessMessage("Transmision iniciada correctamente. Ya debe aparecer en Home y /streams.");
       await loadControlData();
+      await loadObsConfig(selectedStream.id_stream);
     } catch (error) {
       console.error("START_STREAM_ERROR", error);
       setError(error instanceof Error ? error.message : "No se pudo iniciar la transmision.");
@@ -125,12 +174,39 @@ export default function LiveControlPage() {
       await finishStream(selectedStream.id_stream);
       setSuccessMessage("Stream finalizado correctamente. Ya no debe aparecer como en vivo.");
       await loadControlData();
+      await loadObsConfig(selectedStream.id_stream);
     } catch (error) {
       console.error("FINISH_STREAM_ERROR", error);
       setError(error instanceof Error ? error.message : "No se pudo finalizar el stream.");
     } finally {
       setActionLoading(false);
     }
+  }
+
+  async function handleRotateKey() {
+    if (!selectedStream) return;
+
+    setActionLoading(true);
+    setError("");
+    setSuccessMessage("");
+
+    try {
+      const config = await rotateStreamKey(selectedStream.id_stream);
+      setObsConfig(config);
+      setShowKey(false);
+      setSuccessMessage("Clave de transmision regenerada. Actualiza OBS antes de iniciar.");
+    } catch (error) {
+      console.error("ROTATE_STREAM_KEY_ERROR", error);
+      setError(error instanceof Error ? error.message : "No se pudo regenerar la clave.");
+    } finally {
+      setActionLoading(false);
+    }
+  }
+
+  async function copyText(value?: string | null) {
+    if (!value) return;
+    await navigator.clipboard.writeText(value);
+    setSuccessMessage("Copiado al portapapeles.");
   }
 
   return (
@@ -221,11 +297,26 @@ export default function LiveControlPage() {
             </div>
           </Status>
 
+          {selectedStream && (
+            <PreviewPanel>
+              <LiveVideoPlayer
+                playbackUrl={selectedStream.playback_url}
+                streamStatus={selectedStream.estado}
+                signalStatus={selectedStream.signal_status}
+              />
+            </PreviewPanel>
+          )}
+
           <MetricGrid>
             <MetricCard>
               <span>Estado</span>
               <strong>{selectedStream?.estado || "sin stream"}</strong>
               <small>Backend real</small>
+            </MetricCard>
+            <MetricCard>
+              <span>Senal OBS</span>
+              <strong>{selectedStream?.signal_status || "sin_senal"}</strong>
+              <small>{selectedStream?.last_signal_at ? "Con actividad" : "Esperando"}</small>
             </MetricCard>
             <MetricCard>
               <span>Canal</span>
@@ -238,6 +329,47 @@ export default function LiveControlPage() {
               <small>Creados</small>
             </MetricCard>
           </MetricGrid>
+
+          {selectedStream && obsConfig && (
+            <InfoPanel>
+              <PanelHeader>
+                <strong>Configuracion OBS</strong>
+                <button type="button" onClick={() => setShowKey((value) => !value)}>
+                  {showKey ? "Ocultar clave" : "Mostrar clave"}
+                </button>
+              </PanelHeader>
+
+              <TwoCol>
+                <span>Servidor RTMP</span>
+                <CopyLine>
+                  <strong>{obsConfig.server}</strong>
+                  <button type="button" onClick={() => copyText(obsConfig.server)}>Copiar</button>
+                </CopyLine>
+
+                <span>Clave</span>
+                <CopyLine>
+                  <strong>{showKey ? obsConfig.stream_key : "****************"}</strong>
+                  <button type="button" onClick={() => copyText(obsConfig.stream_key)}>Copiar</button>
+                </CopyLine>
+
+                <span>Playback HLS</span>
+                <CopyLine>
+                  <strong>{obsConfig.playback_url}</strong>
+                  <button type="button" onClick={() => copyText(obsConfig.playback_url)}>Copiar</button>
+                </CopyLine>
+              </TwoCol>
+
+              <Actions>
+                <DangerButton
+                  type="button"
+                  onClick={handleRotateKey}
+                  disabled={!selectedStream || isLive || actionLoading}
+                >
+                  Regenerar clave
+                </DangerButton>
+              </Actions>
+            </InfoPanel>
+          )}
 
           {selectedStream && (
             <InfoPanel>
@@ -394,6 +526,10 @@ const MetricGrid = styled.div`
   margin-bottom: 18px;
 `;
 
+const PreviewPanel = styled.div`
+  margin: 16px 0;
+`;
+
 const MetricCard = styled.div`
   padding: 14px;
   border-radius: 12px;
@@ -437,6 +573,16 @@ const PanelHeader = styled.div`
     font-size: 12px;
     font-weight: 850;
   }
+
+  button {
+    min-height: 32px;
+    border-radius: 8px;
+    border: 1px solid rgba(0, 229, 255, 0.28);
+    color: #e8fbff;
+    background: rgba(15, 23, 42, 0.7);
+    font-weight: 850;
+    cursor: pointer;
+  }
 `;
 
 const TwoCol = styled.div`
@@ -446,6 +592,31 @@ const TwoCol = styled.div`
 
   span {
     color: rgba(226, 232, 240, 0.6);
+  }
+`;
+
+const CopyLine = styled.div`
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+
+  strong {
+    max-width: min(520px, 52vw);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  button {
+    min-height: 30px;
+    border-radius: 8px;
+    border: 1px solid rgba(0, 229, 255, 0.28);
+    color: #e8fbff;
+    background: rgba(15, 23, 42, 0.7);
+    font-weight: 850;
+    cursor: pointer;
   }
 `;
 
@@ -470,6 +641,11 @@ const PrimaryButton = styled.button`
   background: linear-gradient(135deg, #00e5ff, #22c55e);
   font-weight: 950;
   cursor: pointer;
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.55;
+  }
 `;
 
 const DangerButton = styled.button`
@@ -485,6 +661,11 @@ const DangerButton = styled.button`
   background: rgba(127, 29, 29, 0.24);
   font-weight: 850;
   cursor: pointer;
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.55;
+  }
 `;
 
 const PrimaryLink = styled(Link)`

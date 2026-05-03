@@ -80,15 +80,12 @@ import {
   getCategories as getBackendCategories,
   getChannels as getBackendChannels,
   getStreamById,
-  getMyChannel,
-  activateChannel,
-  createStream,
-  startStream,
-  finishStream,
   type Stream as BackendStream,
   type Categoria as BackendCategory,
   type Canal as BackendCanal,
 } from "../streams/services/streamsService";
+import LiveVideoPlayer from "../../components/stream/LiveVideoPlayer";
+
 type ShellProps = {
   active?: string;
   children: ReactNode;
@@ -173,7 +170,7 @@ function backendStreamToCard(stream: BackendStream): StreamItem {
     channel: stream.canal.nombre_canal,
     handle: `@${stream.canal.nombre_canal.toLowerCase().replace(/\s+/g, "")}`,
     category: stream.categoria.nombre,
-    viewers: "0",
+    viewers: `${stream.viewer_count || 0}`,
     avatar: getInitials(stream.canal.nombre_canal),
     image: brandAssets.streamView,
     tags: [
@@ -1382,7 +1379,6 @@ export function StreamDetailPage() {
 
   const [following, setFollowing] = useState(false);
   const [subscribed, setSubscribed] = useState(false);
-  const [playing, setPlaying] = useState(true);
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -1506,30 +1502,12 @@ export function StreamDetailPage() {
       )}
 
       <PlayerPanel>
-        <VideoFrame $image={stream.image}>
-          {isLive ? (
-            <LiveBadge>EN VIVO</LiveBadge>
-          ) : (
-            <FeaturedFlag>{backendStream.estado}</FeaturedFlag>
-          )}
-
-          <VideoControls>
-            <RoundButton
-              type="button"
-              onClick={() => setPlaying((value) => !value)}
-              disabled={!isLive}
-            >
-              {playing && isLive ? <FiPause /> : <FiPlay />}
-            </RoundButton>
-
-            <Progress>
-              <span style={{ width: isLive ? "64%" : "0%" }} />
-            </Progress>
-
-            <FiVolume2 />
-            <FiMoreVertical />
-          </VideoControls>
-        </VideoFrame>
+        <LiveVideoPlayer
+          playbackUrl={backendStream.playback_url}
+          poster={stream.image}
+          streamStatus={backendStream.estado}
+          signalStatus={backendStream.signal_status}
+        />
 
         <StreamInfo>
           <Avatar $large>{stream.avatar}</Avatar>
@@ -1601,6 +1579,12 @@ export function StreamDetailPage() {
           <TwoCol>
             <span>Estado</span>
             <strong>{backendStream.estado}</strong>
+
+            <span>Senal OBS</span>
+            <strong>{backendStream.signal_status}</strong>
+
+            <span>Espectadores</span>
+            <strong>{backendStream.viewer_count}</strong>
 
             <span>Categoría</span>
             <strong>{backendStream.categoria.nombre}</strong>
@@ -4647,12 +4631,6 @@ const Select = styled.select`
   color: #fff;
   background: rgba(15, 23, 42, 0.92);
   padding: 0 12px;
-`;
-
-const Centered = styled.div`
-  display: flex;
-  justify-content: center;
-  margin-top: 22px;
 `;
 
 const CategoryGrid = styled.div`

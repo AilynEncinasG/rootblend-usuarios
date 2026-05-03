@@ -1,3 +1,6 @@
+import secrets
+
+from django.conf import settings
 from django.db import models
 
 from apps.canales.models import Canal
@@ -9,10 +12,22 @@ class Stream(models.Model):
     EN_VIVO = "en_vivo"
     FINALIZADO = "finalizado"
 
+    SIN_SENAL = "sin_senal"
+    CONECTADO = "conectado"
+    DESCONECTADO = "desconectado"
+    ERROR = "error"
+
     ESTADOS = [
         (PROGRAMADO, "Programado"),
         (EN_VIVO, "En vivo"),
         (FINALIZADO, "Finalizado"),
+    ]
+
+    ESTADOS_SENAL = [
+        (SIN_SENAL, "Sin senal"),
+        (CONECTADO, "Conectado"),
+        (DESCONECTADO, "Desconectado"),
+        (ERROR, "Error"),
     ]
 
     canal = models.ForeignKey(
@@ -38,6 +53,23 @@ class Stream(models.Model):
     fecha_fin = models.DateTimeField(null=True, blank=True)
     calidad_actual = models.CharField(max_length=30, null=True, blank=True)
     destacado = models.BooleanField(default=False)
+    stream_key = models.CharField(
+        max_length=80,
+        unique=True,
+        null=True,
+        blank=True,
+        editable=False,
+    )
+    ingest_url = models.CharField(max_length=255, null=True, blank=True)
+    playback_url = models.CharField(max_length=255, null=True, blank=True)
+    thumbnail_url = models.CharField(max_length=255, null=True, blank=True)
+    viewer_count = models.PositiveIntegerField(default=0)
+    signal_status = models.CharField(
+        max_length=20,
+        choices=ESTADOS_SENAL,
+        default=SIN_SENAL,
+    )
+    last_signal_at = models.DateTimeField(null=True, blank=True)
 
     class Meta:
         db_table = "streams"
@@ -46,6 +78,41 @@ class Stream(models.Model):
 
     def __str__(self):
         return self.titulo
+
+    @staticmethod
+    def generate_stream_key():
+        return f"rb_{secrets.token_urlsafe(24).replace('-', '').replace('_', '')[:32]}"
+
+    def build_stream_urls(self):
+        if not self.stream_key:
+            return
+
+        rtmp_server = settings.STREAM_RTMP_SERVER.rstrip("/")
+        playback_base_url = settings.STREAM_PLAYBACK_BASE_URL.rstrip("/")
+
+        self.ingest_url = f"{rtmp_server}/{self.stream_key}"
+        self.playback_url = f"{playback_base_url}/{self.stream_key}/index.m3u8"
+
+    def ensure_stream_key(self):
+        if self.stream_key:
+            return
+
+        stream_key = self.generate_stream_key()
+
+        while Stream.objects.filter(stream_key=stream_key).exists():
+            stream_key = self.generate_stream_key()
+
+        self.stream_key = stream_key
+
+    def rotate_stream_key(self):
+        self.stream_key = None
+        self.ensure_stream_key()
+        self.build_stream_urls()
+
+    def save(self, *args, **kwargs):
+        self.ensure_stream_key()
+        self.build_stream_urls()
+        super().save(*args, **kwargs)
 
 
 class ConfiguracionStream(models.Model):
@@ -62,8 +129,8 @@ class ConfiguracionStream(models.Model):
 
     class Meta:
         db_table = "configuraciones_stream"
-        verbose_name = "Configuración de stream"
+        verbose_name = "Configuracion de stream"
         verbose_name_plural = "Configuraciones de stream"
 
     def __str__(self):
-        return f"Configuración de {self.stream.titulo}"
+        return f"Configuracion de {self.stream.titulo}"
