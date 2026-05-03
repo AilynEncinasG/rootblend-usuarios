@@ -127,8 +127,8 @@ function GuestOnly({ children }: { children: ReactNode }) {
   return <AuthOnlyRoute>{children}</AuthOnlyRoute>;
 }
 
-function RouteLoading({ text = "Consultando permisos..." }: { text?: string }) {
-  return <div style={{ minHeight: "60vh", display: "grid", placeItems: "center", color: "#fff" }}>{text}</div>;
+function RouteLoading() {
+  return null;
 }
 
 function CreatorRoute({
@@ -138,33 +138,48 @@ function CreatorRoute({
   role: CreatorRole;
   children: ReactNode;
 }) {
-  const [loading, setLoading] = useState(true);
-  const [currentRole, setCurrentRole] = useState<CreatorRole | null>(null);
+  const cachedRole = localStorage.getItem("creator_role") as CreatorRole | null;
+
+  const [loading, setLoading] = useState(!cachedRole);
+  const [currentRole, setCurrentRole] = useState<CreatorRole | null>(
+    cachedRole === "streamer" || cachedRole === "podcaster" ? cachedRole : null
+  );
   const [failed, setFailed] = useState(false);
 
   useEffect(() => {
     let active = true;
 
     async function loadRole() {
-      setLoading(true);
       setFailed(false);
 
       try {
         const result = await getMyChannel();
+
         if (!active) return;
 
         const backendRole = getChannelRole(result.canal);
+
         syncCreatorRole(backendRole);
         setCurrentRole(backendRole);
       } catch (error) {
         console.error("CREATOR_ROUTE_ERROR", error);
-        if (active) {
+
+        if (!active) return;
+
+        const fallbackRole = localStorage.getItem("creator_role");
+
+        if (fallbackRole === "streamer" || fallbackRole === "podcaster") {
+          setCurrentRole(fallbackRole);
+          setFailed(false);
+        } else {
           syncCreatorRole(null);
           setCurrentRole(null);
           setFailed(true);
         }
       } finally {
-        if (active) setLoading(false);
+        if (active) {
+          setLoading(false);
+        }
       }
     }
 
@@ -246,7 +261,7 @@ function ModeratorRoute({ children }: { children: ReactNode }) {
   }, []);
 
   if (loading) {
-    return <Private><RouteLoading text="Consultando permisos de moderacion..." /></Private>;
+    return <Private><RouteLoading /></Private>;
   }
 
   return <Private>{canModerate ? children : <Navigate to="/restricted" replace />}</Private>;

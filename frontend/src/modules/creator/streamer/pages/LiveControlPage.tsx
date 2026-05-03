@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
+import { RootShell } from "../../../mock/RootblendScreens";
 import { FiAlertTriangle, FiCheckCircle, FiLock, FiPlus, FiRadio, FiRefreshCw } from "react-icons/fi";
 import {
   finishStream,
@@ -133,7 +134,8 @@ export default function LiveControlPage() {
   }
 
   return (
-    <Page>
+    <RootShell active="creator">
+      <Page>
       <Header>
         <span>Streamer</span>
         <h1>Control de transmision</h1>
@@ -276,7 +278,8 @@ export default function LiveControlPage() {
           </Actions>
         </Card>
       )}
-    </Page>
+      </Page>
+    </RootShell>
   );
 }
 
@@ -284,7 +287,6 @@ const Page = styled.main`
   min-height: calc(100vh - 64px);
   padding: 28px;
   color: #f8fbff;
-  background: linear-gradient(180deg, #020617, #030712);
 `;
 
 const Header = styled.div`

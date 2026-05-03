@@ -1,14 +1,45 @@
 import { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
-import styled from "styled-components";
-import { FiRefreshCw } from "react-icons/fi";
-import { getMyChannel, type Canal } from "../../streams/services/streamsService";
+import { getMyChannel } from "../../streams/services/streamsService";
 
 type CreatorRole = "streamer" | "podcaster";
 
-function getChannelRole(channel?: Canal | null): CreatorRole | null {
-  const role = channel?.tipo_canal?.nombre_tipo;
-  return role === "streamer" || role === "podcaster" ? role : null;
+function getCachedRole(): CreatorRole | null {
+  const role = localStorage.getItem("creator_role");
+
+  if (role === "streamer" || role === "podcaster") {
+    return role;
+  }
+
+  return null;
+}
+
+function getRoleFromChannel(canal: unknown): CreatorRole | null {
+  if (!canal || typeof canal !== "object") {
+    return null;
+  }
+
+  const raw = canal as {
+    tipo_canal?: string | {
+      nombre_tipo?: string;
+    };
+  };
+
+  if (typeof raw.tipo_canal === "string") {
+    if (raw.tipo_canal === "streamer" || raw.tipo_canal === "podcaster") {
+      return raw.tipo_canal;
+    }
+
+    return null;
+  }
+
+  const role = raw.tipo_canal?.nombre_tipo;
+
+  if (role === "streamer" || role === "podcaster") {
+    return role;
+  }
+
+  return null;
 }
 
 function syncCreatorRole(role: CreatorRole | null) {
@@ -21,87 +52,61 @@ function syncCreatorRole(role: CreatorRole | null) {
   window.dispatchEvent(new Event("creator-role-changed"));
 }
 
-function panelPath(role: CreatorRole | null) {
-  if (role === "podcaster") return "/creator/podcaster";
-  if (role === "streamer") return "/creator/streamer";
-  return "/creator/activate";
-}
-
 export default function CreatorDashboardRedirectPage() {
-  const [loading, setLoading] = useState(true);
-  const [target, setTarget] = useState("/creator/activate");
+  const cachedRole = getCachedRole();
+
+  const [role, setRole] = useState<CreatorRole | null>(cachedRole);
+  const [resolved, setResolved] = useState(Boolean(cachedRole));
 
   useEffect(() => {
     let active = true;
 
-    async function resolveDashboard() {
-      setLoading(true);
-
+    async function loadChannel() {
       try {
         const result = await getMyChannel();
 
         if (!active) return;
 
-        const role = getChannelRole(result.canal);
-        syncCreatorRole(role);
-        setTarget(panelPath(role));
+        const backendRole = getRoleFromChannel(result.canal);
+
+        syncCreatorRole(backendRole);
+        setRole(backendRole);
       } catch (error) {
         console.error("CREATOR_DASHBOARD_REDIRECT_ERROR", error);
-        if (active) {
-          syncCreatorRole(null);
-          setTarget("/creator/activate");
-        }
+
+        if (!active) return;
+
+        const fallbackRole = getCachedRole();
+
+        setRole(fallbackRole);
       } finally {
-        if (active) setLoading(false);
+        if (active) {
+          setResolved(true);
+        }
       }
     }
 
-    resolveDashboard();
+    if (!cachedRole) {
+      loadChannel();
+    }
 
     return () => {
       active = false;
     };
-  }, []);
+  }, [cachedRole]);
 
-  if (loading) {
-    return (
-      <Page>
-        <Card>
-          <FiRefreshCw />
-          <div>
-            <strong>Resolviendo panel de creador</strong>
-            <p>Consultando tu canal real en canales-streaming-service.</p>
-          </div>
-        </Card>
-      </Page>
-    );
+  if (!resolved) {
+    return null;
   }
 
-  return <Navigate to={target} replace />;
+  if (!role) {
+    return <Navigate to="/creator/activate" replace />;
+  }
+
+  return (
+    <Navigate
+      to={role === "streamer" ? "/creator/streamer" : "/creator/podcaster"}
+      replace
+    />
+  );
 }
-
-const Page = styled.main`
-  min-height: calc(100vh - 64px);
-  display: grid;
-  place-items: center;
-  padding: 28px;
-  color: #f8fbff;
-  background: linear-gradient(180deg, #020617, #030712);
-`;
-
-const Card = styled.div`
-  width: min(520px, 100%);
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  padding: 18px;
-  border-radius: 14px;
-  color: #fde68a;
-  background: rgba(202, 138, 4, 0.12);
-  border: 1px solid rgba(202, 138, 4, 0.26);
-
-  p {
-    margin: 4px 0 0;
-    color: rgba(226, 232, 240, 0.72);
-  }
-`;

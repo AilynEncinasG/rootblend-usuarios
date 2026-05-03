@@ -1,6 +1,7 @@
 import { type FormEvent, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { RootShell } from "../../mock/RootblendScreens";
 import { FiAlertTriangle, FiCheckCircle, FiLock, FiMic, FiRadio, FiRefreshCw, FiSave } from "react-icons/fi";
 import {
   activateChannel,
@@ -126,7 +127,8 @@ export default function CreatorActivatePage() {
   const existingRole = getChannelRole(channel);
 
   return (
-    <Page>
+    <RootShell active="creator">
+      <Page>
       <Card onSubmit={submit}>
         <Header>
           <span>ROOTBLEND Creator</span>
@@ -236,7 +238,8 @@ export default function CreatorActivatePage() {
           </PrimaryButton>
         </Actions>
       </Card>
-    </Page>
+      </Page>
+    </RootShell>
   );
 }
 
@@ -244,7 +247,6 @@ const Page = styled.main`
   min-height: calc(100vh - 64px);
   padding: 28px;
   color: #f8fbff;
-  background: linear-gradient(180deg, #020617, #030712);
 `;
 
 const Card = styled.form`

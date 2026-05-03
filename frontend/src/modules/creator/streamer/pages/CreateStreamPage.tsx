@@ -1,6 +1,7 @@
 import { type FormEvent, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { RootShell } from "../../../mock/RootblendScreens";
 import { FiActivity, FiAlertTriangle, FiCheckCircle, FiRadio, FiRefreshCw, FiSave } from "react-icons/fi";
 import {
   createStream,
@@ -96,7 +97,8 @@ export default function CreateStreamPage() {
   }
 
   return (
-    <Page>
+    <RootShell active="creator">
+      <Page>
       <Card onSubmit={submit}>
         <Header>
           <span>Streamer</span>
@@ -189,7 +191,8 @@ export default function CreateStreamPage() {
           </PrimaryButton>
         </Actions>
       </Card>
-    </Page>
+      </Page>
+    </RootShell>
   );
 }
 
@@ -197,7 +200,6 @@ const Page = styled.main`
   min-height: calc(100vh - 64px);
   padding: 28px;
   color: #f8fbff;
-  background: linear-gradient(180deg, #020617, #030712);
 `;
 
 const Card = styled.form`
