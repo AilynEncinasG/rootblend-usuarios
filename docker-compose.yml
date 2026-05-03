@@ -54,7 +54,7 @@ services:
       - ./services/canales-streaming-service/.env
     environment:
       STREAM_RTMP_SERVER: rtmp://localhost:1935/live
-      STREAM_PLAYBACK_BASE_URL: http://localhost:8888/live
+      STREAM_PLAYBACK_BASE_URL: http://localhost:8080/hls/live
       STREAM_PLAYBACK_PROBE_BASE_URL: http://media-server:8888/live
     ports:
       - "8001:8001"

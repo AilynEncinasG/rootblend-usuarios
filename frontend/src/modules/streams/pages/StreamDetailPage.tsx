@@ -114,35 +114,55 @@ export default function StreamDetailPage() {
   }, [streamId]);
 
   useEffect(() => {
-    if (!streamId || Number.isNaN(Number(streamId))) return undefined;
+  if (!streamId || Number.isNaN(Number(streamId))) return undefined;
 
-    const interval = window.setInterval(async () => {
-      try {
-        const updated = await getStreamById(Number(streamId));
+  let active = true;
 
-        setStream((current) => {
-          if (!current) return updated;
+  async function refreshStream() {
+    try {
+      const updated = await getStreamById(Number(streamId));
 
-          return {
-            ...current,
-            estado: updated.estado,
-            fecha_inicio: updated.fecha_inicio,
-            fecha_fin: updated.fecha_fin,
-            viewer_count: updated.viewer_count,
-            signal_status: updated.signal_status,
-            playback_url: updated.playback_url,
-            calidad_actual: updated.calidad_actual,
-          };
-        });
-      } catch (error) {
-        console.error("PUBLIC_STREAM_POLL_ERROR", error);
+      if (!active) return;
+
+      setStream((current) => {
+        if (!current) return updated;
+
+        return {
+          ...current,
+          estado: updated.estado,
+          fecha_inicio: updated.fecha_inicio,
+          fecha_fin: updated.fecha_fin,
+          viewer_count: updated.viewer_count,
+          signal_status:
+            updated.estado === "en_vivo"
+              ? updated.signal_status
+              : "desconectado",
+          playback_url: updated.playback_url,
+          calidad_actual: updated.calidad_actual,
+        };
+      });
+    } catch (error) {
+      console.error("PUBLIC_STREAM_POLL_ERROR", error);
+    }
+  }
+
+  const interval = window.setInterval(() => {
+    setStream((current) => {
+      if (current?.estado === "finalizado") {
+        window.clearInterval(interval);
+        return current;
       }
-    }, 6000);
 
-    return () => {
-      window.clearInterval(interval);
-    };
-  }, [streamId]);
+      refreshStream();
+      return current;
+    });
+  }, 5000);
+
+  return () => {
+    active = false;
+    window.clearInterval(interval);
+  };
+}, [streamId]);
 
   const signalStatus = normalizeSignalStatus(stream?.signal_status);
   const isLive = stream?.estado === "en_vivo";
@@ -392,8 +412,13 @@ export default function StreamDetailPage() {
 
               <TwoCol>
                 <span>Video</span>
-                <strong>{isLive ? "Activo" : "No activo"}</strong>
-
+                  <strong>
+                    {isLive && signalStatus === "conectado"
+                      ? "Activo"
+                      : isLive
+                        ? "Esperando señal"
+                        : "No activo"}
+                  </strong>
                 <span>Señal</span>
                 <strong>{signalStatus}</strong>
 
