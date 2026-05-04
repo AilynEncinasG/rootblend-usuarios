@@ -128,7 +128,30 @@ function GuestOnly({ children }: { children: ReactNode }) {
 }
 
 function RouteLoading() {
-  return null;
+  return (
+    <div
+      style={{
+        minHeight: "100vh",
+        background: "#030712",
+        color: "#f8fbff",
+        display: "grid",
+        placeItems: "center",
+        fontFamily: "Inter, system-ui, sans-serif",
+      }}
+    >
+      <div
+        style={{
+          padding: "18px 22px",
+          borderRadius: "18px",
+          background: "rgba(15, 23, 42, 0.82)",
+          border: "1px solid rgba(0, 229, 255, 0.22)",
+          boxShadow: "0 18px 45px rgba(0, 0, 0, 0.35)",
+        }}
+      >
+        Cargando ROOTBLEND...
+      </div>
+    </div>
+  );
 }
 
 function CreatorRoute({
@@ -227,8 +250,11 @@ function PodcasterRoute({ children }: { children: ReactNode }) {
 }
 
 function ModeratorRoute({ children }: { children: ReactNode }) {
-  const [loading, setLoading] = useState(true);
-  const [isStreamerOwner, setIsStreamerOwner] = useState(false);
+  const cachedRole = localStorage.getItem("creator_role");
+  const cachedIsStreamer = cachedRole === "streamer";
+
+  const [loading, setLoading] = useState(!cachedIsStreamer);
+  const [isStreamerOwner, setIsStreamerOwner] = useState(cachedIsStreamer);
   const moderators = getRouteModerators();
   const userLabel = getRouteUserLabel();
   const canModerate = isStreamerOwner || moderators.includes(userLabel);
@@ -237,7 +263,9 @@ function ModeratorRoute({ children }: { children: ReactNode }) {
     let active = true;
 
     async function loadOwnerStatus() {
-      setLoading(true);
+      if (!cachedIsStreamer) {
+        setLoading(true);
+      }
 
       try {
         const result = await getMyChannel();
@@ -247,7 +275,11 @@ function ModeratorRoute({ children }: { children: ReactNode }) {
         syncCreatorRole(role);
         setIsStreamerOwner(role === "streamer");
       } catch {
-        if (active) setIsStreamerOwner(false);
+        if (!active) return;
+
+        // Si ya teníamos el rol en cache, no dejamos la pantalla en blanco ni bloqueamos el acceso
+        // por una demora puntual del servicio de canales.
+        setIsStreamerOwner(cachedIsStreamer);
       } finally {
         if (active) setLoading(false);
       }
@@ -258,7 +290,7 @@ function ModeratorRoute({ children }: { children: ReactNode }) {
     return () => {
       active = false;
     };
-  }, []);
+  }, [cachedIsStreamer]);
 
   if (loading) {
     return <Private><RouteLoading /></Private>;

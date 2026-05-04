@@ -1,5 +1,5 @@
 import { type FormEvent, type ReactNode, useEffect, useMemo, useState } from "react";
-import { Link, Navigate, useNavigate, useParams, useSearchParams } from "react-router-dom";
+import { Link, Navigate, useLocation, useNavigate, useParams, useSearchParams } from "react-router-dom";
 import styled from "styled-components";
 import {
   FiActivity,
@@ -101,7 +101,6 @@ const pageLinks = [
   { label: "Podcasts", to: "/podcasts", icon: FiHeadphones, key: "podcasts" },
   { label: "Creador", to: "/creator/activate", icon: FiRadio, key: "creator" },
   { label: "Moderacion", to: "/moderation", icon: FiShield, key: "moderation" },
-  { label: "Servicios", to: "/system-status", icon: FiMonitor, key: "system" },
 ];
 
 function formatApiError(errors: unknown, fallback: string) {
@@ -242,6 +241,7 @@ export function RootShell({ active = "home", children, rightPanel }: ShellProps)
   const [notificationsOpen, setNotificationsOpen] = useState(false);
   const loggedIn = isAuthenticated();
   const [role, setRole] = useState<CreatorRole | null>(getCreatorRole());
+  const [creatorReady, setCreatorReady] = useState(!loggedIn);
   const [myChannel, setMyChannel] = useState<BackendCanal | null>(null);
   const [realChannels, setRealChannels] = useState<ReturnType<typeof backendChannelToCard>[]>([]);
   const creatorTarget = role === "streamer" ? "/creator/streamer/create-stream" : role === "podcaster" ? "/creator/podcaster" : "/creator/activate";
@@ -263,10 +263,13 @@ export function RootShell({ active = "home", children, rightPanel }: ShellProps)
       }
 
       if (!loggedIn) {
+        setCreatorReady(true);
         setRole(null);
         setMyChannel(null);
         return;
       }
+
+      setCreatorReady(false);
 
       try {
         const result = await getMyChannel();
@@ -288,6 +291,10 @@ export function RootShell({ active = "home", children, rightPanel }: ShellProps)
         if (activeRequest) {
           setRole(getCreatorRole());
           setMyChannel(null);
+        }
+      } finally {
+        if (activeRequest) {
+          setCreatorReady(true);
         }
       }
     }
@@ -405,17 +412,25 @@ export function RootShell({ active = "home", children, rightPanel }: ShellProps)
                     <DropdownMenuLink to="/profile" onClick={() => setMenuOpen(false)}>
                       <FiUser /> Perfil
                     </DropdownMenuLink>
-                    <DropdownMenuLink to={myChannelTarget} onClick={() => setMenuOpen(false)}>
-                      <FiEye /> Mi canal
-                    </DropdownMenuLink>
-                    {!role && (
-                      <DropdownMenuLink to="/creator/activate" onClick={() => setMenuOpen(false)}>
-                        <FiRadio /> Activar canal
-                      </DropdownMenuLink>
+                    {creatorReady ? (
+                      <>
+                        <DropdownMenuLink to={myChannelTarget} onClick={() => setMenuOpen(false)}>
+                          <FiEye /> Mi canal
+                        </DropdownMenuLink>
+                        {!role && (
+                          <DropdownMenuLink to="/creator/activate" onClick={() => setMenuOpen(false)}>
+                            <FiRadio /> Activar canal
+                          </DropdownMenuLink>
+                        )}
+                        <DropdownMenuLink to={creatorTarget} onClick={() => setMenuOpen(false)}>
+                          <FiGrid /> {creatorLabel}
+                        </DropdownMenuLink>
+                      </>
+                    ) : (
+                      <DropdownMenuLoading>
+                        <FiRefreshCw /> Verificando canal...
+                      </DropdownMenuLoading>
                     )}
-                    <DropdownMenuLink to={creatorTarget} onClick={() => setMenuOpen(false)}>
-                      <FiGrid /> {creatorLabel}
-                    </DropdownMenuLink>
                     <DropdownMenuLink to="/stats" onClick={() => setMenuOpen(false)}>
                       <FiActivity /> Estadisticas
                     </DropdownMenuLink>
@@ -441,6 +456,7 @@ export function RootShell({ active = "home", children, rightPanel }: ShellProps)
                         clearAuthStorage();
                         localStorage.removeItem(CREATOR_ROLE_KEY);
                         setRole(null);
+                        setCreatorReady(true);
                         setMyChannel(null);
                         setMenuOpen(false);
                         navigate("/");
@@ -789,18 +805,6 @@ function DemoRightPanel({ liveStreams = [] }: { liveStreams?: StreamItem[] }) {
           </SideListItem>
         ))
       )}
-
-      <Divider />
-
-      <PanelHeader>
-        <strong>Estado del sistema</strong>
-        <Link to="/system-status">Abrir</Link>
-      </PanelHeader>
-
-      <ServicePill $status="Operativo">
-        <FiCheckCircle />
-        Plataforma conectada
-      </ServicePill>
     </SidePanel>
   );
 }
@@ -3715,18 +3719,32 @@ function CreatorForm({ title, subtitle, button, children, onSubmit }: { title: s
 }
 
 function CreatorNav() {
-  const links = [
-    ["/creator/streamer", "Streamer"],
-    ["/creator/streamer/control", "Control"],
-    ["/creator/streamer/stats", "Estadisticas"],
-    ["/creator/podcaster", "Podcaster"],
-    ["/creator/podcaster/episodes", "Episodios"],
-    ["/moderation", "Moderacion"],
-  ];
+  const location = useLocation();
+  const role = getCreatorRole();
+  const isPodcasterArea = location.pathname.startsWith("/creator/podcaster") || role === "podcaster";
+
+  const links = isPodcasterArea
+    ? [
+        ["/creator/podcaster", "Podcaster"],
+        ["/creator/podcaster/episodes", "Episodios"],
+        ["/creator/podcaster/stats", "Estadisticas"],
+      ]
+    : [
+        ["/creator/streamer", "Streamer"],
+        ["/creator/streamer/control", "Control"],
+        ["/creator/streamer/stats", "Estadisticas"],
+        ["/creator/streamer/highlights", "Momentos"],
+        ["/moderation", "Moderacion"],
+      ];
 
   return (
     <CreatorSidebar>
-      {links.map(([to, label]) => <SidebarLink key={to} to={to}><FiArrowRight /><span>{label}</span></SidebarLink>)}
+      {links.map(([to, label]) => (
+        <SidebarLink key={to} to={to}>
+          <FiArrowRight />
+          <span>{label}</span>
+        </SidebarLink>
+      ))}
     </CreatorSidebar>
   );
 }
@@ -4221,6 +4239,19 @@ const NotificationMark = styled.span<{ $accent: string }>`
   border-radius: 50%;
   background: ${({ $accent }) => $accent};
   box-shadow: 0 0 18px ${({ $accent }) => $accent};
+`;
+
+const DropdownMenuLoading = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 13px 16px;
+  color: rgba(226, 232, 240, 0.72);
+  font-weight: 900;
+
+  svg {
+    color: #00e5ff;
+  }
 `;
 
 const DropdownMenuLink = styled(Link)`
