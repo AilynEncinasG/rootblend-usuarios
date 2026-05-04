@@ -10,9 +10,10 @@ const FirebaseChatTestPage = () => {
     Array<{ id: string; data: ChatMessage }>
   >([]);
   const [text, setText] = useState("");
+  const streamId = "firebase-test";
 
   useEffect(() => {
-    const unsubscribe = subscribeToChat((incomingMessages) => {
+    const unsubscribe = subscribeToChat(streamId, (incomingMessages) => {
       setMessages(incomingMessages);
     });
 
@@ -22,7 +23,7 @@ const FirebaseChatTestPage = () => {
   const handleSend = async () => {
     if (!text.trim()) return;
 
-    await sendChatMessage({
+    await sendChatMessage(streamId, {
       usuarioId: "test-user-1",
       nombre: "Prueba Rootblend",
       mensaje: text,

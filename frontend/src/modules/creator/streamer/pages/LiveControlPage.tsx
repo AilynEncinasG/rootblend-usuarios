@@ -16,6 +16,7 @@ import {
   type StreamObsConfig,
 } from "../../../streams/services/streamsService";
 import LiveVideoPlayer from "../../../../components/stream/LiveVideoPlayer";
+import { clearStreamChatMessages } from "../../../../services/chatService";
 
 type CreatorRole = "streamer" | "podcaster";
 
@@ -172,7 +173,15 @@ export default function LiveControlPage() {
 
     try {
       await finishStream(selectedStream.id_stream);
-      setSuccessMessage("Stream finalizado correctamente. Ya no debe aparecer como en vivo.");
+
+      try {
+        await clearStreamChatMessages(selectedStream.id_stream);
+        setSuccessMessage("Stream finalizado correctamente. El chat del directo fue limpiado.");
+      } catch (chatError) {
+        console.error("CLEAR_STREAM_CHAT_ERROR", chatError);
+        setSuccessMessage("Stream finalizado correctamente. No se pudo limpiar el chat en Firebase.");
+      }
+
       await loadControlData();
       await loadObsConfig(selectedStream.id_stream);
     } catch (error) {
@@ -302,7 +311,7 @@ export default function LiveControlPage() {
               <LiveVideoPlayer
                 playbackUrl={selectedStream.playback_url}
                 streamStatus={selectedStream.estado}
-                signalStatus={selectedStream.signal_status}
+                signalStatus={selectedStream.signal_status || undefined}
               />
             </PreviewPanel>
           )}

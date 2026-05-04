@@ -73,7 +73,7 @@ export default function CreatorActivatePage() {
       } catch (error) {
         console.error("CREATOR_ACTIVATE_LOAD_ERROR", error);
         if (active) {
-          setError(error instanceof Error ? error.message : "No se pudo consultar tu canal real.");
+          setError(error instanceof Error ? error.message : "No pudimos verificar si ya tienes un canal. Intenta actualizar la página.");
         }
       } finally {
         if (active) setLoading(false);
@@ -118,7 +118,7 @@ export default function CreatorActivatePage() {
       navigate(panelPath(backendRole), { replace: true });
     } catch (error) {
       console.error("ACTIVATE_CHANNEL_ERROR", error);
-      setError(error instanceof Error ? error.message : "No se pudo activar el canal.");
+      setError(error instanceof Error ? error.message : "No pudimos activar tu canal. Revisa los datos e intenta nuevamente.");
     } finally {
       setSaving(false);
     }
@@ -135,7 +135,7 @@ export default function CreatorActivatePage() {
           <h1>Activa tu canal de creador</h1>
           <p>
             Elige si tu cuenta sera streamer o podcaster. Esta informacion se guarda en
-            canales-streaming-service, ya no en modo demo.
+            la plataforma para que puedas gestionar tu contenido.
           </p>
         </Header>
 
@@ -144,7 +144,7 @@ export default function CreatorActivatePage() {
             <FiRefreshCw />
             <div>
               <strong>Consultando canal</strong>
-              <p>Verificando si ya tienes un canal real.</p>
+              <p>Verificando si ya tienes un canal activo.</p>
             </div>
           </Alert>
         )}
@@ -171,7 +171,7 @@ export default function CreatorActivatePage() {
             <div>
               <strong>Ya tienes un canal activo como {existingRole}</strong>
               <p>
-                Tu canal real es {channel.nombre_canal}. Una cuenta solo puede operar como
+                Tu canal es {channel.nombre_canal}. Una cuenta solo puede operar como
                 streamer o podcaster, no ambos.
               </p>
             </div>

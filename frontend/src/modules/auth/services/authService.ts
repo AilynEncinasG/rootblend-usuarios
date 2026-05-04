@@ -168,6 +168,10 @@ export async function resetPassword(token: string, password_nueva: string) {
 }
 
 export function saveAuthSession(data: LoginData) {
+  sessionStorage.removeItem(ACCESS_TOKEN_KEY);
+  sessionStorage.removeItem(REFRESH_TOKEN_KEY);
+  sessionStorage.removeItem(USER_KEY);
+
   localStorage.setItem(ACCESS_TOKEN_KEY, data.access_token);
   localStorage.setItem(REFRESH_TOKEN_KEY, data.refresh_token);
   localStorage.setItem(USER_KEY, JSON.stringify(data.usuario));
@@ -176,7 +180,14 @@ export function saveAuthSession(data: LoginData) {
 }
 
 export function getAccessToken() {
-  return localStorage.getItem(ACCESS_TOKEN_KEY);
+  const token = localStorage.getItem(ACCESS_TOKEN_KEY);
+
+  if (token?.startsWith("mock_")) {
+    queueMicrotask(clearAuthSession);
+    return null;
+  }
+
+  return token;
 }
 
 export function getRefreshToken() {

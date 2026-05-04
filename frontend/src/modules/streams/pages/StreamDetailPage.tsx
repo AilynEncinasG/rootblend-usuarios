@@ -4,7 +4,6 @@ import styled from "styled-components";
 import {
   FiAlertTriangle,
   FiArrowLeft,
-  FiClock,
   FiEye,
   FiHeart,
   FiLock,
@@ -21,6 +20,7 @@ import {
 } from "../services/streamsService";
 import { isAuthenticated } from "../../auth/utils/authStorage";
 import { RootShell } from "../../mock/RootblendScreens";
+import StreamChatPanel from "../components/StreamChatPanel";
 
 type SignalStatus = "sin_senal" | "conectado" | "desconectado" | "error";
 
@@ -167,6 +167,7 @@ export default function StreamDetailPage() {
   const signalStatus = normalizeSignalStatus(stream?.signal_status);
   const isLive = stream?.estado === "en_vivo";
   const isFinished = stream?.estado === "finalizado";
+  const showLegacyChat = localStorage.getItem("__rootblend_legacy_chat") === "1";
 
   const playerTitle = useMemo(() => {
     if (!stream) return "Stream";
@@ -182,7 +183,7 @@ export default function StreamDetailPage() {
             <FiRefreshCw />
             <div>
               <strong>Cargando stream</strong>
-              <p>Consultando canales-streaming-service.</p>
+              <p>Cargando información de la transmisión...</p>
             </div>
           </Alert>
         </Page>
@@ -353,6 +354,14 @@ export default function StreamDetailPage() {
           </MainColumn>
 
           <SideColumn>
+            <StreamChatPanel
+              streamId={stream.id_stream}
+              channelId={stream.canal.id_canal}
+              allowInput={loggedIn && isLive}
+              isLive={isLive}
+            />
+
+            {showLegacyChat && (
             <ChatBox>
               <ChatHeader>
                 <h3>Chat en vivo</h3>
@@ -391,6 +400,7 @@ export default function StreamDetailPage() {
                 </ChatInputBox>
               )}
             </ChatBox>
+            )}
 
             <Panel>
               <h3>Canal</h3>

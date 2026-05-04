@@ -19,9 +19,20 @@ const AUTH_USER_KEYS = [
 
 export function getAccessToken(): string | null {
   for (const key of ACCESS_TOKEN_KEYS) {
-    const value = localStorage.getItem(key) || sessionStorage.getItem(key);
+    const persistentValue = localStorage.getItem(key);
+    const sessionValue = sessionStorage.getItem(key);
+    const value = persistentValue || sessionValue;
 
     if (value && value !== "undefined" && value !== "null") {
+      if (value.startsWith("mock_")) {
+        queueMicrotask(clearAuthStorage);
+        return null;
+      }
+
+      if (!persistentValue && sessionValue) {
+        localStorage.setItem(key, sessionValue);
+      }
+
       return value;
     }
   }
@@ -31,9 +42,15 @@ export function getAccessToken(): string | null {
 
 export function getRefreshToken(): string | null {
   for (const key of REFRESH_TOKEN_KEYS) {
-    const value = localStorage.getItem(key) || sessionStorage.getItem(key);
+    const persistentValue = localStorage.getItem(key);
+    const sessionValue = sessionStorage.getItem(key);
+    const value = persistentValue || sessionValue;
 
     if (value && value !== "undefined" && value !== "null") {
+      if (!persistentValue && sessionValue) {
+        localStorage.setItem(key, sessionValue);
+      }
+
       return value;
     }
   }
@@ -47,13 +64,19 @@ export function isAuthenticated(): boolean {
 
 export function getStoredUser() {
   for (const key of AUTH_USER_KEYS) {
-    const rawValue = localStorage.getItem(key) || sessionStorage.getItem(key);
+    const persistentValue = localStorage.getItem(key);
+    const sessionValue = sessionStorage.getItem(key);
+    const rawValue = persistentValue || sessionValue;
 
     if (!rawValue) {
       continue;
     }
 
     try {
+      if (!persistentValue && sessionValue) {
+        localStorage.setItem(key, sessionValue);
+      }
+
       return JSON.parse(rawValue);
     } catch {
       return null;

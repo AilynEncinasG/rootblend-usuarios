@@ -12,12 +12,12 @@ import {
 export default function CreateStreamPage() {
   const navigate = useNavigate();
 
-  const [title, setTitle] = useState("Directo real de ROOTBLEND");
-  const [description, setDescription] = useState("Probando flujo real de ROOTBLEND.");
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
   const [categoryId, setCategoryId] = useState(0);
   const [quality, setQuality] = useState("720p");
   const [bitrate, setBitrate] = useState(2500);
-  const [featured, setFeatured] = useState(true);
+  const [featured, setFeatured] = useState(false);
   const [categories, setCategories] = useState<Categoria[]>([]);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -40,7 +40,7 @@ export default function CreateStreamPage() {
         if (result[0]) setCategoryId(result[0].id_categoria);
       } catch (error) {
         console.error("CREATE_STREAM_CATEGORIES_ERROR", error);
-        if (active) setError(error instanceof Error ? error.message : "No se pudieron cargar las categorias.");
+        if (active) setError(error instanceof Error ? error.message : "No se pudieron cargar las categorías. Intenta actualizar la página.");
       } finally {
         if (active) setLoading(false);
       }
@@ -90,7 +90,7 @@ export default function CreateStreamPage() {
       }, 700);
     } catch (error) {
       console.error("CREATE_STREAM_ERROR", error);
-      setError(error instanceof Error ? error.message : "No se pudo crear el stream.");
+      setError(error instanceof Error ? error.message : "No se pudo guardar el stream. Revisa los datos e intenta nuevamente.");
     } finally {
       setSaving(false);
     }
@@ -104,7 +104,7 @@ export default function CreateStreamPage() {
           <span>Streamer</span>
           <h1>Crear / configurar stream</h1>
           <p>
-            Este formulario crea un stream real en estado programado. Luego lo puedes iniciar desde Control de transmision.
+            Completa los datos de tu transmisión. Luego podrás iniciarla desde Control de transmisión.
           </p>
         </Header>
 
@@ -113,7 +113,7 @@ export default function CreateStreamPage() {
             <FiRefreshCw />
             <div>
               <strong>Cargando categorias</strong>
-              <p>Consultando canales-streaming-service.</p>
+              <p>Cargando categorías disponibles.</p>
             </div>
           </Alert>
         )}
@@ -137,7 +137,7 @@ export default function CreateStreamPage() {
         <Label>Titulo del stream</Label>
         <Field>
           <FiRadio />
-          <input value={title} disabled={saving} onChange={(event) => setTitle(event.target.value)} />
+          <input value={title} placeholder="Ej. Directo de la noche" disabled={saving} onChange={(event) => setTitle(event.target.value)} />
         </Field>
 
         <Label>Categoria</Label>
@@ -158,7 +158,7 @@ export default function CreateStreamPage() {
         </Select>
 
         <Label>Descripcion</Label>
-        <TextArea value={description} disabled={saving} onChange={(event) => setDescription(event.target.value)} />
+        <TextArea value={description} placeholder="Describe brevemente de qué tratará el directo." disabled={saving} onChange={(event) => setDescription(event.target.value)} />
 
         <Label>Calidad</Label>
         <Select value={quality} disabled={saving} onChange={(event) => setQuality(event.target.value)}>

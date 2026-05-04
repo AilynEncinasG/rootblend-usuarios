@@ -1,10 +1,11 @@
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { FiHeart, FiRadio, FiUserMinus } from "react-icons/fi";
+import { RootShell } from "../../mock/RootblendScreens";
 
 const Page = styled.main`
   min-height: calc(100vh - 70px);
-  padding: 48px 6vw;
+  padding: 28px 0;
   color: white;
 `;
 
@@ -36,13 +37,21 @@ const Card = styled.div`
 
 const Row = styled.div`
   display: grid;
-  grid-template-columns: 46px 1fr auto;
+  grid-template-columns: 46px minmax(0, 1fr) auto;
   gap: 14px;
   align-items: center;
   padding: 14px 0;
 
   & + & {
     border-top: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  @media (max-width: 760px) {
+    grid-template-columns: 46px minmax(0, 1fr);
+
+    > div:last-child {
+      grid-column: 1 / -1;
+    }
   }
 `;
 
@@ -131,7 +140,8 @@ const followedChannels = [
 
 export default function FollowingPage() {
   return (
-    <Page>
+    <RootShell active="following">
+      <Page>
       <Eyebrow>Centro personal</Eyebrow>
       <Title>Canales seguidos</Title>
       <Subtitle>
@@ -169,6 +179,7 @@ export default function FollowingPage() {
           </Row>
         ))}
       </Card>
-    </Page>
+      </Page>
+    </RootShell>
   );
 }

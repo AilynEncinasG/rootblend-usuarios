@@ -8,7 +8,6 @@ import {
   FiLock,
   FiHome,
   FiRadio,
-  FiGrid,
   FiBell,
   FiHeart,
   FiCreditCard,
@@ -187,13 +186,13 @@ function syncCreatorRole(role: CreatorRole | null) {
 
 function getCreatorPanelPath(role: CreatorRole | null) {
   if (role === "podcaster") return "/creator/podcaster";
-  if (role === "streamer") return "/creator/streamer";
+  if (role === "streamer") return "/creator/streamer/create-stream";
   return "/creator/activate";
 }
 
 function getCreatorLabel(role: CreatorRole | null) {
   if (role === "podcaster") return "Panel podcaster";
-  if (role === "streamer") return "Panel streamer";
+  if (role === "streamer") return "Configurar stream";
   return "Activar canal";
 }
 
@@ -354,11 +353,6 @@ export default function UserMenu() {
               </MenuLink>
             )}
 
-            {!creatorRole && (
-              <MenuLink to="/creator/activate" onClick={closeMenu}>
-                <FiGrid />Activar canal de creador
-              </MenuLink>
-            )}
 
             <MenuSectionTitle>Cuenta</MenuSectionTitle>
             <MenuLink to="/settings" onClick={closeMenu}><FiSettings />Configuracion</MenuLink>

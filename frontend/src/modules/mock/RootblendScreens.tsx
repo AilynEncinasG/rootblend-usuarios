@@ -40,7 +40,6 @@ import {
   FiVolume2,
   FiWifiOff,
   FiXCircle,
-  FiZap,
 } from "react-icons/fi";
 import {
   brandAssets,
@@ -79,6 +78,9 @@ import {
   getFeaturedStreams,
   getCategories as getBackendCategories,
   getChannels as getBackendChannels,
+  getActiveChannels as getBackendActiveChannels,
+  getMyChannel,
+  getMyStreams,
   getStreamById,
   type Stream as BackendStream,
   type Categoria as BackendCategory,
@@ -92,13 +94,6 @@ type ShellProps = {
   rightPanel?: ReactNode;
 };
 
-const demoUser = {
-  id_usuario: 1,
-  correo: "usuario_123@rootblend.dev",
-  estado: "activo",
-  nombre_visible: "usuario_123",
-};
-
 const pageLinks = [
   { label: "Inicio", to: "/", icon: FiHome, key: "home" },
   { label: "Explorar", to: "/streams", icon: FiCompass, key: "streams" },
@@ -108,26 +103,6 @@ const pageLinks = [
   { label: "Moderacion", to: "/moderation", icon: FiShield, key: "moderation" },
   { label: "Servicios", to: "/system-status", icon: FiMonitor, key: "system" },
 ];
-
-function loginMock(email: string) {
-  const fallbackName = "usuario_123";
-  const cleanEmail = email.trim() || `${fallbackName}@rootblend.dev`;
-  const visibleName = cleanEmail.includes("@")
-    ? cleanEmail.split("@")[0] || fallbackName
-    : cleanEmail || fallbackName;
-
-  saveAuthSession({
-    access_token: "mock_access_token_rootblend",
-    refresh_token: "mock_refresh_token_rootblend",
-    token_type: "Bearer",
-    expires_in: 3600,
-    usuario: {
-      ...demoUser,
-      correo: cleanEmail,
-      nombre_visible: visibleName,
-    },
-  });
-}
 
 function formatApiError(errors: unknown, fallback: string) {
   if (!errors || typeof errors !== "object") {
@@ -147,20 +122,21 @@ function formatApiError(errors: unknown, fallback: string) {
   return fallback;
 }
 
-function getInitials(value: string) {
-  const clean = value.trim();
+function getInitials(value?: string | null) {
+  const clean = String(value || "").trim();
 
   if (!clean) {
     return "RB";
   }
 
-  const parts = clean.split(/\s+/);
-
-  if (parts.length === 1) {
-    return parts[0].slice(0, 2).toUpperCase();
-  }
-
-  return `${parts[0][0]}${parts[1][0]}`.toUpperCase();
+  return (
+    clean
+      .split(/\s+/)
+      .filter(Boolean)
+      .slice(0, 2)
+      .map((part) => part.charAt(0).toUpperCase())
+      .join("") || "RB"
+  );
 }
 
 function backendStreamToCard(stream: BackendStream): StreamItem {
@@ -265,7 +241,72 @@ export function RootShell({ active = "home", children, rightPanel }: ShellProps)
   const [menuOpen, setMenuOpen] = useState(false);
   const [notificationsOpen, setNotificationsOpen] = useState(false);
   const loggedIn = isAuthenticated();
-  const role = getCreatorRole();
+  const [role, setRole] = useState<CreatorRole | null>(getCreatorRole());
+  const [myChannel, setMyChannel] = useState<BackendCanal | null>(null);
+  const [realChannels, setRealChannels] = useState<ReturnType<typeof backendChannelToCard>[]>([]);
+  const creatorTarget = role === "streamer" ? "/creator/streamer/create-stream" : role === "podcaster" ? "/creator/podcaster" : "/creator/activate";
+  const creatorLabel = role === "streamer" ? "Configurar stream" : role === "podcaster" ? "Panel podcaster" : "Activar canal";
+  const myChannelTarget = role === "streamer" ? "/creator/streamer" : role === "podcaster" ? "/creator/podcaster" : "/creator/activate";
+
+  useEffect(() => {
+    let activeRequest = true;
+
+    async function loadShellData() {
+      try {
+        const channels = await getBackendActiveChannels();
+        if (activeRequest) {
+          setRealChannels(channels.map(backendChannelToCard));
+        }
+      } catch (error) {
+        console.error("SHELL_CHANNELS_LOAD_ERROR", error);
+        if (activeRequest) setRealChannels([]);
+      }
+
+      if (!loggedIn) {
+        setRole(null);
+        setMyChannel(null);
+        return;
+      }
+
+      try {
+        const result = await getMyChannel();
+        if (!activeRequest) return;
+
+        const backendRole = result.canal?.tipo_canal?.nombre_tipo;
+        const normalizedRole = backendRole === "streamer" || backendRole === "podcaster" ? backendRole : null;
+
+        if (normalizedRole) {
+          localStorage.setItem(CREATOR_ROLE_KEY, normalizedRole);
+        } else {
+          localStorage.removeItem(CREATOR_ROLE_KEY);
+        }
+
+        setRole(normalizedRole);
+        setMyChannel(result.canal);
+      } catch (error) {
+        console.error("SHELL_MY_CHANNEL_LOAD_ERROR", error);
+        if (activeRequest) {
+          setRole(getCreatorRole());
+          setMyChannel(null);
+        }
+      }
+    }
+
+    loadShellData();
+
+    function refreshCreatorRole() {
+      setRole(getCreatorRole());
+    }
+
+    window.addEventListener("creator-role-changed", refreshCreatorRole);
+    window.addEventListener("auth-changed", refreshCreatorRole);
+
+    return () => {
+      activeRequest = false;
+      window.removeEventListener("creator-role-changed", refreshCreatorRole);
+      window.removeEventListener("auth-changed", refreshCreatorRole);
+    };
+  }, [loggedIn]);
 
   function submitSearch(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -364,14 +405,16 @@ export function RootShell({ active = "home", children, rightPanel }: ShellProps)
                     <DropdownMenuLink to="/profile" onClick={() => setMenuOpen(false)}>
                       <FiUser /> Perfil
                     </DropdownMenuLink>
-                    <DropdownMenuLink to="/channels/cyberpunk-2077" onClick={() => setMenuOpen(false)}>
+                    <DropdownMenuLink to={myChannelTarget} onClick={() => setMenuOpen(false)}>
                       <FiEye /> Mi canal
                     </DropdownMenuLink>
-                    <DropdownMenuLink to="/creator/activate" onClick={() => setMenuOpen(false)}>
-                      <FiRadio /> Activar canal
-                    </DropdownMenuLink>
-                    <DropdownMenuLink to="/creator/dashboard" onClick={() => setMenuOpen(false)}>
-                      <FiGrid /> Panel creador
+                    {!role && (
+                      <DropdownMenuLink to="/creator/activate" onClick={() => setMenuOpen(false)}>
+                        <FiRadio /> Activar canal
+                      </DropdownMenuLink>
+                    )}
+                    <DropdownMenuLink to={creatorTarget} onClick={() => setMenuOpen(false)}>
+                      <FiGrid /> {creatorLabel}
                     </DropdownMenuLink>
                     <DropdownMenuLink to="/stats" onClick={() => setMenuOpen(false)}>
                       <FiActivity /> Estadisticas
@@ -396,6 +439,9 @@ export function RootShell({ active = "home", children, rightPanel }: ShellProps)
                       onClick={async () => {
                         await logoutUser();
                         clearAuthStorage();
+                        localStorage.removeItem(CREATOR_ROLE_KEY);
+                        setRole(null);
+                        setMyChannel(null);
                         setMenuOpen(false);
                         navigate("/");
                       }}
@@ -419,40 +465,49 @@ export function RootShell({ active = "home", children, rightPanel }: ShellProps)
         <Sidebar>
           <SidebarSection>
             <SidebarTitle>Recomendados</SidebarTitle>
-            {recommendedChannels.map((channel) => (
-              <ChannelMini key={channel.name} to="/streams/cyberpunk-2077">
-                <Avatar>{channel.avatar}</Avatar>
-                <MiniText>
-                  <strong>{channel.name}</strong>
-                  <small>{channel.subtitle}</small>
-                </MiniText>
-                <ViewerDot>{channel.viewers}</ViewerDot>
-              </ChannelMini>
-            ))}
+            {realChannels.length === 0 ? (
+              <SidebarEmptyText>Aún no hay canales activos.</SidebarEmptyText>
+            ) : (
+              realChannels.slice(0, 6).map((channel) => (
+                <ChannelMini key={channel.id} to={`/channels/${channel.id}`}>
+                  <Avatar>{channel.avatar}</Avatar>
+                  <MiniText>
+                    <strong>{channel.name}</strong>
+                    <small>{channel.subtitle === "streamer" ? "Streamer" : "Podcaster"}</small>
+                  </MiniText>
+                  <ViewerDot>{channel.viewers}</ViewerDot>
+                </ChannelMini>
+              ))
+            )}
           </SidebarSection>
 
           <SidebarSection>
             <SidebarTitle>Explorar</SidebarTitle>
             {pageLinks.map((item) => {
               const Icon = item.icon;
+              const target = item.key === "creator" ? creatorTarget : item.to;
+              const label = item.key === "creator" ? creatorLabel : item.label;
+
               return (
                 <SidebarLink
                   key={item.key}
-                  to={item.to}
+                  to={target}
                   $active={active === item.key}
                 >
                   <Icon />
-                  <span>{item.label}</span>
+                  <span>{label}</span>
                 </SidebarLink>
               );
             })}
           </SidebarSection>
 
-          <PromoPanel>
-            <strong>Suscribete a ROOTBLEND</strong>
-            <p>Apoya a tus creadores favoritos y desbloquea beneficios.</p>
-            <PrimaryLink to="/subscriptions">Descubre mas</PrimaryLink>
-          </PromoPanel>
+          {!loggedIn && (
+            <PromoPanel>
+              <strong>Suscribete a ROOTBLEND</strong>
+              <p>Apoya a tus creadores favoritos y desbloquea beneficios.</p>
+              <PrimaryLink to="/subscriptions">Descubre mas</PrimaryLink>
+            </PromoPanel>
+          )}
         </Sidebar>
 
         <MainArea>{children}</MainArea>
@@ -622,7 +677,7 @@ function ChatPanel({ allowInput = true }: { allowInput?: boolean }) {
   }
 
   function viewProfile(user: string) {
-    setActionFeedback(`Vista demo del perfil de ${user}. En backend abrira el perfil publico real.`);
+    setActionFeedback(`Perfil de ${user}.`);
     setActiveMessageId(null);
   }
 
@@ -744,7 +799,7 @@ function DemoRightPanel({ liveStreams = [] }: { liveStreams?: StreamItem[] }) {
 
       <ServicePill $status="Operativo">
         <FiCheckCircle />
-        canales-streaming-service conectado
+        Plataforma conectada
       </ServicePill>
     </SidePanel>
   );
@@ -796,7 +851,7 @@ export function HomePage() {
 
         if (active) {
           setError(
-            "No se pudo conectar con canales-streaming-service. Revisa el gateway o el servicio de canales."
+            "No pudimos cargar la información de canales en este momento. Intenta actualizar la página."
           );
         }
       } finally {
@@ -823,7 +878,7 @@ export function HomePage() {
         <AlertPanel>
           <FiAlertTriangle />
           <div>
-            <strong>Servicio de canales no disponible</strong>
+            <strong>No se pudo cargar contenido</strong>
             <p>{error}</p>
           </div>
         </AlertPanel>
@@ -876,7 +931,7 @@ export function HomePage() {
           <FiRefreshCw />
           <div>
             <strong>Cargando streams</strong>
-            <p>Consultando canales-streaming-service.</p>
+            <p>Preparando la información...</p>
           </div>
         </AlertPanel>
       )}
@@ -962,7 +1017,7 @@ export function HomePage() {
           <EmptyPanel
             icon={<FiGrid />}
             title="No hay categorías"
-            text="Aún no hay categorías registradas en canales-streaming-service."
+            text="Aún no hay categorías disponibles."
           />
         ) : (
           <CategoryGrid>
@@ -991,25 +1046,6 @@ export function HomePage() {
         </PodcastGrid>
       </Section>
 
-      <FeatureStrip>
-        <FeatureItem>
-          <FiZap />
-          <span>En vivo cuando existan directos</span>
-          <small>Los directos dependen del backend real.</small>
-        </FeatureItem>
-
-        <FeatureItem>
-          <FiUsers />
-          <span>Canales reales</span>
-          <small>Solo aparecen canales creados por usuarios.</small>
-        </FeatureItem>
-
-        <FeatureItem>
-          <FiStar />
-          <span>Arquitectura distribuida</span>
-          <small>Frontend consume servicios por gateway.</small>
-        </FeatureItem>
-      </FeatureStrip>
     </RootShell>
   );
 }
@@ -1083,7 +1119,7 @@ export function ExploreStreamsPage() {
         <Eyebrow>Explorar</Eyebrow>
         <h1>Explorar transmisiones en vivo</h1>
         <p>
-          Esta sección ahora muestra únicamente streams reales con estado en vivo.
+          Esta sección muestra las transmisiones que están en vivo en este momento.
         </p>
       </PageHeading>
 
@@ -1102,7 +1138,7 @@ export function ExploreStreamsPage() {
           <FiRefreshCw />
           <div>
             <strong>Cargando</strong>
-            <p>Consultando streams reales desde canales-streaming-service.</p>
+            <p>Buscando transmisiones disponibles...</p>
           </div>
         </AlertPanel>
       )}
@@ -1197,7 +1233,7 @@ export function CategoriesPage() {
       <PageHeading>
         <Eyebrow>Descubrimiento</Eyebrow>
         <h1>Explora por categorías</h1>
-        <p>Las categorías vienen desde canales-streaming-service.</p>
+        <p>Elige una categoría para encontrar contenido relacionado.</p>
       </PageHeading>
 
       {error && (
@@ -1215,7 +1251,7 @@ export function CategoriesPage() {
           <FiRefreshCw />
           <div>
             <strong>Cargando categorías</strong>
-            <p>Consultando backend real.</p>
+            <p>Cargando categorías disponibles.</p>
           </div>
         </AlertPanel>
       )}
@@ -1224,7 +1260,7 @@ export function CategoriesPage() {
         <EmptyPanel
           icon={<FiGrid />}
           title="No hay categorías disponibles"
-          text="Crea categorías en canales-streaming-service para que aparezcan aquí."
+          text="Cuando existan categorías disponibles, aparecerán aquí."
         />
       ) : (
         <CategoryGrid>
@@ -1327,45 +1363,150 @@ export function SearchResultsPage() {
 
 export function ChannelPage() {
   const { channelId } = useParams();
-  const stream = streams.find((item) => item.id === channelId) || firstStream();
+  const [channel, setChannel] = useState<BackendCanal | null>(null);
+  const [channelStreams, setChannelStreams] = useState<StreamItem[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    let active = true;
+
+    async function loadChannelPage() {
+      if (!channelId || Number.isNaN(Number(channelId))) {
+        setError("Canal inválido.");
+        setLoading(false);
+        return;
+      }
+
+      try {
+        setLoading(true);
+        setError("");
+
+        const [channelsResult, liveStreamsResult] = await Promise.all([
+          getBackendChannels(),
+          getLiveStreams(),
+        ]);
+
+        if (!active) return;
+
+        const selectedChannel = channelsResult.find(
+          (item) => item.id_canal === Number(channelId)
+        );
+
+        if (!selectedChannel) {
+          setChannel(null);
+          setChannelStreams([]);
+          setError("No encontramos ese canal.");
+          return;
+        }
+
+        setChannel(selectedChannel);
+        setChannelStreams(
+          liveStreamsResult
+            .filter((stream) => stream.canal.id_canal === selectedChannel.id_canal)
+            .map(backendStreamToCard)
+        );
+      } catch (error) {
+        console.error("CHANNEL_PAGE_LOAD_ERROR", error);
+
+        if (active) {
+          setError(
+            error instanceof Error
+              ? error.message
+              : "No pudimos cargar la información del canal. Intenta actualizar la página."
+          );
+        }
+      } finally {
+        if (active) setLoading(false);
+      }
+    }
+
+    loadChannelPage();
+
+    return () => {
+      active = false;
+    };
+  }, [channelId]);
+
+  const isStreamer = channel?.tipo_canal?.nombre_tipo === "streamer";
+  const channelInitials = getInitials(channel?.nombre_canal || "RB");
+  const mainStream = channelStreams[0];
 
   return (
     <RootShell active="streams" rightPanel={<DemoRightPanel />}>
-      <ChannelHero $image={brandAssets.channelView}>
-        <Avatar $large>{stream.avatar}</Avatar>
+      <ChannelHero $image={channel?.banner_canal || brandAssets.channelView}>
+        <Avatar $large>{channelInitials}</Avatar>
         <div>
-          <h1>{stream.channel}</h1>
-          <p>{stream.handle} - {stream.category} - 24.5K seguidores</p>
-          <ButtonRow>
-            <PrimaryLink to={`/streams/${stream.id}`}><FiPlay /> Ver directo</PrimaryLink>
-            <GhostLink to="/subscriptions"><FiHeart /> Suscribirse</GhostLink>
-          </ButtonRow>
+          <h1>{channel?.nombre_canal || "Canal"}</h1>
+          <p>
+            {channel
+              ? `${channel.descripcion || "Este canal aún no tiene descripción."} · ${isStreamer ? "Streamer" : "Podcaster"}`
+              : "Cargando información del canal..."}
+          </p>
+          {channel && (
+            <ButtonRow>
+              {mainStream ? (
+                <PrimaryLink to={`/streams/${mainStream.id}`}><FiPlay /> Ver directo</PrimaryLink>
+              ) : (
+                <PrimaryLink to="/streams"><FiCompass /> Explorar directos</PrimaryLink>
+              )}
+              <GhostLink to="/subscriptions"><FiHeart /> Suscribirse</GhostLink>
+            </ButtonRow>
+          )}
         </div>
       </ChannelHero>
-      <Tabs>
-        {["Inicio", "Acerca de", "Calendario", "Videos", "Clips", "Chat"].map((tab, index) => (
-          <FilterChip key={tab} $active={index === 0}>{tab}</FilterChip>
-        ))}
-      </Tabs>
-      <Section title="En vivo ahora">
-        <CardGrid>
-          <StreamCard stream={stream} />
-          {streams.slice(1, 4).map((item) => <StreamCard key={item.id} stream={item} />)}
-        </CardGrid>
-      </Section>
-      <Section title="Momentos destacados">
-        <PodcastGrid>
-          {streams.slice(0, 4).map((item) => (
-            <PodcastTile key={item.id} to={`/streams/${item.id}`}>
-              <PodcastCover $image={item.image}><FiPlay /></PodcastCover>
-              <div>
-                <CardTitle>{item.title}</CardTitle>
-                <Muted>{item.viewers} vistas</Muted>
-              </div>
-            </PodcastTile>
-          ))}
-        </PodcastGrid>
-      </Section>
+
+      {loading && (
+        <AlertPanel>
+          <FiRefreshCw />
+          <div>
+            <strong>Cargando canal</strong>
+            <p>Consultando la información registrada del creador.</p>
+          </div>
+        </AlertPanel>
+      )}
+
+      {error && (
+        <AlertPanel>
+          <FiAlertTriangle />
+          <div>
+            <strong>No se pudo cargar el canal</strong>
+            <p>{error}</p>
+          </div>
+        </AlertPanel>
+      )}
+
+      {!loading && !error && channel && (
+        <>
+          <Tabs>
+            {["Inicio", "Acerca de", "Calendario", "Videos", "Clips", "Chat"].map((tab, index) => (
+              <FilterChip key={tab} $active={index === 0}>{tab}</FilterChip>
+            ))}
+          </Tabs>
+
+          <Section title="En vivo ahora">
+            {channelStreams.length === 0 ? (
+              <EmptyPanel
+                icon={<FiWifiOff />}
+                title="Sin directos activos"
+                text="Este canal no tiene una transmisión en vivo en este momento."
+              />
+            ) : (
+              <CardGrid>
+                {channelStreams.map((stream) => <StreamCard key={stream.id} stream={stream} />)}
+              </CardGrid>
+            )}
+          </Section>
+
+          <Section title="Momentos destacados">
+            <EmptyPanel
+              icon={<FiStar />}
+              title="Sin momentos destacados"
+              text="Cuando este creador suba clips destacados, aparecerán aquí."
+            />
+          </Section>
+        </>
+      )}
     </RootShell>
   );
 }
@@ -1417,7 +1558,7 @@ export function StreamDetailPage() {
         console.error("STREAM_DETAIL_LOAD_ERROR", error);
 
         if (active) {
-          setError("No se pudo cargar el stream real desde canales-streaming-service.");
+          setError("No se pudo cargar la transmisión. Intenta actualizar la página.");
         }
       } finally {
         if (active) {
@@ -1506,7 +1647,7 @@ export function StreamDetailPage() {
           playbackUrl={backendStream.playback_url}
           poster={stream.image}
           streamStatus={backendStream.estado}
-          signalStatus={backendStream.signal_status}
+          signalStatus={backendStream.signal_status || undefined}
         />
 
         <StreamInfo>
@@ -1786,13 +1927,18 @@ export function PodcastDetailPage() {
 export function LoginPage() {
   const navigate = useNavigate();
 
-  const [email, setEmail] = useState("usuario_123@rootblend.dev");
-  const [password, setPassword] = useState("Rootblend2026");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+
+    if (!email.trim() || !password.trim()) {
+      setError("Completa correo y contrasena.");
+      return;
+    }
 
     setLoading(true);
     setError("");
@@ -1820,14 +1966,9 @@ export function LoginPage() {
     }
   }
 
-  function demoLogin() {
-    loginMock(email);
-    navigate("/", { replace: true });
-  }
-
   return (
     <AuthScreen $image={brandAssets.loginView}>
-      <AuthCard onSubmit={submit}>
+      <AuthCard onSubmit={submit} autoComplete="off">
         <BrandBlock>
           <img src={brandAssets.logo} alt="ROOTBLEND" />
           <h1>ROOT<span>BLEND</span></h1>
@@ -1838,7 +1979,9 @@ export function LoginPage() {
         <Field>
           <FiMail />
           <input
+            type="email"
             value={email}
+            autoComplete="off"
             onChange={(event) => setEmail(event.target.value)}
           />
         </Field>
@@ -1849,14 +1992,13 @@ export function LoginPage() {
           <input
             type="password"
             value={password}
+            autoComplete="new-password"
             onChange={(event) => setPassword(event.target.value)}
           />
         </Field>
 
         <FormLine>
-          <label>
-            <input type="checkbox" /> Recordarme
-          </label>
+          <span />
           <Link to="/forgot-password">¿Olvidaste tu contraseña?</Link>
         </FormLine>
 
@@ -1874,10 +2016,6 @@ export function LoginPage() {
           {loading ? "Conectando..." : "Iniciar sesión"}
         </PrimaryButton>
 
-        <GhostButton type="button" onClick={demoLogin}>
-          Entrar en modo demo
-        </GhostButton>
-
         <Muted>
           ¿No tienes cuenta? <Link to="/register">Regístrate</Link>
         </Muted>
@@ -1889,15 +2027,20 @@ export function LoginPage() {
 export function RegisterPage() {
   const navigate = useNavigate();
 
-  const [email, setEmail] = useState("nuevo_usuario@rootblend.dev");
-  const [password, setPassword] = useState("Rootblend2026");
-  const [confirmPassword, setConfirmPassword] = useState("Rootblend2026");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [role, setRole] = useState<"viewer" | "streamer" | "podcaster">("viewer");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+
+    if (!email.trim() || !password.trim() || !confirmPassword.trim()) {
+      setError("Completa correo, contrasena y confirmacion.");
+      return;
+    }
 
     if (password !== confirmPassword) {
       setError("Las contraseñas no coinciden.");
@@ -1920,11 +2063,6 @@ export function RegisterPage() {
         return;
       }
 
-      if (role === "streamer" || role === "podcaster") {
-        localStorage.setItem("creator_role", role);
-        window.dispatchEvent(new Event("creator-role-changed"));
-      }
-
       const loginResult = await loginUser(email, password);
 
       if (loginResult.success && loginResult.data) {
@@ -1932,9 +2070,9 @@ export function RegisterPage() {
 
         navigate(
           role === "streamer"
-            ? "/creator/streamer"
+            ? "/creator/activate"
             : role === "podcaster"
-              ? "/creator/podcaster"
+              ? "/creator/activate"
               : "/",
           { replace: true }
         );
@@ -2038,7 +2176,7 @@ export function RegisterPage() {
 }
 
 export function ForgotPasswordPage() {
-  const [email, setEmail] = useState("denilson.test3@gmail.com");
+  const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
@@ -2116,7 +2254,7 @@ export function ForgotPasswordPage() {
           <AlertPanel>
             <FiLock />
             <div>
-              <strong>Token de recuperación demo</strong>
+              <strong>Token de recuperación</strong>
               <p>{recoveryToken}</p>
               <p>
                 Copia este token y úsalo en la pantalla de nueva contraseña.
@@ -2146,8 +2284,8 @@ export function ResetPasswordPage() {
   const [params] = useSearchParams();
 
   const [token, setToken] = useState(params.get("token") || "");
-  const [passwordNueva, setPasswordNueva] = useState("Rootblend2027");
-  const [confirmPassword, setConfirmPassword] = useState("Rootblend2027");
+  const [passwordNueva, setPasswordNueva] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -2902,8 +3040,8 @@ export function SettingsPage() {
 
 export function ChangePasswordPage() {
   const [passwordActual, setPasswordActual] = useState("");
-  const [passwordNueva, setPasswordNueva] = useState("Rootblend2026");
-  const [confirmPassword, setConfirmPassword] = useState("Rootblend2026");
+  const [passwordNueva, setPasswordNueva] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
 
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
@@ -3002,7 +3140,7 @@ export function ChangePasswordPage() {
             type="password"
             value={passwordNueva}
             onChange={(event) => setPasswordNueva(event.target.value)}
-            placeholder="Ejemplo: Rootblend2026"
+            placeholder="Nueva contrasena"
           />
         </Field>
 
@@ -3052,7 +3190,7 @@ export function SubscriptionsPage() {
 
   return (
     <RootShell active="home">
-      <PageHeading><Eyebrow>Comunidad</Eyebrow><h1>Suscripciones</h1><p>Administra los canales suscritos, beneficios y cancelaciones demo.</p></PageHeading>
+      <PageHeading><Eyebrow>Comunidad</Eyebrow><h1>Suscripciones</h1><p>Administra los canales suscritos, beneficios y cancelaciones.</p></PageHeading>
       <Panel>
         <PanelHeader><strong>Canales suscritos</strong><Link to="/following">Ver seguidos</Link></PanelHeader>
         {items.map((stream) => (
@@ -3073,7 +3211,7 @@ export function SubscriptionsPage() {
         <DialogCard>
           <FiAlertTriangle size={34} />
           <h2>Cancelar suscripcion</h2>
-          <p>Se cancelara la suscripcion demo a {pendingCancel.channel}. El acceso se conserva hasta el vencimiento.</p>
+          <p>Se cancelara la suscripcion a {pendingCancel.channel}. El acceso se conserva hasta el vencimiento.</p>
           <ButtonRow>
             <GhostButton type="button" onClick={() => setPendingCancel(null)}>Volver</GhostButton>
             <DangerButton
@@ -3151,7 +3289,7 @@ export function CreatorActivatePage() {
           <PrimaryLink to={existingRole === "streamer" ? "/creator/streamer" : "/creator/podcaster"}>
             Ir a mi panel
           </PrimaryLink>
-          <GhostButton type="button" onClick={resetDemoRole}>Reiniciar demo</GhostButton>
+          <GhostButton type="button" onClick={resetDemoRole}>Cambiar seleccion</GhostButton>
         </AlertPanel>
       )}
       <FormPanel
@@ -3188,18 +3326,152 @@ export function StatsRedirectPage() {
 }
 
 export function StreamerDashboardPage() {
+  const [channel, setChannel] = useState<BackendCanal | null>(null);
+  const [myStreams, setMyStreams] = useState<BackendStream[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    let active = true;
+
+    async function loadCreatorData() {
+      try {
+        setLoading(true);
+        setError("");
+
+        const [channelResult, streamsResult] = await Promise.all([
+          getMyChannel(),
+          getMyStreams(),
+        ]);
+
+        if (!active) return;
+
+        setChannel(channelResult.canal);
+        setMyStreams(streamsResult);
+      } catch (error) {
+        console.error("STREAMER_DASHBOARD_LOAD_ERROR", error);
+
+        if (active) {
+          setError(
+            error instanceof Error
+              ? error.message
+              : "No pudimos cargar los datos de tu canal. Intenta actualizar la página."
+          );
+        }
+      } finally {
+        if (active) setLoading(false);
+      }
+    }
+
+    loadCreatorData();
+
+    return () => {
+      active = false;
+    };
+  }, []);
+
+  const totalStreams = myStreams.length;
+  const liveStreams = myStreams.filter((stream) => stream.estado === "en_vivo").length;
+  const scheduledStreams = myStreams.filter((stream) => stream.estado === "programado").length;
+  const finishedStreams = myStreams.filter((stream) => stream.estado === "finalizado").length;
+  const featuredStreams = 0;
+  const totalViewers = myStreams.reduce((total, stream) => total + (stream.viewer_count || 0), 0);
+  const latestStream = myStreams[0];
+  const channelInitials = getInitials(channel?.nombre_canal || "RB");
+  const roleName = channel?.tipo_canal?.nombre_tipo === "podcaster" ? "Podcaster" : "Streamer";
+
   return (
-    <CreatorScreen title="Panel del streamer" subtitle="Gestiona directos, canal, momentos y estadisticas." image={brandAssets.streamerPanel}>
-      <MetricGrid>{stats.map((item) => <StatCard key={item.label} {...item} />)}</MetricGrid>
-      <QuickActions>
-        <PrimaryLink to="/creator/streamer/control"><FiRadio /> Iniciar transmision</PrimaryLink>
-        <GhostLink to="/creator/streamer/create-stream"><FiPlus /> Crear stream</GhostLink>
-        <GhostLink to="/creator/streamer/highlights"><FiStar /> Momentos</GhostLink>
-        <GhostLink to="/creator/streamer/stats"><FiActivity /> Estadisticas</GhostLink>
-        <GhostLink to="/moderation/moderators"><FiShield /> Moderadores</GhostLink>
-      </QuickActions>
-    </CreatorScreen>
+    <RootShell active="creator">
+      <CreatorLayout>
+        <CreatorNav />
+        <CreatorMain>
+          <ChannelHero $image={channel?.banner_canal || brandAssets.streamerPanel}>
+            <Avatar $large>{channelInitials}</Avatar>
+            <div>
+              <Eyebrow>ROOTBLEND Creator</Eyebrow>
+              <h1>{channel?.nombre_canal || "Panel del streamer"}</h1>
+              <p>
+                {channel?.descripcion ||
+                  "Aquí verás los datos reales de tu canal y los streams creados desde la plataforma."}
+              </p>
+            </div>
+          </ChannelHero>
+
+          {loading && (
+            <AlertPanel>
+              <FiRefreshCw />
+              <div>
+                <strong>Cargando tu canal</strong>
+                <p>Consultando la información registrada en la plataforma.</p>
+              </div>
+            </AlertPanel>
+          )}
+
+          {error && (
+            <AlertPanel>
+              <FiAlertTriangle />
+              <div>
+                <strong>No se pudieron cargar los datos</strong>
+                <p>{error}</p>
+              </div>
+            </AlertPanel>
+          )}
+
+          {!loading && !error && !channel && (
+            <AlertPanel>
+              <FiAlertTriangle />
+              <div>
+                <strong>No tienes un canal activo</strong>
+                <p>Activa tu canal para administrar streams, momentos y estadísticas.</p>
+              </div>
+              <PrimaryLink to="/creator/activate">Activar canal</PrimaryLink>
+            </AlertPanel>
+          )}
+
+          {!loading && !error && channel && (
+            <>
+              <MetricGrid>
+                <StatCard label="Tipo de canal" value={roleName} trend={channel.estado_canal === "activo" ? "Activo" : "Inactivo"} />
+                <StatCard label="Streams creados" value={String(totalStreams)} trend={`${scheduledStreams} programados`} />
+                <StatCard label="En vivo ahora" value={String(liveStreams)} trend={`${finishedStreams} finalizados`} />
+                <StatCard label="Momentos destacados" value={String(featuredStreams)} trend="Se actualiza al subir clips" />
+              </MetricGrid>
+
+              <ChannelDataPanel>
+                <strong>Información registrada del canal</strong>
+                <p><b>Nombre:</b> {channel.nombre_canal}</p>
+                <p><b>Descripción:</b> {channel.descripcion || "Sin descripción registrada."}</p>
+                <p><b>Fecha de creación:</b> {formatDate(channel.fecha_creacion)}</p>
+                <p><b>Último stream:</b> {latestStream ? `${latestStream.titulo} (${latestStream.estado})` : "Aún no creaste streams."}</p>
+              </ChannelDataPanel>
+
+              <QuickActions>
+                <PrimaryLink to="/creator/streamer/control"><FiRadio /> Iniciar transmision</PrimaryLink>
+                <GhostLink to="/creator/streamer/create-stream"><FiPlus /> Configurar stream</GhostLink>
+                <GhostLink to="/creator/streamer/highlights"><FiStar /> Momentos</GhostLink>
+                <GhostLink to="/creator/streamer/stats"><FiActivity /> Estadisticas</GhostLink>
+                <GhostLink to="/moderation/moderators"><FiShield /> Moderadores</GhostLink>
+              </QuickActions>
+            </>
+          )}
+        </CreatorMain>
+      </CreatorLayout>
+    </RootShell>
   );
+}
+
+
+function formatDate(value?: string | null) {
+  if (!value) return "Sin fecha registrada";
+
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return value;
+
+  return date.toLocaleDateString("es-BO", {
+    year: "numeric",
+    month: "short",
+    day: "2-digit",
+  });
 }
 
 export function CreateStreamPage() {
@@ -4023,6 +4295,14 @@ const SidebarTitle = styled.h3`
   letter-spacing: 0;
 `;
 
+const SidebarEmptyText = styled.p`
+  margin: 0;
+  padding: 8px;
+  color: rgba(226, 232, 240, 0.58);
+  font-size: 12px;
+  line-height: 1.45;
+`;
+
 const SidebarLink = styled(Link)<{ $active?: boolean }>`
   display: flex;
   align-items: center;
@@ -4535,47 +4815,6 @@ const RoundButton = styled.button`
   color: #fff;
   background: rgba(15, 23, 42, 0.78);
   cursor: pointer;
-`;
-
-const FeatureStrip = styled.div`
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 14px;
-  margin: 26px 0 8px;
-
-  @media (max-width: 900px) {
-    grid-template-columns: 1fr;
-  }
-`;
-
-const FeatureItem = styled.div`
-  display: grid;
-  grid-template-columns: 46px 1fr;
-  gap: 12px;
-  align-items: center;
-  padding: 15px;
-  border-radius: 12px;
-  background: rgba(15, 23, 42, 0.6);
-  border: 1px solid rgba(148, 163, 184, 0.11);
-
-  svg {
-    grid-row: span 2;
-    width: 34px;
-    height: 34px;
-    padding: 8px;
-    border-radius: 50%;
-    color: #00e5ff;
-    background: rgba(0, 229, 255, 0.12);
-  }
-
-  span {
-    color: #00e5ff;
-    font-weight: 950;
-  }
-
-  small {
-    color: rgba(226, 232, 240, 0.62);
-  }
 `;
 
 const PageHeading = styled.div`
@@ -5319,6 +5558,32 @@ const ProgressSteps = styled.div`
     background: rgba(0, 229, 255, 0.1);
     font-size: 12px;
     font-weight: 850;
+  }
+`;
+
+
+const ChannelDataPanel = styled.div`
+  margin-top: 16px;
+  padding: 18px;
+  border-radius: 18px;
+  background: rgba(15, 23, 42, 0.72);
+  border: 1px solid rgba(148, 163, 184, 0.14);
+  color: rgba(226, 232, 240, 0.78);
+  line-height: 1.65;
+
+  strong {
+    display: block;
+    color: #ffffff;
+    font-size: 16px;
+    margin-bottom: 10px;
+  }
+
+  p {
+    margin: 4px 0;
+  }
+
+  b {
+    color: #00e5ff;
   }
 `;
 

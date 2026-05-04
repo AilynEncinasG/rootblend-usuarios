@@ -1,7 +1,8 @@
 import { useState } from "react";
 import type { FormEvent } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams, useSearchParams } from "react-router-dom";
 import styled from "styled-components";
+import { resetPassword } from "../services/authService";
 
 const Screen = styled.main`
   min-height: 100vh;
@@ -65,6 +66,11 @@ const Card = styled.form`
     background: linear-gradient(135deg, #00e5ff, #00ff99);
   }
 
+  button:disabled {
+    cursor: wait;
+    opacity: 0.65;
+  }
+
   a {
     color: #00e5ff;
     text-decoration: none;
@@ -80,58 +86,91 @@ const ErrorText = styled.div`
 
 export default function ResetPasswordPage() {
   const navigate = useNavigate();
+  const { token: routeToken } = useParams();
+  const [searchParams] = useSearchParams();
 
-  const [password, setPassword] = useState("12345678");
-  const [confirmPassword, setConfirmPassword] = useState("12345678");
+  const [token, setToken] = useState(routeToken || searchParams.get("token") || "");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
+    if (!token.trim()) {
+      setError("Ingresa el token de recuperacion.");
+      return;
+    }
+
     if (password.length < 6) {
-      setError("La contraseña debe tener al menos 6 caracteres.");
+      setError("La contrasena debe tener al menos 6 caracteres.");
       return;
     }
 
     if (password !== confirmPassword) {
-      setError("Las contraseñas no coinciden.");
+      setError("Las contrasenas no coinciden.");
       return;
     }
 
     setError("");
-    navigate("/login", { replace: true });
+    setLoading(true);
+
+    try {
+      const result = await resetPassword(token, password);
+
+      if (!result.success) {
+        setError(result.message || "No se pudo guardar la nueva contrasena.");
+        return;
+      }
+
+      navigate("/login", { replace: true });
+    } catch {
+      setError("No se pudo conectar con usuarios-service.");
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
     <Screen>
-      <Card onSubmit={handleSubmit}>
-        <h1>Nueva contraseña</h1>
+      <Card onSubmit={handleSubmit} autoComplete="off">
+        <h1>Nueva contrasena</h1>
 
-        <p>
-          Define una nueva contraseña para recuperar el acceso a tu cuenta.
-          Esta pantalla queda lista para conectar luego con el token real del backend.
-        </p>
+        <p>Define una nueva contrasena para recuperar el acceso a tu cuenta.</p>
 
-        <label>Nueva contraseña</label>
+        <label>Token de recuperacion</label>
+        <input
+          type="text"
+          value={token}
+          autoComplete="off"
+          onChange={(event) => setToken(event.target.value)}
+        />
+
+        <label>Nueva contrasena</label>
         <input
           type="password"
           value={password}
+          autoComplete="new-password"
           onChange={(event) => setPassword(event.target.value)}
         />
 
-        <label>Confirmar contraseña</label>
+        <label>Confirmar contrasena</label>
         <input
           type="password"
           value={confirmPassword}
+          autoComplete="new-password"
           onChange={(event) => setConfirmPassword(event.target.value)}
         />
 
         {error && <ErrorText>{error}</ErrorText>}
 
-        <button type="submit">Guardar nueva contraseña</button>
+        <button type="submit" disabled={loading}>
+          {loading ? "Guardando..." : "Guardar nueva contrasena"}
+        </button>
 
         <p style={{ marginTop: 18 }}>
-          ¿Ya tienes acceso? <Link to="/login">Iniciar sesión</Link>
+          Ya tienes acceso? <Link to="/login">Iniciar sesion</Link>
         </p>
       </Card>
     </Screen>

@@ -126,16 +126,22 @@ export default function LiveVideoPlayer({
 
   useEffect(() => {
     const video = videoRef.current;
+    let active = true;
 
     destroyHls();
     clearResumeTimer();
     clearBufferingTimer();
 
-    setPlayerError(null);
-    setShowBuffering(false);
+    queueMicrotask(() => {
+      if (!active) return;
+      setPlayerError(null);
+      setShowBuffering(false);
+    });
 
     if (!video || !playbackUrl || streamStatus !== "en_vivo") {
-      return undefined;
+      return () => {
+        active = false;
+      };
     }
 
     video.autoplay = true;
@@ -152,6 +158,7 @@ export default function LiveVideoPlayer({
       safePlay();
 
       return () => {
+        active = false;
         clearResumeTimer();
         clearBufferingTimer();
         video.pause();
@@ -161,12 +168,17 @@ export default function LiveVideoPlayer({
     }
 
     if (!Hls.isSupported()) {
-      setPlayerError({
-        source: playbackUrl,
-        message: "Tu navegador no soporta HLS en este entorno.",
+      queueMicrotask(() => {
+        if (!active) return;
+        setPlayerError({
+          source: playbackUrl,
+          message: "Tu navegador no soporta HLS en este entorno.",
+        });
       });
 
-      return undefined;
+      return () => {
+        active = false;
+      };
     }
 
     const hls = new Hls({
@@ -225,6 +237,7 @@ export default function LiveVideoPlayer({
     });
 
     return () => {
+      active = false;
       clearResumeTimer();
       clearBufferingTimer();
       destroyHls();
