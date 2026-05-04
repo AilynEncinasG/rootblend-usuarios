@@ -3,6 +3,7 @@ import urllib.error
 import urllib.request
 
 from django.conf import settings
+from django.db import transaction
 from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
@@ -14,6 +15,9 @@ from apps.categorias.models import Categoria
 from .models import ConfiguracionStream, Stream
 
 
+SIGNAL_TIMEOUT_SECONDS = 20
+
+
 def parse_json_body(request):
     try:
         return json.loads(request.body.decode("utf-8") or "{}")
@@ -21,11 +25,54 @@ def parse_json_body(request):
         return None
 
 
-def get_owned_stream(request, stream_id):
+def get_authenticated_user_id(request):
     user_id = get_current_user_id(request)
 
     if not user_id:
         return None, error_response("No autenticado.", status=401)
+
+    try:
+        return int(user_id), None
+    except (TypeError, ValueError):
+        return None, error_response("Token de usuario invalido.", status=401)
+
+
+def get_owned_channel(request):
+    user_id, response = get_authenticated_user_id(request)
+
+    if response:
+        return None, response
+
+    canal = (
+        Canal.objects.select_related("tipo_canal")
+        .filter(id_usuario_propietario=user_id)
+        .first()
+    )
+
+    if not canal:
+        return None, error_response("Primero debes activar un canal de creador.", status=403)
+
+    return canal, None
+
+
+def validate_streamer_channel(canal):
+    if canal.estado_canal != Canal.ACTIVO:
+        return error_response("El canal no esta activo.", status=403)
+
+    if canal.tipo_canal.nombre_tipo != TipoCanal.STREAMER:
+        return error_response(
+            "Solo los canales de tipo streamer pueden operar transmisiones en vivo.",
+            status=403,
+        )
+
+    return None
+
+
+def get_owned_stream(request, stream_id):
+    user_id, response = get_authenticated_user_id(request)
+
+    if response:
+        return None, response
 
     try:
         stream = (
@@ -36,30 +83,52 @@ def get_owned_stream(request, stream_id):
     except Stream.DoesNotExist:
         return None, error_response("Stream no encontrado.", status=404)
 
-    if stream.canal.id_usuario_propietario != int(user_id):
+    if stream.canal.id_usuario_propietario != user_id:
         return None, error_response("No puedes operar un stream de otro canal.", status=403)
 
     return stream, None
 
 
 def sync_signal_status(stream):
-    if stream.estado != Stream.EN_VIVO or not stream.stream_key:
+    """
+    Sincroniza la señal OBS contra MediaMTX.
+    No publica claves privadas. Solo actualiza estado tecnico del stream.
+    """
+    if stream.estado != Stream.EN_VIVO:
+        desired_status = Stream.DESCONECTADO if stream.estado == Stream.FINALIZADO else Stream.SIN_SENAL
+
+        if stream.signal_status != desired_status:
+            stream.signal_status = desired_status
+            stream.save(update_fields=["signal_status"])
+
+        return stream
+
+    if not stream.stream_key:
+        if stream.signal_status != Stream.ERROR:
+            stream.signal_status = Stream.ERROR
+            stream.save(update_fields=["signal_status"])
         return stream
 
     probe_base_url = settings.STREAM_PLAYBACK_PROBE_BASE_URL.rstrip("/")
     probe_url = f"{probe_base_url}/{stream.stream_key}/index.m3u8"
 
+    now = timezone.now()
+
     try:
         with urllib.request.urlopen(probe_url, timeout=2) as response:
             if response.status < 400:
                 stream.signal_status = Stream.CONECTADO
-                stream.last_signal_at = timezone.now()
+                stream.last_signal_at = now
     except urllib.error.HTTPError as exc:
         stream.signal_status = Stream.SIN_SENAL if exc.code == 404 else Stream.ERROR
     except (urllib.error.URLError, TimeoutError):
-        stream.signal_status = Stream.DESCONECTADO if stream.last_signal_at else Stream.SIN_SENAL
+        if stream.last_signal_at:
+            age = (now - stream.last_signal_at).total_seconds()
+            stream.signal_status = Stream.DESCONECTADO if age > SIGNAL_TIMEOUT_SECONDS else Stream.CONECTADO
+        else:
+            stream.signal_status = Stream.SIN_SENAL
 
-    stream.save(update_fields=["signal_status", "last_signal_at", "ingest_url", "playback_url"])
+    stream.save(update_fields=["signal_status", "last_signal_at"])
     return stream
 
 
@@ -188,10 +257,10 @@ def detalle_stream(request, stream_id):
 
 @require_http_methods(["GET"])
 def mis_streams(request):
-    user_id = get_current_user_id(request)
+    user_id, response = get_authenticated_user_id(request)
 
-    if not user_id:
-        return error_response("No autenticado.", status=401)
+    if response:
+        return response
 
     canal = (
         Canal.objects.select_related("tipo_canal")
@@ -209,7 +278,7 @@ def mis_streams(request):
         .order_by("-fecha_inicio", "-id")
     )
 
-    data = [serialize_stream(stream) for stream in streams]
+    data = [serialize_stream(sync_signal_status(stream)) for stream in streams]
 
     return success_response({"count": len(data), "results": data})
 
@@ -217,28 +286,15 @@ def mis_streams(request):
 @csrf_exempt
 @require_http_methods(["POST"])
 def crear_stream(request):
-    user_id = get_current_user_id(request)
+    canal, response = get_owned_channel(request)
 
-    if not user_id:
-        return error_response("No autenticado.", status=401)
+    if response:
+        return response
 
-    canal = (
-        Canal.objects.select_related("tipo_canal")
-        .filter(id_usuario_propietario=user_id)
-        .first()
-    )
+    channel_error = validate_streamer_channel(canal)
 
-    if not canal:
-        return error_response("Primero debes activar un canal de creador.", status=403)
-
-    if canal.estado_canal != Canal.ACTIVO:
-        return error_response("El canal no esta activo.", status=403)
-
-    if canal.tipo_canal.nombre_tipo != TipoCanal.STREAMER:
-        return error_response(
-            "Solo los canales de tipo streamer pueden crear transmisiones.",
-            status=403,
-        )
+    if channel_error:
+        return channel_error
 
     body = parse_json_body(request)
 
@@ -253,9 +309,12 @@ def crear_stream(request):
     if not titulo:
         return error_response("El titulo del stream es obligatorio.", status=400)
 
+    if len(titulo) > 150:
+        return error_response("El titulo no puede superar 150 caracteres.", status=400)
+
     try:
         categoria = Categoria.objects.get(id=categoria_id)
-    except Categoria.DoesNotExist:
+    except (Categoria.DoesNotExist, TypeError, ValueError):
         return error_response("Categoria no encontrada.", status=404)
 
     try:
@@ -263,25 +322,34 @@ def crear_stream(request):
     except (TypeError, ValueError):
         return error_response("El bitrate debe ser numerico.", status=400)
 
-    stream = Stream.objects.create(
-        canal=canal,
-        categoria=categoria,
-        titulo=titulo,
-        descripcion=descripcion,
-        estado=Stream.PROGRAMADO,
-        calidad_actual=body.get("calidad_actual", "720p"),
-        destacado=destacado,
-        thumbnail_url=body.get("thumbnail_url"),
-        signal_status=Stream.SIN_SENAL,
-    )
+    if bitrate < 500 or bitrate > 12000:
+        return error_response("El bitrate debe estar entre 500 y 12000.", status=400)
 
-    ConfiguracionStream.objects.create(
-        stream=stream,
-        resolucion=body.get("resolucion", "720p"),
-        bitrate=bitrate,
-        latencia_modo=body.get("latencia_modo", "normal"),
-        audio_activo=bool(body.get("audio_activo", True)),
-    )
+    resolucion = body.get("resolucion", "720p")
+    calidad_actual = body.get("calidad_actual", resolucion or "720p")
+    latencia_modo = body.get("latencia_modo", "normal")
+
+    with transaction.atomic():
+        stream = Stream.objects.create(
+            canal=canal,
+            categoria=categoria,
+            titulo=titulo,
+            descripcion=descripcion,
+            estado=Stream.PROGRAMADO,
+            calidad_actual=calidad_actual,
+            destacado=destacado,
+            thumbnail_url=body.get("thumbnail_url"),
+            signal_status=Stream.SIN_SENAL,
+            viewer_count=0,
+        )
+
+        ConfiguracionStream.objects.create(
+            stream=stream,
+            resolucion=resolucion,
+            bitrate=bitrate,
+            latencia_modo=latencia_modo,
+            audio_activo=bool(body.get("audio_activo", True)),
+        )
 
     return success_response(
         serialize_stream(stream),
@@ -298,14 +366,13 @@ def iniciar_stream(request, stream_id):
     if response:
         return response
 
+    channel_error = validate_streamer_channel(stream.canal)
+
+    if channel_error:
+        return channel_error
+
     if stream.estado == Stream.FINALIZADO:
         return error_response("No puedes volver a iniciar un stream finalizado.", status=409)
-
-    if stream.canal.estado_canal != Canal.ACTIVO:
-        return error_response("El canal no esta activo.", status=403)
-
-    if stream.canal.tipo_canal.nombre_tipo != TipoCanal.STREAMER:
-        return error_response("Este canal no esta habilitado para streaming.", status=403)
 
     if not stream.stream_key:
         return error_response("El stream no tiene clave de transmision.", status=409)
@@ -330,6 +397,7 @@ def iniciar_stream(request, stream_id):
     stream.fecha_fin = None
     stream.signal_status = Stream.SIN_SENAL
     stream.last_signal_at = None
+    stream.viewer_count = 0
     stream.save()
 
     return success_response(
@@ -355,6 +423,7 @@ def finalizar_stream(request, stream_id):
     stream.estado = Stream.FINALIZADO
     stream.fecha_fin = timezone.now()
     stream.signal_status = Stream.DESCONECTADO
+    stream.viewer_count = 0
     stream.save()
 
     return success_response(
@@ -370,6 +439,14 @@ def obs_config(request, stream_id):
     if response:
         return response
 
+    channel_error = validate_streamer_channel(stream.canal)
+
+    if channel_error:
+        return channel_error
+
+    if stream.estado == Stream.FINALIZADO:
+        return error_response("Este stream ya esta finalizado.", status=409)
+
     if not stream.stream_key:
         return error_response("El stream no tiene clave de transmision.", status=409)
 
@@ -384,8 +461,16 @@ def rotate_key(request, stream_id):
     if response:
         return response
 
+    channel_error = validate_streamer_channel(stream.canal)
+
+    if channel_error:
+        return channel_error
+
     if stream.estado == Stream.EN_VIVO:
         return error_response("No puedes regenerar la clave mientras el stream esta en vivo.", status=409)
+
+    if stream.estado == Stream.FINALIZADO:
+        return error_response("No puedes regenerar la clave de un stream finalizado.", status=409)
 
     stream.rotate_stream_key()
     stream.signal_status = Stream.SIN_SENAL
