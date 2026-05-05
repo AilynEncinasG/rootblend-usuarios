@@ -326,7 +326,7 @@ export function RootShell({ active = "home", children, rightPanel }: ShellProps)
       <Topbar>
         <BrandLink to="/">
           <img src={brandAssets.logo} alt="ROOTBLEND" />
-          <strong>ROOT<span>BLEND</span></strong>
+          <strong translate="no">ROOT<span>BLEND</span></strong>
         </BrandLink>
 
         <SearchForm onSubmit={submitSearch}>

@@ -188,15 +188,29 @@ export const StyledNavbar = styled.nav`
   padding: 0 20px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
   z-index: 10;
+  height: 64px;
+
+  /* ESTO ES LO QUE FALTA: */
+  /* El link del Logo (primer hijo) */
+  & > a:first-child {
+    flex: 1; 
+    display: flex;
+    justify-content: flex-start;
+  }
+
+  /* El bloque de RightActions (último hijo) */
+  & > :last-child {
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+  }
 `;
 export const LogoImage = styled.img`
-  height: 40px; /* Ajusta la altura según lo necesites para que quepa bien en la Navbar */
-  width: auto;  /* Mantiene la relación de aspecto de la imagen */
-  display: block; /* Elimina espacio en blanco no deseado debajo de la imagen */
+  height: 40px; 
+  width: auto; 
+  display: block;
   cursor: pointer;
-  
-  /* Opcional: añade un ligero filtro o efecto si quieres que resalte */
-  /* filter: drop-shadow(0 0 5px rgba(0, 242, 254, 0.5)); */
+  filter: drop-shadow(0 0 5px rgba(0, 242, 254, 0.5));
 `;
 export const StyledSidebar = styled.aside`
   grid-area: sidebar;
