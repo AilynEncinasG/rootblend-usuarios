@@ -100,4 +100,6 @@ Desktop.ini
 # =========================
 # SUBIDAS QUE NO DEBEN IR
 # =========================
-Pegado text.txt
+Pegado text.txt**/.env
+**/.env
+.env
