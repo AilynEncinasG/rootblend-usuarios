@@ -1,6 +1,6 @@
 import styled, { createGlobalStyle, keyframes } from "styled-components";
 import { Link } from "react-router-dom";
-import fondoImage from "../assets/Fondo.png"; // Ajusta la ruta según tu carpeta
+import fondoImage from "../assets/Fondo.png"; 
 
 
 export const GlobalStyle = createGlobalStyle`
@@ -190,15 +190,12 @@ export const StyledNavbar = styled.nav`
   z-index: 10;
   height: 64px;
 
-  /* ESTO ES LO QUE FALTA: */
-  /* El link del Logo (primer hijo) */
   & > a:first-child {
     flex: 1; 
     display: flex;
     justify-content: flex-start;
   }
 
-  /* El bloque de RightActions (último hijo) */
   & > :last-child {
     flex: 1;
     display: flex;

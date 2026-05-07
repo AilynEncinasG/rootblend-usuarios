@@ -8,7 +8,7 @@ import channelView from "../../assets/mockups/mockup_07.jpg";
 import streamView from "../../assets/mockups/mockup_08.jpg";
 import streamChat from "../../assets/mockups/mockup_09.jpg";
 import podcastsView from "../../assets/mockups/mockup_11.jpg";
-import loginView from "../../assets/mockups/mockup_14.jpg";
+import loginView from "../../assets/Fondo.png";
 import streamerPanel from "../../assets/mockups/mockup_26.jpg";
 import streamControl from "../../assets/mockups/mockup_28.jpg";
 import podcasterPanel from "../../assets/mockups/mockup_36.jpg";
