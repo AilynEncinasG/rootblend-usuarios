@@ -47,15 +47,7 @@ export function CreatorScreen({
       <CreatorLayout>
         <CreatorNav />
         <CreatorMain>
-          <ChannelHero $image={image}>
-            <Avatar $large>RB</Avatar>
-            <div>
-              <Eyebrow>ROOTBLEND Creator</Eyebrow>
-              <h1>{title}</h1>
-              <p>{subtitle}</p>
-            </div>
-          </ChannelHero>
-
+          <ChannelHero $image={image}><Avatar $large>RB</Avatar><div><Eyebrow>ROOTBLEND Creator</Eyebrow><h1>{title}</h1><p>{subtitle}</p></div></ChannelHero>
           {children}
         </CreatorMain>
       </CreatorLayout>
@@ -74,18 +66,11 @@ export function CreatorForm({
   subtitle: string;
   button: string;
   children: ReactNode;
-  onSubmit?: (event: FormEvent<HTMLFormElement>) => void | Promise<void>;
+  onSubmit?: (event: FormEvent<HTMLFormElement>) => void;
 }) {
   return (
     <RootShell active="creator">
-      <FormPanel
-        title={title}
-        subtitle={subtitle}
-        button={button}
-        onSubmit={onSubmit}
-      >
-        {children}
-      </FormPanel>
+      <FormPanel title={title} subtitle={subtitle} button={button} onSubmit={onSubmit}>{children}</FormPanel>
     </RootShell>
   );
 }
@@ -93,10 +78,7 @@ export function CreatorForm({
 export function CreatorNav() {
   const location = useLocation();
   const role = getCreatorRole();
-
-  const isPodcasterArea =
-    location.pathname.startsWith("/creator/podcaster") ||
-    role === "podcaster";
+  const isPodcasterArea = location.pathname.startsWith("/creator/podcaster") || role === "podcaster";
 
   const links = isPodcasterArea
     ? [
@@ -135,88 +117,33 @@ export function FormPanel({
   subtitle: string;
   button: string;
   children: ReactNode;
-  onSubmit?: (event: FormEvent<HTMLFormElement>) => void | Promise<void>;
+  onSubmit?: (event: FormEvent<HTMLFormElement>) => void;
 }) {
   const [saved, setSaved] = useState(false);
-  const [submitting, setSubmitting] = useState(false);
 
-  async function submit(event: FormEvent<HTMLFormElement>) {
+  function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-
-    if (submitting) {
-      return;
-    }
-
-    setSaved(false);
-    setSubmitting(true);
-
-    try {
-      await onSubmit?.(event);
-      setSaved(true);
-    } finally {
-      setSubmitting(false);
-    }
+    onSubmit?.(event);
+    setSaved(true);
   }
 
   return (
     <FormCard onSubmit={submit}>
-      <PageHeading>
-        <Eyebrow>Formulario</Eyebrow>
-        <h1>{title}</h1>
-        <p>{subtitle}</p>
-      </PageHeading>
-
+      <PageHeading><Eyebrow>Formulario</Eyebrow><h1>{title}</h1><p>{subtitle}</p></PageHeading>
       {children}
-
-      {saved ? (
-        <SuccessBox>
-          <FiCheckCircle />
-          Configuración guardada correctamente.
-        </SuccessBox>
-      ) : null}
-
-      <ButtonRow>
-        <GhostLink to="/">Cancelar</GhostLink>
-
-        <PrimaryButton type="submit" disabled={submitting}>
-          <FiSave /> {submitting ? "Guardando..." : button}
-        </PrimaryButton>
-      </ButtonRow>
+      {saved && <SuccessBox><FiCheckCircle /> Cambios guardados en el mock frontend.</SuccessBox>}
+      <ButtonRow><GhostLink to="/">Cancelar</GhostLink><PrimaryButton type="submit"><FiSave /> {button}</PrimaryButton></ButtonRow>
     </FormCard>
   );
 }
 
-export function UploadForm({
-  title,
-  subtitle,
-  danger = false,
-}: {
-  title: string;
-  subtitle: string;
-  danger?: boolean;
-}) {
+export function UploadForm({ title, subtitle, danger = false }: { title: string; subtitle: string; danger?: boolean }) {
   return (
     <CreatorForm title={title} subtitle={subtitle} button="Guardar cambios">
-      <UploadZone>
-        <FiUpload />
-        <strong>Arrastra y suelta tu video aqui</strong>
-        <small>MP4, MOV, WebM hasta 500MB</small>
-      </UploadZone>
-
-      <Label>Titulo</Label>
-      <Field>
-        <FiEdit3 />
-        <input defaultValue="Clutch epico 1v4" />
-      </Field>
-
-      <Label>Descripcion</Label>
-      <TextArea defaultValue="Una de las mejores jugadas del directo." />
-
-      {danger ? (
-        <DangerButton type="button">
-          <FiTrash2 /> Eliminar
-        </DangerButton>
-      ) : null}
+      <UploadZone><FiUpload /><strong>Arrastra y suelta tu video aqui</strong><small>MP4, MOV, WebM hasta 500MB</small></UploadZone>
+      <Label>Titulo</Label><Field><FiEdit3 /><input defaultValue="Clutch epico 1v4" /></Field>
+      <Label>Descripcion</Label><TextArea defaultValue="Una de las mejores jugadas del directo." />
+      {danger && <DangerButton type="button"><FiTrash2 /> Eliminar</DangerButton>}
     </CreatorForm>
   );
 }

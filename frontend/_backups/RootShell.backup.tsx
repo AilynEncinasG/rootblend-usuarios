@@ -22,6 +22,7 @@ import {
 import {
   brandAssets,
   notifications,
+  recommendedChannels,
 } from "../mock/rootblendMock";
 import {
   clearAuthStorage,
@@ -121,7 +122,20 @@ function backendChannelToCard(channel: BackendCanal): ChannelCard {
   };
 }
 
-
+function recommendedChannelToCard(channel: {
+  name: string;
+  subtitle: string;
+  viewers: string;
+  avatar: string;
+}): ChannelCard {
+  return {
+    name: channel.name,
+    subtitle: channel.subtitle,
+    viewers: channel.viewers,
+    avatar: channel.avatar || getInitials(channel.name),
+    id: channel.name,
+  };
+}
 
 function getCreatorRole(): CreatorRole | null {
   const role = localStorage.getItem(CREATOR_ROLE_KEY);
@@ -166,7 +180,10 @@ export function RootShell({
   const [role, setRole] = useState<CreatorRole | null>(() => getCreatorRole());
   const [creatorReady, setCreatorReady] = useState(() => !isAuthenticated());
   const [, setMyChannel] = useState<BackendCanal | null>(null);
-  const [realChannels, setRealChannels] = useState<ChannelCard[]>([]);
+  const [realChannels, setRealChannels] = useState<ChannelCard[]>(() =>
+    recommendedChannels.map(recommendedChannelToCard)
+  );
+
   const creatorTarget =
     role === "streamer"
       ? "/creator/streamer/create-stream"
@@ -202,13 +219,17 @@ export function RootShell({
         if (activeRequest) {
           const mappedChannels = channels.map(backendChannelToCard);
 
-          setRealChannels(mappedChannels);
+          setRealChannels(
+            mappedChannels.length > 0
+              ? mappedChannels
+              : recommendedChannels.map(recommendedChannelToCard)
+          );
         }
       } catch (error) {
         console.error("SHELL_CHANNELS_LOAD_ERROR", error);
 
         if (activeRequest) {
-          setRealChannels([]);
+          setRealChannels(recommendedChannels.map(recommendedChannelToCard));
         }
       }
 
