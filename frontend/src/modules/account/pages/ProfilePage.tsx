@@ -1,1 +1,208 @@
-export { ProfilePage as default } from "../../mock/RootblendScreens";
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import { FiAlertTriangle, FiEdit3, FiRefreshCw, FiSettings } from "react-icons/fi";
+import { RootShell } from "../../../shared/layout";
+import { brandAssets, streams } from "../../../shared/mock/rootblendMock";
+import { getStoredUser } from "../../auth/utils/authStorage";
+import { getMe } from "../../../services/userService";
+import { AlertPanel, Avatar, ButtonRow, CardGrid, ChannelHero, GhostLink, InfoGrid, MetricGrid, Panel, PanelHeader, PrimaryLink, TwoCol } from "../../../shared/styles/legacyStyled";
+import { DemoRightPanel, Section, StatCard, StreamCard } from "../../public/utils/publicLegacyHelpers";
+
+export default function ProfilePage() {
+  const [profileData, setProfileData] = useState<{
+    usuario: {
+      id_usuario: number;
+      correo: string;
+      estado: string;
+      fecha_registro: string | null;
+      ultimo_acceso: string | null;
+    };
+    perfil: {
+      id_perfil: number | null;
+      nombre_visible: string | null;
+      foto_perfil: string | null;
+      biografia: string | null;
+      fecha_nacimiento: string | null;
+    };
+  } | null>(null);
+
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  const storedUser = getStoredUser() as {
+    correo?: string;
+    nombre_visible?: string;
+    estado?: string;
+  } | null;
+
+  useEffect(() => {
+    let active = true;
+
+    async function loadProfile() {
+      setLoading(true);
+      setError("");
+
+      try {
+        const result = await getMe();
+
+        if (!active) return;
+
+        if (!result.success || !result.data) {
+          setError(result.message || "No se pudo cargar el perfil.");
+          return;
+        }
+
+        setProfileData(result.data);
+      } catch (error) {
+        console.error("PROFILE_LOAD_ERROR", error);
+
+        if (active) {
+          setError("No se pudo conectar con el servicio de usuarios.");
+        }
+      } finally {
+        if (active) {
+          setLoading(false);
+        }
+      }
+    }
+
+    loadProfile();
+
+    return () => {
+      active = false;
+    };
+  }, []);
+
+  const displayName =
+    profileData?.perfil.nombre_visible ||
+    storedUser?.nombre_visible ||
+    storedUser?.correo ||
+    "Usuario ROOTBLEND";
+
+  const email =
+    profileData?.usuario.correo ||
+    storedUser?.correo ||
+    "correo@rootblend.dev";
+
+  const estado =
+    profileData?.usuario.estado ||
+    storedUser?.estado ||
+    "activo";
+
+  const bio =
+    profileData?.perfil.biografia ||
+    "Aun no tienes una biografia configurada. Edita tu perfil para personalizar tu presentacion publica.";
+
+  const fechaRegistro =
+    profileData?.usuario.fecha_registro ||
+    "Pendiente de sincronizar";
+
+  const ultimoAcceso =
+    profileData?.usuario.ultimo_acceso ||
+    "Pendiente de sincronizar";
+
+  return (
+    <RootShell active="home" rightPanel={<DemoRightPanel />}>
+      {loading && (
+        <AlertPanel>
+          <FiRefreshCw />
+          <div>
+            <strong>Cargando perfil</strong>
+            <p>Consultando tus datos reales desde usuarios-service.</p>
+          </div>
+        </AlertPanel>
+      )}
+
+      {error && (
+        <AlertPanel>
+          <FiAlertTriangle />
+          <div>
+            <strong>Error al cargar perfil</strong>
+            <p>{error}</p>
+          </div>
+        </AlertPanel>
+      )}
+
+      <ChannelHero $image={brandAssets.channelView}>
+        <Avatar $large>
+          {displayName.slice(0, 1).toUpperCase()}
+        </Avatar>
+
+        <div>
+          <h1>{displayName}</h1>
+          <p>{bio}</p>
+
+          <ButtonRow>
+            <PrimaryLink to="/profile/edit">
+              <FiEdit3 /> Editar perfil
+            </PrimaryLink>
+
+            <GhostLink to="/settings">
+              <FiSettings /> Preferencias
+            </GhostLink>
+          </ButtonRow>
+        </div>
+      </ChannelHero>
+
+      <MetricGrid>
+        <StatCard label="Estado" value={estado} trend="Cuenta" />
+        <StatCard label="Correo" value={email} trend="Usuario real" />
+        <StatCard label="Registro" value={String(fechaRegistro).slice(0, 10)} trend="Fecha" />
+        <StatCard label="Ultimo acceso" value={String(ultimoAcceso).slice(0, 10)} trend="Sesion" />
+      </MetricGrid>
+
+      <InfoGrid>
+        <Panel>
+          <PanelHeader>
+            <strong>Datos de usuario</strong>
+          </PanelHeader>
+
+          <TwoCol>
+            <span>ID usuario</span>
+            <strong>{profileData?.usuario.id_usuario || "—"}</strong>
+
+            <span>Correo</span>
+            <strong>{email}</strong>
+
+            <span>Estado</span>
+            <strong>{estado}</strong>
+
+            <span>Fecha de registro</span>
+            <strong>{String(fechaRegistro)}</strong>
+
+            <span>Ultimo acceso</span>
+            <strong>{String(ultimoAcceso)}</strong>
+          </TwoCol>
+        </Panel>
+
+        <Panel>
+          <PanelHeader>
+            <strong>Perfil publico</strong>
+            <Link to="/profile/edit">Editar</Link>
+          </PanelHeader>
+
+          <TwoCol>
+            <span>Nombre visible</span>
+            <strong>{displayName}</strong>
+
+            <span>Foto de perfil</span>
+            <strong>{profileData?.perfil.foto_perfil || "Sin foto"}</strong>
+
+            <span>Fecha nacimiento</span>
+            <strong>{profileData?.perfil.fecha_nacimiento || "No configurada"}</strong>
+          </TwoCol>
+
+          <p>{bio}</p>
+        </Panel>
+      </InfoGrid>
+
+      <Section title="Streams recientes">
+        <CardGrid>
+          {streams.slice(0, 3).map((stream) => (
+            <StreamCard key={stream.id} stream={stream} />
+          ))}
+        </CardGrid>
+      </Section>
+    </RootShell>
+  );
+}

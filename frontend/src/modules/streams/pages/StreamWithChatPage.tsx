@@ -1,1 +1,5 @@
-export { default } from "./StreamDetailPage";
+import StreamDetailPage from "./StreamDetailPage";
+
+export default function StreamWithChatPage() {
+  return <StreamDetailPage />;
+}

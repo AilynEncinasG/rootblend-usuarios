@@ -1,178 +1,148 @@
-import { useState } from "react";
-import type { FormEvent } from "react";
-import { Link, useNavigate, useParams, useSearchParams } from "react-router-dom";
-import styled from "styled-components";
+import { type FormEvent, useState } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import {
+  FiAlertTriangle,
+  FiCheckCircle,
+  FiLock,
+} from "react-icons/fi";
+import { brandAssets } from "../../../shared/mock/rootblendMock";
+import {
+  AlertPanel,
+  AuthCard,
+  AuthScreen,
+  BrandBlock,
+  Field,
+  GhostLink,
+  Label,
+  PrimaryButton,
+  SuccessBox,
+} from "../../../shared/styles/legacyStyled";
 import { resetPassword } from "../services/authService";
-
-const Screen = styled.main`
-  min-height: 100vh;
-  display: grid;
-  place-items: center;
-  padding: 24px;
-  background:
-    radial-gradient(circle at top left, rgba(0, 229, 255, 0.18), transparent 34%),
-    radial-gradient(circle at bottom right, rgba(0, 255, 153, 0.14), transparent 34%),
-    #101018;
-`;
-
-const Card = styled.form`
-  width: min(440px, 100%);
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  padding: 28px;
-  border-radius: 22px;
-  color: white;
-  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.35);
-
-  h1 {
-    margin: 0 0 8px;
-    font-size: 28px;
-  }
-
-  p {
-    margin: 0 0 22px;
-    color: rgba(255, 255, 255, 0.68);
-    line-height: 1.5;
-  }
-
-  label {
-    display: block;
-    margin: 14px 0 7px;
-    font-size: 13px;
-    font-weight: 800;
-    color: rgba(255, 255, 255, 0.82);
-  }
-
-  input {
-    width: 100%;
-    box-sizing: border-box;
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    background: rgba(0, 0, 0, 0.2);
-    color: white;
-    border-radius: 14px;
-    padding: 13px 14px;
-    outline: none;
-  }
-
-  button {
-    width: 100%;
-    border: 0;
-    border-radius: 999px;
-    padding: 13px 16px;
-    margin-top: 20px;
-    font-weight: 900;
-    cursor: pointer;
-    color: #071016;
-    background: linear-gradient(135deg, #00e5ff, #00ff99);
-  }
-
-  button:disabled {
-    cursor: wait;
-    opacity: 0.65;
-  }
-
-  a {
-    color: #00e5ff;
-    text-decoration: none;
-    font-weight: 800;
-  }
-`;
-
-const ErrorText = styled.div`
-  color: #ff7b85;
-  font-size: 13px;
-  margin-top: 10px;
-`;
+import { formatApiError } from "../utils/formatApiError";
 
 export default function ResetPasswordPage() {
   const navigate = useNavigate();
-  const { token: routeToken } = useParams();
-  const [searchParams] = useSearchParams();
+  const [params] = useSearchParams();
 
-  const [token, setToken] = useState(routeToken || searchParams.get("token") || "");
-  const [password, setPassword] = useState("");
+  const [token, setToken] = useState(params.get("token") || "");
+  const [passwordNueva, setPasswordNueva] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
 
-  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
+
+  async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
     if (!token.trim()) {
-      setError("Ingresa el token de recuperacion.");
+      setError("Debes ingresar el token de recuperación.");
       return;
     }
 
-    if (password.length < 6) {
-      setError("La contrasena debe tener al menos 6 caracteres.");
+    if (passwordNueva.length < 8) {
+      setError("La nueva contraseña debe tener al menos 8 caracteres.");
       return;
     }
 
-    if (password !== confirmPassword) {
-      setError("Las contrasenas no coinciden.");
+    if (passwordNueva !== confirmPassword) {
+      setError("La confirmación no coincide con la nueva contraseña.");
       return;
     }
 
-    setError("");
     setLoading(true);
+    setError("");
+    setSuccessMessage("");
 
     try {
-      const result = await resetPassword(token, password);
+      const result = await resetPassword(token.trim(), passwordNueva);
 
       if (!result.success) {
-        setError(result.message || "No se pudo guardar la nueva contrasena.");
+        setError(
+          formatApiError(
+            result.errors,
+            result.message || "No se pudo restablecer la contraseña."
+          )
+        );
         return;
       }
 
-      navigate("/login", { replace: true });
-    } catch {
-      setError("No se pudo conectar con usuarios-service.");
+      setSuccessMessage(
+        "Contraseña restablecida correctamente. Redirigiendo al login..."
+      );
+
+      window.setTimeout(() => {
+        navigate("/login", { replace: true });
+      }, 1200);
+    } catch (error) {
+      console.error("RESET_PASSWORD_ERROR", error);
+      setError("No se pudo conectar con el servicio de usuarios.");
     } finally {
       setLoading(false);
     }
   }
 
   return (
-    <Screen>
-      <Card onSubmit={handleSubmit} autoComplete="off">
-        <h1>Nueva contrasena</h1>
+    <AuthScreen $image={brandAssets.loginView}>
+      <AuthCard onSubmit={submit}>
+        <BrandBlock>
+          <FiLock />
+          <h1>Nueva contraseña</h1>
+          <p>Usa el token de recuperación para definir una nueva contraseña.</p>
+        </BrandBlock>
 
-        <p>Define una nueva contrasena para recuperar el acceso a tu cuenta.</p>
+        <Label>Token de recuperación</Label>
+        <Field>
+          <FiLock />
+          <input
+            value={token}
+            onChange={(event) => setToken(event.target.value)}
+            placeholder="Pega aquí el token"
+          />
+        </Field>
 
-        <label>Token de recuperacion</label>
-        <input
-          type="text"
-          value={token}
-          autoComplete="off"
-          onChange={(event) => setToken(event.target.value)}
-        />
+        <Label>Nueva contraseña</Label>
+        <Field>
+          <FiLock />
+          <input
+            type="password"
+            value={passwordNueva}
+            onChange={(event) => setPasswordNueva(event.target.value)}
+          />
+        </Field>
 
-        <label>Nueva contrasena</label>
-        <input
-          type="password"
-          value={password}
-          autoComplete="new-password"
-          onChange={(event) => setPassword(event.target.value)}
-        />
+        <Label>Confirmar contraseña</Label>
+        <Field>
+          <FiLock />
+          <input
+            type="password"
+            value={confirmPassword}
+            onChange={(event) => setConfirmPassword(event.target.value)}
+          />
+        </Field>
 
-        <label>Confirmar contrasena</label>
-        <input
-          type="password"
-          value={confirmPassword}
-          autoComplete="new-password"
-          onChange={(event) => setConfirmPassword(event.target.value)}
-        />
+        {error && (
+          <AlertPanel>
+            <FiAlertTriangle />
+            <div>
+              <strong>Error</strong>
+              <p>{error}</p>
+            </div>
+          </AlertPanel>
+        )}
 
-        {error && <ErrorText>{error}</ErrorText>}
+        {successMessage && (
+          <SuccessBox>
+            <FiCheckCircle /> {successMessage}
+          </SuccessBox>
+        )}
 
-        <button type="submit" disabled={loading}>
-          {loading ? "Guardando..." : "Guardar nueva contrasena"}
-        </button>
+        <PrimaryButton type="submit" disabled={loading}>
+          {loading ? "Restableciendo..." : "Guardar nueva contraseña"}
+        </PrimaryButton>
 
-        <p style={{ marginTop: 18 }}>
-          Ya tienes acceso? <Link to="/login">Iniciar sesion</Link>
-        </p>
-      </Card>
-    </Screen>
+        <GhostLink to="/login">Volver al inicio de sesión</GhostLink>
+      </AuthCard>
+    </AuthScreen>
   );
 }
