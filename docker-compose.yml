@@ -30,6 +30,22 @@ services:
     command: sh /scripts/sync-cloud-to-local.sh
     restart: "no"
 
+  db-sync-auto-cloud-to-local:
+    image: mysql:8.0
+    container_name: rootblend-db-sync-auto-cloud-to-local
+    depends_on:
+      mysql-local:
+        condition: service_healthy
+    env_file:
+      - ./.env.sync
+    environment:
+      SYNC_INTERVAL_SECONDS: 10
+    volumes:
+      - ./scripts:/scripts
+      - ./backups:/backups
+    command: sh /scripts/sync-cloud-to-local-auto.sh
+    restart: unless-stopped
+
   db-sync-local-to-cloud:
     image: mysql:8.0
     container_name: rootblend-db-sync-local-to-cloud
