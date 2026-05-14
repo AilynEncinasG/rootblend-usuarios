@@ -1,0 +1,62 @@
+services:
+  usuarios-service:
+    environment:
+      DB_ENGINE: django.db.backends.mysql
+      DB_NAME: rootblend_usuarios
+      DB_USER: root
+      DB_PASSWORD: root
+      DB_HOST: mysql-local
+      DB_PORT: 3306
+    depends_on:
+      mysql-local:
+        condition: service_healthy
+
+  canales-streaming-service:
+    environment:
+      DB_ENGINE: django.db.backends.mysql
+      DB_NAME: rootblend_canales_streaming
+      DB_USER: root
+      DB_PASSWORD: root
+      DB_HOST: mysql-local
+      DB_PORT: 3306
+    depends_on:
+      mysql-local:
+        condition: service_healthy
+
+  estadisticas-service:
+    environment:
+      DB_ENGINE: django.db.backends.mysql
+      DB_NAME: rootblend_estadisticas
+      DB_USER: root
+      DB_PASSWORD: root
+      DB_HOST: mysql-local
+      DB_PORT: 3306
+    depends_on:
+      mysql-local:
+        condition: service_healthy
+
+  podcasts-service:
+    environment:
+      DB_CONNECTION: mysql
+      DB_HOST: mysql-local
+      DB_PORT: 3306
+      DB_DATABASE: rootblend_podcasts
+      DB_USERNAME: root
+      DB_PASSWORD: root
+      MYSQL_ATTR_SSL_CA: ""
+    depends_on:
+      mysql-local:
+        condition: service_healthy
+
+  interacciones-service:
+    environment:
+      DB_CONNECTION: mysql
+      DB_HOST: mysql-local
+      DB_PORT: 3306
+      DB_DATABASE: rootblend_interacciones
+      DB_USERNAME: root
+      DB_PASSWORD: root
+      MYSQL_ATTR_SSL_CA: ""
+    depends_on:
+      mysql-local:
+        condition: service_healthy

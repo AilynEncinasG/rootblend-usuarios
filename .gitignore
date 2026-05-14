@@ -103,3 +103,7 @@ Desktop.ini
 Pegado text.txt**/.env
 **/.env
 .env
+# Sincronizacion BD / secretos / backups
+.env.sync
+backups/
+*.sql

@@ -1,4 +1,51 @@
 services:
+  mysql-local:
+    image: mysql:8.0
+    container_name: rootblend-mysql-local
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_local_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-proot"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
+
+  db-sync-cloud-to-local:
+    image: mysql:8.0
+    container_name: rootblend-db-sync-cloud-to-local
+    depends_on:
+      mysql-local:
+        condition: service_healthy
+    env_file:
+      - ./.env.sync
+    volumes:
+      - ./scripts:/scripts
+      - ./backups:/backups
+    command: sh /scripts/sync-cloud-to-local.sh
+    restart: "no"
+
+  db-sync-local-to-cloud:
+    image: mysql:8.0
+    container_name: rootblend-db-sync-local-to-cloud
+    profiles:
+      - recover
+    depends_on:
+      mysql-local:
+        condition: service_healthy
+    env_file:
+      - ./.env.sync
+    volumes:
+      - ./scripts:/scripts
+      - ./backups:/backups
+    command: sh /scripts/sync-local-to-cloud.sh
+    restart: "no"
+
   rabbitmq:
     build:
       context: ./infra/rabbitmq
@@ -147,3 +194,6 @@ services:
     depends_on:
       - gateway
     restart: unless-stopped
+
+volumes:
+  mysql_local_data:
