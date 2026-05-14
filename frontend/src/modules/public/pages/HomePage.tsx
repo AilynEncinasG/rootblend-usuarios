@@ -310,6 +310,12 @@ export default function HomePage() {
   }, []);
 
   const heroStream = liveStreams[0];
+  const [selectedCategory, setSelectedCategory] = useState("Todas");
+  const filteredStreams = selectedCategory === "Todas"
+  ? liveStreams
+  : liveStreams.filter(stream => 
+    stream.category?.trim().toLowerCase() === selectedCategory.trim().toLowerCase()
+  );
 
   return (
     <RootShell
@@ -328,7 +334,7 @@ export default function HomePage() {
 
       <HeroGrid>
         <HeroCopy>
-          <Eyebrow>{loggedIn ? "Home logueado" : "MEZCLA DE RAÍCES"}</Eyebrow>
+          <Eyebrow>{loggedIn ? "¡Bienvenido de nuevo!" : ""}</Eyebrow>
           <h1>
             Explora transmisiones <span>en vivo</span>
           </h1>
@@ -379,9 +385,23 @@ export default function HomePage() {
       ) : null}
 
       <FilterRow>
-        <FilterChip $active>Todas</FilterChip>
+        <FilterChip 
+          $active={selectedCategory === "Todas"} 
+          onClick={() => setSelectedCategory("Todas")}
+        >
+          Todas
+        </FilterChip>
+        
         {backendCategories.map((category) => (
-          <FilterChip key={category.id}>{category.name}</FilterChip>
+          <FilterChip 
+            key={category.id} 
+            // Comparamos el nombre (ej: "Charlas") con el estado
+            $active={selectedCategory === category.name}
+            // Guardamos el nombre al hacer clic
+            onClick={() => setSelectedCategory(category.name)}
+          >
+            {category.name}
+          </FilterChip>
         ))}
       </FilterRow>
 
@@ -389,15 +409,17 @@ export default function HomePage() {
         title="Transmisiones en vivo"
         action={<TextLink to="/streams">Ver todas</TextLink>}
       >
-        {liveStreams.length === 0 ? (
+        {/* Usamos la lista filtrada para verificar si está vacía */}
+        {filteredStreams.length === 0 ? (
           <EmptyPanel
             icon={<FiWifiOff />}
-            title="No hay streams en vivo"
-            text="Todavía ningún streamer inició transmisión. Puedes explorar categorías o podcasts mientras tanto."
+            title="No hay streams en esta categoría"
+            text="Prueba seleccionando otra categoría o vuelve a 'Todas'."
           />
         ) : (
           <CardGrid>
-            {liveStreams.map((stream) => (
+            {/* Mapeamos la lista filtrada */}
+            {filteredStreams.map((stream) => (
               <StreamCard key={stream.id} stream={stream} />
             ))}
           </CardGrid>
@@ -425,7 +447,7 @@ export default function HomePage() {
 
       <Section
         title="Canales registrados"
-        action={<TextLink to="/channels/1">Ver canal</TextLink>}
+        action={<TextLink to="/channels">Ver todos</TextLink>}
       >
         {backendChannels.length === 0 ? (
           <EmptyPanel

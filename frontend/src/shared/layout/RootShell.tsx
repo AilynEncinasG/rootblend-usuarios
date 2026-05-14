@@ -310,11 +310,22 @@ export function RootShell({
 
     navigate("/");
   }
-
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   return (
     <AppFrame>
       <Topbar>
-        <BrandLink to="/">
+        <BrandLink 
+          to={(window.innerWidth > 768 && window.innerHeight > 500) ? "/" : "#"}
+          onClick={(e) => {
+            const isMobileSize = window.innerWidth <= 768;
+            const isLandscapeMobile = window.innerHeight <= 500;
+
+            if (isMobileSize || isLandscapeMobile) {
+              e.preventDefault();
+              setIsMobileMenuOpen(!isMobileMenuOpen); 
+            }
+          }}
+        >
           <img src={brandAssets.logo} alt="ROOTBLEND" />
           <strong translate="no">
             ROOT<span>BLEND</span>
@@ -517,7 +528,21 @@ export function RootShell({
       </Topbar>
 
       <ShellGrid $hasRightPanel={Boolean(rightPanel)}>
-        <Sidebar>
+        {isMobileMenuOpen && (
+          <div 
+            style={{
+              position: 'fixed',
+              top: 0,
+              left: 0,
+              width: '100vw',
+              height: '100vh',
+              background: 'rgba(0,0,0,0.6)',
+              zIndex: 9998
+            }}
+            onClick={() => setIsMobileMenuOpen(false)}
+          />
+        )}
+        <Sidebar $isOpen={isMobileMenuOpen}>
           <SidebarSection>
             <SidebarTitle>Recomendados</SidebarTitle>
 
@@ -549,6 +574,10 @@ export function RootShell({
             <SidebarTitle>Explorar</SidebarTitle>
 
             {pageLinks.map((item) => {
+              if (!loggedIn && (item.key === "creator" || item.key === "moderation")) {
+                return null;
+              }
+
               const Icon = item.icon;
               const target = item.key === "creator" ? creatorTarget : item.to;
               const label = item.key === "creator" ? creatorLabel : item.label;
@@ -574,6 +603,17 @@ export function RootShell({
             </PromoPanel>
           ) : null}
         </Sidebar>
+        {isMobileMenuOpen && window.innerWidth <= 768 && (
+          <div 
+            onClick={() => setIsMobileMenuOpen(false)}
+            style={{
+              position: 'fixed',
+              inset: 0,
+              background: 'rgba(0,0,0,0.5)',
+              zIndex: 9998 // Un número menor al del Sidebar (9999)
+            }}
+          />
+        )}
 
         <MainArea>{children}</MainArea>
 

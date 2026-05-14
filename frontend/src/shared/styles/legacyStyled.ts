@@ -30,7 +30,7 @@ export const Topbar = styled.header`
   z-index: 40;
   height: 64px;
   display: grid;
-  grid-template-columns: 250px minmax(220px, 560px) auto;
+  grid-template-columns: auto minmax(220px, 560px) auto;
   align-items: center;
   gap: 22px;
   padding: 0 22px;
@@ -38,8 +38,14 @@ export const Topbar = styled.header`
   border-bottom: 1px solid rgba(148, 163, 184, 0.12);
   backdrop-filter: blur(18px);
 
+  @media (max-height: 500px) and (orientation: landscape) {
+    height: 48px; 
+    gap: 10px;
+    padding: 0 12px;
+  }
+
   @media (max-width: 900px) {
-    grid-template-columns: 1fr auto;
+    grid-template-columns: 1fr auto; 
   }
 `;
 
@@ -49,6 +55,9 @@ export const BrandLink = styled(Link)`
   gap: 10px;
   font-weight: 950;
   font-size: 18px;
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
 
   img {
     width: 34px;
@@ -58,6 +67,13 @@ export const BrandLink = styled(Link)`
 
   span {
     color: #00e5ff;
+  }
+
+  @media (max-width: 768px) {
+    &:active {
+      opacity: 0.7;
+      transform: scale(0.98);
+    }
   }
 `;
 
@@ -211,18 +227,21 @@ export const ShellGrid = styled.div<{ $hasRightPanel: boolean }>`
 
   @media (max-width: 1180px) {
     grid-template-columns: 86px minmax(0, 1fr);
-
-    > aside:last-child {
-      display: none;
-    }
+    > aside:last-child { display: none; }
   }
 
-  @media (max-width: 760px) {
-    grid-template-columns: 1fr;
+  @media (max-width: 768px), (max-height: 500px) {
+    grid-template-columns: 1fr !important;
+    min-height: calc(100vh - 48px);
   }
 `;
 
-export const Sidebar = styled.aside`
+interface SidebarProps {
+  $isOpen?: boolean;
+}
+
+export const Sidebar = styled.aside<SidebarProps>`
+  /* --- ESTILOS PARA ESCRITORIO (Base) --- */
   position: sticky;
   top: 64px;
   height: calc(100vh - 64px);
@@ -231,8 +250,30 @@ export const Sidebar = styled.aside`
   border-right: 1px solid rgba(148, 163, 184, 0.11);
   overflow-y: auto;
 
-  @media (max-width: 760px) {
-    display: none;
+  @media (max-width: 768px), (max-height: 500px) {
+    position: fixed;
+    top: 0;
+    right: 0; 
+    width: 280px;
+    height: 100vh;
+    background: #0f0f0f;
+    z-index: 9999;
+    padding: 20px;
+
+    transform: ${({ $isOpen }) => ($isOpen ? 'translateX(0)' : 'translateX(100%)')};
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    
+    display: flex;
+    flex-direction: column;
+    box-shadow: -10px 0 30px rgba(0, 0, 0, 0.8);
+    overflow-y: auto;
+
+    span, strong, small {
+      display: inline-block !important;
+      visibility: visible !important;
+      opacity: 1 !important;
+      color: rgba(226, 232, 240, 0.9) !important;
+    }
   }
 `;
 
@@ -268,6 +309,7 @@ export const SidebarLink = styled(Link)<{ $active?: boolean }>`
   background: ${({ $active }) => ($active ? "linear-gradient(135deg, #00e5ff, #22c55e)" : "transparent")};
   font-size: 13px;
   font-weight: 800;
+  text-decoration: none;
 
   &:hover {
     background: rgba(255, 255, 255, 0.07);
@@ -276,7 +318,14 @@ export const SidebarLink = styled(Link)<{ $active?: boolean }>`
 
   @media (max-width: 1180px) {
     span {
-      display: none;
+      display: none; 
+    }
+  }
+
+  @media (max-width: 768px), (max-height: 500px) {
+    span {
+      display: block !important; 
+      color: inherit;
     }
   }
 `;
@@ -288,6 +337,8 @@ export const ChannelMini = styled(Link)`
   gap: 10px;
   padding: 8px;
   border-radius: 12px;
+  text-decoration: none; 
+  color: inherit;
 
   &:hover {
     background: rgba(255, 255, 255, 0.06);
@@ -299,6 +350,15 @@ export const ChannelMini = styled(Link)`
     div,
     span {
       display: none;
+    }
+  }
+
+  @media (max-width: 768px), (max-height: 500px) {
+    grid-template-columns: 34px 1fr auto !important; 
+
+    div,
+    span {
+      display: block !important; 
     }
   }
 `;
