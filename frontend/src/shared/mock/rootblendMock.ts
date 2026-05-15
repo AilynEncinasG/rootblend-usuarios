@@ -1,13 +1,14 @@
 import logo from "../../assets/Logo.png";
 import fondo from "../../assets/Fondo.png";
+import musicaCategoria from "../../assets/mockups/Musica.png";
+import gamingCategoria from "../../assets/mockups/Gaming.png";
+import tecnologiaCategoria from "../../assets/mockups/Tecnologia.png";
+import deportesCategoria from "../../assets/mockups/Deportes.png";
+import charlasCategoria from "../../assets/mockups/Charlas.png";
+import podcastsCategoria from "../../assets/mockups/Podcast.png";
+
 import cover from "../../assets/mockups/mockup_01.png";
-import publicHome from "../../assets/mockups/mockup_03.jpg";
-import exploreStreams from "../../assets/mockups/mockup_04.jpg";
-import categoriesView from "../../assets/mockups/mockup_06.jpg";
-import channelView from "../../assets/mockups/mockup_07.jpg";
 import streamView from "../../assets/mockups/mockup_08.jpg";
-import streamChat from "../../assets/mockups/mockup_09.jpg";
-import podcastsView from "../../assets/mockups/mockup_11.jpg";
 import loginView from "../../assets/Fondo.png";
 import streamerPanel from "../../assets/mockups/mockup_26.jpg";
 import streamControl from "../../assets/mockups/mockup_28.jpg";
@@ -77,13 +78,13 @@ export const brandAssets = {
   logo,
   fondo,
   cover,
-  publicHome,
-  exploreStreams,
-  categoriesView,
-  channelView,
+  musicaCategoria,
+  gamingCategoria,
+  tecnologiaCategoria,
+  deportesCategoria,
   streamView,
-  streamChat,
-  podcastsView,
+  charlasCategoria,
+  podcastsCategoria,
   loginView,
   streamerPanel,
   streamControl,
@@ -101,7 +102,7 @@ export const categories: Category[] = [
     icon: "game",
     viewers: "12.4K",
     color: "#00e5ff",
-    image: exploreStreams,
+    image: gamingCategoria,
   },
   {
     id: "music",
@@ -109,7 +110,7 @@ export const categories: Category[] = [
     icon: "music",
     viewers: "8.7K",
     color: "#ff5bd6",
-    image: publicHome,
+    image: musicaCategoria,
   },
   {
     id: "talks",
@@ -117,7 +118,7 @@ export const categories: Category[] = [
     icon: "chat",
     viewers: "6.1K",
     color: "#8b5cf6",
-    image: streamChat,
+    image: charlasCategoria,
   },
   {
     id: "tech",
@@ -125,7 +126,7 @@ export const categories: Category[] = [
     icon: "code",
     viewers: "4.9K",
     color: "#22c55e",
-    image: categoriesView,
+    image: tecnologiaCategoria,
   },
   {
     id: "sports",
@@ -133,7 +134,7 @@ export const categories: Category[] = [
     icon: "bolt",
     viewers: "3.8K",
     color: "#f59e0b",
-    image: channelView,
+    image: deportesCategoria,
   },
   {
     id: "podcasts",
@@ -141,7 +142,7 @@ export const categories: Category[] = [
     icon: "mic",
     viewers: "2.8K",
     color: "#a855f7",
-    image: podcastsView,
+    image: podcastsCategoria,
   },
 ];
 
@@ -167,7 +168,7 @@ export const streams: StreamItem[] = [
     category: "Videojuegos",
     viewers: "1.3K",
     avatar: "AG",
-    image: exploreStreams,
+    image: gamingCategoria,
     tags: ["Valorant", "FPS", "Ranked"],
     description:
       "Partidas competitivas con la comunidad y clutchs imposibles.",
@@ -180,7 +181,7 @@ export const streams: StreamItem[] = [
     category: "Musica",
     viewers: "3.1K",
     avatar: "LV",
-    image: publicHome,
+    image: musicaCategoria,
     tags: ["Musica", "Chill", "Chat"],
     description:
       "Sesion tranquila con pedidos del chat y visuales neon.",
@@ -193,7 +194,7 @@ export const streams: StreamItem[] = [
     category: "Tecnologia",
     viewers: "912",
     avatar: "TN",
-    image: categoriesView,
+    image: tecnologiaCategoria,
     tags: ["IA", "Debate", "Noticias"],
     description:
       "Charlamos sobre tecnologia sin perder el hilo humano.",
@@ -206,7 +207,7 @@ export const streams: StreamItem[] = [
     category: "Juego de azar",
     viewers: "2.7K",
     avatar: "DL",
-    image: channelView,
+    image: deportesCategoria,
     tags: ["Casino", "Directo", "Retos"],
     description:
       "Entretenimiento en vivo con reglas claras y reaccion del chat.",
@@ -219,7 +220,7 @@ export const streams: StreamItem[] = [
     category: "Deportes",
     viewers: "4.4K",
     avatar: "GT",
-    image: streamChat,
+    image: charlasCategoria,
     tags: ["Futbol", "Analisis", "Directo"],
     description:
       "Narracion, previa, estadisticas y debate con la comunidad.",
@@ -232,7 +233,7 @@ export const podcasts: PodcastItem[] = [
     title: "Fuera de Orbita",
     creator: "Ciencia y tecnologia",
     category: "Ciencia",
-    image: podcastsView,
+    image: podcastsCategoria,
     duration: "58:21",
     episodes: [
       {
@@ -260,7 +261,7 @@ export const podcasts: PodcastItem[] = [
     title: "Hablemos Sin Filtro",
     creator: "Conversaciones",
     category: "Charla",
-    image: publicHome,
+    image: musicaCategoria,
     duration: "47:09",
     episodes: [
       {
@@ -282,7 +283,7 @@ export const podcasts: PodcastItem[] = [
     title: "Retro Level",
     creator: "Videojuegos",
     category: "Gaming",
-    image: exploreStreams,
+    image: gamingCategoria,
     duration: "1:03:14",
     episodes: [
       {
@@ -304,7 +305,7 @@ export const podcasts: PodcastItem[] = [
     title: "Negocios en Accion",
     creator: "Emprendimiento",
     category: "Negocios",
-    image: categoriesView,
+    image: tecnologiaCategoria,
     duration: "43:18",
     episodes: [
       {

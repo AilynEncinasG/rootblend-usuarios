@@ -887,34 +887,50 @@ export const Select = styled.select`
 
 export const CategoryGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 14px;
-  margin-bottom: 30px;
+  grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+  gap: 20px;
+  margin-bottom: 40px;
 `;
 
 export const CategoryCard = styled(Link)<{ $image: string }>`
-  min-height: 150px;
+  min-height: 240px; 
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  padding: 16px;
-  border-radius: 12px;
+  padding: 24px;
+  border-radius: 16px;
   overflow: hidden;
   border: 1px solid rgba(148, 163, 184, 0.13);
-  background:
-    linear-gradient(180deg, rgba(2, 6, 23, 0.08), rgba(2, 6, 23, 0.82)),
+  text-decoration: none;
+  color: white;
+  
+  background: 
+    linear-gradient(180deg, rgba(2, 6, 23, 0) 0%, rgba(2, 6, 23, 0.9) 100%),
     url(${({ $image }) => $image});
   background-size: cover;
   background-position: center;
+  
+  transition: all 0.3s ease;
+  position: relative;
+
+  &:hover {
+    transform: scale(1.02);
+    border-color: rgba(0, 229, 255, 0.5); 
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+  }
 
   span {
-    font-size: 18px;
+    font-size: 24px;
     font-weight: 950;
+    letter-spacing: -0.5px;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.5);
   }
 
   small {
-    margin-top: 4px;
-    color: rgba(226, 232, 240, 0.72);
+    margin-top: 6px;
+    font-size: 14px;
+    color: rgba(226, 232, 240, 0.85);
+    font-weight: 500;
   }
 `;
 

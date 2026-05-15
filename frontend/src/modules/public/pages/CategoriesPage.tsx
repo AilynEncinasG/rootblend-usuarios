@@ -73,8 +73,7 @@ export default function CategoriesPage() {
       rightPanel={<DemoRightPanel liveStreams={liveStreams} />}
     >
       <PageHeading>
-        <Eyebrow>Descubrimiento</Eyebrow>
-        <h1>Explora por categorías</h1>
+        <h1>Categorías de Streams</h1>
         <p>Elige una categoría para encontrar contenido relacionado.</p>
       </PageHeading>
 

@@ -119,13 +119,24 @@ export function backendCategoryToCard(
     (stream) => stream.category === category.nombre
   ).length;
 
+  const imageMap: Record<string, string> = {
+    "Gaming": brandAssets.gamingCategoria,
+    "Musica": brandAssets.musicaCategoria,
+    "Charlas": brandAssets.charlasCategoria,
+    "Tecnologia": brandAssets.tecnologiaCategoria,
+    "Deportes": brandAssets.deportesCategoria,
+    "Podcasts": brandAssets.podcastsCategoria,
+  };
+
+  const finalImage = imageMap[category.nombre] || brandAssets.charlasCategoria;
+
   return {
     id: String(category.id_categoria),
     name: category.nombre,
     icon: "grid",
     viewers: String(activeCount),
     color: "#00e5ff",
-    image: brandAssets.categoriesView,
+    image: finalImage,
   };
 }
 

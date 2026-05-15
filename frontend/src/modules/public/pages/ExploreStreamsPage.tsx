@@ -95,12 +95,7 @@ export default function ExploreStreamsPage() {
   return (
     <RootShell active="streams">
       <PageHeading>
-        <Eyebrow>Explorar</Eyebrow>
         <h1>Explorar transmisiones en vivo</h1>
-        <p>
-          Esta sección muestra las transmisiones que están en vivo en este
-          momento.
-        </p>
       </PageHeading>
 
       {error && (
