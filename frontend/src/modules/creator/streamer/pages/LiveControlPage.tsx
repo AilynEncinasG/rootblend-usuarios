@@ -12,6 +12,7 @@ import {
   FiWifiOff,
 } from "react-icons/fi";
 import styled from "styled-components";
+
 import { brandAssets } from "../../../../shared/mock/rootblendMock";
 import {
   AlertPanel,
@@ -25,8 +26,11 @@ import { StatCard } from "../../../public/utils/publicLegacyHelpers";
 import {
   finishStream,
   getMyStreams,
+  getStreamObsConfig,
+  rotateStreamKey,
   startStream,
   type Stream,
+  type StreamObsConfig,
 } from "../../../streams/services/streamsService";
 
 type StreamExtras = {
@@ -62,7 +66,7 @@ function getCurrentStream(streams: Stream[]) {
   }
 
   const programmedStream = streams.find(
-    (stream) => stream.estado === "programado"
+    (stream) => stream.estado === "programado",
   );
 
   if (programmedStream) {
@@ -88,7 +92,7 @@ function getDurationLabel(stream: Stream | null) {
   const hours = String(Math.floor(totalSeconds / 3600)).padStart(2, "0");
   const minutes = String(Math.floor((totalSeconds % 3600) / 60)).padStart(
     2,
-    "0"
+    "0",
   );
   const seconds = String(totalSeconds % 60).padStart(2, "0");
 
@@ -133,6 +137,7 @@ function copyText(value: string) {
 export default function LiveControlPage() {
   const [currentStream, setCurrentStream] = useState<Stream | null>(null);
   const [totalStreams, setTotalStreams] = useState(0);
+  const [obsConfig, setObsConfig] = useState<StreamObsConfig | null>(null);
 
   const [loading, setLoading] = useState(true);
   const [actionLoading, setActionLoading] = useState(false);
@@ -148,26 +153,32 @@ export default function LiveControlPage() {
 
   const durationLabel = useMemo(
     () => getDurationLabel(currentStream),
-    [currentStream]
+    [currentStream],
   );
 
   const obsServer =
-    extras?.rtmp_url ||
-    (currentStream
-      ? `rtmp://localhost:1935/live`
-      : "rtmp://localhost:1935/live");
+    obsConfig?.server || extras?.rtmp_url || "rtmp://localhost:1935/live";
 
   const streamKey =
-    extras?.stream_key ||
-    (currentStream
-      ? `rb_${currentStream.id_stream}_stream_key`
-      : "sin_stream_key");
+    obsConfig?.stream_key || extras?.stream_key || "Cargando clave real...";
 
   const playbackUrl =
-    extras?.playback_url ||
-    (currentStream
-      ? `http://localhost:8080/hls/live/rb_${currentStream.id_stream}/index.m3u8`
-      : "No disponible");
+    obsConfig?.playback_url || extras?.playback_url || "No disponible";
+
+  async function loadObsConfigForStream(stream: Stream | null) {
+    if (!stream || stream.estado === "finalizado") {
+      setObsConfig(null);
+      return;
+    }
+
+    try {
+      const config = await getStreamObsConfig(stream.id_stream);
+      setObsConfig(config);
+    } catch (requestError) {
+      console.error("LIVE_CONTROL_OBS_CONFIG_ERROR", requestError);
+      setObsConfig(null);
+    }
+  }
 
   async function loadStreams() {
     setLoading(true);
@@ -181,15 +192,17 @@ export default function LiveControlPage() {
       setTotalStreams(myStreams.length);
       setCurrentStream(selectedStream);
 
+      await loadObsConfigForStream(selectedStream);
+
       if (!selectedStream) {
         setError(
-          "No tienes streams creados. Primero guarda una configuración de stream."
+          "No tienes streams creados. Primero guarda una configuración de stream.",
         );
       }
     } catch (requestError) {
       console.error("LIVE_CONTROL_LOAD_STREAMS_ERROR", requestError);
       setError(
-        "No se pudieron cargar tus streams. Revisa tu sesión y que el backend esté activo."
+        "No se pudieron cargar tus streams. Revisa tu sesión y que el backend esté activo.",
       );
     } finally {
       setLoading(false);
@@ -213,7 +226,7 @@ export default function LiveControlPage() {
 
     if (currentStream.estado === "finalizado") {
       setError(
-        "Este stream ya fue finalizado. Crea otro stream antes de iniciar una nueva transmisión."
+        "Este stream ya fue finalizado. Crea otro stream antes de iniciar una nueva transmisión.",
       );
       return;
     }
@@ -224,21 +237,23 @@ export default function LiveControlPage() {
 
     try {
       const updatedStream = await startStream(currentStream.id_stream);
+      const config = await getStreamObsConfig(updatedStream.id_stream);
 
       localStorage.setItem(
         "rootblend_last_stream_id",
-        String(updatedStream.id_stream)
+        String(updatedStream.id_stream),
       );
 
       setCurrentStream(updatedStream);
+      setObsConfig(config);
 
       setFeedback(
-        "Transmisión iniciada correctamente. El stream ahora debería aparecer en Inicio y Explorar."
+        "Transmisión iniciada correctamente. Copia la clave real en OBS y presiona Iniciar transmisión en OBS.",
       );
     } catch (requestError) {
       console.error("LIVE_CONTROL_START_ERROR", requestError);
       setError(
-        "No se pudo iniciar la transmisión. Revisa que el stream esté programado y que tu sesión siga activa."
+        "No se pudo iniciar la transmisión. Revisa que el stream esté programado y que tu sesión siga activa.",
       );
     } finally {
       setActionLoading(false);
@@ -264,11 +279,52 @@ export default function LiveControlPage() {
       const updatedStream = await finishStream(currentStream.id_stream);
 
       setCurrentStream(updatedStream);
+      setObsConfig(null);
       setFeedback("Transmisión finalizada correctamente.");
     } catch (requestError) {
       console.error("LIVE_CONTROL_FINISH_ERROR", requestError);
       setError(
-        "No se pudo finalizar la transmisión. Revisa tu sesión y la conexión con el backend."
+        "No se pudo finalizar la transmisión. Revisa tu sesión y la conexión con el backend.",
+      );
+    } finally {
+      setActionLoading(false);
+    }
+  }
+
+  async function handleRotateKey() {
+    if (!currentStream) {
+      setError("No hay stream seleccionado para regenerar la clave.");
+      return;
+    }
+
+    if (currentStream.estado === "en_vivo") {
+      setError(
+        "No puedes regenerar la clave mientras el stream está en vivo. Finaliza o crea otro stream.",
+      );
+      return;
+    }
+
+    if (currentStream.estado === "finalizado") {
+      setError("No puedes regenerar la clave de un stream finalizado.");
+      return;
+    }
+
+    setActionLoading(true);
+    setError("");
+    setFeedback("");
+
+    try {
+      const config = await rotateStreamKey(currentStream.id_stream);
+
+      setObsConfig(config);
+      setShowKey(true);
+      setFeedback(
+        "Clave OBS regenerada correctamente. Copia la nueva clave en OBS antes de transmitir.",
+      );
+    } catch (requestError) {
+      console.error("LIVE_CONTROL_ROTATE_KEY_ERROR", requestError);
+      setError(
+        "No se pudo regenerar la clave. Revisa tu sesión o intenta nuevamente.",
       );
     } finally {
       setActionLoading(false);
@@ -393,7 +449,10 @@ export default function LiveControlPage() {
       <InfoPanel>
         <PanelHeader>
           <strong>Configuracion OBS</strong>
-          <SmallButton type="button" onClick={() => setShowKey((value) => !value)}>
+          <SmallButton
+            type="button"
+            onClick={() => setShowKey((value) => !value)}
+          >
             {showKey ? "Ocultar clave" : "Mostrar clave"}
           </SmallButton>
         </PanelHeader>
@@ -508,10 +567,8 @@ export default function LiveControlPage() {
 
         <SmallButton
           type="button"
-          onClick={() =>
-            setFeedback("La clave OBS se mantiene estable para este stream.")
-          }
-          disabled={!currentStream || finished}
+          onClick={handleRotateKey}
+          disabled={!currentStream || live || finished || actionLoading}
         >
           <FiRotateCw />
           Regenerar clave
