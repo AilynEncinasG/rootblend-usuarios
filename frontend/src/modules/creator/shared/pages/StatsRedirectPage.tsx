@@ -1,4 +1,5 @@
 import { Navigate } from "react-router-dom";
+
 import { getCreatorRole } from "../services/creatorRoleService";
 
 export default function StatsRedirectPage() {
