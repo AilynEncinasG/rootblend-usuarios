@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
 import {
   FiAlertTriangle,
@@ -8,8 +8,10 @@ import {
   FiStar,
   FiWifiOff,
 } from "react-icons/fi";
+
 import LiveVideoPlayer from "../../../components/stream/LiveVideoPlayer";
 import { RootShell } from "../../../shared/layout";
+import { toBrowserReachableUrl } from "../../../shared/utils/networkUrl";
 import {
   AlertPanel,
   Avatar,
@@ -85,13 +87,15 @@ export default function StreamDetailPage() {
         setRelatedStreams(
           live
             .filter((item) => item.id_stream !== detail.id_stream)
-            .map(backendStreamToCard)
+            .map(backendStreamToCard),
         );
-      } catch (error) {
-        console.error("STREAM_DETAIL_LOAD_ERROR", error);
+      } catch (requestError) {
+        console.error("STREAM_DETAIL_LOAD_ERROR", requestError);
 
         if (active) {
-          setError("No se pudo cargar la transmisión. Intenta actualizar la página.");
+          setError(
+            "No se pudo cargar la transmisión. Intenta actualizar la página.",
+          );
         }
       } finally {
         if (active) {
@@ -106,6 +110,10 @@ export default function StreamDetailPage() {
       active = false;
     };
   }, [streamId]);
+
+  const playbackUrl = useMemo(() => {
+    return toBrowserReachableUrl(backendStream?.playback_url);
+  }, [backendStream?.playback_url]);
 
   if (loading) {
     return (
@@ -186,7 +194,7 @@ export default function StreamDetailPage() {
 
       <PlayerPanel>
         <LiveVideoPlayer
-          playbackUrl={backendStream.playback_url}
+          playbackUrl={playbackUrl}
           poster={stream.image}
           streamStatus={backendStream.estado}
           signalStatus={backendStream.signal_status || undefined}
@@ -263,8 +271,8 @@ export default function StreamDetailPage() {
             <span>Estado</span>
             <strong>{backendStream.estado}</strong>
 
-            <span>Senal OBS</span>
-            <strong>{backendStream.signal_status}</strong>
+            <span>Señal OBS</span>
+            <strong>{backendStream.signal_status || "sin_senal"}</strong>
 
             <span>Espectadores</span>
             <strong>{backendStream.viewer_count}</strong>

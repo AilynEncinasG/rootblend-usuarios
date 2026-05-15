@@ -1,3 +1,4 @@
+import { toBrowserReachableUrl } from "../../../../shared/utils/networkUrl";
 import { useEffect, useMemo, useState } from "react";
 import {
   FiAlertTriangle,
@@ -162,8 +163,10 @@ export default function LiveControlPage() {
   const streamKey =
     obsConfig?.stream_key || extras?.stream_key || "Cargando clave real...";
 
-  const playbackUrl =
+  const rawPlaybackUrl =
     obsConfig?.playback_url || extras?.playback_url || "No disponible";
+
+  const playbackUrl = toBrowserReachableUrl(rawPlaybackUrl);
 
   async function loadObsConfigForStream(stream: Stream | null) {
     if (!stream || stream.estado === "finalizado") {

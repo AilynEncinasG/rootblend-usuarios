@@ -1,20 +1,57 @@
 import os
 from pathlib import Path
+
 from dotenv import load_dotenv
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 load_dotenv(BASE_DIR / ".env")
 
+
+def parse_csv_env(value: str, default: list[str] | None = None) -> list[str]:
+    if not value:
+        return default or []
+
+    return [item.strip() for item in value.split(",") if item.strip()]
+
+
 SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", "changeme")
 DEBUG = os.getenv("DJANGO_DEBUG", "False").lower() == "true"
 
-ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS", "127.0.0.1,localhost").split(",")
+ALLOWED_HOSTS = parse_csv_env(
+    os.getenv("DJANGO_ALLOWED_HOSTS", ""),
+    default=[
+        "localhost",
+        "127.0.0.1",
+        "0.0.0.0",
+        "gateway",
+        "usuarios-service",
+        "canales-streaming-service",
+        "estadisticas-service",
+        "192.168.1.207",
+    ],
+)
 
-CSRF_TRUSTED_ORIGINS = [
-    "http://127.0.0.1:8002",
-    "http://localhost:8002",
-]
+CSRF_TRUSTED_ORIGINS = parse_csv_env(
+    os.getenv("DJANGO_CSRF_TRUSTED_ORIGINS", ""),
+    default=[
+        "http://localhost:5173",
+        "http://localhost:8080",
+        "http://127.0.0.1:5173",
+        "http://127.0.0.1:8080",
+        "http://192.168.1.207:5173",
+        "http://192.168.1.207:8080",
+    ],
+)
+
+CORS_ALLOWED_ORIGINS = parse_csv_env(
+    os.getenv("CORS_ALLOWED_ORIGINS", ""),
+    default=[
+        "http://localhost:5173",
+        "http://127.0.0.1:5173",
+        "http://192.168.1.207:5173",
+    ],
+)
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -89,8 +126,3 @@ STATIC_ROOT = BASE_DIR / "staticfiles"
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
-
-CORS_ALLOWED_ORIGINS = os.getenv(
-    "CORS_ALLOWED_ORIGINS",
-    "http://localhost:5173,http://127.0.0.1:5173"
-).split(",")

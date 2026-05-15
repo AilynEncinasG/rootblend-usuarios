@@ -39,7 +39,7 @@ services:
     env_file:
       - ./.env.sync
     environment:
-      SYNC_INTERVAL_SECONDS: 10
+      SYNC_INTERVAL_SECONDS: 300
     volumes:
       - ./scripts:/scripts
       - ./backups:/backups
@@ -99,6 +99,11 @@ services:
     container_name: rootblend-usuarios-service
     env_file:
       - ./services/usuarios-service/.env
+    environment:
+      DJANGO_ALLOWED_HOSTS: "localhost,127.0.0.1,0.0.0.0,gateway,usuarios-service,canales-streaming-service,estadisticas-service,192.168.1.207"
+      DJANGO_CSRF_TRUSTED_ORIGINS: "http://localhost:5173,http://localhost:8080,http://127.0.0.1:5173,http://127.0.0.1:8080,http://192.168.1.207:5173,http://192.168.1.207:8080"
+      CORS_ALLOWED_ORIGINS: "http://localhost:5173,http://127.0.0.1:5173,http://192.168.1.207:5173"
+      FRONTEND_URL: "http://192.168.1.207:5173"
     ports:
       - "8000:8000"
     healthcheck:
@@ -116,9 +121,12 @@ services:
     env_file:
       - ./services/canales-streaming-service/.env
     environment:
-      STREAM_RTMP_SERVER: rtmp://localhost:1935/live
-      STREAM_PLAYBACK_BASE_URL: http://localhost:8080/hls/live
-      STREAM_PLAYBACK_PROBE_BASE_URL: http://media-server:8888/live
+      DJANGO_ALLOWED_HOSTS: "localhost,127.0.0.1,0.0.0.0,gateway,usuarios-service,canales-streaming-service,estadisticas-service,192.168.1.207"
+      DJANGO_CSRF_TRUSTED_ORIGINS: "http://localhost:5173,http://localhost:8080,http://127.0.0.1:5173,http://127.0.0.1:8080,http://192.168.1.207:5173,http://192.168.1.207:8080"
+      CORS_ALLOWED_ORIGINS: "http://localhost:5173,http://127.0.0.1:5173,http://192.168.1.207:5173"
+      STREAM_RTMP_SERVER: "rtmp://192.168.1.207:1935/live"
+      STREAM_PLAYBACK_BASE_URL: "http://localhost:8080/hls/live"
+      STREAM_PLAYBACK_PROBE_BASE_URL: "http://media-server:8888/live"
     ports:
       - "8001:8001"
     depends_on:
@@ -137,6 +145,10 @@ services:
     container_name: rootblend-estadisticas-service
     env_file:
       - ./services/estadisticas-service/.env
+    environment:
+      DJANGO_ALLOWED_HOSTS: "localhost,127.0.0.1,0.0.0.0,gateway,usuarios-service,canales-streaming-service,estadisticas-service,192.168.1.207"
+      DJANGO_CSRF_TRUSTED_ORIGINS: "http://localhost:5173,http://localhost:8080,http://127.0.0.1:5173,http://127.0.0.1:8080,http://192.168.1.207:5173,http://192.168.1.207:8080"
+      CORS_ALLOWED_ORIGINS: "http://localhost:5173,http://127.0.0.1:5173,http://192.168.1.207:5173"
     ports:
       - "8002:8002"
     healthcheck:
@@ -153,6 +165,11 @@ services:
     container_name: rootblend-podcasts-service
     env_file:
       - ./services/podcasts-service/.env
+    environment:
+      APP_URL: "http://192.168.1.207:8080"
+      FRONTEND_URL: "http://192.168.1.207:5173"
+      SANCTUM_STATEFUL_DOMAINS: "localhost:5173,127.0.0.1:5173,192.168.1.207:5173"
+      SESSION_DOMAIN: ""
     ports:
       - "8003:8003"
     healthcheck:
@@ -169,6 +186,11 @@ services:
     container_name: rootblend-interacciones-service
     env_file:
       - ./services/interacciones-service/.env
+    environment:
+      APP_URL: "http://192.168.1.207:8080"
+      FRONTEND_URL: "http://192.168.1.207:5173"
+      SANCTUM_STATEFUL_DOMAINS: "localhost:5173,127.0.0.1:5173,192.168.1.207:5173"
+      SESSION_DOMAIN: ""
     ports:
       - "8004:8004"
     healthcheck:
