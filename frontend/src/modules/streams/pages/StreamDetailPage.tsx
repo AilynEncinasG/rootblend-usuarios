@@ -38,11 +38,11 @@ import {
 } from "../services/streamsService";
 import {
   backendStreamToCard,
-  ChatPanel,
   EmptyPanel,
   Section,
   StreamCard,
 } from "../../public/utils/publicLegacyHelpers";
+import StreamChatPanel from "../components/StreamChatPanel";
 
 export default function StreamDetailPage() {
   const { streamId } = useParams();
@@ -144,7 +144,16 @@ export default function StreamDetailPage() {
   return (
     <RootShell
       active="streams"
-      rightPanel={isLive ? <ChatPanel allowInput={loggedIn} /> : undefined}
+      rightPanel={
+        isLive ? (
+          <StreamChatPanel
+            streamId={backendStream.id_stream}
+            channelId={backendStream.canal.id_canal}
+            allowInput={loggedIn}
+            isLive={isLive}
+          />
+        ) : undefined
+      }
     >
       {!loggedIn && isLive && (
         <AlertPanel>

@@ -2,6 +2,7 @@ import { type FormEvent, useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import {
+  FiAlertTriangle,
   FiEye,
   FiLock,
   FiMoreVertical,
@@ -12,14 +13,19 @@ import {
   FiWifiOff,
   FiXCircle,
 } from "react-icons/fi";
+
 import { getStoredUser, isAuthenticated } from "../../auth/utils/authStorage";
 import {
   assignChatModerator,
   createChatSanction,
   deleteChatMessage,
   sendChatMessage,
+  subscribeToChannelModerators,
   subscribeToChat,
+  subscribeToStreamSanctions,
   type ChatMessageRecord,
+  type ChatModeratorRecord,
+  type ChatSanctionRecord,
 } from "../../../services/chatService";
 import { getMyChannel } from "../services/streamsService";
 
@@ -30,32 +36,12 @@ type StreamChatPanelProps = {
   isLive: boolean;
 };
 
-function safeLocalKey(value: string | number) {
-  return String(value).replace(/[^a-zA-Z0-9_-]/g, "_");
-}
+type CurrentUser = {
+  id: string;
+  name: string;
+};
 
-function moderatorsStorageKey(channelId: string | number) {
-  return `rootblend:moderators:${safeLocalKey(channelId)}`;
-}
-
-function readModerators(channelId: string | number) {
-  const stored = localStorage.getItem(moderatorsStorageKey(channelId));
-
-  if (!stored) return [];
-
-  try {
-    const parsed = JSON.parse(stored) as unknown;
-    return Array.isArray(parsed) ? parsed.map(String) : [];
-  } catch {
-    return [];
-  }
-}
-
-function saveModerators(channelId: string | number, moderators: string[]) {
-  localStorage.setItem(moderatorsStorageKey(channelId), JSON.stringify(moderators));
-}
-
-function getCurrentUser() {
+function getCurrentUser(): CurrentUser {
   const user = getStoredUser() as {
     id_usuario?: number;
     id?: number;
@@ -66,7 +52,13 @@ function getCurrentUser() {
     email?: string;
   } | null;
 
-  const id = user?.id_usuario || user?.id || user?.correo || user?.email || "viewer";
+  const id =
+    user?.id_usuario ||
+    user?.id ||
+    user?.correo ||
+    user?.email ||
+    "viewer";
+
   const name =
     user?.nombre_visible ||
     user?.nombre ||
@@ -88,6 +80,32 @@ function formatMessageTime(timestamp: number) {
   });
 }
 
+function isUserModerator(
+  moderators: ChatModeratorRecord[],
+  currentUser: CurrentUser,
+) {
+  return moderators.some(
+    (item) =>
+      item.data.active &&
+      (item.data.usuarioId === currentUser.id ||
+        item.data.nombre === currentUser.name),
+  );
+}
+
+function getUserSanction(
+  sanctions: ChatSanctionRecord[],
+  currentUser: CurrentUser,
+) {
+  return (
+    sanctions.find(
+      (item) =>
+        item.data.active &&
+        (item.data.usuarioId === currentUser.id ||
+          item.data.nombre === currentUser.name),
+    ) || null
+  );
+}
+
 export default function StreamChatPanel({
   streamId,
   channelId,
@@ -95,32 +113,48 @@ export default function StreamChatPanel({
   isLive,
 }: StreamChatPanelProps) {
   const [messages, setMessages] = useState<ChatMessageRecord[]>([]);
+  const [moderators, setModerators] = useState<ChatModeratorRecord[]>([]);
+  const [sanctions, setSanctions] = useState<ChatSanctionRecord[]>([]);
   const [text, setText] = useState("");
   const [activeId, setActiveId] = useState<string | null>(null);
-  const [moderators, setModerators] = useState<string[]>(() => readModerators(channelId));
-  const [feedback, setFeedback] = useState("Chat conectado a Firebase por stream.");
+  const [feedback, setFeedback] = useState("Conectando chat con Firebase...");
   const [loading, setLoading] = useState(true);
   const [isOwner, setIsOwner] = useState(false);
 
   const loggedIn = isAuthenticated();
   const currentUser = useMemo(() => getCurrentUser(), []);
-  const canModerate = isOwner || moderators.includes(currentUser.name);
+  const userIsModerator = isUserModerator(moderators, currentUser);
+  const canModerate = isOwner || userIsModerator;
+  const currentSanction = getUserSanction(sanctions, currentUser);
 
   useEffect(() => {
     setLoading(true);
     setMessages([]);
+    setFeedback("Conectando chat con Firebase...");
 
     const unsubscribe = subscribeToChat(streamId, (incomingMessages) => {
       setMessages(incomingMessages);
       setLoading(false);
+      setFeedback("Chat conectado a Firebase por stream.");
     });
 
     return () => unsubscribe();
   }, [streamId]);
 
   useEffect(() => {
-    setModerators(readModerators(channelId));
+    const unsubscribe = subscribeToChannelModerators(
+      channelId,
+      setModerators,
+    );
+
+    return () => unsubscribe();
   }, [channelId]);
+
+  useEffect(() => {
+    const unsubscribe = subscribeToStreamSanctions(streamId, setSanctions);
+
+    return () => unsubscribe();
+  }, [streamId]);
 
   useEffect(() => {
     let active = true;
@@ -138,7 +172,10 @@ export default function StreamChatPanel({
 
         const userChannelId = result.canal?.id_canal;
         const role = result.canal?.tipo_canal?.nombre_tipo;
-        setIsOwner(role === "streamer" && String(userChannelId) === String(channelId));
+
+        setIsOwner(
+          role === "streamer" && String(userChannelId) === String(channelId),
+        );
       } catch {
         if (active) {
           setIsOwner(false);
@@ -153,44 +190,68 @@ export default function StreamChatPanel({
     };
   }, [channelId, loggedIn]);
 
-  async function submit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
+async function submit(event: FormEvent<HTMLFormElement>) {
+  event.preventDefault();
 
-    const cleanText = text.trim();
+  const cleanText = text.trim();
 
-    if (!cleanText || !loggedIn || !allowInput || !isLive) return;
+  if (!cleanText) return;
 
-    try {
-      await sendChatMessage(streamId, {
-        usuarioId: currentUser.id,
-        nombre: currentUser.name,
-        mensaje: cleanText,
-        timestamp: Date.now(),
-        badge: canModerate ? "MOD" : undefined,
-      });
-
-      setText("");
-      setFeedback("Mensaje enviado.");
-    } catch (error) {
-      console.error("FIREBASE_CHAT_SEND_ERROR", error);
-      setFeedback("No se pudo enviar el mensaje en Firebase.");
-    }
+  if (!loggedIn || !allowInput) {
+    setFeedback("Debes iniciar sesion para escribir en el chat.");
+    return;
   }
+
+  if (!isLive) {
+    setFeedback("El chat esta cerrado porque el stream no esta en vivo.");
+    return;
+  }
+
+  if (currentSanction?.data.tipo === "bloqueado") {
+    setFeedback("No puedes escribir porque estas bloqueado en este chat.");
+    return;
+  }
+
+  if (currentSanction?.data.tipo === "silenciado") {
+    setFeedback("No puedes escribir porque estas silenciado temporalmente.");
+    return;
+  }
+
+  try {
+    const messagePayload = {
+      usuarioId: currentUser.id,
+      nombre: currentUser.name,
+      mensaje: cleanText,
+      timestamp: Date.now(),
+      ...(canModerate ? { badge: "MOD" } : {}),
+    };
+
+    await sendChatMessage(streamId, messagePayload);
+
+    setText("");
+    setFeedback("Mensaje enviado.");
+  } catch (error) {
+    console.error("FIREBASE_CHAT_SEND_ERROR", error);
+    setFeedback("No se pudo enviar el mensaje en Firebase.");
+  }
+}
 
   async function runAction(action: string, message: ChatMessageRecord) {
     const targetName = message.data.nombre;
+    const targetUserId = message.data.usuarioId;
 
     try {
       if (action === "Hacer moderador") {
         if (!isOwner) {
-          setFeedback("Solo el duenio del canal puede asignar moderadores.");
+          setFeedback("Solo el dueño del canal puede asignar moderadores.");
           return;
         }
 
-        const nextModerators = Array.from(new Set([...moderators, targetName]));
-        saveModerators(channelId, nextModerators);
-        setModerators(nextModerators);
-        await assignChatModerator(channelId, targetName);
+        await assignChatModerator(channelId, {
+          usuarioId: targetUserId,
+          nombre: targetName,
+        });
+
         setFeedback(`${targetName} ahora es moderador de este canal.`);
       }
 
@@ -204,21 +265,44 @@ export default function StreamChatPanel({
         setFeedback(`Mensaje de ${targetName} eliminado para todos.`);
       }
 
-      if (action === "Silenciar usuario" || action === "Bloquear usuario") {
+      if (action === "Silenciar usuario") {
         if (!canModerate) {
           setFeedback("Necesitas rol de moderador en este canal.");
           return;
         }
 
         await createChatSanction(streamId, {
-          usuarioId: message.data.usuarioId,
+          usuarioId: targetUserId,
           nombre: targetName,
-          tipo: action === "Silenciar usuario" ? "silenciado" : "bloqueado",
-          motivo: action === "Silenciar usuario" ? "Moderacion temporal" : "Bloqueo de chat",
+          tipo: "silenciado",
+          motivo: "Moderacion temporal",
+          active: true,
           createdAt: Date.now(),
           createdBy: currentUser.name,
+          expiresAt: Date.now() + 10 * 60 * 1000,
         });
-        setFeedback(`${targetName} fue ${action === "Silenciar usuario" ? "silenciado" : "bloqueado"} en este stream.`);
+
+        setFeedback(`${targetName} fue silenciado por 10 minutos.`);
+      }
+
+      if (action === "Bloquear usuario") {
+        if (!canModerate) {
+          setFeedback("Necesitas rol de moderador en este canal.");
+          return;
+        }
+
+        await createChatSanction(streamId, {
+          usuarioId: targetUserId,
+          nombre: targetName,
+          tipo: "bloqueado",
+          motivo: "Bloqueo de chat",
+          active: true,
+          createdAt: Date.now(),
+          createdBy: currentUser.name,
+          expiresAt: null,
+        });
+
+        setFeedback(`${targetName} fue bloqueado en este stream.`);
       }
 
       if (action === "Ver perfil") {
@@ -236,10 +320,21 @@ export default function StreamChatPanel({
     <ChatBox>
       <Header>
         <strong>Chat en vivo</strong>
-        <span>{canModerate ? "MOD" : loggedIn ? "Viewer" : "Solo lectura"}</span>
+        <span>{canModerate ? "MOD activo" : loggedIn ? "Viewer" : "Solo lectura"}</span>
       </Header>
 
       <Feedback>{feedback}</Feedback>
+
+      {currentSanction && (
+        <WarningBox>
+          <FiAlertTriangle />
+          <span>
+            {currentSanction.data.tipo === "bloqueado"
+              ? "Estas bloqueado en este chat."
+              : "Estas silenciado temporalmente."}
+          </span>
+        </WarningBox>
+      )}
 
       <Messages>
         {loading && <EmptyState>Cargando mensajes...</EmptyState>}
@@ -248,57 +343,93 @@ export default function StreamChatPanel({
           <EmptyState>Aun no hay mensajes en este directo.</EmptyState>
         )}
 
-        {messages.map((message) => (
-          <MessageRow key={message.id}>
-            <Avatar>{message.data.nombre.slice(0, 2).toUpperCase()}</Avatar>
-            <Bubble>
-              <Name>
-                {message.data.nombre}
-                {(message.data.badge || moderators.includes(message.data.nombre)) && (
-                  <Badge>{message.data.badge || "MOD"}</Badge>
-                )}
-                <time>{formatMessageTime(message.data.timestamp)}</time>
-              </Name>
-              <p>{message.data.mensaje}</p>
-            </Bubble>
+        {messages.map((message) => {
+          const messageUserIsModerator = moderators.some(
+            (item) =>
+              item.data.active &&
+              (item.data.usuarioId === message.data.usuarioId ||
+                item.data.nombre === message.data.nombre),
+          );
 
-            <MenuButton
-              type="button"
-              aria-label="Acciones de chat"
-              onClick={() =>
-                setActiveId((current) => (current === message.id ? null : message.id))
-              }
-            >
-              <FiMoreVertical />
-            </MenuButton>
+          return (
+            <MessageRow key={message.id}>
+              <Avatar>{message.data.nombre.slice(0, 2).toUpperCase()}</Avatar>
 
-            {activeId === message.id && (
-              <ActionMenu>
-                <button type="button" onClick={() => runAction("Ver perfil", message)}>
-                  <FiEye /> Ver perfil
-                </button>
-                {isOwner && (
-                  <button type="button" onClick={() => runAction("Hacer moderador", message)}>
-                    <FiShield /> Hacer moderador
+              <Bubble>
+                <Name>
+                  {message.data.nombre}
+
+                  {(message.data.badge || messageUserIsModerator) && (
+                    <Badge>{message.data.badge || "MOD"}</Badge>
+                  )}
+
+                  {message.data.deleted && <DeletedBadge>Eliminado</DeletedBadge>}
+
+                  <time>{formatMessageTime(message.data.timestamp)}</time>
+                </Name>
+
+                <p>{message.data.mensaje}</p>
+              </Bubble>
+
+              <MenuButton
+                type="button"
+                aria-label="Acciones de chat"
+                onClick={() =>
+                  setActiveId((current) =>
+                    current === message.id ? null : message.id,
+                  )
+                }
+              >
+                <FiMoreVertical />
+              </MenuButton>
+
+              {activeId === message.id && (
+                <ActionMenu>
+                  <button
+                    type="button"
+                    onClick={() => runAction("Ver perfil", message)}
+                  >
+                    <FiEye /> Ver perfil
                   </button>
-                )}
-                {canModerate && (
-                  <>
-                    <button type="button" onClick={() => runAction("Eliminar mensaje", message)}>
-                      <FiTrash2 /> Eliminar mensaje
+
+                  {isOwner && (
+                    <button
+                      type="button"
+                      onClick={() => runAction("Hacer moderador", message)}
+                    >
+                      <FiShield /> Hacer moderador
                     </button>
-                    <button type="button" onClick={() => runAction("Silenciar usuario", message)}>
-                      <FiVolume2 /> Silenciar usuario
-                    </button>
-                    <button type="button" onClick={() => runAction("Bloquear usuario", message)}>
-                      <FiXCircle /> Bloquear usuario
-                    </button>
-                  </>
-                )}
-              </ActionMenu>
-            )}
-          </MessageRow>
-        ))}
+                  )}
+
+                  {canModerate && (
+                    <>
+                      <button
+                        type="button"
+                        onClick={() => runAction("Eliminar mensaje", message)}
+                      >
+                        <FiTrash2 /> Eliminar mensaje
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => runAction("Silenciar usuario", message)}
+                      >
+                        <FiVolume2 /> Silenciar usuario
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => runAction("Bloquear usuario", message)}
+                      >
+                        <FiXCircle /> Bloquear usuario
+                      </button>
+                    </>
+                  )}
+                </ActionMenu>
+              )}
+            </MessageRow>
+          );
+        })}
       </Messages>
 
       {loggedIn && allowInput && isLive ? (
@@ -306,9 +437,19 @@ export default function StreamChatPanel({
           <input
             value={text}
             onChange={(event) => setText(event.target.value)}
-            placeholder="Enviar mensaje..."
+            placeholder={
+              currentSanction
+                ? "No puedes escribir por una sancion activa..."
+                : "Enviar mensaje..."
+            }
+            disabled={Boolean(currentSanction)}
           />
-          <button type="submit" aria-label="Enviar mensaje">
+
+          <button
+            type="submit"
+            aria-label="Enviar mensaje"
+            disabled={Boolean(currentSanction)}
+          >
             <FiSend />
           </button>
         </ChatForm>
@@ -361,6 +502,19 @@ const Feedback = styled.div`
   color: #a7f3d0;
   background: rgba(20, 184, 166, 0.12);
   border: 1px solid rgba(20, 184, 166, 0.22);
+  font-size: 12px;
+`;
+
+const WarningBox = styled.div`
+  margin: 0 10px 10px;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-radius: 10px;
+  color: #fecaca;
+  background: rgba(239, 68, 68, 0.12);
+  border: 1px solid rgba(239, 68, 68, 0.28);
   font-size: 12px;
 `;
 
@@ -433,6 +587,15 @@ const Badge = styled.span`
   font-size: 10px;
 `;
 
+const DeletedBadge = styled.span`
+  padding: 2px 5px;
+  border-radius: 6px;
+  color: #fecaca;
+  background: rgba(239, 68, 68, 0.12);
+  border: 1px solid rgba(239, 68, 68, 0.22);
+  font-size: 10px;
+`;
+
 const MenuButton = styled.button`
   width: 28px;
   height: 28px;
@@ -483,11 +646,17 @@ const ChatForm = styled.form`
 
   input {
     min-width: 0;
+    height: 38px;
     border: 1px solid rgba(148, 163, 184, 0.16);
     border-radius: 10px;
     color: #fff;
     background: rgba(2, 6, 23, 0.78);
     padding: 0 10px;
+  }
+
+  input:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
   }
 
   button {
@@ -496,6 +665,11 @@ const ChatForm = styled.form`
     color: #03111c;
     background: #00e5ff;
     cursor: pointer;
+  }
+
+  button:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
   }
 `;
 

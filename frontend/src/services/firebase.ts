@@ -11,6 +11,17 @@ const firebaseConfig = {
   appId: import.meta.env.VITE_FIREBASE_APP_ID,
 };
 
+const missingKeys = Object.entries(firebaseConfig)
+  .filter(([, value]) => !value)
+  .map(([key]) => key);
+
+if (missingKeys.length > 0) {
+  console.warn(
+    "Faltan variables de Firebase en frontend/.env:",
+    missingKeys.join(", "),
+  );
+}
+
 const app = initializeApp(firebaseConfig);
 
 export const database = getDatabase(app);
