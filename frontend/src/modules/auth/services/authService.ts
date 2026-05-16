@@ -1,4 +1,23 @@
-const API_BASE = import.meta.env.VITE_API_BASE || "http://localhost:8080/api";
+import {
+  clearAuthStorage,
+  getAccessToken,
+  getRefreshToken,
+  saveAuthStorage,
+  updateStoredUser,
+  type StoredAuthUser,
+} from "../utils/authStorage";
+
+const RAW_API_BASE =
+  import.meta.env.VITE_API_BASE ||
+  import.meta.env.VITE_API_BASE_URL ||
+  "http://localhost:8080/api";
+
+function normalizeApiBase(value: string) {
+  const cleanValue = value.replace(/\/+$/, "");
+  return cleanValue.endsWith("/api") ? cleanValue : `${cleanValue}/api`;
+}
+
+export const API_BASE = normalizeApiBase(RAW_API_BASE);
 
 export type ApiResponse<T = unknown> = {
   success: boolean;
@@ -12,6 +31,7 @@ export type AuthUser = {
   correo: string;
   estado: string;
   nombre_visible?: string;
+  foto_perfil?: string | null;
 };
 
 export type LoginData = {
@@ -22,36 +42,46 @@ export type LoginData = {
   usuario: AuthUser;
 };
 
-const ACCESS_TOKEN_KEY = "access_token";
-const REFRESH_TOKEN_KEY = "refresh_token";
-const USER_KEY = "auth_user";
+type RequestOptions = {
+  method?: "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
+  body?: unknown;
+  auth?: boolean;
+  retryOnUnauthorized?: boolean;
+};
 
-async function request<T>(
-  path: string,
-  options: {
-    method?: "GET" | "POST" | "PUT" | "DELETE";
-    body?: unknown;
-    auth?: boolean;
-  } = {}
-): Promise<ApiResponse<T>> {
-  const headers: Record<string, string> = {
-    "Content-Type": "application/json",
+type NormalizableUser = StoredAuthUser &
+  Partial<AuthUser> & {
+    id?: number;
+    email?: string;
+    nombre?: string;
+    username?: string;
   };
 
-  if (options.auth) {
-    const token = getAccessToken();
+function normalizeUser(user: StoredAuthUser | AuthUser): AuthUser {
+  const rawUser = user as NormalizableUser;
 
-    if (token) {
-      headers.Authorization = `Bearer ${token}`;
-    }
-  }
+  const rawId = rawUser.id_usuario ?? rawUser.id ?? 0;
+  const id = Number(rawId) > 0 ? Number(rawId) : 0;
 
-  const response = await fetch(`${API_BASE}${path}`, {
-    method: options.method || "GET",
-    headers,
-    body: options.body ? JSON.stringify(options.body) : undefined,
-  });
+  const correo = String(rawUser.correo ?? rawUser.email ?? "");
+  const nombrePorCorreo = correo.includes("@")
+    ? correo.split("@")[0]
+    : "Usuario";
 
+  return {
+    id_usuario: id,
+    correo,
+    estado: String(rawUser.estado ?? "activo"),
+    nombre_visible:
+      rawUser.nombre_visible ||
+      rawUser.nombre ||
+      rawUser.username ||
+      nombrePorCorreo,
+    foto_perfil: rawUser.foto_perfil ?? null,
+  };
+}
+
+async function parseResponse<T>(response: Response): Promise<ApiResponse<T>> {
   const json = (await response.json().catch(() => null)) as ApiResponse<T> | null;
 
   if (!json) {
@@ -71,6 +101,78 @@ async function request<T>(
   }
 
   return json;
+}
+
+async function refreshAccessToken(): Promise<string | null> {
+  const refresh_token = getRefreshToken();
+
+  if (!refresh_token) {
+    return null;
+  }
+
+  const response = await fetch(`${API_BASE}/auth/refresh/`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    },
+    body: JSON.stringify({ refresh_token }),
+  });
+
+  const result = await parseResponse<{
+    access_token: string;
+    token_type: string;
+    expires_in: number;
+  }>(response);
+
+  if (!response.ok || !result.success || !result.data?.access_token) {
+    clearAuthStorage();
+    return null;
+  }
+
+  localStorage.setItem("access_token", result.data.access_token);
+  return result.data.access_token;
+}
+
+async function request<T>(
+  path: string,
+  options: RequestOptions = {}
+): Promise<ApiResponse<T>> {
+  const headers: Record<string, string> = {
+    "Content-Type": "application/json",
+    Accept: "application/json",
+  };
+
+  if (options.auth) {
+    const token = getAccessToken();
+
+    if (token) {
+      headers.Authorization = `Bearer ${token}`;
+    }
+  }
+
+  const response = await fetch(`${API_BASE}${path}`, {
+    method: options.method || "GET",
+    headers,
+    body: options.body ? JSON.stringify(options.body) : undefined,
+  });
+
+  if (
+    response.status === 401 &&
+    options.auth &&
+    options.retryOnUnauthorized !== false
+  ) {
+    const newAccessToken = await refreshAccessToken();
+
+    if (newAccessToken) {
+      return request<T>(path, {
+        ...options,
+        retryOnUnauthorized: false,
+      });
+    }
+  }
+
+  return parseResponse<T>(response);
 }
 
 export async function registerUser(correo: string, password: string) {
@@ -112,10 +214,12 @@ export async function logoutUser() {
   const refresh_token = getRefreshToken();
 
   if (!refresh_token) {
-    clearAuthSession();
+    clearAuthStorage();
     return {
       success: true,
       message: "Sesión local cerrada.",
+      data: {},
+      errors: {},
     };
   }
 
@@ -124,10 +228,10 @@ export async function logoutUser() {
     body: {
       refresh_token,
     },
+    retryOnUnauthorized: false,
   });
 
-  clearAuthSession();
-
+  clearAuthStorage();
   return result;
 }
 
@@ -147,8 +251,11 @@ export async function changePassword(
 
 export async function forgotPassword(correo: string) {
   return request<{
-    token_recuperacion: string;
-    expiracion: string;
+    token_recuperacion?: string;
+    reset_link?: string;
+    expiracion?: string;
+    email_enviado?: boolean;
+    email_error?: string;
   }>("/auth/forgot-password/", {
     method: "POST",
     body: {
@@ -168,56 +275,45 @@ export async function resetPassword(token: string, password_nueva: string) {
 }
 
 export function saveAuthSession(data: LoginData) {
-  sessionStorage.removeItem(ACCESS_TOKEN_KEY);
-  sessionStorage.removeItem(REFRESH_TOKEN_KEY);
-  sessionStorage.removeItem(USER_KEY);
-
-  localStorage.setItem(ACCESS_TOKEN_KEY, data.access_token);
-  localStorage.setItem(REFRESH_TOKEN_KEY, data.refresh_token);
-  localStorage.setItem(USER_KEY, JSON.stringify(data.usuario));
-
-  window.dispatchEvent(new Event("auth-changed"));
+  saveAuthStorage({
+    accessToken: data.access_token,
+    refreshToken: data.refresh_token,
+    user: normalizeUser(data.usuario),
+  });
 }
 
-export function getAccessToken() {
-  const token = localStorage.getItem(ACCESS_TOKEN_KEY);
-
-  if (token?.startsWith("mock_")) {
-    queueMicrotask(clearAuthSession);
-    return null;
-  }
-
-  return token;
+export function saveUserSession(data: {
+  access_token: string;
+  refresh_token?: string;
+  usuario: StoredAuthUser;
+}) {
+  saveAuthStorage({
+    accessToken: data.access_token,
+    refreshToken: data.refresh_token,
+    user: normalizeUser(data.usuario),
+  });
 }
 
-export function getRefreshToken() {
-  return localStorage.getItem(REFRESH_TOKEN_KEY);
-}
+export function getStoredAuthUser(): AuthUser | null {
+  const raw =
+    localStorage.getItem("auth_user") ||
+    localStorage.getItem("rootblend_user") ||
+    sessionStorage.getItem("auth_user") ||
+    sessionStorage.getItem("rootblend_user");
 
-export function getStoredUser(): AuthUser | null {
-  const raw = localStorage.getItem(USER_KEY);
-
-  if (!raw) {
+  if (!raw || raw === "undefined" || raw === "null") {
     return null;
   }
 
   try {
-    return JSON.parse(raw) as AuthUser;
+    return normalizeUser(JSON.parse(raw) as StoredAuthUser);
   } catch {
     return null;
   }
 }
 
-export function hasSession() {
-  return Boolean(getAccessToken());
+export function syncStoredUser(user: StoredAuthUser) {
+  updateStoredUser(normalizeUser(user));
 }
 
-export function clearAuthSession() {
-  localStorage.removeItem(ACCESS_TOKEN_KEY);
-  localStorage.removeItem(REFRESH_TOKEN_KEY);
-  localStorage.removeItem(USER_KEY);
-
-  window.dispatchEvent(new Event("auth-changed"));
-}
-
-export { API_BASE };
+export { getAccessToken, getRefreshToken, clearAuthStorage };

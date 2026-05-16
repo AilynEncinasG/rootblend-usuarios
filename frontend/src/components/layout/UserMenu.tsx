@@ -21,7 +21,7 @@ import {
   isAuthenticated,
 } from "../../modules/auth/utils/authStorage";
 import { getMyChannel, type Canal } from "../../modules/streams/services/streamsService";
-
+import { logoutUser } from "../../modules/auth/services/authService";
 type CreatorRole = "streamer" | "podcaster";
 
 const MenuWrapper = styled.div`
@@ -256,8 +256,14 @@ export default function UserMenu() {
     setOpen(false);
   }
 
-  function handleLogout() {
-    clearAuthStorage();
+  async function handleLogout() {
+    try {
+      await logoutUser();
+    } catch (error) {
+      console.error("LOGOUT_ERROR", error);
+      clearAuthStorage();
+    }
+
     localStorage.removeItem("creator_role");
     setLoggedIn(false);
     setOpen(false);

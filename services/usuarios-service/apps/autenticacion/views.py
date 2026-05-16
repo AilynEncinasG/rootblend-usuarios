@@ -238,7 +238,7 @@ class ForgotPasswordView(View):
         recuperacion, errors = forgot_password(correo=correo)
 
         if errors:
-            # Respuesta genérica para no revelar si un correo existe o no.
+            # Respuesta generica para no revelar si el correo existe o no.
             return success_response(
                 message="Si el correo existe, enviamos instrucciones de recuperacion.",
                 data={},
@@ -271,19 +271,24 @@ Este enlace expira por seguridad.
                 [recuperacion.usuario.correo],
                 fail_silently=False,
             )
-        except Exception as exc:
+        except Exception:
             return error_response(
-                message="No se pudo enviar el correo de recuperacion.",
-                errors={"email": [str(exc)]},
+                message="No se pudo enviar el correo de recuperacion. Revisa la configuracion SMTP del servicio de usuarios.",
+                errors={
+                    "email": [
+                        "El servidor de correo no esta configurado correctamente."
+                    ]
+                },
                 status=500,
             )
 
         return success_response(
             message="Si el correo existe, enviamos instrucciones de recuperacion.",
-            data={},
+            data={
+                "email_enviado": True
+            },
             status=200,
         )
-
 
 @method_decorator(csrf_exempt, name="dispatch")
 class ResetPasswordView(View):
