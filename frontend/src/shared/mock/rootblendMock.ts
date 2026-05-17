@@ -6,7 +6,7 @@ import tecnologiaCategoria from "../../assets/mockups/Tecnologia.png";
 import deportesCategoria from "../../assets/mockups/Deportes.png";
 import charlasCategoria from "../../assets/mockups/Charlas.png";
 import podcastsCategoria from "../../assets/mockups/Podcast.png";
-
+import channelView from "../../assets/mockups/mockup_07.jpg";
 import cover from "../../assets/mockups/mockup_01.png";
 import streamView from "../../assets/mockups/mockup_08.jpg";
 import loginView from "../../assets/Fondo.png";
@@ -93,6 +93,7 @@ export const brandAssets = {
   serviceDown,
   statusPanel,
   moderationPanel,
+  channelView,
 };
 
 export const categories: Category[] = [

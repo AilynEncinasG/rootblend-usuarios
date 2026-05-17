@@ -1,31 +1,102 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { FiAlertTriangle, FiEdit3, FiRefreshCw, FiSettings } from "react-icons/fi";
+import {
+  FiAlertTriangle,
+  FiCalendar,
+  FiEdit3,
+  FiMail,
+  FiRefreshCw,
+  FiSettings,
+  FiShield,
+  FiUser,
+} from "react-icons/fi";
 import { RootShell } from "../../../shared/layout";
-import { brandAssets, streams } from "../../../shared/mock/rootblendMock";
+import { brandAssets } from "../../../shared/mock/rootblendMock";
 import { getStoredUser } from "../../auth/utils/authStorage";
-import { getMe } from "../../../services/userService";
-import { AlertPanel, Avatar, ButtonRow, CardGrid, ChannelHero, GhostLink, InfoGrid, MetricGrid, Panel, PanelHeader, PrimaryLink, TwoCol } from "../../../shared/styles/legacyStyled";
-import { DemoRightPanel, Section, StatCard, StreamCard } from "../../public/utils/publicLegacyHelpers";
+import { getMe, type MeResponse } from "../../../services/userService";
+import {
+  AlertPanel,
+  Avatar,
+  ButtonRow,
+  ChannelHero,
+  GhostLink,
+  InfoGrid,
+  MetricGrid,
+  Panel,
+  PanelHeader,
+  PrimaryLink,
+  TwoCol,
+} from "../../../shared/styles/legacyStyled";
+import { DemoRightPanel, StatCard } from "../../public/utils/publicLegacyHelpers";
+
+function formatDate(value: string | null | undefined) {
+  if (!value) {
+    return "No disponible";
+  }
+
+  const date = new Date(value);
+
+  if (Number.isNaN(date.getTime())) {
+    return String(value);
+  }
+
+  return date.toLocaleString("es-BO", {
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+}
+
+function formatShortDate(value: string | null | undefined) {
+  if (!value) {
+    return "—";
+  }
+
+  const date = new Date(value);
+
+  if (Number.isNaN(date.getTime())) {
+    return String(value).slice(0, 10);
+  }
+
+  return date.toLocaleDateString("es-BO", {
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  });
+}
+
+function getInitials(name: string) {
+  const cleanName = name.trim();
+
+  if (!cleanName) {
+    return "U";
+  }
+
+  const parts = cleanName.split(/\s+/).filter(Boolean);
+
+  if (parts.length === 1) {
+    return parts[0].slice(0, 1).toUpperCase();
+  }
+
+  return `${parts[0].slice(0, 1)}${parts[1].slice(0, 1)}`.toUpperCase();
+}
+
+function isImageUrl(value: string | null | undefined) {
+  if (!value) {
+    return false;
+  }
+
+  return (
+    value.startsWith("http://") ||
+    value.startsWith("https://") ||
+    value.startsWith("data:image/")
+  );
+}
 
 export default function ProfilePage() {
-  const [profileData, setProfileData] = useState<{
-    usuario: {
-      id_usuario: number;
-      correo: string;
-      estado: string;
-      fecha_registro: string | null;
-      ultimo_acceso: string | null;
-    };
-    perfil: {
-      id_perfil: number | null;
-      nombre_visible: string | null;
-      foto_perfil: string | null;
-      biografia: string | null;
-      fecha_nacimiento: string | null;
-    };
-  } | null>(null);
-
+  const [profileData, setProfileData] = useState<MeResponse | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
@@ -33,6 +104,7 @@ export default function ProfilePage() {
     correo?: string;
     nombre_visible?: string;
     estado?: string;
+    foto_perfil?: string | null;
   } | null;
 
   useEffect(() => {
@@ -89,17 +161,18 @@ export default function ProfilePage() {
     storedUser?.estado ||
     "activo";
 
+  const fotoPerfil =
+    profileData?.perfil.foto_perfil ||
+    storedUser?.foto_perfil ||
+    null;
+
   const bio =
     profileData?.perfil.biografia ||
-    "Aun no tienes una biografia configurada. Edita tu perfil para personalizar tu presentacion publica.";
+    "Aún no tienes una biografía configurada. Edita tu perfil para personalizar tu presentación pública.";
 
-  const fechaRegistro =
-    profileData?.usuario.fecha_registro ||
-    "Pendiente de sincronizar";
-
-  const ultimoAcceso =
-    profileData?.usuario.ultimo_acceso ||
-    "Pendiente de sincronizar";
+  const fechaRegistro = profileData?.usuario.fecha_registro || null;
+  const ultimoAcceso = profileData?.usuario.ultimo_acceso || null;
+  const fechaNacimiento = profileData?.perfil.fecha_nacimiento || null;
 
   return (
     <RootShell active="home" rightPanel={<DemoRightPanel />}>
@@ -125,7 +198,20 @@ export default function ProfilePage() {
 
       <ChannelHero $image={brandAssets.channelView}>
         <Avatar $large>
-          {displayName.slice(0, 1).toUpperCase()}
+          {isImageUrl(fotoPerfil) ? (
+            <img
+              src={fotoPerfil || ""}
+              alt={displayName}
+              style={{
+                width: "100%",
+                height: "100%",
+                borderRadius: "50%",
+                objectFit: "cover",
+              }}
+            />
+          ) : (
+            getInitials(displayName)
+          )}
         </Avatar>
 
         <div>
@@ -147,14 +233,24 @@ export default function ProfilePage() {
       <MetricGrid>
         <StatCard label="Estado" value={estado} trend="Cuenta" />
         <StatCard label="Correo" value={email} trend="Usuario real" />
-        <StatCard label="Registro" value={String(fechaRegistro).slice(0, 10)} trend="Fecha" />
-        <StatCard label="Ultimo acceso" value={String(ultimoAcceso).slice(0, 10)} trend="Sesion" />
+        <StatCard
+          label="Registro"
+          value={formatShortDate(fechaRegistro)}
+          trend="Fecha"
+        />
+        <StatCard
+          label="Último acceso"
+          value={formatShortDate(ultimoAcceso)}
+          trend="Sesión"
+        />
       </MetricGrid>
 
       <InfoGrid>
         <Panel>
           <PanelHeader>
-            <strong>Datos de usuario</strong>
+            <strong>
+              <FiUser /> Datos de usuario
+            </strong>
           </PanelHeader>
 
           <TwoCol>
@@ -168,16 +264,18 @@ export default function ProfilePage() {
             <strong>{estado}</strong>
 
             <span>Fecha de registro</span>
-            <strong>{String(fechaRegistro)}</strong>
+            <strong>{formatDate(fechaRegistro)}</strong>
 
-            <span>Ultimo acceso</span>
-            <strong>{String(ultimoAcceso)}</strong>
+            <span>Último acceso</span>
+            <strong>{formatDate(ultimoAcceso)}</strong>
           </TwoCol>
         </Panel>
 
         <Panel>
           <PanelHeader>
-            <strong>Perfil publico</strong>
+            <strong>
+              <FiShield /> Perfil público
+            </strong>
             <Link to="/profile/edit">Editar</Link>
           </PanelHeader>
 
@@ -186,23 +284,58 @@ export default function ProfilePage() {
             <strong>{displayName}</strong>
 
             <span>Foto de perfil</span>
-            <strong>{profileData?.perfil.foto_perfil || "Sin foto"}</strong>
+            <strong>{fotoPerfil || "Sin foto configurada"}</strong>
 
-            <span>Fecha nacimiento</span>
-            <strong>{profileData?.perfil.fecha_nacimiento || "No configurada"}</strong>
+            <span>Fecha de nacimiento</span>
+            <strong>
+              {fechaNacimiento ? formatShortDate(fechaNacimiento) : "No configurada"}
+            </strong>
           </TwoCol>
 
           <p>{bio}</p>
         </Panel>
-      </InfoGrid>
 
-      <Section title="Streams recientes">
-        <CardGrid>
-          {streams.slice(0, 3).map((stream) => (
-            <StreamCard key={stream.id} stream={stream} />
-          ))}
-        </CardGrid>
-      </Section>
+        <Panel>
+          <PanelHeader>
+            <strong>
+              <FiMail /> Seguridad de acceso
+            </strong>
+          </PanelHeader>
+
+          <TwoCol>
+            <span>Correo principal</span>
+            <strong>{email}</strong>
+
+            <span>Contraseña</span>
+            <strong>Protegida</strong>
+
+            <span>Cambiar contraseña</span>
+            <GhostLink to="/change-password">Ir a seguridad</GhostLink>
+
+            <span>Recuperación</span>
+            <GhostLink to="/forgot-password">Enviar enlace</GhostLink>
+          </TwoCol>
+        </Panel>
+
+        <Panel>
+          <PanelHeader>
+            <strong>
+              <FiCalendar /> Estado del perfil
+            </strong>
+          </PanelHeader>
+
+          <TwoCol>
+            <span>Biografía</span>
+            <strong>{profileData?.perfil.biografia ? "Configurada" : "Pendiente"}</strong>
+
+            <span>Foto</span>
+            <strong>{fotoPerfil ? "Configurada" : "Pendiente"}</strong>
+
+            <span>Fecha nacimiento</span>
+            <strong>{fechaNacimiento ? "Configurada" : "Pendiente"}</strong>
+          </TwoCol>
+        </Panel>
+      </InfoGrid>
     </RootShell>
   );
 }

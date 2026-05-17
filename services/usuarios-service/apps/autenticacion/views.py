@@ -175,8 +175,6 @@ class LogoutView(View):
             data={},
             status=200,
         )
-
-
 @method_decorator(csrf_exempt, name="dispatch")
 class ChangePasswordView(View):
     def post(self, request):
@@ -215,8 +213,10 @@ class ChangePasswordView(View):
             )
 
         return success_response(
-            message="Contraseña actualizada correctamente.",
-            data={},
+            message="Contraseña actualizada correctamente. Por seguridad, vuelve a iniciar sesión.",
+            data={
+                "sesiones_cerradas": True,
+            },
             status=200,
         )
 
@@ -316,9 +316,3 @@ class ResetPasswordView(View):
                 errors=errors,
                 status=400,
             )
-
-        return success_response(
-            message="Contraseña restablecida correctamente.",
-            data={},
-            status=200,
-        )

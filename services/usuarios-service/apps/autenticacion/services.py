@@ -1,7 +1,12 @@
 import hashlib
 import secrets
+from datetime import timedelta
+
 from django.db import transaction
 from django.utils import timezone
+
+from apps.usuarios.models import Usuario
+from .models import Credencial, Sesion, RecuperacionPassword
 
 from apps.usuarios.models import Usuario, PerfilUsuario
 from apps.preferencias.models import PreferenciaUsuario
@@ -168,23 +173,46 @@ def change_user_password(usuario, password_actual, password_nueva):
         return {"credencial": ["No se encontraron credenciales para este usuario."]}
 
     actual_hash = hash_password(password_actual, credencial.password_salt)
+
     if actual_hash != credencial.password_hash:
+        credencial.intentos_fallidos += 1
+        credencial.save(update_fields=["intentos_fallidos"])
+
         return {"password_actual": ["La contraseña actual es incorrecta."]}
 
     if password_actual == password_nueva:
-        return {"password_nueva": ["La nueva contraseña no puede ser igual a la actual."]}
+        return {
+            "password_nueva": [
+                "La nueva contraseña no puede ser igual a la contraseña actual."
+            ]
+        }
 
     password_errors = validate_password_strength(password_nueva)
+
     if password_errors:
         return {"password_nueva": password_errors}
 
     new_salt = generate_salt()
     new_hash = hash_password(password_nueva, new_salt)
 
-    credencial.password_salt = new_salt
-    credencial.password_hash = new_hash
-    credencial.fecha_actualizacion = timezone.now()
-    credencial.save(update_fields=["password_salt", "password_hash", "fecha_actualizacion"])
+    with transaction.atomic():
+        credencial.password_salt = new_salt
+        credencial.password_hash = new_hash
+        credencial.intentos_fallidos = 0
+        credencial.fecha_actualizacion = timezone.now()
+        credencial.save(
+            update_fields=[
+                "password_salt",
+                "password_hash",
+                "intentos_fallidos",
+                "fecha_actualizacion",
+            ]
+        )
+
+        Sesion.objects.filter(usuario=usuario, activa=True).update(
+            activa=False,
+            fin=timezone.now(),
+        )
 
     return {}
 

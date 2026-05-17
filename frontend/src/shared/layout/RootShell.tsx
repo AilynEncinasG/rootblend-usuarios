@@ -19,10 +19,7 @@ import {
   FiUser,
   FiUsers,
 } from "react-icons/fi";
-import {
-  brandAssets,
-  notifications,
-} from "../mock/rootblendMock";
+import { brandAssets, notifications } from "../mock/rootblendMock";
 import {
   clearAuthStorage,
   getStoredUser,
@@ -33,6 +30,7 @@ import {
   getMyChannel,
   type Canal as BackendCanal,
 } from "../../modules/streams/services/streamsService";
+import { getMe } from "../../services/userService";
 import {
   AppFrame,
   Avatar,
@@ -83,6 +81,17 @@ type ChannelCard = {
   avatar: string;
 };
 
+type ShellStoredUser = {
+  id_usuario?: number;
+  id?: number;
+  nombre_visible?: string;
+  correo?: string;
+  nombre?: string;
+  username?: string;
+  email?: string;
+  foto_perfil?: string | null;
+};
+
 const CREATOR_ROLE_KEY = "creator_role";
 
 const pageLinks = [
@@ -121,8 +130,6 @@ function backendChannelToCard(channel: BackendCanal): ChannelCard {
   };
 }
 
-
-
 function getCreatorRole(): CreatorRole | null {
   const role = localStorage.getItem(CREATOR_ROLE_KEY);
 
@@ -133,23 +140,103 @@ function getCreatorRole(): CreatorRole | null {
   return null;
 }
 
-function getUserLabel() {
-  const stored = getStoredUser() as {
-    nombre_visible?: string;
-    correo?: string;
-    nombre?: string;
-    username?: string;
-    email?: string;
-  } | null;
-
+function getUserLabel(user?: ShellStoredUser | null) {
   return (
-    stored?.nombre_visible ||
-    stored?.nombre ||
-    stored?.username ||
-    stored?.correo ||
-    stored?.email ||
+    user?.nombre_visible ||
+    user?.nombre ||
+    user?.username ||
+    user?.correo ||
+    user?.email ||
     "usuario_123"
   );
+}
+
+function getUserPhoto(user?: ShellStoredUser | null) {
+  return user?.foto_perfil || null;
+}
+
+function isImageUrl(value?: string | null) {
+  if (!value) {
+    return false;
+  }
+
+  return (
+    value.startsWith("http://") ||
+    value.startsWith("https://") ||
+    value.startsWith("data:image/")
+  );
+}
+
+function renderUserAvatar(photoUrl: string | null, label: string) {
+  if (isImageUrl(photoUrl)) {
+    return (
+      <img
+        src={photoUrl || ""}
+        alt={label}
+        style={{
+          width: "100%",
+          height: "100%",
+          borderRadius: "50%",
+          objectFit: "cover",
+          display: "block",
+        }}
+      />
+    );
+  }
+
+  return getInitials(label);
+}
+
+function readStoredMenuUser() {
+  return getStoredUser() as ShellStoredUser | null;
+}
+
+function saveMenuUserFromBackend(data: {
+  usuario: {
+    id_usuario: number;
+    correo: string;
+    estado: string;
+  };
+  perfil: {
+    nombre_visible: string | null;
+    foto_perfil: string | null;
+  };
+}) {
+  const nextUser: ShellStoredUser = {
+    id_usuario: data.usuario.id_usuario,
+    correo: data.usuario.correo,
+    email: data.usuario.correo,
+    nombre_visible:
+      data.perfil.nombre_visible || data.usuario.correo.split("@")[0],
+    foto_perfil: data.perfil.foto_perfil || null,
+  };
+
+  const keys = ["auth_user", "rootblend_user"];
+
+  for (const key of keys) {
+    const raw = localStorage.getItem(key);
+
+    if (!raw) {
+      localStorage.setItem(key, JSON.stringify(nextUser));
+      continue;
+    }
+
+    try {
+      const parsed = JSON.parse(raw);
+
+      localStorage.setItem(
+        key,
+        JSON.stringify({
+          ...parsed,
+          ...nextUser,
+        })
+      );
+    } catch {
+      localStorage.setItem(key, JSON.stringify(nextUser));
+    }
+  }
+
+  return nextUser;
 }
 
 export function RootShell({
@@ -162,11 +249,17 @@ export function RootShell({
   const [query, setQuery] = useState("");
   const [menuOpen, setMenuOpen] = useState(false);
   const [notificationsOpen, setNotificationsOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
   const [loggedIn, setLoggedIn] = useState(() => isAuthenticated());
+  const [menuUser, setMenuUser] = useState<ShellStoredUser | null>(() =>
+    isAuthenticated() ? readStoredMenuUser() : null
+  );
   const [role, setRole] = useState<CreatorRole | null>(() => getCreatorRole());
   const [creatorReady, setCreatorReady] = useState(() => !isAuthenticated());
   const [, setMyChannel] = useState<BackendCanal | null>(null);
   const [realChannels, setRealChannels] = useState<ChannelCard[]>([]);
+
   const creatorTarget =
     role === "streamer"
       ? "/creator/streamer/create-stream"
@@ -188,6 +281,9 @@ export function RootShell({
         ? "/creator/podcaster/dashboard"
         : "/creator/activate";
 
+  const userLabel = getUserLabel(menuUser);
+  const userPhoto = getUserPhoto(menuUser);
+
   useEffect(() => {
     let activeRequest = true;
 
@@ -195,13 +291,13 @@ export function RootShell({
       const currentlyLoggedIn = isAuthenticated();
 
       setLoggedIn(currentlyLoggedIn);
+      setMenuUser(currentlyLoggedIn ? readStoredMenuUser() : null);
 
       try {
         const channels = await getBackendActiveChannels();
 
         if (activeRequest) {
           const mappedChannels = channels.map(backendChannelToCard);
-
           setRealChannels(mappedChannels);
         }
       } catch (error) {
@@ -216,10 +312,26 @@ export function RootShell({
         setCreatorReady(true);
         setRole(null);
         setMyChannel(null);
+        setMenuUser(null);
         return;
       }
 
       setCreatorReady(false);
+
+      try {
+        const meResult = await getMe();
+
+        if (activeRequest && meResult.success && meResult.data) {
+          const backendUser = saveMenuUserFromBackend(meResult.data);
+          setMenuUser(backendUser);
+        }
+      } catch (error) {
+        console.error("SHELL_USER_PROFILE_LOAD_ERROR", error);
+
+        if (activeRequest) {
+          setMenuUser(readStoredMenuUser());
+        }
+      }
 
       try {
         const result = await getMyChannel();
@@ -252,13 +364,18 @@ export function RootShell({
       } finally {
         if (activeRequest) {
           setCreatorReady(true);
+          setMenuUser(readStoredMenuUser());
         }
       }
     }
 
     function refreshSession() {
-      setLoggedIn(isAuthenticated());
+      const currentlyLoggedIn = isAuthenticated();
+
+      setLoggedIn(currentlyLoggedIn);
+      setMenuUser(currentlyLoggedIn ? readStoredMenuUser() : null);
       setRole(getCreatorRole());
+
       loadShellData();
     }
 
@@ -298,6 +415,7 @@ export function RootShell({
     localStorage.removeItem(CREATOR_ROLE_KEY);
 
     setRole(null);
+    setMenuUser(null);
     setCreatorReady(true);
     setMyChannel(null);
     setMenuOpen(false);
@@ -306,23 +424,26 @@ export function RootShell({
 
     window.dispatchEvent(new Event("storage"));
     window.dispatchEvent(new Event("auth-session-changed"));
+    window.dispatchEvent(new Event("auth-changed"));
     window.dispatchEvent(new Event("creator-role-changed"));
 
     navigate("/");
   }
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
   return (
     <AppFrame>
       <Topbar>
-        <BrandLink 
-          to={(window.innerWidth > 768 && window.innerHeight > 500) ? "/" : "#"}
-          onClick={(e) => {
+        <BrandLink
+          to={
+            window.innerWidth > 768 && window.innerHeight > 500 ? "/" : "#"
+          }
+          onClick={(event) => {
             const isMobileSize = window.innerWidth <= 768;
             const isLandscapeMobile = window.innerHeight <= 500;
 
             if (isMobileSize || isLandscapeMobile) {
-              e.preventDefault();
-              setIsMobileMenuOpen(!isMobileMenuOpen); 
+              event.preventDefault();
+              setIsMobileMenuOpen((value) => !value);
             }
           }}
         >
@@ -394,20 +515,29 @@ export function RootShell({
                 <UserPill
                   type="button"
                   onClick={() => {
+                    const latestUser = readStoredMenuUser();
+
+                    if (latestUser) {
+                      setMenuUser(latestUser);
+                    }
+
                     setMenuOpen((value) => !value);
                     setNotificationsOpen(false);
                   }}
                 >
-                  <Avatar>U</Avatar>
-                  <span>{getUserLabel()}</span>
+                  <Avatar>{renderUserAvatar(userPhoto, userLabel)}</Avatar>
+                  <span>{userLabel}</span>
                 </UserPill>
 
                 {menuOpen ? (
                   <DropdownPanel>
                     <ProfileHeader>
-                      <Avatar $large>U</Avatar>
+                      <Avatar $large>
+                        {renderUserAvatar(userPhoto, userLabel)}
+                      </Avatar>
+
                       <div>
-                        <h2>{getUserLabel()}</h2>
+                        <h2>{userLabel}</h2>
                         <p>
                           {role
                             ? `Creador ${
@@ -434,19 +564,12 @@ export function RootShell({
 
                     {creatorReady ? (
                       <>
-                        <DropdownMenuLink
-                          to={myChannelTarget}
-                          onClick={() => setMenuOpen(false)}
-                        >
-                          <FiEye /> Mi canal
-                        </DropdownMenuLink>
-
-                        {!role ? (
+                        {role ? (
                           <DropdownMenuLink
-                            to="/creator/activate"
+                            to={myChannelTarget}
                             onClick={() => setMenuOpen(false)}
                           >
-                            <FiRadio /> Activar canal
+                            <FiEye /> Mi canal
                           </DropdownMenuLink>
                         ) : null}
 
@@ -454,7 +577,7 @@ export function RootShell({
                           to={creatorTarget}
                           onClick={() => setMenuOpen(false)}
                         >
-                          <FiGrid /> {creatorLabel}
+                          {role ? <FiGrid /> : <FiRadio />} {creatorLabel}
                         </DropdownMenuLink>
                       </>
                     ) : (
@@ -528,20 +651,18 @@ export function RootShell({
       </Topbar>
 
       <ShellGrid $hasRightPanel={Boolean(rightPanel)}>
-        {isMobileMenuOpen && (
-          <div 
+        {isMobileMenuOpen ? (
+          <div
             style={{
-              position: 'fixed',
-              top: 0,
-              left: 0,
-              width: '100vw',
-              height: '100vh',
-              background: 'rgba(0,0,0,0.6)',
-              zIndex: 9998
+              position: "fixed",
+              inset: 0,
+              background: "rgba(0,0,0,0.6)",
+              zIndex: 9998,
             }}
             onClick={() => setIsMobileMenuOpen(false)}
           />
-        )}
+        ) : null}
+
         <Sidebar $isOpen={isMobileMenuOpen}>
           <SidebarSection>
             <SidebarTitle>Recomendados</SidebarTitle>
@@ -550,7 +671,11 @@ export function RootShell({
               <SidebarEmptyText>Aún no hay canales activos.</SidebarEmptyText>
             ) : (
               realChannels.slice(0, 6).map((channel) => (
-                <ChannelMini key={channel.id} to={`/channels/${channel.id}`}>
+                <ChannelMini
+                  key={channel.id}
+                  to={`/channels/${channel.id}`}
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
                   <Avatar>{channel.avatar}</Avatar>
 
                   <MiniText>
@@ -574,7 +699,10 @@ export function RootShell({
             <SidebarTitle>Explorar</SidebarTitle>
 
             {pageLinks.map((item) => {
-              if (!loggedIn && (item.key === "creator" || item.key === "moderation")) {
+              if (
+                !loggedIn &&
+                (item.key === "creator" || item.key === "moderation")
+              ) {
                 return null;
               }
 
@@ -587,6 +715,7 @@ export function RootShell({
                   key={item.key}
                   to={target}
                   $active={active === item.key}
+                  onClick={() => setIsMobileMenuOpen(false)}
                 >
                   <Icon />
                   <span>{label}</span>
@@ -603,17 +732,6 @@ export function RootShell({
             </PromoPanel>
           ) : null}
         </Sidebar>
-        {isMobileMenuOpen && window.innerWidth <= 768 && (
-          <div 
-            onClick={() => setIsMobileMenuOpen(false)}
-            style={{
-              position: 'fixed',
-              inset: 0,
-              background: 'rgba(0,0,0,0.5)',
-              zIndex: 9998 // Un número menor al del Sidebar (9999)
-            }}
-          />
-        )}
 
         <MainArea>{children}</MainArea>
 
