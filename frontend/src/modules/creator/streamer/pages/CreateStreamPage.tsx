@@ -4,11 +4,11 @@ import { FiAlertTriangle, FiCheckCircle, FiRadio } from "react-icons/fi";
 import {
   AlertPanel,
   Field,
+  FormLimiter,
   Label,
-  MetaTag,
   Muted,
+  PageCenterContainer,
   Select,
-  TagRow,
   TextArea,
 } from "../../../../shared/styles/legacyStyled";
 import { CreatorForm } from "../../shared/creatorLegacy";
@@ -17,6 +17,8 @@ import {
   getCategories,
   type Categoria,
 } from "../../../streams/services/streamsService";
+
+import { RootShell } from "../../../../shared/layout/RootShell";
 
 export default function CreateStreamPage() {
   const navigate = useNavigate();
@@ -145,117 +147,90 @@ export default function CreateStreamPage() {
   }
 
   return (
-    <CreatorForm
-      title="Crear / configurar stream"
-      subtitle="Completa los datos de tu transmisión. Luego podrás iniciarla desde Control de transmisión."
-      button={saving ? "Guardando..." : "Guardar configuracion"}
-      onSubmit={submit}
-    >
-      {error ? (
-        <AlertPanel>
-          <FiAlertTriangle />
-          <div>
-            <strong>No se pudo guardar</strong>
-            <Muted>{error}</Muted>
-          </div>
-        </AlertPanel>
-      ) : null}
+    <RootShell active="creator">
+      <PageCenterContainer>
+        <FormLimiter>
+          <CreatorForm
+            title="Crear / configurar stream"
+            subtitle="Completa los datos de tu transmisión..."
+            button={saving ? "Guardando..." : "Guardar configuracion"}
+            onSubmit={submit}
+          >
+            {error ? (
+              <AlertPanel>
+                <FiAlertTriangle />
+                <div>
+                  <strong>No se pudo guardar</strong>
+                  <Muted>{error}</Muted>
+                </div>
+              </AlertPanel>
+            ) : null}
 
-      {success ? (
-        <AlertPanel>
-          <FiCheckCircle />
-          <div>
-            <strong>Stream creado</strong>
-            <Muted>{success}</Muted>
-          </div>
-        </AlertPanel>
-      ) : null}
+            {success ? (
+              <AlertPanel>
+                <FiCheckCircle />
+                <div>
+                  <strong>Stream creado</strong>
+                  <Muted>{success}</Muted>
+                </div>
+              </AlertPanel>
+            ) : null}
 
-      <Label>Titulo del stream</Label>
-      <Field>
-        <FiRadio />
-        <input
-          value={title}
-          onChange={(event) => setTitle(event.target.value)}
-          placeholder="Ej. Directo de la noche"
-          disabled={saving}
-        />
-      </Field>
+            <Label>Titulo del stream</Label>
+            <Field>
+              <FiRadio />
+              <input
+                value={title}
+                onChange={(event) => setTitle(event.target.value)}
+                placeholder="Ej. Directo de la noche"
+                disabled={saving}
+              />
+            </Field>
 
-      <Label>Categoria</Label>
-      <Select
-        value={categoryId}
-        onChange={(event) => setCategoryId(event.target.value)}
-        disabled={saving || loadingCategories || categories.length === 0}
-      >
-        {categories.length === 0 ? (
-          <option value="">
-            {loadingCategories
-              ? "Cargando categorias..."
-              : "No hay categorias disponibles"}
-          </option>
-        ) : (
-          categories.map((category) => (
-            <option
-              key={category.id_categoria}
-              value={category.id_categoria}
+            <Label>Categoria</Label>
+            <Select
+              value={categoryId}
+              onChange={(event) => setCategoryId(event.target.value)}
+              disabled={saving || loadingCategories || categories.length === 0}
             >
-              {category.nombre}
-            </option>
-          ))
-        )}
-      </Select>
+              {categories.length === 0 ? (
+                <option value="">
+                  {loadingCategories
+                    ? "Cargando categorias..."
+                    : "No hay categorias disponibles"}
+                </option>
+              ) : (
+                categories.map((category) => (
+                  <option
+                    key={category.id_categoria}
+                    value={category.id_categoria}
+                  >
+                    {category.nombre}
+                  </option>
+                ))
+              )}
+            </Select>
 
-      <Label>Etiquetas</Label>
-      <TagRow>
-        <MetaTag>Backend real</MetaTag>
-        <MetaTag>Programado</MetaTag>
-        <MetaTag>Streamer</MetaTag>
-      </TagRow>
+            <Label>Descripcion</Label>
+            <TextArea
+              value={description}
+              onChange={(event) => setDescription(event.target.value)}
+              placeholder="Describe brevemente de qué tratará el directo."
+              disabled={saving}
+            />
 
-      <Label>Descripcion</Label>
-      <TextArea
-        value={description}
-        onChange={(event) => setDescription(event.target.value)}
-        placeholder="Describe brevemente de qué tratará el directo."
-        disabled={saving}
-      />
-
-      <Label>Calidad</Label>
-      <Select
-        value={quality}
-        onChange={(event) => setQuality(event.target.value)}
-        disabled={saving}
-      >
-        <option value="720p">720p</option>
-        <option value="1080p">1080p recomendado</option>
-      </Select>
-
-      <Label>Bitrate</Label>
-      <Field>
-        <FiRadio />
-        <input
-          type="number"
-          min="1"
-          value={bitrate}
-          onChange={(event) => setBitrate(event.target.value)}
-          placeholder="2500"
-          disabled={saving}
-        />
-      </Field>
-
-      <Label>Destacado</Label>
-      <TagRow>
-        <label>
-          <input
-            type="checkbox"
-            checked={featured}
-            onChange={(event) => setFeatured(event.target.checked)}
-            disabled={saving}
-          />{" "}
-          Marcar como destacado
-        </label>
-      </TagRow>
-    </CreatorForm>
+            <Label>Calidad</Label>
+            <Select
+              value={quality}
+              onChange={(event) => setQuality(event.target.value)}
+              disabled={saving}
+            >
+              <option value="720p">720p</option>
+              <option value="1080p">1080p recomendado</option>
+            </Select>
+          </CreatorForm>
+        </FormLimiter>
+      </PageCenterContainer>
+    </RootShell>
   );
 }

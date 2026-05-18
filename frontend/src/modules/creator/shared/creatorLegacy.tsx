@@ -77,16 +77,14 @@ export function CreatorForm({
   onSubmit?: (event: FormEvent<HTMLFormElement>) => void | Promise<void>;
 }) {
   return (
-    <RootShell active="creator">
-      <FormPanel
-        title={title}
-        subtitle={subtitle}
-        button={button}
-        onSubmit={onSubmit}
-      >
-        {children}
-      </FormPanel>
-    </RootShell>
+    <FormPanel
+      title={title}
+      subtitle={subtitle}
+      button={button}
+      onSubmit={onSubmit}
+    >
+      {children}
+    </FormPanel>
   );
 }
 

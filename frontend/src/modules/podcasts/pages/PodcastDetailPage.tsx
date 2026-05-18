@@ -19,7 +19,6 @@ import {
   RoundButton,
 } from "../../../shared/styles/legacyStyled";
 import { firstPodcast } from "../../../shared/utils/rootblendHelpers";
-import { PodcastRightPanel } from "../../public/utils/publicLegacyHelpers";
 
 export default function PodcastDetailPage() {
   const { podcastId } = useParams();
@@ -27,7 +26,7 @@ export default function PodcastDetailPage() {
   const [currentEpisode, setCurrentEpisode] = useState(podcast.episodes[0]?.title || podcast.title);
 
   return (
-    <RootShell active="podcasts" rightPanel={<PodcastRightPanel />}>
+    <RootShell active="podcasts">
       <ChannelHero $image={podcast.image}>
         <PodcastCover $image={podcast.image}><FiHeadphones /></PodcastCover>
         <div>

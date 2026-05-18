@@ -29,7 +29,6 @@ import {
 } from "../../../shared/styles/legacyStyled";
 import {
   backendStreamToCard,
-  DemoRightPanel,
   EmptyPanel,
   getInitials,
   Section,
@@ -108,7 +107,7 @@ export default function ChannelPage() {
   const mainStream = channelStreams[0];
 
   return (
-    <RootShell active="streams" rightPanel={<DemoRightPanel />}>
+    <RootShell active="streams">
       <ChannelHero $image={channel?.banner_canal || brandAssets.channelView}>
         <Avatar $large>{channelInitials}</Avatar>
         <div>

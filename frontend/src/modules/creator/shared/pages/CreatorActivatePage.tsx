@@ -1,8 +1,7 @@
-import { type FormEvent, useEffect, useMemo, useState } from "react";
+import { type FormEvent, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   FiAlertTriangle,
-  FiArrowRight,
   FiCheckCircle,
   FiLock,
   FiMic,
@@ -12,13 +11,13 @@ import {
 import { RootShell } from "../../../../shared/layout";
 import {
   AlertPanel,
+  CentralizerLayout,
   ChoiceButton,
   ChoiceGrid,
   Field,
   GhostButton,
   Label,
   PrimaryLink,
-  ProgressSteps,
   TextArea,
 } from "../../../../shared/styles/legacyStyled";
 import { FormPanel } from "../creatorLegacy";
@@ -56,18 +55,6 @@ function normalizeChannelName(value: string) {
   return value.trim().replace(/\s+/g, " ");
 }
 
-function buildSlug(value: string) {
-  const clean = value
-    .trim()
-    .toLowerCase()
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-+|-+$/g, "");
-
-  return clean || "tu-canal";
-}
-
 function getErrorMessage(error: unknown) {
   if (error instanceof Error && error.message) {
     return error.message;
@@ -91,7 +78,6 @@ export default function CreatorActivatePage() {
   const [status, setStatus] = useState<FormStatus>("idle");
   const [message, setMessage] = useState("");
 
-  const slug = useMemo(() => buildSlug(channelName), [channelName]);
   const isBusy = checking || status === "loading";
   const currentRole = existingRole || getCreatorRole();
 
@@ -222,134 +208,122 @@ export default function CreatorActivatePage() {
 
   return (
     <RootShell active="creator">
-      {checking && (
-        <AlertPanel>
-          <FiRadio />
-          <div>
-            <strong>Verificando canal</strong>
-            <p>Estamos revisando si esta cuenta ya tiene un canal activo.</p>
-          </div>
-        </AlertPanel>
-      )}
+      <CentralizerLayout>
+        <div>
+          {checking && (
+            <AlertPanel>
+              <FiRadio />
+              <div>
+                <strong>Verificando canal</strong>
+                <p>Estamos revisando si esta cuenta ya tiene un canal activo.</p>
+              </div>
+            </AlertPanel>
+          )}
 
-      {!checking && existingRole && (
-        <AlertPanel>
-          <FiLock />
-          <div>
-            <strong>
-              Ya tienes un canal activo como{" "}
-              {existingRole === "streamer" ? "streamer" : "podcaster"}
-            </strong>
-            <p>
-              Una cuenta solo puede ser streamer o podcaster. El panel contrario
-              se redirige al rol activo.
-            </p>
-          </div>
+          {!checking && existingRole && (
+            <AlertPanel>
+              <FiLock />
+              <div>
+                <strong>
+                  Ya tienes un canal activo como{" "}
+                  {existingRole === "streamer" ? "streamer" : "podcaster"}
+                </strong>
+                <p>
+                  Una cuenta solo puede ser streamer o podcaster. El panel contrario
+                  se redirige al rol activo.
+                </p>
+              </div>
 
-          <PrimaryLink to={getDashboardPath(existingRole)}>
-            Ir a mi panel
-          </PrimaryLink>
+              <PrimaryLink to={getDashboardPath(existingRole)}>
+                Ir a mi panel
+              </PrimaryLink>
 
-          <GhostButton type="button" onClick={resetRole}>
-            Reiniciar rol local
-          </GhostButton>
-        </AlertPanel>
-      )}
+              <GhostButton type="button" onClick={resetRole}>
+                Reiniciar rol local
+              </GhostButton>
+            </AlertPanel>
+          )}
 
-      {!checking && message && (
-        <AlertPanel>
-          {status === "success" ? <FiCheckCircle /> : <FiAlertTriangle />}
-          <div>
-            <strong>
-              {status === "success"
-                ? "Operacion completada"
-                : "Aviso de activacion"}
-            </strong>
-            <p>{message}</p>
-          </div>
-        </AlertPanel>
-      )}
+          {!checking && message && (
+            <AlertPanel>
+              {status === "success" ? <FiCheckCircle /> : <FiAlertTriangle />}
+              <div>
+                <strong>
+                  {status === "success"
+                    ? "Operacion completada"
+                    : "Aviso de activacion"}
+                </strong>
+                <p>{message}</p>
+              </div>
+            </AlertPanel>
+          )}
 
-      <FormPanel
-        title="Activa tu canal de creador"
-        subtitle="Escoge un solo tipo de canal: streamer o podcaster."
-        button={
-          isBusy
-            ? "Procesando..."
-            : existingRole
-              ? "Ir al panel activo"
-              : "Continuar"
-        }
-        onSubmit={submit}
-      >
-        <ProgressSteps>
-          <span>Informacion</span>
-          <span>Tipo de canal</span>
-          <span>Listo</span>
-        </ProgressSteps>
-
-        <Label>Nombre del canal</Label>
-        <Field>
-          <FiRadio />
-          <input
-            value={channelName}
-            placeholder="Ej. NeoPlayer, Canal RootBlend o StreamZone"
-            disabled={Boolean(existingRole) || isBusy}
-            onChange={(event) => setChannelName(event.target.value)}
-          />
-        </Field>
-
-        <Label>URL personalizada</Label>
-        <Field>
-          <FiArrowRight />
-          <input
-            value={channelName.trim() ? `rootblend/${slug}` : ""}
-            placeholder="rootblend/tu-canal"
-            disabled
-          />
-        </Field>
-
-        <Label>Descripcion del canal</Label>
-        <TextArea
-          value={description}
-          placeholder="Describe brevemente el contenido de tu canal."
-          disabled={Boolean(existingRole) || isBusy}
-          onChange={(event) => setDescription(event.target.value)}
-        />
-
-        <ChoiceGrid>
-          <ChoiceButton
-            type="button"
-            $active={role === "streamer"}
-            disabled={Boolean(existingRole) || isBusy}
-            onClick={() => setRole("streamer")}
+          <FormPanel
+            title="Activa tu canal de creador"
+            subtitle="Escoge un solo tipo de canal: streamer o podcaster."
+            button={
+              isBusy
+                ? "Procesando..."
+                : existingRole
+                  ? "Ir al panel activo"
+                  : "Continuar"
+            }
+            onSubmit={submit}
           >
-            <FiRadio /> Streamer
-          </ChoiceButton>
+            <Label>Nombre del canal</Label>
+            <Field>
+              <FiRadio />
+              <input
+                value={channelName}
+                placeholder="Ej. NeoPlayer, Canal RootBlend o StreamZone"
+                disabled={Boolean(existingRole) || isBusy}
+                onChange={(event) => setChannelName(event.target.value)}
+              />
+            </Field>
 
-          <ChoiceButton
-            type="button"
-            $active={role === "podcaster"}
-            disabled={Boolean(existingRole) || isBusy}
-            onClick={() => setRole("podcaster")}
-          >
-            <FiMic /> Podcaster
-          </ChoiceButton>
-        </ChoiceGrid>
+            <Label>Descripcion del canal</Label>
+            <TextArea
+              value={description}
+              placeholder="Describe brevemente el contenido de tu canal."
+              disabled={Boolean(existingRole) || isBusy}
+              onChange={(event) => setDescription(event.target.value)}
+            />
 
-        {currentRole && !existingRole && (
-          <AlertPanel>
-            <FiAlertTriangle />
-            <div>
-              <strong>Rol local detectado</strong>
-              <p>
-                Hay un rol guardado en el navegador, pero todavia falta crear el
-                canal real para esta cuenta. Presiona Continuar para registrarlo.
-              </p>
-            </div>
-          </AlertPanel>
-        )}
-      </FormPanel>
+            <ChoiceGrid>
+              <ChoiceButton
+                type="button"
+                $active={role === "streamer"}
+                disabled={Boolean(existingRole) || isBusy}
+                onClick={() => setRole("streamer")}
+              >
+                <FiRadio /> Streamer
+              </ChoiceButton>
+
+              <ChoiceButton
+                type="button"
+                $active={role === "podcaster"}
+                disabled={Boolean(existingRole) || isBusy}
+                onClick={() => setRole("podcaster")}
+              >
+                <FiMic /> Podcaster
+              </ChoiceButton>
+            </ChoiceGrid>
+
+            {currentRole && !existingRole && (
+              <AlertPanel>
+                <FiAlertTriangle />
+                <div>
+                  <strong>Rol local detectado</strong>
+                  <p>
+                    Hay un rol guardado en el navegador, pero todavia falta crear el
+                    canal real para esta cuenta. Presiona Continuar para registrarlo.
+                  </p>
+                </div>
+              </AlertPanel>
+            )}
+          </FormPanel>
+        </div>
+      </CentralizerLayout>
     </RootShell>
   );
 }

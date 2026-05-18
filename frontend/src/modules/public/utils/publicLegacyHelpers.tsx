@@ -10,13 +10,11 @@ import {
   FiShield,
   FiTrash2,
   FiVolume2,
-  FiWifiOff,
   FiXCircle,
 } from "react-icons/fi";
 import {
   brandAssets,
   chatMessages,
-  podcasts,
   type ChatMessage,
   type Category,
   type PodcastItem,
@@ -48,7 +46,6 @@ import {
   ChatRow,
   ChatStatus,
   ContentCard,
-  Divider,
   HeaderActionGroup,
   LoginNotice,
   LiveBadge,
@@ -59,13 +56,10 @@ import {
   PodcastCover,
   PodcastTile,
   PrimaryLink,
-  PromoPanel,
   RoundButton,
   SectionBlock,
   SectionHeader,
   ServicePill,
-  SideListItem,
-  SidePanel,
   StateIcon,
   StatePanel,
   Thumb,
@@ -422,70 +416,5 @@ export function StatCard({ label, value, trend }: { label: string; value: string
       <strong>{value}</strong>
       <small>{trend}</small>
     </MetricCard>
-  );
-}
-
-export function PodcastRightPanel() {
-  return (
-    <SidePanel>
-      <PanelHeader><strong>Tendencias</strong><Link to="/podcasts">Ver todo</Link></PanelHeader>
-      {podcasts.map((podcast) => (
-        <SideListItem key={podcast.id} to={`/podcasts/${podcast.id}`}>
-          <Avatar>{podcast.title.slice(0, 2).toUpperCase()}</Avatar>
-          <span>{podcast.title}</span>
-          <small>{podcast.duration}</small>
-        </SideListItem>
-      ))}
-      <Divider />
-      <PromoPanel>
-        <strong>¿Tienes un podcast?</strong>
-        <p>Publica episodios y conecta con tu audiencia.</p>
-        <PrimaryLink to="/creator/activate">Hazlo crecer</PrimaryLink>
-      </PromoPanel>
-    </SidePanel>
-  );
-}
-
-export function DemoRightPanel({
-  liveStreams = [],
-}: {
-  liveStreams?: StreamItem[];
-}) {
-  return (
-    <SidePanel>
-      <PanelHeader>
-        <strong>Ahora en vivo</strong>
-        <Link to="/streams">Ver todos</Link>
-      </PanelHeader>
-
-      {liveStreams.length === 0 ? (
-        <EmptyPanel
-          icon={<FiWifiOff />}
-          title="Sin directos"
-          text="Cuando un streamer inicie transmisión, aparecerá aquí."
-        />
-      ) : (
-        liveStreams.slice(0, 4).map((stream) => (
-          <SideListItem key={stream.id} to={`/streams/${stream.id}`}>
-            <Avatar>{stream.avatar}</Avatar>
-            <span>{stream.channel}</span>
-            <small>{stream.viewers}</small>
-          </SideListItem>
-        ))
-      )}
-
-      <PanelHeader>
-        <strong>Podcasts</strong>
-        <Link to="/podcasts">Ver todos</Link>
-      </PanelHeader>
-
-      {podcasts.slice(0, 3).map((podcast) => (
-        <SideListItem key={podcast.id} to={`/podcasts/${podcast.id}`}>
-          <Avatar>{getInitials(podcast.title)}</Avatar>
-          <span>{podcast.title}</span>
-          <small>{podcast.duration}</small>
-        </SideListItem>
-      ))}
-    </SidePanel>
   );
 }

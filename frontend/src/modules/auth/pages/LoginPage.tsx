@@ -70,7 +70,7 @@ export default function LoginPage() {
           <h1>
             ROOT<span>BLEND</span>
           </h1>
-          <p>Inicia sesión en tu cuenta</p>
+          <p>Inicia sesión con tu cuenta</p>
         </BrandBlock>
 
         <Label>Correo electrónico</Label>
@@ -79,6 +79,7 @@ export default function LoginPage() {
           <input
             type="email"
             value={email}
+            placeholder="Ingresa tu correo electrónico"
             autoComplete="off"
             onChange={(event) => setEmail(event.target.value)}
           />
@@ -90,6 +91,7 @@ export default function LoginPage() {
           <input
             type="password"
             value={password}
+            placeholder="Ingresa tu contraseña"
             autoComplete="new-password"
             onChange={(event) => setPassword(event.target.value)}
           />

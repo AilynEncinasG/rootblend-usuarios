@@ -1,5 +1,5 @@
+//frontend/src/modules/public/pages/HomePage.tsx
 import { type ReactNode, useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import {
   FiAlertTriangle,
   FiArrowRight,
@@ -52,7 +52,6 @@ import {
   LiveBadge,
   MetaLine,
   Muted,
-  PanelHeader,
   PodcastCover,
   PodcastGrid,
   PodcastTile,
@@ -60,8 +59,6 @@ import {
   RoundButton,
   SectionBlock,
   SectionHeader,
-  SideListItem,
-  SidePanel,
   StateIcon,
   StatePanel,
   TextLink,
@@ -116,13 +113,24 @@ function backendCategoryToCard(
     (stream) => stream.category === category.nombre
   ).length;
 
+  const imageMap: Record<string, string> = {
+    "Gaming": brandAssets.gamingCategoria,
+    "Musica": brandAssets.musicaCategoria,
+    "Charlas": brandAssets.charlasCategoria,
+    "Tecnologia": brandAssets.tecnologiaCategoria,
+    "Deportes": brandAssets.deportesCategoria,
+    "Podcasts": brandAssets.podcastsCategoria,
+  };
+
+  const finalImage = imageMap[category.nombre] || brandAssets.charlasCategoria;
+
   return {
     id: String(category.id_categoria),
     name: category.nombre,
     icon: "grid",
     viewers: String(activeCount),
     color: "#00e5ff",
-    image: brandAssets.categoriesView,
+    image: finalImage,
   };
 }
 
@@ -219,33 +227,6 @@ function PodcastCard({ podcast }: { podcast: PodcastItem }) {
   );
 }
 
-function DemoRightPanel({ liveStreams = [] }: { liveStreams?: StreamItem[] }) {
-  return (
-    <SidePanel>
-      <PanelHeader>
-        <strong>Ahora en vivo</strong>
-        <Link to="/streams">Ver todos</Link>
-      </PanelHeader>
-
-      {liveStreams.length === 0 ? (
-        <EmptyPanel
-          icon={<FiWifiOff />}
-          title="Sin directos"
-          text="Cuando un streamer inicie transmisión, aparecerá aquí."
-        />
-      ) : (
-        liveStreams.slice(0, 4).map((stream) => (
-          <SideListItem key={stream.id} to={`/streams/${stream.id}`}>
-            <Avatar>{stream.avatar}</Avatar>
-            <span>{stream.channel}</span>
-            <small>{stream.viewers}</small>
-          </SideListItem>
-        ))
-      )}
-    </SidePanel>
-  );
-}
-
 export default function HomePage() {
   const loggedIn = isAuthenticated();
 
@@ -320,7 +301,6 @@ export default function HomePage() {
   return (
     <RootShell
       active="home"
-      rightPanel={loggedIn ? <DemoRightPanel liveStreams={liveStreams} /> : undefined}
     >
       {error ? (
         <AlertPanel>
@@ -354,7 +334,9 @@ export default function HomePage() {
           </ButtonRow>
         </HeroCopy>
 
-        <HeroMedia $image={brandAssets.publicHome}>
+        <HeroMedia 
+          $image={heroStream?.image ? heroStream.image : brandAssets.fondo}
+        >
           <FeaturedFlag>DESTACADO</FeaturedFlag>
 
           <HeroOverlay>
@@ -395,9 +377,7 @@ export default function HomePage() {
         {backendCategories.map((category) => (
           <FilterChip 
             key={category.id} 
-            // Comparamos el nombre (ej: "Charlas") con el estado
             $active={selectedCategory === category.name}
-            // Guardamos el nombre al hacer clic
             onClick={() => setSelectedCategory(category.name)}
           >
             {category.name}
@@ -409,7 +389,6 @@ export default function HomePage() {
         title="Transmisiones en vivo"
         action={<TextLink to="/streams">Ver todas</TextLink>}
       >
-        {/* Usamos la lista filtrada para verificar si está vacía */}
         {filteredStreams.length === 0 ? (
           <EmptyPanel
             icon={<FiWifiOff />}
@@ -418,7 +397,6 @@ export default function HomePage() {
           />
         ) : (
           <CardGrid>
-            {/* Mapeamos la lista filtrada */}
             {filteredStreams.map((stream) => (
               <StreamCard key={stream.id} stream={stream} />
             ))}
@@ -475,7 +453,6 @@ export default function HomePage() {
 
       <Section
         title="Categorías"
-        action={<TextLink to="/categories">Ver todas</TextLink>}
       >
         {backendCategories.length === 0 ? (
           <EmptyPanel
@@ -485,7 +462,7 @@ export default function HomePage() {
           />
         ) : (
           <CategoryGrid>
-            {backendCategories.slice(0, 4).map((category) => (
+            {backendCategories.map((category) => (
               <CategoryCard
                 key={category.id}
                 to={`/streams?category=${encodeURIComponent(category.name)}`}

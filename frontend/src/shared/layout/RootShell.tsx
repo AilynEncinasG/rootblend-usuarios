@@ -1,3 +1,4 @@
+//frontend/src/shared/layout/RootShell.tsx
 import { type FormEvent, type ReactNode, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import {
@@ -42,6 +43,7 @@ import {
   DropdownMenuLoading,
   DropdownPanel,
   GhostLink,
+  ButtonGroup,
   IconRound,
   MainArea,
   MiniText,
@@ -567,84 +569,86 @@ export function RootShell({
                         {role ? (
                           <DropdownMenuLink
                             to={myChannelTarget}
+                              onClick={() => setMenuOpen(false)}
+                            >
+                              <FiEye /> Mi canal
+                            </DropdownMenuLink>
+                          ) : null}
+
+                          <DropdownMenuLink
+                            to={creatorTarget}
                             onClick={() => setMenuOpen(false)}
                           >
-                            <FiEye /> Mi canal
+                            {role ? <FiGrid /> : <FiRadio />} {creatorLabel}
                           </DropdownMenuLink>
-                        ) : null}
+                        </>
+                      ) : (
+                        <DropdownMenuLoading>
+                          <FiRefreshCw /> Verificando canal...
+                        </DropdownMenuLoading>
+                      )}
 
-                        <DropdownMenuLink
-                          to={creatorTarget}
-                          onClick={() => setMenuOpen(false)}
-                        >
-                          {role ? <FiGrid /> : <FiRadio />} {creatorLabel}
-                        </DropdownMenuLink>
-                      </>
-                    ) : (
-                      <DropdownMenuLoading>
-                        <FiRefreshCw /> Verificando canal...
-                      </DropdownMenuLoading>
-                    )}
+                      <DropdownMenuLink
+                        to="/creator/stats"
+                        onClick={() => setMenuOpen(false)}
+                      >
+                        <FiActivity /> Estadisticas
+                      </DropdownMenuLink>
 
-                    <DropdownMenuLink
-                      to="/creator/stats"
-                      onClick={() => setMenuOpen(false)}
-                    >
-                      <FiActivity /> Estadisticas
-                    </DropdownMenuLink>
+                      <DropdownMenuLink
+                        to="/settings"
+                        onClick={() => setMenuOpen(false)}
+                      >
+                        <FiSettings /> Configuracion
+                      </DropdownMenuLink>
 
-                    <DropdownMenuLink
-                      to="/settings"
-                      onClick={() => setMenuOpen(false)}
-                    >
-                      <FiSettings /> Configuracion
-                    </DropdownMenuLink>
+                      <DropdownMenuLink
+                        to="/notifications"
+                        onClick={() => setMenuOpen(false)}
+                      >
+                        <FiBell /> Notificaciones
+                      </DropdownMenuLink>
 
-                    <DropdownMenuLink
-                      to="/notifications"
-                      onClick={() => setMenuOpen(false)}
-                    >
-                      <FiBell /> Notificaciones
-                    </DropdownMenuLink>
+                      <DropdownMenuLink
+                        to="/following"
+                        onClick={() => setMenuOpen(false)}
+                      >
+                        <FiUsers /> Seguidos
+                      </DropdownMenuLink>
 
-                    <DropdownMenuLink
-                      to="/following"
-                      onClick={() => setMenuOpen(false)}
-                    >
-                      <FiUsers /> Seguidos
-                    </DropdownMenuLink>
+                      <DropdownMenuLink
+                        to="/subscriptions"
+                        onClick={() => setMenuOpen(false)}
+                      >
+                        <FiStar /> Suscripciones
+                      </DropdownMenuLink>
 
-                    <DropdownMenuLink
-                      to="/subscriptions"
-                      onClick={() => setMenuOpen(false)}
-                    >
-                      <FiStar /> Suscripciones
-                    </DropdownMenuLink>
+                      <DropdownMenuLink
+                        to="/change-password"
+                        onClick={() => setMenuOpen(false)}
+                      >
+                        <FiLock /> Cambiar contrasena
+                      </DropdownMenuLink>
 
-                    <DropdownMenuLink
-                      to="/change-password"
-                      onClick={() => setMenuOpen(false)}
-                    >
-                      <FiLock /> Cambiar contrasena
-                    </DropdownMenuLink>
-
-                    <DropdownMenuLink
-                      to="/"
-                      onClick={(event) => {
-                        event.preventDefault();
-                        logout();
-                      }}
-                    >
-                      <FiLogOut /> Cerrar sesión
-                    </DropdownMenuLink>
-                  </DropdownPanel>
-                ) : null}
-              </TopPopoverWrap>
-            </>
-          ) : (
+                      <DropdownMenuLink
+                        to="/"
+                        onClick={(event) => {
+                          event.preventDefault();
+                          logout();
+                        }}
+                      >
+                        <FiLogOut /> Cerrar sesión
+                      </DropdownMenuLink>
+                    </DropdownPanel>
+                  ) : null}
+                </TopPopoverWrap>
+              </>
+            ) : (
             <>
-              <GhostLink to="/login">Iniciar sesion</GhostLink>
-              <PrimaryLink to="/register">Registrarse</PrimaryLink>
+              <ButtonGroup>
+                <GhostLink to="/login">Iniciar sesión</GhostLink>
+                <PrimaryLink to="/register">Registrarse</PrimaryLink>
+              </ButtonGroup>
             </>
           )}
         </TopActions>
@@ -703,6 +707,9 @@ export function RootShell({
                 !loggedIn &&
                 (item.key === "creator" || item.key === "moderation")
               ) {
+                return null;
+              }
+              if (role === "podcaster" && item.key === "moderation") {
                 return null;
               }
 

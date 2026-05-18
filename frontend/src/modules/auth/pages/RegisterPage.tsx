@@ -92,7 +92,7 @@ export default function RegisterPage() {
   }
 
   return (
-    <AuthScreen $image={brandAssets.cover}>
+    <AuthScreen $image={brandAssets.fondo}>
       <AuthCard onSubmit={submit}>
         <BrandBlock>
           <img src={brandAssets.logo} alt="ROOTBLEND" />
@@ -105,6 +105,7 @@ export default function RegisterPage() {
           <FiMail />
           <input
             value={email}
+            placeholder="Ingresa tu correo electrónico"
             onChange={(event) => setEmail(event.target.value)}
           />
         </Field>
@@ -114,6 +115,7 @@ export default function RegisterPage() {
           <FiLock />
           <input
             type="password"
+            placeholder="Crea una contraseña con mas de 8 caracteres"
             value={password}
             onChange={(event) => setPassword(event.target.value)}
           />
@@ -124,6 +126,7 @@ export default function RegisterPage() {
           <FiLock />
           <input
             type="password"
+            placeholder="Confirma tu contraseña"
             value={confirmPassword}
             onChange={(event) => setConfirmPassword(event.target.value)}
           />

@@ -502,24 +502,54 @@ export const PrimaryLink = styled(Link)`
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  min-height: 38px;
+  min-height: 40px;
   padding: 0 16px;
   border: 0;
   border-radius: 8px;
   color: #03111c;
   background: linear-gradient(135deg, #00e5ff, #22c55e);
-  font-weight: 950;
+  font-weight: 850;
   font-size: 13px;
+  text-decoration: none;
+  flex: 1;
   cursor: pointer;
+
+  @media (max-width: 768px) {
+    flex: initial;    
+    min-height: 32px;
+    padding: 0 10px;    
+    font-size: 11.5px;   
+    font-weight: 700;   
+    border-radius: 6px;  
+  }
+`;
+
+export const ButtonGroup = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  
+  width: auto;
+  margin-top: 0;
+
+  @media (max-width: 768px) {
+    gap: 8px;
+    width: 100%;
+    justify-content: flex-end;
+    
+    a {
+      font-size: 14px;
+      padding: 6px 10px;
+      white-space: nowrap;
+    }
+  }
 `;
 
 export const GhostLink = styled(Link)`
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  min-height: 38px;
+  min-height: 40px;
   padding: 0 16px;
   border-radius: 8px;
   border: 1px solid rgba(0, 229, 255, 0.28);
@@ -527,6 +557,24 @@ export const GhostLink = styled(Link)`
   background: rgba(15, 23, 42, 0.7);
   font-weight: 850;
   font-size: 13px;
+  text-decoration: none;
+  text-align: center;
+  flex: 1;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: rgba(0, 229, 255, 0.1);
+    border-color: #00e5ff;
+  }
+
+  @media (max-width: 768px) {
+    flex: initial;
+    min-height: 32px;
+    padding: 0 10px;
+    font-size: 11.5px;
+    font-weight: 700;
+    border-radius: 6px;
+  }
 `;
 
 export const DangerLink = styled(Link)`
@@ -638,17 +686,32 @@ export const Avatar = styled.div<{ $large?: boolean; $small?: boolean }>`
 `;
 
 export const PromoPanel = styled.div`
-  padding: 16px;
+  padding: 24px; 
   border-radius: 12px;
   background:
     linear-gradient(135deg, rgba(0, 229, 255, 0.16), rgba(124, 58, 237, 0.13)),
     rgba(15, 23, 42, 0.72);
   border: 1px solid rgba(0, 229, 255, 0.22);
 
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;   
+  text-align: center;     
+
+  gap: 12px; 
+
+  strong {
+    font-size: 16px; 
+    color: #ffffff;
+  }
+
   p {
     color: rgba(226, 232, 240, 0.68);
     font-size: 12px;
     line-height: 1.5;
+    margin: 0; 
+    max-width: 240px; 
   }
 `;
 
@@ -779,9 +842,22 @@ export const VerifiedDot = styled.span`
 `;
 
 export const Muted = styled.p`
-  margin: 4px 0 0;
+  margin: 20px 0 0; /* Le di un poco más de margen arriba (20px) para separar del botón */
   color: rgba(226, 232, 240, 0.62);
   font-size: 12px;
+  
+  text-align: center; 
+  width: 100%;
+
+  a {
+    color: #00e5ff;
+    text-decoration: none;
+    font-weight: 700;
+    
+    &:hover {
+      text-decoration: underline;
+    }
+  }
 `;
 
 export const PodcastGrid = styled.div`
@@ -887,9 +963,11 @@ export const Select = styled.select`
 
 export const CategoryGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+  /* 🌟 Bajamos el mínimo a 240px para que entren perfectamente en cualquier contenedor */
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
   gap: 20px;
   margin-bottom: 40px;
+  width: 100%; /* Asegura que use todo el espacio disponible de la sección */
 `;
 
 export const CategoryCard = styled(Link)<{ $image: string }>`
@@ -1400,11 +1478,14 @@ export const AuthCard = styled.form`
   background: rgba(7, 12, 27, 0.92);
   border: 1px solid rgba(148, 163, 184, 0.16);
   box-shadow: 0 30px 80px rgba(0, 0, 0, 0.45);
+
+  display: flex;
+  flex-direction: column;
 `;
 
 export const BrandBlock = styled.div`
   text-align: center;
-  margin-bottom: 22px;
+  margin-bottom: 32px; 
 
   img {
     width: 66px;
@@ -1413,11 +1494,14 @@ export const BrandBlock = styled.div`
   svg {
     width: 42px;
     height: 42px;
-    color: #8b5cf6;
+    color: #00e5ff;
+    margin-bottom: 12px; 
   }
 
   h1 {
-    margin: 8px 0 4px;
+    margin: 12px 0 10px; 
+    font-size: 22px;
+    color: white;
 
     span {
       color: #00e5ff;
@@ -1427,6 +1511,8 @@ export const BrandBlock = styled.div`
   p {
     margin: 0;
     color: rgba(226, 232, 240, 0.64);
+    font-size: 13px;
+    line-height: 1.6; 
   }
 `;
 
@@ -1438,7 +1524,7 @@ export const Label = styled.label`
   font-weight: 850;
 `;
 
-export const Field = styled.label`
+export const Field = styled.div`
   display: flex;
   align-items: center;
   gap: 10px;
@@ -1455,6 +1541,27 @@ export const Field = styled.label`
     outline: 0;
     color: #fff;
     background: transparent;
+  }
+`;
+
+export const PageCenterContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: flex-start; 
+  width: 100%;     
+  padding: 40px 24px;     
+  box-sizing: border-box;
+`;
+
+export const FormLimiter = styled.div`
+  width: 100%;
+  max-width: 600px;
+  min-width: 320px;
+  box-sizing: border-box;
+
+  h1, h2, title, .title {
+    white-space: normal;
+    word-break: break-word;
   }
 `;
 
@@ -1525,14 +1632,36 @@ export const ProfileHeader = styled.div`
   align-items: center;
   gap: 14px;
   margin-bottom: 16px;
+  width: 100%;
 
-  h1 {
+  > :first-child { 
+    flex: 0 0 calc(30% - 7px);
+    width: calc(30% - 7px);
+    max-width: 30%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  > div {
+    flex: 0 0 calc(70% - 7px);
+    width: calc(70% - 7px);
+    min-width: 0;
+  }
+
+  h2 {
     margin: 0;
+    font-size: 16px;
+    word-break: break-word;
+    overflow-wrap: break-word;
   }
 
   p {
     margin: 4px 0 0;
     color: rgba(226, 232, 240, 0.62);
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
   }
 `;
 
@@ -1726,6 +1855,25 @@ export const AlertPanel = styled.div`
   p {
     margin: 4px 0 0;
     color: rgba(226, 232, 240, 0.7);
+  }
+`;
+
+export const CentralizerLayout = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100vh - 140px);
+  width: 100%;
+  padding: 24px;
+  box-sizing: border-box;
+
+  & > div {
+    width: 100%;
+    max-width: 540px; 
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
   }
 `;
 

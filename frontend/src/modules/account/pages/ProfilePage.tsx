@@ -27,7 +27,7 @@ import {
   PrimaryLink,
   TwoCol,
 } from "../../../shared/styles/legacyStyled";
-import { DemoRightPanel, StatCard } from "../../public/utils/publicLegacyHelpers";
+import { StatCard } from "../../public/utils/publicLegacyHelpers";
 
 function formatDate(value: string | null | undefined) {
   if (!value) {
@@ -175,7 +175,7 @@ export default function ProfilePage() {
   const fechaNacimiento = profileData?.perfil.fecha_nacimiento || null;
 
   return (
-    <RootShell active="home" rightPanel={<DemoRightPanel />}>
+    <RootShell active="home">
       {loading && (
         <AlertPanel>
           <FiRefreshCw />

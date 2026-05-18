@@ -16,7 +16,6 @@ import {
 import {
   backendCategoryToCard,
   backendStreamToCard,
-  DemoRightPanel,
   EmptyPanel,
 } from "../utils/publicLegacyHelpers";
 
@@ -70,7 +69,6 @@ export default function CategoriesPage() {
   return (
     <RootShell
       active="categories"
-      rightPanel={<DemoRightPanel liveStreams={liveStreams} />}
     >
       <PageHeading>
         <h1>Categorías de Streams</h1>
