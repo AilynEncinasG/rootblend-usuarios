@@ -11,6 +11,7 @@ import {
 
 import LiveVideoPlayer from "../../../components/stream/LiveVideoPlayer";
 import { RootShell } from "../../../shared/layout";
+import { getInitials } from "../../../shared/utils/rootblendHelpers";
 import { toBrowserReachableUrl } from "../../../shared/utils/networkUrl";
 import {
   AlertPanel,
@@ -45,6 +46,42 @@ import {
   StreamCard,
 } from "../../public/utils/publicLegacyHelpers";
 import StreamChatPanel from "../components/StreamChatPanel";
+
+function isImageUrl(value?: string | null) {
+  if (!value) {
+    return false;
+  }
+
+  return value.startsWith("http://") || value.startsWith("https://");
+}
+
+function ChannelDetailAvatar({
+  image,
+  name,
+}: {
+  image?: string | null;
+  name: string;
+}) {
+  if (isImageUrl(image)) {
+    return (
+      <Avatar $large>
+        <img
+          src={image || ""}
+          alt={name}
+          style={{
+            width: "100%",
+            height: "100%",
+            borderRadius: "50%",
+            objectFit: "cover",
+            display: "block",
+          }}
+        />
+      </Avatar>
+    );
+  }
+
+  return <Avatar $large>{getInitials(name)}</Avatar>;
+}
 
 export default function StreamDetailPage() {
   const { streamId } = useParams();
@@ -201,7 +238,10 @@ export default function StreamDetailPage() {
         />
 
         <StreamInfo>
-          <Avatar $large>{stream.avatar}</Avatar>
+          <ChannelDetailAvatar
+            image={backendStream.canal.foto_canal}
+            name={backendStream.canal.nombre_canal}
+          />
 
           <InfoMain>
             <h1>{stream.title}</h1>
