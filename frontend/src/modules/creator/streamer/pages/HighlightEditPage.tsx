@@ -7,9 +7,10 @@ import {
   FiLink,
   FiRefreshCw,
   FiSave,
-  FiStar,
   FiTrash2,
   FiType,
+  FiUpload,
+  FiVideo,
 } from "react-icons/fi";
 import { RootShell } from "../../../../shared/layout";
 import {
@@ -33,21 +34,98 @@ import {
   getMomentoById,
   getMyStreams,
   updateMomento,
+  uploadMomentoMedia,
   type MomentoDestacado,
   type Stream,
 } from "../../../streams/services/streamsService";
 import { CreatorNav } from "../../shared/creatorLegacy";
+
+const MAX_VIDEO_SIZE = 100 * 1024 * 1024;
+const MAX_IMAGE_SIZE = 5 * 1024 * 1024;
 
 function isUrl(value: string) {
   const cleanValue = value.trim();
   return cleanValue.startsWith("http://") || cleanValue.startsWith("https://");
 }
 
+function normalizeMediaUrl(value?: string | null) {
+  if (!value) return "";
+
+  const cleanValue = value.trim();
+
+  if (cleanValue.startsWith("http://localhost/media/")) {
+    return cleanValue.replace(
+      "http://localhost/media/",
+      "http://localhost:8080/canales-media/"
+    );
+  }
+
+  if (cleanValue.startsWith("http://127.0.0.1/media/")) {
+    return cleanValue.replace(
+      "http://127.0.0.1/media/",
+      "http://localhost:8080/canales-media/"
+    );
+  }
+
+  if (cleanValue.startsWith("/media/")) {
+    return cleanValue.replace(
+      "/media/",
+      "http://localhost:8080/canales-media/"
+    );
+  }
+
+  return cleanValue;
+}
+
+function secondsToTime(totalSeconds: number) {
+  if (!Number.isFinite(totalSeconds) || totalSeconds <= 0) {
+    return "";
+  }
+
+  const safeSeconds = Math.floor(totalSeconds);
+  const hours = Math.floor(safeSeconds / 3600);
+  const minutes = Math.floor((safeSeconds % 3600) / 60);
+  const seconds = safeSeconds % 60;
+
+  return `${String(hours).padStart(2, "0")}:${String(minutes).padStart(
+    2,
+    "0"
+  )}:${String(seconds).padStart(2, "0")}`;
+}
+
+function getVideoDurationFromFile(file: File): Promise<string> {
+  return new Promise((resolve) => {
+    const objectUrl = URL.createObjectURL(file);
+    const video = document.createElement("video");
+
+    video.preload = "metadata";
+    video.muted = true;
+    video.src = objectUrl;
+
+    video.onloadedmetadata = () => {
+      const duration = secondsToTime(Number(video.duration));
+      URL.revokeObjectURL(objectUrl);
+      resolve(duration);
+    };
+
+    video.onerror = () => {
+      URL.revokeObjectURL(objectUrl);
+      resolve("");
+    };
+  });
+}
+
 export default function HighlightEditPage() {
-  const { highlightId } = useParams();
+  const params = useParams<{
+    highlightId?: string;
+    momentoId?: string;
+    id?: string;
+  }>();
+
   const navigate = useNavigate();
 
-  const numericHighlightId = Number(highlightId);
+  const rawHighlightId = params.highlightId || params.momentoId || params.id || "";
+  const numericHighlightId = Number(rawHighlightId);
 
   const [momento, setMomento] = useState<MomentoDestacado | null>(null);
   const [streams, setStreams] = useState<Stream[]>([]);
@@ -58,7 +136,9 @@ export default function HighlightEditPage() {
   const [thumbnailUrl, setThumbnailUrl] = useState("");
   const [duracion, setDuracion] = useState("");
   const [streamId, setStreamId] = useState("");
-  const [destacado, setDestacado] = useState(true);
+
+  const [videoFile, setVideoFile] = useState<File | null>(null);
+  const [thumbnailFile, setThumbnailFile] = useState<File | null>(null);
 
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -92,11 +172,14 @@ export default function HighlightEditPage() {
         setStreams(streamsResult);
         setTitulo(momentoResult.titulo || "");
         setDescripcion(momentoResult.descripcion || "");
-        setUrlVideo(momentoResult.url_video || "");
-        setThumbnailUrl(momentoResult.thumbnail_url || "");
+        setUrlVideo(normalizeMediaUrl(momentoResult.url_video || ""));
+        setThumbnailUrl(normalizeMediaUrl(momentoResult.thumbnail_url || ""));
         setDuracion(momentoResult.duracion || "");
-        setStreamId(momentoResult.stream?.id_stream ? String(momentoResult.stream.id_stream) : "");
-        setDestacado(Boolean(momentoResult.destacado));
+        setStreamId(
+          momentoResult.stream?.id_stream
+            ? String(momentoResult.stream.id_stream)
+            : ""
+        );
       } catch (requestError) {
         console.error("HIGHLIGHT_EDIT_LOAD_ERROR", requestError);
 
@@ -121,6 +204,51 @@ export default function HighlightEditPage() {
     };
   }, [numericHighlightId]);
 
+  async function handleVideoFileChange(file: File | null) {
+    setError("");
+    setSuccess("");
+    setVideoFile(file);
+
+    if (!file) return;
+
+    if (!file.type.startsWith("video/")) {
+      setError("Selecciona un archivo de video valido.");
+      setVideoFile(null);
+      return;
+    }
+
+    if (file.size > MAX_VIDEO_SIZE) {
+      setError("El video no puede superar los 100 MB.");
+      setVideoFile(null);
+      return;
+    }
+
+    const detectedDuration = await getVideoDurationFromFile(file);
+
+    if (detectedDuration) {
+      setDuracion(detectedDuration);
+    }
+  }
+
+  function handleThumbnailFileChange(file: File | null) {
+    setError("");
+    setSuccess("");
+    setThumbnailFile(file);
+
+    if (!file) return;
+
+    if (!file.type.startsWith("image/")) {
+      setError("Selecciona una imagen valida.");
+      setThumbnailFile(null);
+      return;
+    }
+
+    if (file.size > MAX_IMAGE_SIZE) {
+      setError("La miniatura no puede superar los 5 MB.");
+      setThumbnailFile(null);
+    }
+  }
+
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
@@ -131,21 +259,27 @@ export default function HighlightEditPage() {
 
     const cleanTitulo = titulo.trim();
     const cleanDescripcion = descripcion.trim();
-    const cleanUrlVideo = urlVideo.trim();
-    const cleanThumbnailUrl = thumbnailUrl.trim();
-    const cleanDuracion = duracion.trim();
+
+    let finalVideoUrl = urlVideo.trim();
+    let finalThumbnailUrl = thumbnailUrl.trim();
+    let finalDuracion = duracion.trim();
 
     if (!cleanTitulo) {
       setError("Escribe un titulo para el momento destacado.");
       return;
     }
 
-    if (!cleanUrlVideo || !isUrl(cleanUrlVideo)) {
+    if (!finalVideoUrl && !videoFile) {
+      setError("Agrega una URL de video o sube un video desde tu computadora.");
+      return;
+    }
+
+    if (finalVideoUrl && !isUrl(finalVideoUrl)) {
       setError("La URL del video debe empezar con http:// o https://.");
       return;
     }
 
-    if (cleanThumbnailUrl && !isUrl(cleanThumbnailUrl)) {
+    if (finalThumbnailUrl && !isUrl(finalThumbnailUrl)) {
       setError("La miniatura debe empezar con http:// o https://.");
       return;
     }
@@ -153,17 +287,42 @@ export default function HighlightEditPage() {
     setSaving(true);
 
     try {
+      if (videoFile) {
+        const uploadedVideo = await uploadMomentoMedia("video", videoFile);
+        finalVideoUrl = normalizeMediaUrl(uploadedVideo.url);
+
+        const detectedDuration = await getVideoDurationFromFile(videoFile);
+        if (detectedDuration) {
+          finalDuracion = detectedDuration;
+        }
+      }
+
+      if (thumbnailFile) {
+        const uploadedThumbnail = await uploadMomentoMedia(
+          "miniatura",
+          thumbnailFile
+        );
+        finalThumbnailUrl = normalizeMediaUrl(uploadedThumbnail.url);
+      }
+
       const updated = await updateMomento(numericHighlightId, {
         titulo: cleanTitulo,
         descripcion: cleanDescripcion,
-        url_video: cleanUrlVideo,
-        thumbnail_url: cleanThumbnailUrl,
-        duracion: cleanDuracion,
+        url_video: finalVideoUrl,
+        thumbnail_url: finalThumbnailUrl,
+        duracion: finalDuracion || undefined,
         id_stream: streamId ? Number(streamId) : null,
-        destacado,
+        destacado: true,
       });
 
       setMomento(updated);
+      setUrlVideo(normalizeMediaUrl(updated.url_video || finalVideoUrl));
+      setThumbnailUrl(
+        normalizeMediaUrl(updated.thumbnail_url || finalThumbnailUrl)
+      );
+      setDuracion(updated.duracion || finalDuracion);
+      setVideoFile(null);
+      setThumbnailFile(null);
       setSuccess("Momento destacado actualizado correctamente.");
     } catch (requestError) {
       console.error("HIGHLIGHT_EDIT_SAVE_ERROR", requestError);
@@ -217,7 +376,10 @@ export default function HighlightEditPage() {
             <PageHeading>
               <Eyebrow>Formulario</Eyebrow>
               <h1>Editar / eliminar momento</h1>
-              <p>Actualiza el clip o eliminalo si ya no debe mostrarse.</p>
+              <p>
+                Actualiza el clip o eliminalo si ya no debe mostrarse. Puedes
+                usar URL externa o subir video y miniatura desde tu computadora.
+              </p>
             </PageHeading>
 
             {loading ? (
@@ -292,10 +454,33 @@ export default function HighlightEditPage() {
                   <input
                     value={urlVideo}
                     onChange={(event) => setUrlVideo(event.target.value)}
-                    placeholder="https://ejemplo.com/clip.mp4"
+                    placeholder="https://ejemplo.com/clip.mp4 o YouTube"
                     disabled={saving || deleting}
                   />
                 </Field>
+
+                <Label>O subir video desde tu computadora</Label>
+                <Field>
+                  <FiUpload />
+                  <input
+                    type="file"
+                    accept="video/mp4,video/webm,video/ogg,video/quicktime"
+                    onChange={(event) =>
+                      handleVideoFileChange(event.target.files?.[0] || null)
+                    }
+                    disabled={saving || deleting}
+                  />
+                </Field>
+
+                {videoFile ? (
+                  <AlertPanel>
+                    <FiVideo />
+                    <div>
+                      <strong>Video seleccionado</strong>
+                      <p>{videoFile.name}</p>
+                    </div>
+                  </AlertPanel>
+                ) : null}
 
                 <Label>Miniatura URL</Label>
                 <Field>
@@ -308,6 +493,29 @@ export default function HighlightEditPage() {
                   />
                 </Field>
 
+                <Label>O subir miniatura desde tu computadora</Label>
+                <Field>
+                  <FiUpload />
+                  <input
+                    type="file"
+                    accept="image/png,image/jpeg,image/jpg,image/webp,image/gif"
+                    onChange={(event) =>
+                      handleThumbnailFileChange(event.target.files?.[0] || null)
+                    }
+                    disabled={saving || deleting}
+                  />
+                </Field>
+
+                {thumbnailFile ? (
+                  <AlertPanel>
+                    <FiImage />
+                    <div>
+                      <strong>Miniatura seleccionada</strong>
+                      <p>{thumbnailFile.name}</p>
+                    </div>
+                  </AlertPanel>
+                ) : null}
+
                 {thumbnailUrl.trim() && isUrl(thumbnailUrl) ? (
                   <div
                     style={{
@@ -319,39 +527,11 @@ export default function HighlightEditPage() {
                   />
                 ) : null}
 
-                <Label>Duracion</Label>
-                <Field>
-                  <FiStar />
-                  <input
-                    value={duracion}
-                    onChange={(event) => setDuracion(event.target.value)}
-                    placeholder="Ej. 01:25 o 00:01:25"
-                    disabled={saving || deleting}
-                  />
-                </Field>
-
-                <Label>Publicacion</Label>
-                <Field>
-                  <FiStar />
-                  <select
-                    value={destacado ? "true" : "false"}
-                    onChange={(event) => setDestacado(event.target.value === "true")}
-                    disabled={saving || deleting}
-                    style={{
-                      width: "100%",
-                      border: 0,
-                      outline: 0,
-                      background: "transparent",
-                      color: "#fff",
-                      fontWeight: 800,
-                    }}
-                  >
-                    <option value="true">Destacado publico</option>
-                    <option value="false">Guardado sin destacar</option>
-                  </select>
-                </Field>
-
-                <DangerButton type="button" onClick={removeMoment} disabled={saving || deleting}>
+                <DangerButton
+                  type="button"
+                  onClick={removeMoment}
+                  disabled={saving || deleting}
+                >
                   <FiTrash2 /> {deleting ? "Eliminando..." : "Eliminar momento"}
                 </DangerButton>
               </>
@@ -360,7 +540,10 @@ export default function HighlightEditPage() {
             <ButtonRow>
               <GhostLink to="/creator/streamer/highlights">Cancelar</GhostLink>
 
-              <PrimaryButton type="submit" disabled={loading || saving || deleting}>
+              <PrimaryButton
+                type="submit"
+                disabled={loading || saving || deleting}
+              >
                 <FiSave /> {saving ? "Guardando..." : "Guardar cambios"}
               </PrimaryButton>
             </ButtonRow>
