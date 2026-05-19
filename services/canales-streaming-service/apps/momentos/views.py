@@ -113,19 +113,32 @@ def parse_duration(value):
 
 
 def build_absolute_media_url(request, relative_url):
-    absolute_url = request.build_absolute_uri(relative_url)
+    clean_url = str(relative_url or "")
+
+    if clean_url.startswith("/media/"):
+        return clean_url.replace(
+            "/media/",
+            "http://localhost:8080/canales-media/",
+            1,
+        )
+
+    absolute_url = request.build_absolute_uri(clean_url)
 
     absolute_url = absolute_url.replace(
-        "http://canales-streaming-service:8001",
-        "http://localhost:8080",
+        "http://canales-streaming-service:8001/media/",
+        "http://localhost:8080/canales-media/",
     )
     absolute_url = absolute_url.replace(
-        "http://0.0.0.0:8001",
-        "http://localhost:8080",
+        "http://0.0.0.0:8001/media/",
+        "http://localhost:8080/canales-media/",
     )
     absolute_url = absolute_url.replace(
-        "http://127.0.0.1:8001",
-        "http://localhost:8080",
+        "http://127.0.0.1:8001/media/",
+        "http://localhost:8080/canales-media/",
+    )
+    absolute_url = absolute_url.replace(
+        "http://localhost/media/",
+        "http://localhost:8080/canales-media/",
     )
 
     return absolute_url

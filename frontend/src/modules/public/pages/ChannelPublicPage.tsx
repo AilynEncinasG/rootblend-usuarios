@@ -10,6 +10,7 @@ import {
   FiAlertTriangle,
   FiBell,
   FiHeart,
+  FiPlay,
   FiRadio,
   FiRefreshCw,
   FiStar,
@@ -21,13 +22,49 @@ import { getInitials } from "../../../shared/utils/rootblendHelpers";
 import {
   getAllStreams,
   getChannelById,
+  getMomentos,
   type Canal,
+  type MomentoDestacado,
   type Stream,
 } from "../../streams/services/streamsService";
 
+function normalizeMediaUrl(value?: string | null) {
+  if (!value) return "";
+
+  const cleanValue = value.trim();
+
+  if (cleanValue.startsWith("http://localhost/media/")) {
+    return cleanValue.replace(
+      "http://localhost/media/",
+      "http://localhost:8080/canales-media/"
+    );
+  }
+
+  if (cleanValue.startsWith("http://127.0.0.1/media/")) {
+    return cleanValue.replace(
+      "http://127.0.0.1/media/",
+      "http://localhost:8080/canales-media/"
+    );
+  }
+
+  if (cleanValue.startsWith("/media/")) {
+    return cleanValue.replace(
+      "/media/",
+      "http://localhost:8080/canales-media/"
+    );
+  }
+
+  return cleanValue;
+}
+
 function isImageUrl(value?: string | null) {
-  if (!value) return false;
-  return value.startsWith("http://") || value.startsWith("https://");
+  const cleanValue = normalizeMediaUrl(value);
+
+  return (
+    cleanValue.startsWith("http://") ||
+    cleanValue.startsWith("https://") ||
+    cleanValue.startsWith("data:image/")
+  );
 }
 
 function streamStatusLabel(status: Stream["estado"]) {
@@ -52,54 +89,8 @@ function getChannelTypeName(channel: Canal) {
   return typeValue?.nombre_tipo || "streamer";
 }
 
-function ChannelAvatar({
-  image,
-  name,
-  size = 42,
-}: {
-  image?: string | null;
-  name: string;
-  size?: number;
-}) {
-  return (
-    <div
-      style={{
-        width: size,
-        height: size,
-        borderRadius: "50%",
-        overflow: "hidden",
-        background: "linear-gradient(135deg, #00eaff, #8b5cf6)",
-        display: "grid",
-        placeItems: "center",
-        color: "#020617",
-        fontWeight: 900,
-        fontSize: size >= 100 ? 28 : 15,
-        border: "2px solid rgba(0, 234, 255, 0.55)",
-        flex: "0 0 auto",
-      }}
-    >
-      {isImageUrl(image) ? (
-        <img
-          src={image || ""}
-          alt={name}
-          style={{
-            width: "100%",
-            height: "100%",
-            objectFit: "cover",
-            display: "block",
-          }}
-        />
-      ) : (
-        getInitials(name)
-      )}
-    </div>
-  );
-}
-
 function StreamCard({ stream }: { stream: Stream }) {
-  const image = stream.thumbnail_url || brandAssets.streamView;
-  const channelPhoto = stream.canal.foto_canal || "";
-  const channelName = stream.canal.nombre_canal || "ROOTBLEND";
+  const image = normalizeMediaUrl(stream.thumbnail_url || brandAssets.streamView);
 
   return (
     <Link
@@ -147,7 +138,7 @@ function StreamCard({ stream }: { stream: Stream }) {
           style={{
             padding: 16,
             display: "grid",
-            gap: 10,
+            gap: 8,
           }}
         >
           <h3
@@ -159,20 +150,6 @@ function StreamCard({ stream }: { stream: Stream }) {
           >
             {stream.titulo}
           </h3>
-
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: 10,
-              color: "rgba(226, 232, 240, 0.88)",
-              fontWeight: 800,
-              fontSize: 13,
-            }}
-          >
-            <ChannelAvatar image={channelPhoto} name={channelName} size={38} />
-            <span>{channelName}</span>
-          </div>
 
           <p
             style={{
@@ -197,6 +174,105 @@ function StreamCard({ stream }: { stream: Stream }) {
             <span>{stream.categoria.nombre}</span>
             <span>{stream.viewer_count || 0} viewers</span>
           </div>
+        </div>
+      </article>
+    </Link>
+  );
+}
+
+function MomentCard({ momento }: { momento: MomentoDestacado }) {
+  const image = normalizeMediaUrl(
+    momento.thumbnail_url || momento.stream?.thumbnail_url || brandAssets.streamView
+  );
+
+  return (
+    <Link
+      to={`/moments/${momento.id_momento}`}
+      style={{
+        textDecoration: "none",
+        color: "inherit",
+        display: "block",
+      }}
+    >
+      <article
+        style={{
+          overflow: "hidden",
+          borderRadius: 18,
+          border: "1px solid rgba(0, 234, 255, 0.20)",
+          background: "rgba(15, 23, 42, 0.78)",
+          boxShadow: "0 18px 50px rgba(0,0,0,.22)",
+        }}
+      >
+        <div
+          style={{
+            minHeight: 150,
+            background: `linear-gradient(180deg, rgba(2,8,26,.06), rgba(2,8,26,.70)), url(${image}) center/cover`,
+            position: "relative",
+            display: "grid",
+            placeItems: "center",
+          }}
+        >
+          <span
+            style={{
+              position: "absolute",
+              top: 12,
+              left: 12,
+              borderRadius: 999,
+              padding: "6px 10px",
+              background: "#8b5cf6",
+              color: "#ffffff",
+              fontSize: 11,
+              fontWeight: 900,
+            }}
+          >
+            CLIP
+          </span>
+
+          <FiPlay
+            style={{
+              width: 54,
+              height: 54,
+              padding: 14,
+              borderRadius: "50%",
+              color: "#00eaff",
+              background: "rgba(2, 6, 23, 0.72)",
+              border: "1px solid rgba(0, 234, 255, 0.40)",
+            }}
+          />
+        </div>
+
+        <div
+          style={{
+            padding: 16,
+            display: "grid",
+            gap: 8,
+          }}
+        >
+          <h3
+            style={{
+              margin: 0,
+              fontSize: 18,
+              lineHeight: 1.15,
+            }}
+          >
+            {momento.titulo}
+          </h3>
+
+          <p
+            style={{
+              margin: 0,
+              color: "rgba(203, 213, 225, 0.78)",
+              fontSize: 14,
+              lineHeight: 1.4,
+            }}
+          >
+            {momento.descripcion || "Clip destacado del canal."}
+          </p>
+
+          <small style={{ color: "rgba(203, 213, 225, 0.70)" }}>
+            {momento.vistas_count || 0} vistas
+            {momento.duracion ? ` · ${momento.duracion}` : ""}
+          </small>
         </div>
       </article>
     </Link>
@@ -254,6 +330,7 @@ export default function ChannelPublicPage() {
 
   const [channel, setChannel] = useState<Canal | null>(null);
   const [streams, setStreams] = useState<Stream[]>([]);
+  const [momentos, setMomentos] = useState<MomentoDestacado[]>([]);
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -272,9 +349,10 @@ export default function ChannelPublicPage() {
       }
 
       try {
-        const [channelResult, allStreams] = await Promise.all([
+        const [channelResult, allStreams, channelMomentos] = await Promise.all([
           getChannelById(numericChannelId),
           getAllStreams(),
+          getMomentos({ canal: numericChannelId, destacados: true }),
         ]);
 
         if (!active) return;
@@ -285,6 +363,7 @@ export default function ChannelPublicPage() {
 
         setChannel(channelResult);
         setStreams(channelStreams);
+        setMomentos(channelMomentos);
       } catch (requestError) {
         console.error("CHANNEL_PUBLIC_LOAD_ERROR", requestError);
 
@@ -313,17 +392,21 @@ export default function ChannelPublicPage() {
   );
 
   const recentStreams = useMemo(
-    () => streams.filter((stream) => stream.estado !== "en_vivo").slice(0, 8),
+    () =>
+      streams
+        .filter((stream) => stream.estado !== "en_vivo")
+        .slice(0, 8),
     [streams]
   );
 
-  const featuredStreams = useMemo(
-    () => streams.filter((stream) => stream.destacado).slice(0, 6),
-    [streams]
+  const featuredMoments = useMemo(
+    () => momentos.filter((momento) => momento.destacado).slice(0, 8),
+    [momentos]
   );
 
-  const channelBanner = channel?.banner_canal || "";
-  const channelPhoto = channel?.foto_canal || "";
+  const channelBanner = normalizeMediaUrl(channel?.banner_canal || "");
+  const channelPhoto = normalizeMediaUrl(channel?.foto_canal || "");
+  const avatarText = getInitials(channel?.nombre_canal || "RB");
 
   return (
     <RootShell active="home">
@@ -401,11 +484,38 @@ export default function ChannelPublicPage() {
                   maxWidth: 900,
                 }}
               >
-                <ChannelAvatar
-                  image={channelPhoto}
-                  name={channel.nombre_canal}
-                  size={118}
-                />
+                <div
+                  style={{
+                    width: 118,
+                    height: 118,
+                    borderRadius: "50%",
+                    overflow: "hidden",
+                    border: "3px solid rgba(0, 234, 255, 0.65)",
+                    background:
+                      "linear-gradient(135deg, #00eaff, #8b5cf6)",
+                    display: "grid",
+                    placeItems: "center",
+                    color: "#020617",
+                    fontWeight: 900,
+                    fontSize: 28,
+                    flex: "0 0 auto",
+                  }}
+                >
+                  {isImageUrl(channelPhoto) ? (
+                    <img
+                      src={channelPhoto}
+                      alt={channel.nombre_canal}
+                      style={{
+                        width: "100%",
+                        height: "100%",
+                        objectFit: "cover",
+                        display: "block",
+                      }}
+                    />
+                  ) : (
+                    avatarText
+                  )}
+                </div>
 
                 <div>
                   <p
@@ -521,8 +631,8 @@ export default function ChannelPublicPage() {
                 <strong>{liveStreams.length}</strong>
               </div>
               <div style={metricStyle}>
-                <span>Destacados</span>
-                <strong>{featuredStreams.length}</strong>
+                <span>Momentos</span>
+                <strong>{featuredMoments.length}</strong>
               </div>
             </section>
 
@@ -571,20 +681,20 @@ export default function ChannelPublicPage() {
             <section style={sectionStyle}>
               <div style={sectionHeaderStyle}>
                 <h2>Momentos destacados</h2>
-                <span>{featuredStreams.length} destacados</span>
+                <span>{featuredMoments.length} clips</span>
               </div>
 
-              {featuredStreams.length > 0 ? (
+              {featuredMoments.length > 0 ? (
                 <div style={gridStyle}>
-                  {featuredStreams.map((stream) => (
-                    <StreamCard key={stream.id_stream} stream={stream} />
+                  {featuredMoments.map((momento) => (
+                    <MomentCard key={momento.id_momento} momento={momento} />
                   ))}
                 </div>
               ) : (
                 <EmptySection
                   icon={<FiStar />}
                   title="Sin momentos destacados"
-                  text="Los streams marcados como destacados aparecerán en esta sección."
+                  text="Los clips publicados por el streamer aparecerán en esta sección."
                 />
               )}
             </section>

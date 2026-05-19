@@ -44,7 +44,7 @@ import StreamStatsPage from "../modules/creator/streamer/pages/StreamStatsPage";
 import HighlightsPage from "../modules/creator/streamer/pages/HighlightsPage";
 import HighlightUploadPage from "../modules/creator/streamer/pages/HighlightUploadPage";
 import HighlightEditPage from "../modules/creator/streamer/pages/HighlightEditPage";
-
+import MomentPublicPage from "../modules/public/pages/MomentPublicPage";
 import PodcasterDashboardPage from "../modules/creator/podcaster/pages/PodcasterDashboardPage";
 import CreatePodcastPage from "../modules/creator/podcaster/pages/CreatePodcastPage";
 import ManagePodcastPage from "../modules/creator/podcaster/pages/ManagePodcastPage";
@@ -349,7 +349,8 @@ export function AppRouter() {
         path="/channels/:channelId/streamer"
         element={<ChannelPublicPage />}
       />
-
+      <Route path="/moments/:momentoId" element={<MomentPublicPage />} />
+      <Route path="/momentos/:momentoId" element={<MomentPublicPage />} />
       <Route path="/streams/:streamId" element={<StreamWithChatPage />} />
       <Route
         path="/streams/:streamId/watch"
