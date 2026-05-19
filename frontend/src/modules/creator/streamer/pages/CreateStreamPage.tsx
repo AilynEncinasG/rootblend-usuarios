@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import {
   FiAlertTriangle,
   FiCheckCircle,
+  FiImage,
   FiRadio,
   FiSave,
 } from "react-icons/fi";
@@ -30,6 +31,16 @@ import {
   type Categoria,
 } from "../../../streams/services/streamsService";
 
+function isImageUrl(value: string) {
+  const cleanValue = value.trim().toLowerCase();
+
+  if (!cleanValue) {
+    return true;
+  }
+
+  return cleanValue.startsWith("http://") || cleanValue.startsWith("https://");
+}
+
 export default function CreateStreamPage() {
   const navigate = useNavigate();
 
@@ -38,6 +49,7 @@ export default function CreateStreamPage() {
   const [categoryId, setCategoryId] = useState("");
   const [description, setDescription] = useState("");
   const [quality, setQuality] = useState("720p");
+  const [thumbnailUrl, setThumbnailUrl] = useState("");
 
   const [loadingCategories, setLoadingCategories] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -95,6 +107,7 @@ export default function CreateStreamPage() {
 
     const cleanTitle = title.trim();
     const cleanDescription = description.trim();
+    const cleanThumbnailUrl = thumbnailUrl.trim();
     const parsedCategoryId = Number(categoryId);
 
     if (!cleanTitle) {
@@ -104,6 +117,16 @@ export default function CreateStreamPage() {
 
     if (!categoryId || !Number.isFinite(parsedCategoryId)) {
       setError("Selecciona una categoría válida.");
+      return;
+    }
+
+    if (cleanThumbnailUrl && !isImageUrl(cleanThumbnailUrl)) {
+      setError("La miniatura debe ser una URL válida que empiece con http:// o https://.");
+      return;
+    }
+
+    if (cleanThumbnailUrl.length > 255) {
+      setError("La URL de la miniatura no puede superar 255 caracteres.");
       return;
     }
 
@@ -120,6 +143,7 @@ export default function CreateStreamPage() {
         bitrate: quality === "1080p" ? 4500 : 2500,
         latencia_modo: "baja",
         audio_activo: true,
+        thumbnail_url: cleanThumbnailUrl || undefined,
       });
 
       localStorage.setItem(
@@ -239,6 +263,30 @@ export default function CreateStreamPage() {
                 placeholder="Describe brevemente de qué tratará el directo."
                 disabled={saving}
               />
+
+              <Label>Miniatura del stream URL</Label>
+              <Field>
+                <FiImage />
+                <input
+                  value={thumbnailUrl}
+                  onChange={(event) => setThumbnailUrl(event.target.value)}
+                  placeholder="https://picsum.photos/900/500"
+                  disabled={saving}
+                  maxLength={255}
+                />
+              </Field>
+
+              {thumbnailUrl.trim() && isImageUrl(thumbnailUrl) ? (
+                <div
+                  style={{
+                    width: "100%",
+                    minHeight: 190,
+                    borderRadius: 18,
+                    border: "1px solid rgba(0, 234, 255, 0.18)",
+                    background: `linear-gradient(180deg, rgba(2,8,26,.15), rgba(2,8,26,.55)), url(${thumbnailUrl.trim()}) center/cover`,
+                  }}
+                />
+              ) : null}
 
               <Label>Calidad</Label>
               <Select

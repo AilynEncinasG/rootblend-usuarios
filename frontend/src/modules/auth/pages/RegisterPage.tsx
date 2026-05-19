@@ -115,7 +115,7 @@ export default function RegisterPage() {
           <FiLock />
           <input
             type="password"
-            placeholder="Crea una contraseña con mas de 8 caracteres"
+            placeholder="Crea una contraseña"
             value={password}
             onChange={(event) => setPassword(event.target.value)}
           />

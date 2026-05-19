@@ -93,7 +93,7 @@ function backendStreamToCard(stream: BackendStream): StreamItem {
     category: stream.categoria.nombre,
     viewers: `${stream.viewer_count || 0}`,
     avatar: getInitials(stream.canal.nombre_canal),
-    image: brandAssets.streamView,
+    image: stream.thumbnail_url || brandAssets.streamView,
     tags: [
       stream.categoria.nombre,
       stream.configuracion?.resolucion || "720p",

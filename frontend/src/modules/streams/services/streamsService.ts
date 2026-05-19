@@ -226,6 +226,7 @@ export async function createStream(payload: {
   resolucion?: string;
   bitrate?: number;
   latencia_modo?: string;
+  thumbnail_url?: string;
   audio_activo?: boolean;
 }) {
   const response = await apiRequest<ApiItemResponse<Stream>>(
