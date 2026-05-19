@@ -9,7 +9,10 @@ class MomentoDestacadoAdmin(admin.ModelAdmin):
         "id",
         "titulo",
         "canal",
+        "stream",
+        "destacado",
+        "vistas_count",
         "fecha_subida",
-        "duracion",
     )
-    search_fields = ("titulo", "canal__nombre_canal")
+    list_filter = ("destacado", "fecha_subida")
+    search_fields = ("titulo", "descripcion", "canal__nombre_canal")

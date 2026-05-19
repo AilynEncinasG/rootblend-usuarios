@@ -19,15 +19,13 @@ import {
   FiUser,
   FiUsers,
 } from "react-icons/fi";
-import {
-  brandAssets,
-  notifications,
-} from "../mock/rootblendMock";
+import { brandAssets, notifications } from "../mock/rootblendMock";
 import {
   clearAuthStorage,
   getStoredUser,
   isAuthenticated,
 } from "../../modules/auth/utils/authStorage";
+import { getMe } from "../../services/userService";
 import {
   getActiveChannels as getBackendActiveChannels,
   getMyChannel,
@@ -84,6 +82,11 @@ type ChannelCard = {
   photo?: string | null;
 };
 
+type UserSnapshot = {
+  label: string;
+  photo: string;
+};
+
 const CREATOR_ROLE_KEY = "creator_role";
 
 const pageLinks = [
@@ -117,7 +120,13 @@ function isImageUrl(value?: string | null) {
     return false;
   }
 
-  return value.startsWith("http://") || value.startsWith("https://");
+  const cleanValue = value.trim();
+
+  return (
+    cleanValue.startsWith("http://") ||
+    cleanValue.startsWith("https://") ||
+    cleanValue.startsWith("data:image/")
+  );
 }
 
 function backendChannelToCard(channel: BackendCanal): ChannelCard {
@@ -163,22 +172,116 @@ function getCreatorRole(): CreatorRole | null {
   return null;
 }
 
-function getUserLabel() {
+function readStoredUserSnapshot(): UserSnapshot {
   const stored = getStoredUser() as {
     nombre_visible?: string;
     correo?: string;
     nombre?: string;
     username?: string;
     email?: string;
+    foto_perfil?: string | null;
+    fotoPerfil?: string | null;
+    profile_image?: string | null;
+    avatar?: string | null;
   } | null;
 
-  return (
+  const label =
     stored?.nombre_visible ||
     stored?.nombre ||
     stored?.username ||
     stored?.correo ||
     stored?.email ||
-    "usuario_123"
+    "usuario_123";
+
+  const photo =
+    stored?.foto_perfil ||
+    stored?.fotoPerfil ||
+    stored?.profile_image ||
+    stored?.avatar ||
+    "";
+
+  return {
+    label,
+    photo,
+  };
+}
+
+function updateStoredUserProfileSilently(data: {
+  id_usuario?: number;
+  correo?: string;
+  estado?: string;
+  nombre_visible?: string;
+  foto_perfil?: string | null;
+}) {
+  const targetKeys = ["auth_user", "rootblend_user"];
+  const optionalKeys = ["user"];
+
+  let baseUser: Record<string, unknown> = {};
+
+  for (const key of [...targetKeys, ...optionalKeys]) {
+    const raw = localStorage.getItem(key) || sessionStorage.getItem(key);
+
+    if (!raw) continue;
+
+    try {
+      baseUser = {
+        ...baseUser,
+        ...(JSON.parse(raw) as Record<string, unknown>),
+      };
+    } catch {
+      // Ignoramos valores corruptos.
+    }
+  }
+
+  const nextUser = {
+    ...baseUser,
+    ...data,
+  };
+
+  const serializedUser = JSON.stringify(nextUser);
+
+  for (const key of targetKeys) {
+    localStorage.setItem(key, serializedUser);
+  }
+
+  for (const key of optionalKeys) {
+    if (localStorage.getItem(key)) {
+      localStorage.setItem(key, serializedUser);
+    }
+
+    if (sessionStorage.getItem(key)) {
+      sessionStorage.setItem(key, serializedUser);
+    }
+  }
+}
+
+function UserProfileAvatar({
+  label,
+  photo,
+  large = false,
+}: {
+  label: string;
+  photo: string;
+  large?: boolean;
+}) {
+  return (
+    <Avatar $large={large}>
+      {isImageUrl(photo) ? (
+        <img
+          src={photo}
+          alt={label}
+          style={{
+            width: "100%",
+            height: "100%",
+            borderRadius: "50%",
+            objectFit: "cover",
+            display: "block",
+          }}
+        />
+      ) : (
+        getInitials(label)
+      )}
+    </Avatar>
   );
 }
 
@@ -197,6 +300,11 @@ export function RootShell({
   const [creatorReady, setCreatorReady] = useState(() => !isAuthenticated());
   const [, setMyChannel] = useState<BackendCanal | null>(null);
   const [realChannels, setRealChannels] = useState<ChannelCard[]>([]);
+  const [userSnapshot, setUserSnapshot] = useState<UserSnapshot>(() =>
+    readStoredUserSnapshot()
+  );
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
   const creatorTarget =
     role === "streamer"
       ? "/creator/streamer/create-stream"
@@ -221,17 +329,50 @@ export function RootShell({
   useEffect(() => {
     let activeRequest = true;
 
+    async function syncProfileFromBackend() {
+      try {
+        const result = await getMe();
+
+        if (!activeRequest) return;
+
+        if (!result.success || !result.data) return;
+
+        const nextName =
+          result.data.perfil.nombre_visible ||
+          result.data.usuario.correo.split("@")[0] ||
+          result.data.usuario.correo;
+
+        const nextPhoto = result.data.perfil.foto_perfil || "";
+
+        updateStoredUserProfileSilently({
+          id_usuario: result.data.usuario.id_usuario,
+          correo: result.data.usuario.correo,
+          estado: result.data.usuario.estado,
+          nombre_visible: nextName,
+          foto_perfil: nextPhoto || null,
+        });
+
+        setUserSnapshot(readStoredUserSnapshot());
+      } catch (error) {
+        console.error("SHELL_PROFILE_SYNC_ERROR", error);
+
+        if (activeRequest) {
+          setUserSnapshot(readStoredUserSnapshot());
+        }
+      }
+    }
+
     async function loadShellData() {
       const currentlyLoggedIn = isAuthenticated();
 
       setLoggedIn(currentlyLoggedIn);
+      setUserSnapshot(readStoredUserSnapshot());
 
       try {
         const channels = await getBackendActiveChannels();
 
         if (activeRequest) {
           const mappedChannels = channels.map(backendChannelToCard);
-
           setRealChannels(mappedChannels);
         }
       } catch (error) {
@@ -246,8 +387,11 @@ export function RootShell({
         setCreatorReady(true);
         setRole(null);
         setMyChannel(null);
+        setUserSnapshot(readStoredUserSnapshot());
         return;
       }
+
+      await syncProfileFromBackend();
 
       setCreatorReady(false);
 
@@ -289,6 +433,7 @@ export function RootShell({
     function refreshSession() {
       setLoggedIn(isAuthenticated());
       setRole(getCreatorRole());
+      setUserSnapshot(readStoredUserSnapshot());
       loadShellData();
     }
 
@@ -333,6 +478,7 @@ export function RootShell({
     setMenuOpen(false);
     setNotificationsOpen(false);
     setLoggedIn(false);
+    setUserSnapshot(readStoredUserSnapshot());
 
     window.dispatchEvent(new Event("storage"));
     window.dispatchEvent(new Event("auth-session-changed"));
@@ -340,19 +486,19 @@ export function RootShell({
 
     navigate("/");
   }
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
   return (
     <AppFrame>
       <Topbar>
-        <BrandLink 
-          to={(window.innerWidth > 768 && window.innerHeight > 500) ? "/" : "#"}
-          onClick={(e) => {
+        <BrandLink
+          to={window.innerWidth > 768 && window.innerHeight > 500 ? "/" : "#"}
+          onClick={(event) => {
             const isMobileSize = window.innerWidth <= 768;
             const isLandscapeMobile = window.innerHeight <= 500;
 
             if (isMobileSize || isLandscapeMobile) {
-              e.preventDefault();
-              setIsMobileMenuOpen(!isMobileMenuOpen); 
+              event.preventDefault();
+              setIsMobileMenuOpen(!isMobileMenuOpen);
             }
           }}
         >
@@ -428,16 +574,23 @@ export function RootShell({
                     setNotificationsOpen(false);
                   }}
                 >
-                  <Avatar>U</Avatar>
-                  <span>{getUserLabel()}</span>
+                  <UserProfileAvatar
+                    label={userSnapshot.label}
+                    photo={userSnapshot.photo}
+                  />
+                  <span>{userSnapshot.label}</span>
                 </UserPill>
 
                 {menuOpen ? (
                   <DropdownPanel>
                     <ProfileHeader>
-                      <Avatar $large>U</Avatar>
+                      <UserProfileAvatar
+                        label={userSnapshot.label}
+                        photo={userSnapshot.photo}
+                        large
+                      />
                       <div>
-                        <h2>{getUserLabel()}</h2>
+                        <h2>{userSnapshot.label}</h2>
                         <p>
                           {role
                             ? `Creador ${
@@ -558,20 +711,21 @@ export function RootShell({
       </Topbar>
 
       <ShellGrid $hasRightPanel={Boolean(rightPanel)}>
-        {isMobileMenuOpen && (
-          <div 
+        {isMobileMenuOpen ? (
+          <div
             style={{
-              position: 'fixed',
+              position: "fixed",
               top: 0,
               left: 0,
-              width: '100vw',
-              height: '100vh',
-              background: 'rgba(0,0,0,0.6)',
-              zIndex: 9998
+              width: "100vw",
+              height: "100vh",
+              background: "rgba(0,0,0,0.6)",
+              zIndex: 9998,
             }}
             onClick={() => setIsMobileMenuOpen(false)}
           />
-        )}
+        ) : null}
+
         <Sidebar $isOpen={isMobileMenuOpen}>
           <SidebarSection>
             <SidebarTitle>Recomendados</SidebarTitle>
@@ -604,7 +758,10 @@ export function RootShell({
             <SidebarTitle>Explorar</SidebarTitle>
 
             {pageLinks.map((item) => {
-              if (!loggedIn && (item.key === "creator" || item.key === "moderation")) {
+              if (
+                !loggedIn &&
+                (item.key === "creator" || item.key === "moderation")
+              ) {
                 return null;
               }
 
@@ -633,17 +790,6 @@ export function RootShell({
             </PromoPanel>
           ) : null}
         </Sidebar>
-        {isMobileMenuOpen && window.innerWidth <= 768 && (
-          <div 
-            onClick={() => setIsMobileMenuOpen(false)}
-            style={{
-              position: 'fixed',
-              inset: 0,
-              background: 'rgba(0,0,0,0.5)',
-              zIndex: 9998 // Un número menor al del Sidebar (9999)
-            }}
-          />
-        )}
 
         <MainArea>{children}</MainArea>
 

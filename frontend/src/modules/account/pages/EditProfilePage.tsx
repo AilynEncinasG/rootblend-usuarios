@@ -1,4 +1,10 @@
-import { type ChangeEvent, type FormEvent, useEffect, useMemo, useState } from "react";
+import {
+  type ChangeEvent,
+  type FormEvent,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import { useNavigate } from "react-router-dom";
 import {
   FiAlertTriangle,
@@ -51,36 +57,60 @@ function getInitials(name: string) {
 }
 
 function isImageUrl(value: string) {
+  const cleanValue = value.trim();
+
   return (
-    value.startsWith("http://") ||
-    value.startsWith("https://") ||
-    value.startsWith("data:image/")
+    cleanValue.startsWith("http://") ||
+    cleanValue.startsWith("https://") ||
+    cleanValue.startsWith("data:image/")
   );
 }
 
 function updateStoredProfileUser(data: {
+  id_usuario?: number;
   correo?: string;
+  estado?: string;
   nombre_visible?: string;
   foto_perfil?: string | null;
 }) {
-  const keys = ["auth_user", "rootblend_user"];
+  const mainKeys = ["auth_user", "rootblend_user"];
+  const optionalKeys = ["user"];
 
-  for (const key of keys) {
-    const raw = localStorage.getItem(key);
+  let baseUser: Record<string, unknown> = {};
+
+  for (const key of [...mainKeys, ...optionalKeys]) {
+    const raw = localStorage.getItem(key) || sessionStorage.getItem(key);
 
     if (!raw) continue;
 
     try {
-      const parsed = JSON.parse(raw);
-      localStorage.setItem(
-        key,
-        JSON.stringify({
-          ...parsed,
-          ...data,
-        })
-      );
+      baseUser = {
+        ...baseUser,
+        ...(JSON.parse(raw) as Record<string, unknown>),
+      };
     } catch {
       // Si localStorage tiene datos viejos o corruptos, lo ignoramos.
+    }
+  }
+
+  const nextUser = {
+    ...baseUser,
+    ...data,
+  };
+
+  const serializedUser = JSON.stringify(nextUser);
+
+  for (const key of mainKeys) {
+    localStorage.setItem(key, serializedUser);
+  }
+
+  for (const key of optionalKeys) {
+    if (localStorage.getItem(key)) {
+      localStorage.setItem(key, serializedUser);
+    }
+
+    if (sessionStorage.getItem(key)) {
+      sessionStorage.setItem(key, serializedUser);
     }
   }
 
@@ -123,15 +153,28 @@ export default function EditProfilePage() {
           return;
         }
 
-        setCorreo(result.data.usuario.correo || "");
-        setNombreVisible(
+        const nextCorreo = result.data.usuario.correo || "";
+        const nextNombre =
           result.data.perfil.nombre_visible ||
-            result.data.usuario.correo.split("@")[0] ||
-            ""
-        );
-        setFotoPerfil(result.data.perfil.foto_perfil || "");
-        setBiografia(result.data.perfil.biografia || "");
-        setFechaNacimiento(result.data.perfil.fecha_nacimiento || "");
+          result.data.usuario.correo.split("@")[0] ||
+          "";
+        const nextFoto = result.data.perfil.foto_perfil || "";
+        const nextBiografia = result.data.perfil.biografia || "";
+        const nextFechaNacimiento = result.data.perfil.fecha_nacimiento || "";
+
+        setCorreo(nextCorreo);
+        setNombreVisible(nextNombre);
+        setFotoPerfil(nextFoto);
+        setBiografia(nextBiografia);
+        setFechaNacimiento(nextFechaNacimiento);
+
+        updateStoredProfileUser({
+          id_usuario: result.data.usuario.id_usuario,
+          correo: nextCorreo,
+          estado: result.data.usuario.estado,
+          nombre_visible: nextNombre,
+          foto_perfil: nextFoto || null,
+        });
       } catch (error) {
         console.error("PROFILE_EDIT_LOAD_ERROR", error);
 
@@ -260,10 +303,18 @@ export default function EditProfilePage() {
         return;
       }
 
+      const backendPhoto =
+        result.data?.perfil?.foto_perfil || finalPhotoUrl || "";
+      const backendName =
+        result.data?.perfil?.nombre_visible || nombreVisible.trim();
+
+      setNombreVisible(backendName);
+      setFotoPerfil(backendPhoto);
+
       updateStoredProfileUser({
         correo,
-        nombre_visible: nombreVisible.trim(),
-        foto_perfil: finalPhotoUrl || null,
+        nombre_visible: backendName,
+        foto_perfil: backendPhoto || null,
       });
 
       setSuccessMessage("Perfil actualizado correctamente.");
@@ -286,12 +337,12 @@ export default function EditProfilePage() {
           <Eyebrow>Perfil real</Eyebrow>
           <h1>Editar perfil</h1>
           <p>
-            Actualiza tu información pública. Ahora puedes subir una imagen
-            desde tu computadora o usar una URL externa.
+            Actualiza tu información pública. Puedes subir una imagen desde tu
+            computadora o usar una URL externa.
           </p>
         </PageHeading>
 
-        {loading && (
+        {loading ? (
           <AlertPanel>
             <FiRefreshCw />
             <div>
@@ -299,9 +350,9 @@ export default function EditProfilePage() {
               <p>Consultando datos actuales del usuario.</p>
             </div>
           </AlertPanel>
-        )}
+        ) : null}
 
-        {error && (
+        {error ? (
           <AlertPanel>
             <FiAlertTriangle />
             <div>
@@ -309,13 +360,13 @@ export default function EditProfilePage() {
               <p>{error}</p>
             </div>
           </AlertPanel>
-        )}
+        ) : null}
 
-        {successMessage && (
+        {successMessage ? (
           <SuccessBox>
             <FiCheckCircle /> {successMessage}
           </SuccessBox>
-        )}
+        ) : null}
 
         <ProfileHeader>
           <Avatar $large>
@@ -328,6 +379,7 @@ export default function EditProfilePage() {
                   height: "100%",
                   borderRadius: "50%",
                   objectFit: "cover",
+                  display: "block",
                 }}
               />
             ) : (
@@ -364,12 +416,12 @@ export default function EditProfilePage() {
           />
         </Field>
 
-        {selectedFile && (
+        {selectedFile ? (
           <SuccessBox>
             <FiImage />
             Imagen seleccionada: {selectedFile.name}
           </SuccessBox>
-        )}
+        ) : null}
 
         <Label>O usar URL de foto de perfil</Label>
         <Field>
