@@ -11,11 +11,11 @@ export type Canal = {
   id_usuario_propietario: number;
   tipo_canal: TipoCanal;
   nombre_canal: string;
-  descripcion?: string | null;
-  foto_canal?: string | null;
-  banner_canal?: string | null;
-  estado_canal: "activo" | "inactivo";
-  fecha_creacion?: string | null;
+  descripcion: string | null;
+  foto_canal: string | null;
+  banner_canal: string | null;
+  estado_canal: string;
+  fecha_creacion: string;
 };
 
 export type Categoria = {
@@ -45,8 +45,19 @@ export type Stream = {
   canal: {
     id_canal: number;
     nombre_canal: string;
-    id_usuario_propietario: number;
-    tipo_canal: string;
+    descripcion?: string | null;
+    foto_canal?: string | null;
+    banner_canal?: string | null;
+    estado_canal?: string | null;
+    id_usuario_propietario?: number;
+    tipo_canal?:
+      | TipoCanal
+      | {
+          id_tipo_canal?: number;
+          nombre_tipo?: "streamer" | "podcaster" | string;
+          descripcion?: string | null;
+        }
+      | string;
   };
 
   categoria: {
@@ -152,6 +163,14 @@ export async function getActiveChannels(): Promise<Canal[]> {
   );
 
   return response.data.results;
+}
+
+export async function getChannelById(id: number): Promise<Canal> {
+  const response = await apiRequest<ApiItemResponse<Canal>>(
+    `/streams/canales/${id}/`
+  );
+
+  return response.data;
 }
 
 export async function getStreamById(id: number): Promise<Stream> {
@@ -387,4 +406,36 @@ export async function uploadChannelImage(
   }
 
   return result.data;
+}
+
+export type ViewerCounterResponse = {
+  id_stream: number;
+  viewer_count: number;
+  estado: Stream["estado"];
+};
+
+export async function joinStreamViewer(
+  id: number
+): Promise<ViewerCounterResponse> {
+  const response = await apiRequest<ApiItemResponse<ViewerCounterResponse>>(
+    `/streams/streams/${id}/viewer/join/`,
+    {
+      method: "POST",
+    }
+  );
+
+  return response.data;
+}
+
+export async function leaveStreamViewer(
+  id: number
+): Promise<ViewerCounterResponse> {
+  const response = await apiRequest<ApiItemResponse<ViewerCounterResponse>>(
+    `/streams/streams/${id}/viewer/leave/`,
+    {
+      method: "POST",
+    }
+  );
+
+  return response.data;
 }

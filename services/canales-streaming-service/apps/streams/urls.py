@@ -12,6 +12,8 @@ from .views import (
     signal_status,
     streams_destacados,
     streams_en_vivo,
+    join_stream_viewer,
+    leave_stream_viewer,
 )
 
 urlpatterns = [
@@ -26,4 +28,6 @@ urlpatterns = [
     path("<int:stream_id>/obs-config/", obs_config, name="obs-config"),
     path("<int:stream_id>/rotate-key/", rotate_key, name="rotate-key"),
     path("<int:stream_id>/signal-status/", signal_status, name="signal-status"),
+    path("<int:stream_id>/viewer/join/", join_stream_viewer, name="join-stream-viewer"),
+    path("<int:stream_id>/viewer/leave/", leave_stream_viewer, name="leave-stream-viewer"),
 ]

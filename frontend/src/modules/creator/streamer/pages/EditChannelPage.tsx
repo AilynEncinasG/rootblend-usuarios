@@ -62,7 +62,40 @@ function isImageUrl(value?: string | null) {
     return false;
   }
 
-  return value.startsWith("http://") || value.startsWith("https://");
+  const cleanValue = value.trim();
+
+  return (
+    cleanValue.startsWith("http://") || cleanValue.startsWith("https://")
+  );
+}
+
+function isLocalMediaUrl(value?: string | null) {
+  if (!value) {
+    return false;
+  }
+
+  const cleanValue = value.trim().toLowerCase();
+
+  return (
+    cleanValue.includes("localhost:8080/canales-media") ||
+    cleanValue.includes("127.0.0.1:8080/canales-media") ||
+    cleanValue.startsWith("/canales-media") ||
+    cleanValue.includes("/canales-media/")
+  );
+}
+
+function cleanDemoImageUrl(value?: string | null) {
+  if (!value) {
+    return "";
+  }
+
+  const cleanValue = value.trim();
+
+  if (isLocalMediaUrl(cleanValue)) {
+    return "";
+  }
+
+  return cleanValue;
 }
 
 function validateImageFile(file: File, tipo: "foto" | "banner") {
@@ -122,8 +155,14 @@ export default function EditChannelPage() {
         setChannel(result.canal);
         setNombreCanal(result.canal.nombre_canal || "");
         setDescripcion(result.canal.descripcion || "");
-        setFotoCanal(result.canal.foto_canal || "");
-        setBannerCanal(result.canal.banner_canal || "");
+
+        /*
+          Importante para demo:
+          Si la BD trae una imagen local tipo localhost/canales-media,
+          no la reutilizamos en el input para evitar que se vuelva a guardar.
+        */
+        setFotoCanal(cleanDemoImageUrl(result.canal.foto_canal));
+        setBannerCanal(cleanDemoImageUrl(result.canal.banner_canal));
       } catch (err) {
         console.error("EDIT_CHANNEL_LOAD_ERROR", err);
 
@@ -181,16 +220,20 @@ export default function EditChannelPage() {
       return fotoPreviewLocal;
     }
 
-    return isImageUrl(fotoCanal) ? fotoCanal : "";
-  }, [fotoCanal, fotoPreviewLocal]);
+    const cleanFoto = cleanDemoImageUrl(fotoCanal || channel?.foto_canal);
+
+    return isImageUrl(cleanFoto) ? cleanFoto : "";
+  }, [channel?.foto_canal, fotoCanal, fotoPreviewLocal]);
 
   const bannerPreview = useMemo(() => {
     if (bannerPreviewLocal) {
       return bannerPreviewLocal;
     }
 
-    return isImageUrl(bannerCanal) ? bannerCanal : "";
-  }, [bannerCanal, bannerPreviewLocal]);
+    const cleanBanner = cleanDemoImageUrl(bannerCanal || channel?.banner_canal);
+
+    return isImageUrl(cleanBanner) ? cleanBanner : "";
+  }, [bannerCanal, bannerPreviewLocal, channel?.banner_canal]);
 
   function handleFotoFileChange(event: ChangeEvent<HTMLInputElement>) {
     const file = event.target.files?.[0] || null;
@@ -212,6 +255,11 @@ export default function EditChannelPage() {
       return;
     }
 
+    /*
+      Si seleccionas archivo, limpiamos la URL.
+      Si quieres usar URL externa, no selecciones archivo.
+    */
+    setFotoCanal("");
     setFotoFile(file);
   }
 
@@ -235,6 +283,11 @@ export default function EditChannelPage() {
       return;
     }
 
+    /*
+      Si seleccionas archivo, limpiamos la URL.
+      Si quieres usar URL externa, no selecciones archivo.
+    */
+    setBannerCanal("");
     setBannerFile(file);
   }
 
@@ -248,8 +301,9 @@ export default function EditChannelPage() {
 
     const cleanNombre = nombreCanal.trim();
     const cleanDescripcion = descripcion.trim();
-    let finalFoto = fotoCanal.trim();
-    let finalBanner = bannerCanal.trim();
+
+    let finalFoto = cleanDemoImageUrl(fotoCanal);
+    let finalBanner = cleanDemoImageUrl(bannerCanal);
 
     if (!cleanNombre) {
       setError("El nombre del canal es obligatorio.");
@@ -262,7 +316,9 @@ export default function EditChannelPage() {
     }
 
     if (finalFoto && !isImageUrl(finalFoto)) {
-      setError("La foto del canal debe ser una URL válida.");
+      setError(
+        "La foto del canal debe ser una URL válida que empiece con http:// o https://."
+      );
       return;
     }
 
@@ -272,7 +328,9 @@ export default function EditChannelPage() {
     }
 
     if (finalBanner && !isImageUrl(finalBanner)) {
-      setError("El banner del canal debe ser una URL válida.");
+      setError(
+        "El banner del canal debe ser una URL válida que empiece con http:// o https://."
+      );
       return;
     }
 
@@ -284,18 +342,21 @@ export default function EditChannelPage() {
     setSaving(true);
 
     try {
-      if (fotoFile) {
+      /*
+        Regla importante:
+        1. Si escribiste URL externa, esa URL gana.
+        2. Solo se sube archivo local si el input URL está vacío.
+        3. Así ya no vuelve a guardar localhost si estás usando URLs para demo.
+      */
+
+      if (!finalFoto && fotoFile) {
         const uploadedPhoto = await uploadChannelImage("foto", fotoFile);
         finalFoto = uploadedPhoto.url;
-        setFotoCanal(finalFoto);
-        setFotoFile(null);
       }
 
-      if (bannerFile) {
+      if (!finalBanner && bannerFile) {
         const uploadedBanner = await uploadChannelImage("banner", bannerFile);
         finalBanner = uploadedBanner.url;
-        setBannerCanal(finalBanner);
-        setBannerFile(null);
       }
 
       const updatedChannel = await updateMyChannel({
@@ -306,6 +367,11 @@ export default function EditChannelPage() {
       });
 
       setChannel(updatedChannel);
+      setFotoCanal(cleanDemoImageUrl(updatedChannel.foto_canal));
+      setBannerCanal(cleanDemoImageUrl(updatedChannel.banner_canal));
+      setFotoFile(null);
+      setBannerFile(null);
+
       setSuccess("Canal actualizado correctamente.");
 
       window.setTimeout(() => {
@@ -336,8 +402,8 @@ export default function EditChannelPage() {
               <h1>Editar canal</h1>
               <p>
                 Configura el nombre, la descripción, la foto y el banner del
-                canal. Puedes usar una URL pública o subir imágenes desde tu
-                computadora.
+                canal. Para la demostración se recomienda usar URLs públicas de
+                imagen.
               </p>
             </PageHeading>
 
@@ -446,6 +512,20 @@ export default function EditChannelPage() {
               disabled={loading || saving}
             />
 
+            <Label>URL de foto del canal</Label>
+            <Field>
+              <FiImage />
+              <input
+                value={fotoCanal}
+                onChange={(event) => {
+                  setFotoCanal(event.target.value);
+                  setFotoFile(null);
+                }}
+                placeholder="https://ejemplo.com/foto-canal.jpg"
+                disabled={loading || saving}
+              />
+            </Field>
+
             <Label>Subir foto del canal desde tu computadora</Label>
             <Field>
               <FiUpload />
@@ -464,16 +544,16 @@ export default function EditChannelPage() {
               </SuccessBox>
             ) : null}
 
-            <Label>O usar URL de foto del canal</Label>
+            <Label>URL de banner del canal</Label>
             <Field>
               <FiImage />
               <input
-                value={fotoCanal}
+                value={bannerCanal}
                 onChange={(event) => {
-                  setFotoCanal(event.target.value);
-                  setFotoFile(null);
+                  setBannerCanal(event.target.value);
+                  setBannerFile(null);
                 }}
-                placeholder="https://ejemplo.com/foto-canal.jpg"
+                placeholder="https://ejemplo.com/banner-canal.jpg"
                 disabled={loading || saving}
               />
             </Field>
@@ -495,20 +575,6 @@ export default function EditChannelPage() {
                 Banner seleccionado: {bannerFile.name}
               </SuccessBox>
             ) : null}
-
-            <Label>O usar URL de banner del canal</Label>
-            <Field>
-              <FiImage />
-              <input
-                value={bannerCanal}
-                onChange={(event) => {
-                  setBannerCanal(event.target.value);
-                  setBannerFile(null);
-                }}
-                placeholder="https://ejemplo.com/banner-canal.jpg"
-                disabled={loading || saving}
-              />
-            </Field>
 
             <ButtonRow>
               <GhostLink to="/creator/streamer/dashboard">Cancelar</GhostLink>

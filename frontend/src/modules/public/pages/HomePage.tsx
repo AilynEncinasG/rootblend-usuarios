@@ -1,4 +1,3 @@
-//frontend/src/modules/public/pages/HomePage.tsx
 import { type ReactNode, useEffect, useState } from "react";
 import {
   FiAlertTriangle,
@@ -67,6 +66,20 @@ import {
   ViewBadge,
 } from "../../../shared/styles/legacyStyled";
 
+type HomeStreamItem = StreamItem & {
+  channelId?: number;
+  channelPhoto?: string | null;
+};
+
+type HomeChannelItem = {
+  id: string;
+  name: string;
+  subtitle: string;
+  viewers: string;
+  avatar: string;
+  photo?: string | null;
+};
+
 function getInitials(value?: string | null) {
   const clean = String(value || "").trim();
 
@@ -84,9 +97,19 @@ function getInitials(value?: string | null) {
   );
 }
 
-function backendStreamToCard(stream: BackendStream): StreamItem {
+function isImageUrl(value?: string | null) {
+  if (!value) {
+    return false;
+  }
+
+  return value.startsWith("http://") || value.startsWith("https://");
+}
+
+function backendStreamToCard(stream: BackendStream): HomeStreamItem {
   return {
     id: String(stream.id_stream),
+    channelId: stream.canal.id_canal,
+    channelPhoto: stream.canal.foto_canal ?? null,
     title: stream.titulo,
     channel: stream.canal.nombre_canal,
     handle: `@${stream.canal.nombre_canal.toLowerCase().replace(/\s+/g, "")}`,
@@ -107,19 +130,19 @@ function backendStreamToCard(stream: BackendStream): StreamItem {
 
 function backendCategoryToCard(
   category: BackendCategory,
-  liveStreams: StreamItem[]
+  liveStreams: HomeStreamItem[]
 ): Category {
   const activeCount = liveStreams.filter(
     (stream) => stream.category === category.nombre
   ).length;
 
   const imageMap: Record<string, string> = {
-    "Gaming": brandAssets.gamingCategoria,
-    "Musica": brandAssets.musicaCategoria,
-    "Charlas": brandAssets.charlasCategoria,
-    "Tecnologia": brandAssets.tecnologiaCategoria,
-    "Deportes": brandAssets.deportesCategoria,
-    "Podcasts": brandAssets.podcastsCategoria,
+    Gaming: brandAssets.gamingCategoria,
+    Musica: brandAssets.musicaCategoria,
+    Charlas: brandAssets.charlasCategoria,
+    Tecnologia: brandAssets.tecnologiaCategoria,
+    Deportes: brandAssets.deportesCategoria,
+    Podcasts: brandAssets.podcastsCategoria,
   };
 
   const finalImage = imageMap[category.nombre] || brandAssets.charlasCategoria;
@@ -134,13 +157,14 @@ function backendCategoryToCard(
   };
 }
 
-function backendChannelToCard(channel: BackendCanal) {
+function backendChannelToCard(channel: BackendCanal): HomeChannelItem {
   return {
+    id: String(channel.id_canal),
     name: channel.nombre_canal,
     subtitle: channel.tipo_canal.nombre_tipo,
     viewers: "0",
     avatar: getInitials(channel.nombre_canal),
-    id: String(channel.id_canal),
+    photo: channel.foto_canal,
   };
 }
 
@@ -182,7 +206,29 @@ function EmptyPanel({
   );
 }
 
-function StreamCard({ stream }: { stream: StreamItem }) {
+function StreamAvatar({ stream }: { stream: HomeStreamItem }) {
+  if (isImageUrl(stream.channelPhoto)) {
+    return (
+      <Avatar>
+        <img
+          src={stream.channelPhoto || ""}
+          alt={stream.channel}
+          style={{
+            width: "100%",
+            height: "100%",
+            borderRadius: "50%",
+            objectFit: "cover",
+            display: "block",
+          }}
+        />
+      </Avatar>
+    );
+  }
+
+  return <Avatar>{stream.avatar}</Avatar>;
+}
+
+function StreamCard({ stream }: { stream: HomeStreamItem }) {
   return (
     <ContentCard to={`/streams/${stream.id}`}>
       <Thumb $image={stream.image}>
@@ -196,7 +242,7 @@ function StreamCard({ stream }: { stream: StreamItem }) {
         <CardTitle>{stream.title}</CardTitle>
 
         <MetaLine>
-          <Avatar>{stream.avatar}</Avatar>
+          <StreamAvatar stream={stream} />
           <span>{stream.channel}</span>
           <VerifiedDot />
         </MetaLine>
@@ -227,18 +273,39 @@ function PodcastCard({ podcast }: { podcast: PodcastItem }) {
   );
 }
 
+function ChannelAvatar({ channel }: { channel: HomeChannelItem }) {
+  if (isImageUrl(channel.photo)) {
+    return (
+      <Avatar>
+        <img
+          src={channel.photo || ""}
+          alt={channel.name}
+          style={{
+            width: "100%",
+            height: "100%",
+            borderRadius: "50%",
+            objectFit: "cover",
+            display: "block",
+          }}
+        />
+      </Avatar>
+    );
+  }
+
+  return <Avatar>{channel.avatar}</Avatar>;
+}
+
 export default function HomePage() {
   const loggedIn = isAuthenticated();
 
-  const [liveStreams, setLiveStreams] = useState<StreamItem[]>([]);
-  const [featuredStreams, setFeaturedStreams] = useState<StreamItem[]>([]);
+  const [liveStreams, setLiveStreams] = useState<HomeStreamItem[]>([]);
+  const [featuredStreams, setFeaturedStreams] = useState<HomeStreamItem[]>([]);
   const [backendCategories, setBackendCategories] = useState<Category[]>([]);
-  const [backendChannels, setBackendChannels] = useState<
-    ReturnType<typeof backendChannelToCard>[]
-  >([]);
+  const [backendChannels, setBackendChannels] = useState<HomeChannelItem[]>([]);
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("Todas");
 
   useEffect(() => {
     let active = true;
@@ -291,17 +358,18 @@ export default function HomePage() {
   }, []);
 
   const heroStream = liveStreams[0];
-  const [selectedCategory, setSelectedCategory] = useState("Todas");
-  const filteredStreams = selectedCategory === "Todas"
-  ? liveStreams
-  : liveStreams.filter(stream => 
-    stream.category?.trim().toLowerCase() === selectedCategory.trim().toLowerCase()
-  );
+
+  const filteredStreams =
+    selectedCategory === "Todas"
+      ? liveStreams
+      : liveStreams.filter(
+          (stream) =>
+            stream.category?.trim().toLowerCase() ===
+            selectedCategory.trim().toLowerCase()
+        );
 
   return (
-    <RootShell
-      active="home"
-    >
+    <RootShell active="home">
       {error ? (
         <AlertPanel>
           <FiAlertTriangle />
@@ -334,7 +402,7 @@ export default function HomePage() {
           </ButtonRow>
         </HeroCopy>
 
-        <HeroMedia 
+        <HeroMedia
           $image={heroStream?.image ? heroStream.image : brandAssets.fondo}
         >
           <FeaturedFlag>DESTACADO</FeaturedFlag>
@@ -367,16 +435,16 @@ export default function HomePage() {
       ) : null}
 
       <FilterRow>
-        <FilterChip 
-          $active={selectedCategory === "Todas"} 
+        <FilterChip
+          $active={selectedCategory === "Todas"}
           onClick={() => setSelectedCategory("Todas")}
         >
           Todas
         </FilterChip>
-        
+
         {backendCategories.map((category) => (
-          <FilterChip 
-            key={category.id} 
+          <FilterChip
+            key={category.id}
             $active={selectedCategory === category.name}
             onClick={() => setSelectedCategory(category.name)}
           >
@@ -437,7 +505,7 @@ export default function HomePage() {
           <PodcastGrid>
             {backendChannels.map((channel) => (
               <PodcastTile key={channel.id} to={`/channels/${channel.id}`}>
-                <Avatar>{channel.avatar}</Avatar>
+                <ChannelAvatar channel={channel} />
 
                 <div>
                   <CardTitle>{channel.name}</CardTitle>
@@ -451,9 +519,7 @@ export default function HomePage() {
         )}
       </Section>
 
-      <Section
-        title="Categorías"
-      >
+      <Section title="Categorías">
         {backendCategories.length === 0 ? (
           <EmptyPanel
             icon={<FiGrid />}

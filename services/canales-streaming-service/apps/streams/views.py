@@ -133,42 +133,51 @@ def sync_signal_status(stream):
 
 
 def serialize_stream(stream):
-    canal = stream.canal
-    categoria = stream.categoria
-    config = getattr(stream, "configuracion", None)
+    categoria = getattr(stream, "categoria", None)
+    canal = getattr(stream, "canal", None)
+    configuracion = getattr(stream, "configuracion", None)
+
+    tipo_canal = getattr(canal, "tipo_canal", None) if canal else None
 
     return {
         "id_stream": stream.id,
+        "canal": {
+            "id_canal": canal.id if canal else None,
+            "nombre_canal": canal.nombre_canal if canal else "",
+            "descripcion": canal.descripcion if canal else None,
+            "foto_canal": canal.foto_canal if canal else None,
+            "banner_canal": canal.banner_canal if canal else None,
+            "estado_canal": canal.estado_canal if canal else None,
+            "id_usuario_propietario": canal.id_usuario_propietario if canal else None,
+            "tipo_canal": {
+                "id_tipo_canal": tipo_canal.id if tipo_canal else None,
+                "nombre_tipo": tipo_canal.nombre_tipo if tipo_canal else None,
+                "descripcion": tipo_canal.descripcion if tipo_canal else None,
+            },
+        },
+        "categoria": {
+            "id_categoria": categoria.id if categoria else None,
+            "nombre": categoria.nombre if categoria else "",
+            "descripcion": categoria.descripcion if categoria else None,
+        },
         "titulo": stream.titulo,
         "descripcion": stream.descripcion,
         "estado": stream.estado,
-        "fecha_inicio": stream.fecha_inicio.isoformat() if stream.fecha_inicio else None,
-        "fecha_fin": stream.fecha_fin.isoformat() if stream.fecha_fin else None,
-        "calidad_actual": stream.calidad_actual,
-        "destacado": stream.destacado,
         "playback_url": stream.playback_url,
         "thumbnail_url": stream.thumbnail_url,
-        "viewer_count": stream.viewer_count,
-        "signal_status": stream.signal_status,
-        "last_signal_at": stream.last_signal_at.isoformat() if stream.last_signal_at else None,
-        "canal": {
-            "id_canal": canal.id,
-            "nombre_canal": canal.nombre_canal,
-            "id_usuario_propietario": canal.id_usuario_propietario,
-            "tipo_canal": canal.tipo_canal.nombre_tipo,
-        },
-        "categoria": {
-            "id_categoria": categoria.id,
-            "nombre": categoria.nombre,
-        },
+        "viewer_count": stream.viewer_count or 0,
+        "destacado": stream.destacado,
+        "fecha_inicio": stream.fecha_inicio.isoformat() if stream.fecha_inicio else None,
+        "fecha_fin": stream.fecha_fin.isoformat() if stream.fecha_fin else None,
         "configuracion": {
-            "resolucion": config.resolucion if config else None,
-            "bitrate": config.bitrate if config else None,
-            "latencia_modo": config.latencia_modo if config else None,
-            "audio_activo": config.audio_activo if config else None,
-        },
+            "resolucion": configuracion.resolucion if configuracion else None,
+            "bitrate": configuracion.bitrate if configuracion else None,
+            "latencia_modo": configuracion.latencia_modo if configuracion else None,
+            "audio_activo": configuracion.audio_activo if configuracion else None,
+        }
+        if configuracion
+        else None,
     }
-
 
 def serialize_obs_config(stream):
     return {
@@ -501,3 +510,62 @@ def signal_status(request, stream_id):
             "viewer_count": stream.viewer_count,
         }
     )
+
+@csrf_exempt
+@require_http_methods(["POST"])
+def join_stream_viewer(request, stream_id):
+    try:
+        with transaction.atomic():
+            stream = Stream.objects.select_for_update().get(id=stream_id)
+
+            if stream.estado != Stream.EN_VIVO:
+                return success_response(
+                    {
+                        "id_stream": stream.id,
+                        "viewer_count": stream.viewer_count or 0,
+                        "estado": stream.estado,
+                    },
+                    message="El stream no está en vivo.",
+                    status=200,
+                )
+
+            stream.viewer_count = (stream.viewer_count or 0) + 1
+            stream.save(update_fields=["viewer_count"])
+
+            return success_response(
+                {
+                    "id_stream": stream.id,
+                    "viewer_count": stream.viewer_count,
+                    "estado": stream.estado,
+                },
+                message="Espectador conectado.",
+                status=200,
+            )
+
+    except Stream.DoesNotExist:
+        return error_response("Stream no encontrado.", status=404)
+
+
+@csrf_exempt
+@require_http_methods(["POST"])
+def leave_stream_viewer(request, stream_id):
+    try:
+        with transaction.atomic():
+            stream = Stream.objects.select_for_update().get(id=stream_id)
+
+            current_count = stream.viewer_count or 0
+            stream.viewer_count = max(current_count - 1, 0)
+            stream.save(update_fields=["viewer_count"])
+
+            return success_response(
+                {
+                    "id_stream": stream.id,
+                    "viewer_count": stream.viewer_count,
+                    "estado": stream.estado,
+                },
+                message="Espectador desconectado.",
+                status=200,
+            )
+
+    except Stream.DoesNotExist:
+        return error_response("Stream no encontrado.", status=404)
