@@ -197,6 +197,26 @@ export async function activateChannel(payload: {
   return response.data;
 }
 
+export async function updateMyChannel(payload: {
+  nombre_canal?: string;
+  descripcion?: string;
+  foto_canal?: string;
+  banner_canal?: string;
+}): Promise<Canal> {
+  const response = await apiRequest<
+    ApiItemResponse<{
+      tiene_canal: boolean;
+      canal: Canal;
+    }>
+  >("/streams/canales/mi-canal/actualizar/", {
+    method: "PATCH",
+    body: payload,
+    auth: true,
+  });
+
+  return response.data.canal;
+}
+
 export async function createStream(payload: {
   titulo: string;
   descripcion?: string;
@@ -212,6 +232,33 @@ export async function createStream(payload: {
     "/streams/streams/crear/",
     {
       method: "POST",
+      body: payload,
+      auth: true,
+    }
+  );
+
+  return response.data;
+}
+
+export async function updateStream(
+  id: number,
+  payload: {
+    titulo?: string;
+    descripcion?: string;
+    id_categoria?: number;
+    destacado?: boolean;
+    calidad_actual?: string;
+    resolucion?: string;
+    bitrate?: number;
+    latencia_modo?: string;
+    audio_activo?: boolean;
+    thumbnail_url?: string;
+  }
+): Promise<Stream> {
+  const response = await apiRequest<ApiItemResponse<Stream>>(
+    `/streams/streams/${id}/editar/`,
+    {
+      method: "PATCH",
       body: payload,
       auth: true,
     }
@@ -267,10 +314,76 @@ export async function rotateStreamKey(id: number): Promise<StreamObsConfig> {
   return response.data;
 }
 
-export async function getStreamSignalStatus(id: number): Promise<StreamSignalStatus> {
+export async function getStreamSignalStatus(
+  id: number
+): Promise<StreamSignalStatus> {
   const response = await apiRequest<ApiItemResponse<StreamSignalStatus>>(
     `/streams/streams/${id}/signal-status/`
   );
 
   return response.data;
+}
+
+const RAW_UPLOAD_API_BASE =
+  import.meta.env.VITE_API_BASE ||
+  import.meta.env.VITE_API_BASE_URL ||
+  "http://localhost:8080/api";
+
+function normalizeUploadApiBase(value: string) {
+  const cleanValue = value.replace(/\/+$/, "");
+  return cleanValue.endsWith("/api") ? cleanValue : `${cleanValue}/api`;
+}
+
+const UPLOAD_API_BASE = normalizeUploadApiBase(RAW_UPLOAD_API_BASE);
+
+function getUploadAccessToken(): string | null {
+  return (
+    localStorage.getItem("access_token") ||
+    localStorage.getItem("token") ||
+    sessionStorage.getItem("access_token") ||
+    sessionStorage.getItem("token")
+  );
+}
+
+export async function uploadChannelImage(
+  tipo: "foto" | "banner",
+  file: File
+): Promise<{
+  tipo: "foto" | "banner";
+  campo: "foto_canal" | "banner_canal";
+  url: string;
+  canal: Canal;
+}> {
+  const formData = new FormData();
+  formData.append("tipo", tipo);
+  formData.append("imagen", file);
+
+  const headers: Record<string, string> = {
+    Accept: "application/json",
+  };
+
+  const token = getUploadAccessToken();
+
+  if (token) {
+    headers.Authorization = `Bearer ${token}`;
+  }
+
+  const response = await fetch(
+    `${UPLOAD_API_BASE}/streams/canales/mi-canal/upload-image/`,
+    {
+      method: "POST",
+      headers,
+      body: formData,
+    }
+  );
+
+  const result = await response.json().catch(() => null);
+
+  if (!response.ok || !result?.success) {
+    throw new Error(
+      result?.message || `No se pudo subir la imagen. HTTP ${response.status}`
+    );
+  }
+
+  return result.data;
 }

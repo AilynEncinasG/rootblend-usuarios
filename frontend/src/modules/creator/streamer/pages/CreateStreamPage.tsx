@@ -1,24 +1,34 @@
 import { type FormEvent, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { FiAlertTriangle, FiCheckCircle, FiRadio } from "react-icons/fi";
+import {
+  FiAlertTriangle,
+  FiCheckCircle,
+  FiRadio,
+  FiSave,
+} from "react-icons/fi";
+import { RootShell } from "../../../../shared/layout";
 import {
   AlertPanel,
+  ButtonRow,
+  CreatorLayout,
+  CreatorMain,
+  Eyebrow,
   Field,
-  FormLimiter,
+  FormCard,
+  GhostLink,
   Label,
   Muted,
-  PageCenterContainer,
+  PageHeading,
+  PrimaryButton,
   Select,
   TextArea,
 } from "../../../../shared/styles/legacyStyled";
-import { CreatorForm } from "../../shared/creatorLegacy";
+import { CreatorNav } from "../../shared/creatorLegacy";
 import {
   createStream,
   getCategories,
   type Categoria,
 } from "../../../streams/services/streamsService";
-
-import { RootShell } from "../../../../shared/layout/RootShell";
 
 export default function CreateStreamPage() {
   const navigate = useNavigate();
@@ -28,8 +38,6 @@ export default function CreateStreamPage() {
   const [categoryId, setCategoryId] = useState("");
   const [description, setDescription] = useState("");
   const [quality, setQuality] = useState("720p");
-  const [bitrate, setBitrate] = useState("2500");
-  const [featured, setFeatured] = useState(false);
 
   const [loadingCategories, setLoadingCategories] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -46,9 +54,7 @@ export default function CreateStreamPage() {
       try {
         const categoryList = await getCategories();
 
-        if (!active) {
-          return;
-        }
+        if (!active) return;
 
         setCategories(categoryList);
 
@@ -62,7 +68,7 @@ export default function CreateStreamPage() {
           setCategories([]);
           setCategoryId("");
           setError(
-            "No se pudieron cargar las categorías reales del backend. Verifica que el backend esté activo."
+            "No se pudieron cargar las categorías. Verifica que canales-streaming-service esté activo."
           );
         }
       } finally {
@@ -82,9 +88,7 @@ export default function CreateStreamPage() {
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
-    if (saving) {
-      return;
-    }
+    if (saving) return;
 
     setError("");
     setSuccess("");
@@ -92,7 +96,6 @@ export default function CreateStreamPage() {
     const cleanTitle = title.trim();
     const cleanDescription = description.trim();
     const parsedCategoryId = Number(categoryId);
-    const parsedBitrate = Number(bitrate);
 
     if (!cleanTitle) {
       setError("Escribe un título para el stream.");
@@ -104,11 +107,6 @@ export default function CreateStreamPage() {
       return;
     }
 
-    if (!Number.isFinite(parsedBitrate) || parsedBitrate <= 0) {
-      setError("El bitrate debe ser un número mayor a 0.");
-      return;
-    }
-
     setSaving(true);
 
     try {
@@ -116,10 +114,10 @@ export default function CreateStreamPage() {
         titulo: cleanTitle,
         descripcion: cleanDescription || undefined,
         id_categoria: parsedCategoryId,
-        destacado: featured,
+        destacado: false,
         calidad_actual: quality,
         resolucion: quality === "1080p" ? "1920x1080" : "1280x720",
-        bitrate: parsedBitrate,
+        bitrate: quality === "1080p" ? 4500 : 2500,
         latencia_modo: "baja",
         audio_activo: true,
       });
@@ -129,17 +127,18 @@ export default function CreateStreamPage() {
         String(createdStream.id_stream)
       );
 
-      setSuccess(
-        `Stream "${createdStream.titulo}" creado correctamente. Abriendo control de transmisión...`
-      );
+      setSuccess("Stream creado correctamente.");
 
-      setTimeout(() => {
+      window.setTimeout(() => {
         navigate("/creator/streamer/control");
-      }, 500);
+      }, 700);
     } catch (requestError) {
       console.error("CREATE_STREAM_SAVE_ERROR", requestError);
+
       setError(
-        "No se pudo crear el stream. Revisa que estés logueado, que tengas canal streamer activo y que el backend esté funcionando."
+        requestError instanceof Error
+          ? requestError.message
+          : "No se pudo crear el stream."
       );
     } finally {
       setSaving(false);
@@ -148,89 +147,126 @@ export default function CreateStreamPage() {
 
   return (
     <RootShell active="creator">
-      <PageCenterContainer>
-        <FormLimiter>
-          <CreatorForm
-            title="Crear / configurar stream"
-            subtitle="Completa los datos de tu transmisión..."
-            button={saving ? "Guardando..." : "Guardar configuracion"}
-            onSubmit={submit}
+      <CreatorLayout>
+        <CreatorNav />
+
+        <CreatorMain>
+          <div
+            style={{
+              width: "100%",
+              minHeight: "calc(100vh - 130px)",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "flex-start",
+              paddingTop: 26,
+              paddingBottom: 50,
+            }}
           >
-            {error ? (
-              <AlertPanel>
-                <FiAlertTriangle />
-                <div>
-                  <strong>No se pudo guardar</strong>
-                  <Muted>{error}</Muted>
-                </div>
-              </AlertPanel>
-            ) : null}
+            <FormCard
+              onSubmit={submit}
+              style={{
+                width: "min(760px, 100%)",
+                maxWidth: 760,
+              }}
+            >
+              <PageHeading>
+                <Eyebrow>Formulario</Eyebrow>
+                <h1>Crear / configurar stream</h1>
+                <p>Completa los datos de tu transmisión...</p>
+              </PageHeading>
 
-            {success ? (
-              <AlertPanel>
-                <FiCheckCircle />
-                <div>
-                  <strong>Stream creado</strong>
-                  <Muted>{success}</Muted>
-                </div>
-              </AlertPanel>
-            ) : null}
+              {error ? (
+                <AlertPanel>
+                  <FiAlertTriangle />
+                  <div>
+                    <strong>No se pudo guardar</strong>
+                    <Muted>{error}</Muted>
+                  </div>
+                </AlertPanel>
+              ) : null}
 
-            <Label>Titulo del stream</Label>
-            <Field>
-              <FiRadio />
-              <input
-                value={title}
-                onChange={(event) => setTitle(event.target.value)}
-                placeholder="Ej. Directo de la noche"
+              {success ? (
+                <AlertPanel>
+                  <FiCheckCircle />
+                  <div>
+                    <strong>Stream creado</strong>
+                    <Muted>{success}</Muted>
+                  </div>
+                </AlertPanel>
+              ) : null}
+
+              <Label>Título del stream</Label>
+              <Field>
+                <FiRadio />
+                <input
+                  value={title}
+                  onChange={(event) => setTitle(event.target.value)}
+                  placeholder="Ej. Directo de la noche"
+                  disabled={saving}
+                  maxLength={150}
+                />
+              </Field>
+
+              <Label>Categoría</Label>
+              <Select
+                value={categoryId}
+                onChange={(event) => setCategoryId(event.target.value)}
+                disabled={saving || loadingCategories || categories.length === 0}
+                style={{
+                  width: 170,
+                }}
+              >
+                {categories.length === 0 ? (
+                  <option value="">
+                    {loadingCategories ? "Cargando..." : "Sin categorías"}
+                  </option>
+                ) : (
+                  categories.map((category) => (
+                    <option
+                      key={category.id_categoria}
+                      value={category.id_categoria}
+                    >
+                      {category.nombre}
+                    </option>
+                  ))
+                )}
+              </Select>
+
+              <Label>Descripción</Label>
+              <TextArea
+                value={description}
+                onChange={(event) => setDescription(event.target.value)}
+                placeholder="Describe brevemente de qué tratará el directo."
                 disabled={saving}
               />
-            </Field>
 
-            <Label>Categoria</Label>
-            <Select
-              value={categoryId}
-              onChange={(event) => setCategoryId(event.target.value)}
-              disabled={saving || loadingCategories || categories.length === 0}
-            >
-              {categories.length === 0 ? (
-                <option value="">
-                  {loadingCategories
-                    ? "Cargando categorias..."
-                    : "No hay categorias disponibles"}
-                </option>
-              ) : (
-                categories.map((category) => (
-                  <option
-                    key={category.id_categoria}
-                    value={category.id_categoria}
-                  >
-                    {category.nombre}
-                  </option>
-                ))
-              )}
-            </Select>
+              <Label>Calidad</Label>
+              <Select
+                value={quality}
+                onChange={(event) => setQuality(event.target.value)}
+                disabled={saving}
+                style={{
+                  width: 230,
+                }}
+              >
+                <option value="720p">720p</option>
+                <option value="1080p">1080p recomendado</option>
+              </Select>
 
-            <Label>Descripcion</Label>
-            <TextArea
-              value={description}
-              onChange={(event) => setDescription(event.target.value)}
-              placeholder="Describe brevemente de qué tratará el directo."
-              disabled={saving}
-            />
+              <ButtonRow>
+                <GhostLink to="/creator/streamer/dashboard">
+                  Cancelar
+                </GhostLink>
 
-            <Label>Calidad</Label>
-            <Select
-              value={quality}
-              onChange={(event) => setQuality(event.target.value)}
-              disabled={saving}
-            >
-              <option value="720p">720p</option>
-              <option value="1080p">1080p recomendado</option>
-            </Select>
-          </CreatorForm>
-        </FormLimiter>
-      </PageCenterContainer>
+                <PrimaryButton type="submit" disabled={saving}>
+                  <FiSave />{" "}
+                  {saving ? "Guardando..." : "Guardar configuración"}
+                </PrimaryButton>
+              </ButtonRow>
+            </FormCard>
+          </div>
+        </CreatorMain>
+      </CreatorLayout>
     </RootShell>
   );
 }

@@ -144,3 +144,13 @@ STREAM_PLAYBACK_PROBE_BASE_URL = os.getenv(
     "STREAM_PLAYBACK_PROBE_BASE_URL",
     "http://media-server:8888/live",
 )
+MEDIA_URL = "/media/"
+MEDIA_ROOT = BASE_DIR / "media"
+
+PUBLIC_CHANNEL_MEDIA_BASE_URL = os.getenv(
+    "PUBLIC_CHANNEL_MEDIA_BASE_URL",
+    "http://localhost:8080/canales-media",
+)
+
+FILE_UPLOAD_MAX_MEMORY_SIZE = 6 * 1024 * 1024
+DATA_UPLOAD_MAX_MEMORY_SIZE = 6 * 1024 * 1024

@@ -1,10 +1,16 @@
 import { type FormEvent, type ReactNode, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import {
-  FiArrowRight,
+  FiActivity,
   FiCheckCircle,
   FiEdit3,
+  FiHeadphones,
+  FiMonitor,
+  FiPlus,
+  FiRadio,
   FiSave,
+  FiShield,
+  FiStar,
   FiTrash2,
   FiUpload,
 } from "react-icons/fi";
@@ -25,30 +31,191 @@ import {
   Label,
   PageHeading,
   PrimaryButton,
-  SidebarLink,
   SuccessBox,
   TextArea,
   UploadZone,
 } from "../../../shared/styles/legacyStyled";
+
+type CreatorScreenProps = {
+  title: string;
+  subtitle: string;
+  image: string;
+  children: ReactNode;
+};
+
+type CreatorFormProps = {
+  title: string;
+  subtitle: string;
+  button: string;
+  children: ReactNode;
+  onSubmit?: (event: FormEvent<HTMLFormElement>) => void | Promise<void>;
+};
+
+type FormPanelProps = CreatorFormProps;
+
+function CreatorSideLink({
+  to,
+  label,
+  icon,
+  activeMatch,
+}: {
+  to: string;
+  label: string;
+  icon: ReactNode;
+  activeMatch?: string[];
+}) {
+  const location = useLocation();
+
+  const isActive = activeMatch
+    ? activeMatch.some((path) => location.pathname.startsWith(path))
+    : location.pathname === to;
+
+  return (
+    <Link
+      to={to}
+      style={{
+        display: "flex",
+        alignItems: "center",
+        gap: 9,
+        minHeight: 38,
+        marginBottom: 8,
+        padding: "8px 10px",
+        borderRadius: 10,
+        color: isActive ? "#04111f" : "rgba(226, 232, 240, 0.82)",
+        background: isActive
+          ? "linear-gradient(135deg, #00e5ff, #22c55e)"
+          : "transparent",
+        fontSize: 13,
+        fontWeight: 850,
+        lineHeight: 1.15,
+        textDecoration: "none",
+        whiteSpace: "normal",
+      }}
+    >
+      <span
+        style={{
+          display: "inline-flex",
+          flex: "0 0 auto",
+        }}
+      >
+        {icon}
+      </span>
+
+      <span>{label}</span>
+    </Link>
+  );
+}
+
+export function CreatorNav() {
+  const location = useLocation();
+  const role = getCreatorRole();
+
+  const isPodcasterArea =
+    location.pathname.startsWith("/creator/podcaster") || role === "podcaster";
+
+  if (isPodcasterArea) {
+    return (
+      <CreatorSidebar>
+        <CreatorSideLink
+          to="/creator/podcaster/dashboard"
+          label="Podcaster"
+          icon={<FiHeadphones />}
+          activeMatch={["/creator/podcaster/dashboard"]}
+        />
+
+        <CreatorSideLink
+          to="/creator/podcaster/episodes"
+          label="Episodios"
+          icon={<FiPlus />}
+          activeMatch={["/creator/podcaster/episodes"]}
+        />
+
+        <CreatorSideLink
+          to="/creator/podcaster/stats"
+          label="Estadísticas"
+          icon={<FiActivity />}
+          activeMatch={["/creator/podcaster/stats"]}
+        />
+      </CreatorSidebar>
+    );
+  }
+
+  return (
+    <CreatorSidebar>
+      <CreatorSideLink
+        to="/creator/streamer/dashboard"
+        label="Streamer"
+        icon={<FiMonitor />}
+        activeMatch={["/creator/streamer/dashboard", "/creator/streamer"]}
+      />
+
+      <CreatorSideLink
+        to="/creator/streamer/control"
+        label="Iniciar transmisión"
+        icon={<FiRadio />}
+        activeMatch={["/creator/streamer/control"]}
+      />
+
+      <CreatorSideLink
+        to="/creator/streamer/create-stream"
+        label="Configurar stream"
+        icon={<FiPlus />}
+        activeMatch={[
+          "/creator/streamer/create-stream",
+          "/creator/streamer/streams/new",
+        ]}
+      />
+
+      <CreatorSideLink
+        to="/creator/streamer/channel/edit"
+        label="Editar canal"
+        icon={<FiEdit3 />}
+        activeMatch={[
+          "/creator/streamer/channel/edit",
+          "/creator/streamer/edit-channel",
+          "/creator/streamer/channel",
+        ]}
+      />
+
+      <CreatorSideLink
+        to="/creator/streamer/highlights"
+        label="Momentos"
+        icon={<FiStar />}
+        activeMatch={["/creator/streamer/highlights"]}
+      />
+
+      <CreatorSideLink
+        to="/creator/streamer/stats"
+        label="Estadísticas"
+        icon={<FiActivity />}
+        activeMatch={["/creator/streamer/stats"]}
+      />
+
+      <CreatorSideLink
+        to="/moderation/moderators"
+        label="Moderadores"
+        icon={<FiShield />}
+        activeMatch={["/moderation"]}
+      />
+    </CreatorSidebar>
+  );
+}
 
 export function CreatorScreen({
   title,
   subtitle,
   image,
   children,
-}: {
-  title: string;
-  subtitle: string;
-  image: string;
-  children: ReactNode;
-}) {
+}: CreatorScreenProps) {
   return (
     <RootShell active="creator">
       <CreatorLayout>
         <CreatorNav />
+
         <CreatorMain>
           <ChannelHero $image={image}>
             <Avatar $large>RB</Avatar>
+
             <div>
               <Eyebrow>ROOTBLEND Creator</Eyebrow>
               <h1>{title}</h1>
@@ -69,56 +236,24 @@ export function CreatorForm({
   button,
   children,
   onSubmit,
-}: {
-  title: string;
-  subtitle: string;
-  button: string;
-  children: ReactNode;
-  onSubmit?: (event: FormEvent<HTMLFormElement>) => void | Promise<void>;
-}) {
+}: CreatorFormProps) {
   return (
-    <FormPanel
-      title={title}
-      subtitle={subtitle}
-      button={button}
-      onSubmit={onSubmit}
-    >
-      {children}
-    </FormPanel>
-  );
-}
+    <RootShell active="creator">
+      <CreatorLayout>
+        <CreatorNav />
 
-export function CreatorNav() {
-  const location = useLocation();
-  const role = getCreatorRole();
-
-  const isPodcasterArea =
-    location.pathname.startsWith("/creator/podcaster") ||
-    role === "podcaster";
-
-  const links = isPodcasterArea
-    ? [
-        ["/creator/podcaster", "Podcaster"],
-        ["/creator/podcaster/episodes", "Episodios"],
-        ["/creator/podcaster/stats", "Estadisticas"],
-      ]
-    : [
-        ["/creator/streamer", "Streamer"],
-        ["/creator/streamer/control", "Control"],
-        ["/creator/streamer/stats", "Estadisticas"],
-        ["/creator/streamer/highlights", "Momentos"],
-        ["/moderation", "Moderacion"],
-      ];
-
-  return (
-    <CreatorSidebar>
-      {links.map(([to, label]) => (
-        <SidebarLink key={to} to={to}>
-          <FiArrowRight />
-          <span>{label}</span>
-        </SidebarLink>
-      ))}
-    </CreatorSidebar>
+        <CreatorMain>
+          <FormPanel
+            title={title}
+            subtitle={subtitle}
+            button={button}
+            onSubmit={onSubmit}
+          >
+            {children}
+          </FormPanel>
+        </CreatorMain>
+      </CreatorLayout>
+    </RootShell>
   );
 }
 
@@ -128,13 +263,7 @@ export function FormPanel({
   button,
   children,
   onSubmit,
-}: {
-  title: string;
-  subtitle: string;
-  button: string;
-  children: ReactNode;
-  onSubmit?: (event: FormEvent<HTMLFormElement>) => void | Promise<void>;
-}) {
+}: FormPanelProps) {
   const [saved, setSaved] = useState(false);
   const [submitting, setSubmitting] = useState(false);
 
@@ -174,7 +303,7 @@ export function FormPanel({
       ) : null}
 
       <ButtonRow>
-        <GhostLink to="/">Cancelar</GhostLink>
+        <GhostLink to="/creator/streamer/dashboard">Cancelar</GhostLink>
 
         <PrimaryButton type="submit" disabled={submitting}>
           <FiSave /> {submitting ? "Guardando..." : button}
@@ -197,17 +326,17 @@ export function UploadForm({
     <CreatorForm title={title} subtitle={subtitle} button="Guardar cambios">
       <UploadZone>
         <FiUpload />
-        <strong>Arrastra y suelta tu video aqui</strong>
+        <strong>Arrastra y suelta tu video aquí</strong>
         <small>MP4, MOV, WebM hasta 500MB</small>
       </UploadZone>
 
-      <Label>Titulo</Label>
+      <Label>Título</Label>
       <Field>
         <FiEdit3 />
-        <input defaultValue="Clutch epico 1v4" />
+        <input defaultValue="Clutch épico 1v4" />
       </Field>
 
-      <Label>Descripcion</Label>
+      <Label>Descripción</Label>
       <TextArea defaultValue="Una de las mejores jugadas del directo." />
 
       {danger ? (

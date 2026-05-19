@@ -2,6 +2,8 @@ import { type ReactNode } from "react";
 import { RootShell } from "../../../shared/layout";
 import {
   ButtonRow,
+  CreatorLayout,
+  CreatorMain,
   Eyebrow,
   GhostLink,
   PageHeading,
@@ -9,6 +11,7 @@ import {
   StateIcon,
   StatePanel,
 } from "../../../shared/styles/legacyStyled";
+import { CreatorNav } from "../../creator/shared/creatorLegacy";
 
 export function StatePage({
   icon,
@@ -33,9 +36,13 @@ export function StatePage({
         <StateIcon>{icon}</StateIcon>
         <h1>{title}</h1>
         <p>{text}</p>
+
         <ButtonRow>
           <PrimaryLink to={primary}>{primaryLabel}</PrimaryLink>
-          {secondary && secondaryLabel && <GhostLink to={secondary}>{secondaryLabel}</GhostLink>}
+
+          {secondary && secondaryLabel ? (
+            <GhostLink to={secondary}>{secondaryLabel}</GhostLink>
+          ) : null}
         </ButtonRow>
       </StatePanel>
     </RootShell>
@@ -53,8 +60,19 @@ export function ModerationScreen({
 }) {
   return (
     <RootShell active="moderation">
-      <PageHeading><Eyebrow>Moderacion</Eyebrow><h1>{title}</h1><p>{subtitle}</p></PageHeading>
-      {children}
+      <CreatorLayout>
+        <CreatorNav />
+
+        <CreatorMain>
+          <PageHeading>
+            <Eyebrow>Moderación</Eyebrow>
+            <h1>{title}</h1>
+            <p>{subtitle}</p>
+          </PageHeading>
+
+          {children}
+        </CreatorMain>
+      </CreatorLayout>
     </RootShell>
   );
 }
