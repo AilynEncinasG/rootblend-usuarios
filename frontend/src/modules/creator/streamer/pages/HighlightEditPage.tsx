@@ -124,7 +124,8 @@ export default function HighlightEditPage() {
 
   const navigate = useNavigate();
 
-  const rawHighlightId = params.highlightId || params.momentoId || params.id || "";
+  const rawHighlightId =
+    params.highlightId || params.momentoId || params.id || "";
   const numericHighlightId = Number(rawHighlightId);
 
   const [momento, setMomento] = useState<MomentoDestacado | null>(null);
@@ -145,6 +146,7 @@ export default function HighlightEditPage() {
   const [deleting, setDeleting] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const [confirmDeleteOpen, setConfirmDeleteOpen] = useState(false);
 
   useEffect(() => {
     let active = true;
@@ -340,12 +342,7 @@ export default function HighlightEditPage() {
   async function removeMoment() {
     if (deleting || saving) return;
 
-    const confirmed = window.confirm(
-      "¿Seguro que quieres eliminar este momento destacado?"
-    );
-
-    if (!confirmed) return;
-
+    setConfirmDeleteOpen(false);
     setError("");
     setSuccess("");
     setDeleting(true);
@@ -529,7 +526,7 @@ export default function HighlightEditPage() {
 
                 <DangerButton
                   type="button"
-                  onClick={removeMoment}
+                  onClick={() => setConfirmDeleteOpen(true)}
                   disabled={saving || deleting}
                 >
                   <FiTrash2 /> {deleting ? "Eliminando..." : "Eliminar momento"}
@@ -548,6 +545,155 @@ export default function HighlightEditPage() {
               </PrimaryButton>
             </ButtonRow>
           </FormCard>
+
+          {confirmDeleteOpen ? (
+            <div
+              role="presentation"
+              onClick={() => {
+                if (!deleting) {
+                  setConfirmDeleteOpen(false);
+                }
+              }}
+              style={{
+                position: "fixed",
+                inset: 0,
+                zIndex: 9999,
+                display: "grid",
+                placeItems: "center",
+                padding: 24,
+                background:
+                  "radial-gradient(circle at top, rgba(0, 234, 255, 0.12), transparent 34%), rgba(2, 6, 23, 0.78)",
+                backdropFilter: "blur(10px)",
+              }}
+            >
+              <div
+                role="dialog"
+                aria-modal="true"
+                aria-labelledby="delete-moment-title"
+                onClick={(event) => event.stopPropagation()}
+                style={{
+                  width: "min(520px, 100%)",
+                  borderRadius: 24,
+                  border: "1px solid rgba(248, 113, 113, 0.38)",
+                  background:
+                    "linear-gradient(145deg, rgba(15, 23, 42, 0.98), rgba(45, 18, 82, 0.94))",
+                  boxShadow: "0 28px 90px rgba(0, 0, 0, 0.55)",
+                  overflow: "hidden",
+                }}
+              >
+                <div
+                  style={{
+                    padding: 24,
+                    display: "grid",
+                    gap: 16,
+                  }}
+                >
+                  <div
+                    style={{
+                      width: 58,
+                      height: 58,
+                      borderRadius: 18,
+                      display: "grid",
+                      placeItems: "center",
+                      color: "#fecaca",
+                      background: "rgba(248, 113, 113, 0.14)",
+                      border: "1px solid rgba(248, 113, 113, 0.35)",
+                      fontSize: 26,
+                    }}
+                  >
+                    <FiTrash2 />
+                  </div>
+
+                  <div>
+                    <p
+                      style={{
+                        margin: "0 0 6px",
+                        color: "#fb7185",
+                        fontWeight: 900,
+                        textTransform: "uppercase",
+                        fontSize: 12,
+                        letterSpacing: "0.08em",
+                      }}
+                    >
+                      Accion irreversible
+                    </p>
+
+                    <h2
+                      id="delete-moment-title"
+                      style={{
+                        margin: 0,
+                        fontSize: 30,
+                        lineHeight: 1.05,
+                      }}
+                    >
+                      ¿Eliminar este momento?
+                    </h2>
+
+                    <p
+                      style={{
+                        margin: "12px 0 0",
+                        color: "rgba(226, 232, 240, 0.78)",
+                        lineHeight: 1.5,
+                      }}
+                    >
+                      Se eliminara el clip destacado{" "}
+                      <strong style={{ color: "#ffffff" }}>
+                        {titulo || "seleccionado"}
+                      </strong>
+                      . Ya no aparecera en tu panel, en el canal publico ni en
+                      la pagina de reproduccion.
+                    </p>
+                  </div>
+                </div>
+
+                <div
+                  style={{
+                    display: "grid",
+                    gridTemplateColumns: "1fr 1fr",
+                    gap: 12,
+                    padding: 18,
+                    borderTop: "1px solid rgba(148, 163, 184, 0.12)",
+                    background: "rgba(2, 6, 23, 0.34)",
+                  }}
+                >
+                  <button
+                    type="button"
+                    onClick={() => setConfirmDeleteOpen(false)}
+                    disabled={deleting}
+                    style={{
+                      minHeight: 48,
+                      borderRadius: 14,
+                      border: "1px solid rgba(0, 234, 255, 0.32)",
+                      background: "rgba(15, 23, 42, 0.72)",
+                      color: "#ffffff",
+                      fontWeight: 900,
+                      cursor: deleting ? "not-allowed" : "pointer",
+                    }}
+                  >
+                    Cancelar
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={removeMoment}
+                    disabled={deleting}
+                    style={{
+                      minHeight: 48,
+                      borderRadius: 14,
+                      border: 0,
+                      background: "linear-gradient(135deg, #fb7185, #e11d48)",
+                      color: "#ffffff",
+                      fontWeight: 900,
+                      cursor: deleting ? "not-allowed" : "pointer",
+                      boxShadow: "0 14px 34px rgba(225, 29, 72, 0.28)",
+                    }}
+                  >
+                    {deleting ? "Eliminando..." : "Si, eliminar"}
+                  </button>
+                </div>
+              </div>
+            </div>
+          ) : null}
         </CreatorMain>
       </CreatorLayout>
     </RootShell>
