@@ -18,6 +18,121 @@ from .models import ConfiguracionStream, Stream
 SIGNAL_TIMEOUT_SECONDS = 20
 
 
+def post_internal_event(base_url, path, payload):
+    """
+    Envia eventos internos a otros microservicios sin bloquear el flujo principal.
+    Si interacciones-service o estadisticas-service estan caidos, el stream sigue funcionando.
+    """
+    if not base_url:
+        return
+
+    url = f"{base_url.rstrip('/')}/{path.lstrip('/')}"
+
+    try:
+        body = json.dumps(payload).encode("utf-8")
+        request = urllib.request.Request(
+            url,
+            data=body,
+            headers={
+                "Content-Type": "application/json",
+                "Accept": "application/json",
+            },
+            method="POST",
+        )
+
+        with urllib.request.urlopen(request, timeout=2):
+            return
+    except Exception as exc:
+        print(f"ROOTBLEND_INTERNAL_EVENT_ERROR {url}: {exc}")
+
+
+def publish_stream_started(stream):
+    """
+    Publica evento cuando un stream inicia.
+
+    Importante:
+    - No debe romper el inicio del stream si otro microservicio esta caido.
+    - Usa getattr para evitar AttributeError si falta una variable en settings.py.
+    """
+    interacciones_url = getattr(settings, "INTERACCIONES_SERVICE_URL", None)
+    estadisticas_url = getattr(settings, "ESTADISTICAS_SERVICE_URL", None)
+
+    payload = {
+        "event_type": "stream.started",
+        "id_stream": stream.id,
+        "id_canal": stream.canal.id,
+        "nombre_canal": stream.canal.nombre_canal,
+        "tipo_canal": stream.canal.tipo_canal.nombre_tipo,
+        "titulo": stream.titulo,
+        "descripcion": stream.descripcion,
+        "categoria": stream.categoria.nombre if stream.categoria else None,
+        "fecha_inicio": stream.fecha_inicio.isoformat() if stream.fecha_inicio else None,
+    }
+
+    if interacciones_url:
+        post_internal_event(interacciones_url, "/events/stream-started", payload)
+
+    if estadisticas_url:
+        post_internal_event(estadisticas_url, "/events/stream/", payload)
+
+
+def publish_stream_ended(stream):
+    """
+    Publica evento cuando un stream termina.
+
+    Importante:
+    - Si estadisticas-service falla, el stream igual debe finalizar correctamente.
+    """
+    estadisticas_url = getattr(settings, "ESTADISTICAS_SERVICE_URL", None)
+
+    if not estadisticas_url:
+        return
+
+    duration_seconds = None
+
+    if stream.fecha_inicio and stream.fecha_fin:
+        duration_seconds = int((stream.fecha_fin - stream.fecha_inicio).total_seconds())
+
+    payload = {
+        "event_type": "stream.ended",
+        "id_stream": stream.id,
+        "id_canal": stream.canal.id,
+        "nombre_canal": stream.canal.nombre_canal,
+        "titulo": stream.titulo,
+        "fecha_inicio": stream.fecha_inicio.isoformat() if stream.fecha_inicio else None,
+        "fecha_fin": stream.fecha_fin.isoformat() if stream.fecha_fin else None,
+        "duracion_segundos": duration_seconds,
+        "espectadores_actuales": stream.viewer_count or 0,
+    }
+
+    post_internal_event(estadisticas_url, "/events/stream/", payload)
+
+
+def publish_viewer_metric(stream, event_type):
+    """
+    Publica eventos de espectadores:
+    - viewer.joined
+    - viewer.left
+
+    No debe romper el contador si estadisticas-service no responde.
+    """
+    estadisticas_url = getattr(settings, "ESTADISTICAS_SERVICE_URL", None)
+
+    if not estadisticas_url:
+        return
+
+    canal = getattr(stream, "canal", None)
+
+    payload = {
+        "event_type": event_type,
+        "id_stream": stream.id,
+        "viewer_count": stream.viewer_count or 0,
+        "id_canal": canal.id if canal else None,
+    }
+
+    post_internal_event(estadisticas_url, "/events/stream/", payload)
+
+
 def parse_json_body(request):
     try:
         return json.loads(request.body.decode("utf-8") or "{}")
@@ -91,11 +206,15 @@ def get_owned_stream(request, stream_id):
 
 def sync_signal_status(stream):
     """
-    Sincroniza la señal OBS contra MediaMTX.
+    Sincroniza la senal OBS contra MediaMTX.
     No publica claves privadas. Solo actualiza estado tecnico del stream.
     """
     if stream.estado != Stream.EN_VIVO:
-        desired_status = Stream.DESCONECTADO if stream.estado == Stream.FINALIZADO else Stream.SIN_SENAL
+        desired_status = (
+            Stream.DESCONECTADO
+            if stream.estado == Stream.FINALIZADO
+            else Stream.SIN_SENAL
+        )
 
         if stream.signal_status != desired_status:
             stream.signal_status = desired_status
@@ -124,7 +243,11 @@ def sync_signal_status(stream):
     except (urllib.error.URLError, TimeoutError):
         if stream.last_signal_at:
             age = (now - stream.last_signal_at).total_seconds()
-            stream.signal_status = Stream.DESCONECTADO if age > SIGNAL_TIMEOUT_SECONDS else Stream.CONECTADO
+            stream.signal_status = (
+                Stream.DESCONECTADO
+                if age > SIGNAL_TIMEOUT_SECONDS
+                else Stream.CONECTADO
+            )
         else:
             stream.signal_status = Stream.SIN_SENAL
 
@@ -166,6 +289,8 @@ def serialize_stream(stream):
         "playback_url": stream.playback_url,
         "thumbnail_url": stream.thumbnail_url,
         "viewer_count": stream.viewer_count or 0,
+        "signal_status": stream.signal_status,
+        "last_signal_at": stream.last_signal_at.isoformat() if stream.last_signal_at else None,
         "destacado": stream.destacado,
         "fecha_inicio": stream.fecha_inicio.isoformat() if stream.fecha_inicio else None,
         "fecha_fin": stream.fecha_fin.isoformat() if stream.fecha_fin else None,
@@ -178,6 +303,7 @@ def serialize_stream(stream):
         if configuracion
         else None,
     }
+
 
 def serialize_obs_config(stream):
     return {
@@ -368,6 +494,107 @@ def crear_stream(request):
 
 
 @csrf_exempt
+@require_http_methods(["PATCH", "PUT"])
+def editar_stream(request, stream_id):
+    stream, response = get_owned_stream(request, stream_id)
+
+    if response:
+        return response
+
+    channel_error = validate_streamer_channel(stream.canal)
+
+    if channel_error:
+        return channel_error
+
+    if stream.estado == Stream.FINALIZADO:
+        return error_response("No puedes editar un stream finalizado.", status=409)
+
+    body = parse_json_body(request)
+
+    if body is None:
+        return error_response("JSON invalido.", status=400)
+
+    if "titulo" in body:
+        titulo = (body.get("titulo") or "").strip()
+
+        if not titulo:
+            return error_response("El titulo del stream es obligatorio.", status=400)
+
+        if len(titulo) > 150:
+            return error_response("El titulo no puede superar 150 caracteres.", status=400)
+
+        stream.titulo = titulo
+
+    if "descripcion" in body:
+        stream.descripcion = (body.get("descripcion") or "").strip()
+
+    if "id_categoria" in body:
+        try:
+            categoria = Categoria.objects.get(id=body.get("id_categoria"))
+        except (Categoria.DoesNotExist, TypeError, ValueError):
+            return error_response("Categoria no encontrada.", status=404)
+
+        stream.categoria = categoria
+
+    if "destacado" in body:
+        stream.destacado = bool(body.get("destacado"))
+
+    if "calidad_actual" in body:
+        calidad_actual = (body.get("calidad_actual") or "").strip()
+        stream.calidad_actual = calidad_actual or stream.calidad_actual
+
+    if "thumbnail_url" in body:
+        thumbnail_url = (body.get("thumbnail_url") or "").strip()
+
+        if len(thumbnail_url) > 255:
+            return error_response("La URL de la miniatura no puede superar 255 caracteres.", status=400)
+
+        stream.thumbnail_url = thumbnail_url or None
+
+    bitrate = None
+
+    if "bitrate" in body:
+        try:
+            bitrate = int(body.get("bitrate"))
+        except (TypeError, ValueError):
+            return error_response("El bitrate debe ser numerico.", status=400)
+
+        if bitrate < 500 or bitrate > 12000:
+            return error_response("El bitrate debe estar entre 500 y 12000.", status=400)
+
+    with transaction.atomic():
+        stream.save()
+
+        configuracion = getattr(stream, "configuracion", None)
+
+        if configuracion:
+            if "resolucion" in body:
+                configuracion.resolucion = body.get("resolucion") or configuracion.resolucion
+
+            if bitrate is not None:
+                configuracion.bitrate = bitrate
+
+            if "latencia_modo" in body:
+                configuracion.latencia_modo = body.get("latencia_modo") or configuracion.latencia_modo
+
+            if "audio_activo" in body:
+                configuracion.audio_activo = bool(body.get("audio_activo"))
+
+            configuracion.save()
+
+    stream = (
+        Stream.objects.select_related("canal", "canal__tipo_canal", "categoria")
+        .prefetch_related("configuracion")
+        .get(id=stream.id)
+    )
+
+    return success_response(
+        serialize_stream(stream),
+        message="Stream actualizado correctamente.",
+    )
+
+
+@csrf_exempt
 @require_http_methods(["POST"])
 def iniciar_stream(request, stream_id):
     stream, response = get_owned_stream(request, stream_id)
@@ -407,7 +634,18 @@ def iniciar_stream(request, stream_id):
     stream.signal_status = Stream.SIN_SENAL
     stream.last_signal_at = None
     stream.viewer_count = 0
-    stream.save()
+    stream.save(
+        update_fields=[
+            "estado",
+            "fecha_inicio",
+            "fecha_fin",
+            "signal_status",
+            "last_signal_at",
+            "viewer_count",
+        ]
+    )
+
+    publish_stream_started(stream)
 
     return success_response(
         serialize_stream(stream),
@@ -432,8 +670,19 @@ def finalizar_stream(request, stream_id):
     stream.estado = Stream.FINALIZADO
     stream.fecha_fin = timezone.now()
     stream.signal_status = Stream.DESCONECTADO
+    stream.last_signal_at = None
     stream.viewer_count = 0
-    stream.save()
+    stream.save(
+        update_fields=[
+            "estado",
+            "fecha_fin",
+            "signal_status",
+            "last_signal_at",
+            "viewer_count",
+        ]
+    )
+
+    publish_stream_ended(stream)
 
     return success_response(
         serialize_stream(stream),
@@ -484,7 +733,15 @@ def rotate_key(request, stream_id):
     stream.rotate_stream_key()
     stream.signal_status = Stream.SIN_SENAL
     stream.last_signal_at = None
-    stream.save()
+    stream.save(
+        update_fields=[
+            "stream_key",
+            "ingest_url",
+            "playback_url",
+            "signal_status",
+            "last_signal_at",
+        ]
+    )
 
     return success_response(
         serialize_obs_config(stream),
@@ -495,7 +752,10 @@ def rotate_key(request, stream_id):
 @require_http_methods(["GET"])
 def signal_status(request, stream_id):
     try:
-        stream = Stream.objects.select_related("canal", "canal__tipo_canal", "categoria").get(id=stream_id)
+        stream = (
+            Stream.objects.select_related("canal", "canal__tipo_canal", "categoria")
+            .get(id=stream_id)
+        )
     except Stream.DoesNotExist:
         return error_response("Stream no encontrado.", status=404)
 
@@ -507,40 +767,52 @@ def signal_status(request, stream_id):
             "estado": stream.estado,
             "signal_status": stream.signal_status,
             "last_signal_at": stream.last_signal_at.isoformat() if stream.last_signal_at else None,
-            "viewer_count": stream.viewer_count,
+            "viewer_count": stream.viewer_count or 0,
         }
     )
+
 
 @csrf_exempt
 @require_http_methods(["POST"])
 def join_stream_viewer(request, stream_id):
     try:
         with transaction.atomic():
-            stream = Stream.objects.select_for_update().get(id=stream_id)
+            stream = (
+                Stream.objects.select_for_update()
+                .select_related("canal")
+                .get(id=stream_id)
+            )
 
             if stream.estado != Stream.EN_VIVO:
+                stream.viewer_count = 0
+                stream.save(update_fields=["viewer_count"])
+
                 return success_response(
                     {
                         "id_stream": stream.id,
                         "viewer_count": stream.viewer_count or 0,
                         "estado": stream.estado,
                     },
-                    message="El stream no está en vivo.",
+                    message="El stream no esta en vivo.",
                     status=200,
                 )
 
             stream.viewer_count = (stream.viewer_count or 0) + 1
             stream.save(update_fields=["viewer_count"])
 
-            return success_response(
-                {
-                    "id_stream": stream.id,
-                    "viewer_count": stream.viewer_count,
-                    "estado": stream.estado,
-                },
-                message="Espectador conectado.",
-                status=200,
-            )
+            response_data = {
+                "id_stream": stream.id,
+                "viewer_count": stream.viewer_count,
+                "estado": stream.estado,
+            }
+
+        publish_viewer_metric(stream, "viewer.joined")
+
+        return success_response(
+            response_data,
+            message="Espectador conectado.",
+            status=200,
+        )
 
     except Stream.DoesNotExist:
         return error_response("Stream no encontrado.", status=404)
@@ -551,21 +823,42 @@ def join_stream_viewer(request, stream_id):
 def leave_stream_viewer(request, stream_id):
     try:
         with transaction.atomic():
-            stream = Stream.objects.select_for_update().get(id=stream_id)
+            stream = (
+                Stream.objects.select_for_update()
+                .select_related("canal")
+                .get(id=stream_id)
+            )
 
             current_count = stream.viewer_count or 0
             stream.viewer_count = max(current_count - 1, 0)
+            if stream.estado != Stream.EN_VIVO:
+                stream.viewer_count = 0
+                stream.save(update_fields=["viewer_count"])
+
+                return success_response(
+                    {
+                        "id_stream": stream.id,
+                        "viewer_count": stream.viewer_count,
+                        "estado": stream.estado,
+                    },
+                    message="El stream no esta en vivo.",
+                    status=200,
+                )
             stream.save(update_fields=["viewer_count"])
 
-            return success_response(
-                {
-                    "id_stream": stream.id,
-                    "viewer_count": stream.viewer_count,
-                    "estado": stream.estado,
-                },
-                message="Espectador desconectado.",
-                status=200,
-            )
+            response_data = {
+                "id_stream": stream.id,
+                "viewer_count": stream.viewer_count,
+                "estado": stream.estado,
+            }
+
+        publish_viewer_metric(stream, "viewer.left")
+
+        return success_response(
+            response_data,
+            message="Espectador desconectado.",
+            status=200,
+        )
 
     except Stream.DoesNotExist:
         return error_response("Stream no encontrado.", status=404)

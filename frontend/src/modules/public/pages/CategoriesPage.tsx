@@ -10,7 +10,6 @@ import {
   AlertPanel,
   CategoryCard,
   CategoryGrid,
-  Eyebrow,
   PageHeading,
 } from "../../../shared/styles/legacyStyled";
 import {

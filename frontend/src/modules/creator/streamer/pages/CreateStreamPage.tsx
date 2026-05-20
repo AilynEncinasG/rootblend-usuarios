@@ -1,5 +1,5 @@
 import { type FormEvent, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import {
   FiAlertTriangle,
   FiCheckCircle,
@@ -28,6 +28,8 @@ import { CreatorNav } from "../../shared/creatorLegacy";
 import {
   createStream,
   getCategories,
+  getStreamById,
+  updateStream,
   type Categoria,
 } from "../../../streams/services/streamsService";
 
@@ -43,6 +45,9 @@ function isImageUrl(value: string) {
 
 export default function CreateStreamPage() {
   const navigate = useNavigate();
+  const { streamId } = useParams();
+  const editingStreamId = streamId ? Number(streamId) : null;
+  const isEditing = Boolean(editingStreamId && Number.isFinite(editingStreamId));
 
   const [categories, setCategories] = useState<Categoria[]>([]);
   const [title, setTitle] = useState("");
@@ -70,7 +75,17 @@ export default function CreateStreamPage() {
 
         setCategories(categoryList);
 
-        if (categoryList.length > 0) {
+        if (isEditing && editingStreamId) {
+          const detail = await getStreamById(editingStreamId);
+
+          if (!active) return;
+
+          setTitle(detail.titulo || "");
+          setDescription(detail.descripcion || "");
+          setCategoryId(String(detail.categoria.id_categoria));
+          setQuality(detail.calidad_actual || detail.configuracion?.resolucion || "720p");
+          setThumbnailUrl(detail.thumbnail_url || "");
+        } else if (categoryList.length > 0) {
           setCategoryId(String(categoryList[0].id_categoria));
         }
       } catch (requestError) {
@@ -95,7 +110,7 @@ export default function CreateStreamPage() {
     return () => {
       active = false;
     };
-  }, []);
+  }, [editingStreamId, isEditing]);
 
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -133,7 +148,7 @@ export default function CreateStreamPage() {
     setSaving(true);
 
     try {
-      const createdStream = await createStream({
+      const payload = {
         titulo: cleanTitle,
         descripcion: cleanDescription || undefined,
         id_categoria: parsedCategoryId,
@@ -144,25 +159,29 @@ export default function CreateStreamPage() {
         latencia_modo: "baja",
         audio_activo: true,
         thumbnail_url: cleanThumbnailUrl || undefined,
-      });
+      };
+
+      const savedStream = isEditing && editingStreamId
+        ? await updateStream(editingStreamId, payload)
+        : await createStream(payload);
 
       localStorage.setItem(
         "rootblend_last_stream_id",
-        String(createdStream.id_stream)
+        String(savedStream.id_stream)
       );
 
-      setSuccess("Stream creado correctamente.");
+      setSuccess(isEditing ? "Stream actualizado correctamente." : "Stream creado correctamente.");
 
       window.setTimeout(() => {
         navigate("/creator/streamer/control");
       }, 700);
     } catch (requestError) {
-      console.error("CREATE_STREAM_SAVE_ERROR", requestError);
+      console.error(isEditing ? "EDIT_STREAM_SAVE_ERROR" : "CREATE_STREAM_SAVE_ERROR", requestError);
 
       setError(
         requestError instanceof Error
           ? requestError.message
-          : "No se pudo crear el stream."
+          : isEditing ? "No se pudo editar el stream." : "No se pudo crear el stream."
       );
     } finally {
       setSaving(false);
@@ -195,8 +214,8 @@ export default function CreateStreamPage() {
             >
               <PageHeading>
                 <Eyebrow>Formulario</Eyebrow>
-                <h1>Crear / configurar stream</h1>
-                <p>Completa los datos de tu transmisión...</p>
+                <h1>{isEditing ? "Editar stream" : "Crear / configurar stream"}</h1>
+                <p>{isEditing ? "Actualiza título, categoría y descripción del directo." : "Completa los datos de tu transmisión..."}</p>
               </PageHeading>
 
               {error ? (
@@ -213,7 +232,7 @@ export default function CreateStreamPage() {
                 <AlertPanel>
                   <FiCheckCircle />
                   <div>
-                    <strong>Stream creado</strong>
+                    <strong>{isEditing ? "Stream actualizado" : "Stream creado"}</strong>
                     <Muted>{success}</Muted>
                   </div>
                 </AlertPanel>
@@ -308,7 +327,7 @@ export default function CreateStreamPage() {
 
                 <PrimaryButton type="submit" disabled={saving}>
                   <FiSave />{" "}
-                  {saving ? "Guardando..." : "Guardar configuración"}
+                  {saving ? "Guardando..." : isEditing ? "Guardar cambios" : "Guardar configuración"}
                 </PrimaryButton>
               </ButtonRow>
             </FormCard>

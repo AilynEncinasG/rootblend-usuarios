@@ -43,6 +43,10 @@ export default function LiveVideoPlayer({
 
   const [showBuffering, setShowBuffering] = useState(false);
   const [retryKey, setRetryKey] = useState(0);
+  const [qualityOptions, setQualityOptions] = useState<
+    { label: string; level: number }[]
+  >([]);
+  const [selectedLevel, setSelectedLevel] = useState(-1);
 
   const canPlayLive =
     Boolean(playbackUrl) &&
@@ -136,6 +140,8 @@ export default function LiveVideoPlayer({
       if (!active) return;
       setPlayerError(null);
       setShowBuffering(false);
+      setQualityOptions([]);
+      setSelectedLevel(-1);
     });
 
     if (!video || !playbackUrl || streamStatus !== "en_vivo") {
@@ -197,6 +203,17 @@ export default function LiveVideoPlayer({
     hls.attachMedia(video);
 
     hls.on(Hls.Events.MANIFEST_PARSED, () => {
+      const levels = hls.levels
+        .map((level, index) => ({
+          label: level.height ? `${level.height}p` : `Nivel ${index + 1}`,
+          level: index,
+        }))
+        .filter((item, index, array) =>
+          array.findIndex((other) => other.label === item.label) === index,
+        );
+
+      setQualityOptions(levels);
+      setSelectedLevel(hls.currentLevel);
       stopBuffering();
       safePlay();
     });
@@ -333,6 +350,14 @@ export default function LiveVideoPlayer({
     };
   }, [canPlayLive, scheduleResume, startSoftBuffering, stopBuffering]);
 
+  function changeQuality(level: number) {
+    setSelectedLevel(level);
+
+    if (hlsRef.current) {
+      hlsRef.current.currentLevel = level;
+    }
+  }
+
   const waitingForSignal =
     streamStatus === "en_vivo" && signalStatus !== "conectado";
 
@@ -394,6 +419,21 @@ export default function LiveVideoPlayer({
           <FiWifi />
           EN VIVO
         </LiveBadge>
+      )}
+
+      {canPlayLive && qualityOptions.length > 0 && (
+        <QualitySelect
+          aria-label="Cambiar calidad del stream"
+          value={selectedLevel}
+          onChange={(event) => changeQuality(Number(event.target.value))}
+        >
+          <option value={-1}>Auto</option>
+          {qualityOptions.map((option) => (
+            <option key={option.level} value={option.level}>
+              {option.label}
+            </option>
+          ))}
+        </QualitySelect>
       )}
 
       {showBuffering && canPlayLive && !currentError && !waitingForSignal && (
@@ -496,6 +536,21 @@ const LiveBadge = styled.div`
     width: 14px;
     height: 14px;
   }
+`;
+
+const QualitySelect = styled.select`
+  position: absolute;
+  right: 14px;
+  bottom: 14px;
+  z-index: 4;
+  min-width: 96px;
+  border: 1px solid rgba(0, 229, 255, 0.35);
+  border-radius: 999px;
+  padding: 7px 10px;
+  color: #e8fbff;
+  background: rgba(15, 23, 42, 0.9);
+  font-size: 12px;
+  font-weight: 850;
 `;
 
 const BufferBadge = styled.div`

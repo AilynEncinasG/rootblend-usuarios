@@ -28,6 +28,7 @@ import {
   type ChatSanctionRecord,
 } from "../../../services/chatService";
 import { getMyChannel } from "../services/streamsService";
+import { recordStreamStatsEvent } from "../services/streamStatsService";
 
 type StreamChatPanelProps = {
   streamId: string | number;
@@ -227,6 +228,11 @@ async function submit(event: FormEvent<HTMLFormElement>) {
     };
 
     await sendChatMessage(streamId, messagePayload);
+    await recordStreamStatsEvent({
+      event_type: "chat.message",
+      id_stream: Number(streamId),
+      usuarios_activos: messages.length + 1,
+    });
 
     setText("");
     setFeedback("Mensaje enviado.");
@@ -262,6 +268,11 @@ async function submit(event: FormEvent<HTMLFormElement>) {
         }
 
         await deleteChatMessage(streamId, message.id, currentUser.name);
+        await recordStreamStatsEvent({
+          event_type: "chat.message.deleted",
+          id_stream: Number(streamId),
+          usuarios_activos: messages.length,
+        });
         setFeedback(`Mensaje de ${targetName} eliminado para todos.`);
       }
 

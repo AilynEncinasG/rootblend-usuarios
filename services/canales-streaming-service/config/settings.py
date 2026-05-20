@@ -144,6 +144,17 @@ STREAM_PLAYBACK_PROBE_BASE_URL = os.getenv(
     "STREAM_PLAYBACK_PROBE_BASE_URL",
     "http://media-server:8888/live",
 )
+
+ESTADISTICAS_SERVICE_URL = os.getenv(
+    "ESTADISTICAS_SERVICE_URL",
+    "http://estadisticas-service:8002/api/stats",
+)
+
+INTERACCIONES_SERVICE_URL = os.getenv(
+    "INTERACCIONES_SERVICE_URL",
+    "http://interacciones-service:8004/api",
+)
+
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
 

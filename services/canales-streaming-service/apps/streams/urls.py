@@ -3,6 +3,7 @@ from django.urls import path
 from .views import (
     crear_stream,
     detalle_stream,
+    editar_stream,
     finalizar_stream,
     iniciar_stream,
     listar_streams,
@@ -23,6 +24,7 @@ urlpatterns = [
     path("mis-streams/", mis_streams, name="mis-streams"),
     path("crear/", crear_stream, name="crear-stream"),
     path("<int:stream_id>/", detalle_stream, name="detalle-stream"),
+    path("<int:stream_id>/editar/", editar_stream, name="editar-stream"),
     path("<int:stream_id>/iniciar/", iniciar_stream, name="iniciar-stream"),
     path("<int:stream_id>/finalizar/", finalizar_stream, name="finalizar-stream"),
     path("<int:stream_id>/obs-config/", obs_config, name="obs-config"),

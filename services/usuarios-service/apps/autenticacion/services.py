@@ -85,6 +85,8 @@ def login_user(correo, password, ip=None):
     except Usuario.DoesNotExist:
         return None, None, None, {"credenciales": ["Correo o contraseña incorrectos."]}
 
+    if usuario.estado != "activo":
+        return None, None, None, {"usuario": ["La cuenta no esta activa."]}
     try:
         credencial = Credencial.objects.get(usuario=usuario)
     except Credencial.DoesNotExist:

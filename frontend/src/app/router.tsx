@@ -542,6 +542,14 @@ export function AppRouter() {
         }
       />
       <Route
+        path="/creator/streamer/streams/:streamId/edit"
+        element={
+          <StreamerRoute>
+            <CreateStreamPage />
+          </StreamerRoute>
+        }
+      />
+      <Route
         path="/creator/streamer/control"
         element={
           <StreamerRoute>

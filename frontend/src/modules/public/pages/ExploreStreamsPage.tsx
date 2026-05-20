@@ -15,7 +15,6 @@ import {
 import {
   AlertPanel,
   CardGrid,
-  Eyebrow,
   InputWrap,
   PageHeading,
   Select,

@@ -51,7 +51,6 @@ class RegisterView(View):
                 errors=errors,
                 status=400,
             )
-
         return success_response(
             message="Usuario registrado correctamente.",
             data={
@@ -316,3 +315,9 @@ class ResetPasswordView(View):
                 errors=errors,
                 status=400,
             )
+
+        return success_response(
+            message="Contraseña restablecida correctamente. Ya puedes iniciar sesión.",
+            data={"password_actualizada": True},
+            status=200,
+        )

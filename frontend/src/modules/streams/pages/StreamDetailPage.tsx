@@ -37,6 +37,9 @@ import { isAuthenticated } from "../../auth/utils/authStorage";
 import {
   getLiveStreams,
   getStreamById,
+  getStreamSignalStatus,
+  joinStreamViewer,
+  leaveStreamViewer,
   type Stream as BackendStream,
 } from "../services/streamsService";
 import {
@@ -46,6 +49,13 @@ import {
   StreamCard,
 } from "../../public/utils/publicLegacyHelpers";
 import StreamChatPanel from "../components/StreamChatPanel";
+import {
+  followChannel,
+  getChannelInteractionState,
+  subscribeChannel,
+  unfollowChannel,
+  unsubscribeChannel,
+} from "../../interactions/services/interactionsService";
 
 function isImageUrl(value?: string | null) {
   if (!value) {
@@ -92,6 +102,9 @@ export default function StreamDetailPage() {
 
   const [following, setFollowing] = useState(false);
   const [subscribed, setSubscribed] = useState(false);
+  const [viewerCount, setViewerCount] = useState(0);
+  const [interactionLoading, setInteractionLoading] = useState(false);
+  const [interactionFeedback, setInteractionFeedback] = useState("");
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -120,6 +133,7 @@ export default function StreamDetailPage() {
         if (!active) return;
 
         setBackendStream(detail);
+        setViewerCount(detail.viewer_count || 0);
         setStream(backendStreamToCard(detail));
         setRelatedStreams(
           live
@@ -147,6 +161,163 @@ export default function StreamDetailPage() {
       active = false;
     };
   }, [streamId]);
+
+  useEffect(() => {
+    if (!streamId || Number.isNaN(Number(streamId))) return undefined;
+
+    const numericStreamId = Number(streamId);
+    let active = true;
+    let joined = false;
+    let intervalId: number | undefined;
+
+    async function connectViewerCounter() {
+      try {
+        const detail = await getStreamById(numericStreamId);
+
+        if (!active || detail.estado !== "en_vivo") return;
+
+        const joinResult = await joinStreamViewer(numericStreamId);
+
+        if (!active) return;
+
+        joined = true;
+        setViewerCount(joinResult.viewer_count || 0);
+
+        intervalId = window.setInterval(async () => {
+          try {
+            const status = await getStreamSignalStatus(numericStreamId);
+
+            if (active) {
+              setViewerCount(status.viewer_count || 0);
+              setBackendStream((current) =>
+                current
+                  ? {
+                      ...current,
+                      viewer_count: status.viewer_count,
+                      signal_status: status.signal_status,
+                      estado: status.estado,
+                      last_signal_at: status.last_signal_at,
+                    }
+                  : current,
+              );
+            }
+          } catch (pollError) {
+            console.error("STREAM_VIEWER_COUNTER_POLL_ERROR", pollError);
+          }
+        }, 5000);
+      } catch (joinError) {
+        console.error("STREAM_VIEWER_COUNTER_JOIN_ERROR", joinError);
+      }
+    }
+
+    connectViewerCounter();
+
+    return () => {
+      active = false;
+
+      if (intervalId) {
+        window.clearInterval(intervalId);
+      }
+
+      if (joined) {
+        leaveStreamViewer(numericStreamId).catch((leaveError) => {
+          console.error("STREAM_VIEWER_COUNTER_LEAVE_ERROR", leaveError);
+        });
+      }
+    };
+  }, [streamId]);
+
+  useEffect(() => {
+    let active = true;
+
+    async function loadInteractionState() {
+      if (!loggedIn || !backendStream?.canal.id_canal) {
+        setFollowing(false);
+        setSubscribed(false);
+        return;
+      }
+
+      try {
+        const state = await getChannelInteractionState(backendStream.canal.id_canal);
+
+        if (!active) return;
+
+        setFollowing(Boolean(state.siguiendo));
+        setSubscribed(Boolean(state.suscrito));
+      } catch (interactionError) {
+        console.error("STREAM_INTERACTION_STATE_ERROR", interactionError);
+      }
+    }
+
+    loadInteractionState();
+
+    return () => {
+      active = false;
+    };
+  }, [backendStream?.canal.id_canal, loggedIn]);
+
+  async function toggleFollow() {
+    if (!backendStream) return;
+
+    setInteractionLoading(true);
+    setInteractionFeedback("");
+
+    try {
+      const payload = {
+        id_canal: backendStream.canal.id_canal,
+        nombre_canal: backendStream.canal.nombre_canal,
+        tipo_canal:
+          typeof backendStream.canal.tipo_canal === "string"
+            ? backendStream.canal.tipo_canal
+            : backendStream.canal.tipo_canal?.nombre_tipo || "streamer",
+        estado_transmision: (backendStream.estado === "en_vivo" ? "online" : "offline") as "online" | "offline",
+      };
+
+      const state = following
+        ? await unfollowChannel(backendStream.canal.id_canal)
+        : await followChannel(payload);
+
+      setFollowing(Boolean(state.siguiendo));
+      setInteractionFeedback(state.siguiendo ? "Canal seguido correctamente." : "Dejaste de seguir el canal.");
+    } catch (interactionError) {
+      console.error("STREAM_FOLLOW_ERROR", interactionError);
+      setInteractionFeedback("No se pudo actualizar el seguimiento.");
+    } finally {
+      setInteractionLoading(false);
+    }
+  }
+
+  async function toggleSubscription() {
+    if (!backendStream) return;
+
+    setInteractionLoading(true);
+    setInteractionFeedback("");
+
+    try {
+      const payload = {
+        id_canal: backendStream.canal.id_canal,
+        nombre_canal: backendStream.canal.nombre_canal,
+        tipo_canal:
+          typeof backendStream.canal.tipo_canal === "string"
+            ? backendStream.canal.tipo_canal
+            : backendStream.canal.tipo_canal?.nombre_tipo || "streamer",
+        estado_transmision: (backendStream.estado === "en_vivo" ? "online" : "offline") as "online" | "offline",
+        tipo_plan: "mensual",
+      };
+
+      const state = subscribed
+        ? await unsubscribeChannel(backendStream.canal.id_canal)
+        : await subscribeChannel(payload);
+
+      setSubscribed(Boolean(state.suscrito));
+      setInteractionFeedback(state.suscrito ? "Suscripcion registrada." : "Suscripcion cancelada.");
+    } catch (interactionError) {
+      console.error("STREAM_SUBSCRIPTION_ERROR", interactionError);
+      setInteractionFeedback("No se pudo actualizar la suscripcion.");
+    } finally {
+      setInteractionLoading(false);
+    }
+  }
 
   const playbackUrl = useMemo(() => {
     return toBrowserReachableUrl(backendStream?.playback_url);
@@ -262,14 +433,16 @@ export default function StreamDetailPage() {
               <>
                 <GhostButton
                   type="button"
-                  onClick={() => setFollowing((value) => !value)}
+                  onClick={toggleFollow}
+                  disabled={interactionLoading}
                 >
                   <FiHeart /> {following ? "Siguiendo" : "Seguir"}
                 </GhostButton>
 
                 <PrimaryButton
                   type="button"
-                  onClick={() => setSubscribed((value) => !value)}
+                  onClick={toggleSubscription}
+                  disabled={interactionLoading}
                 >
                   <FiStar /> {subscribed ? "Suscrito" : "Suscribirse"}
                 </PrimaryButton>
@@ -286,6 +459,8 @@ export default function StreamDetailPage() {
               </>
             )}
           </ButtonRow>
+
+          {interactionFeedback && <MetaTag>{interactionFeedback}</MetaTag>}
         </StreamInfo>
       </PlayerPanel>
 
@@ -315,7 +490,7 @@ export default function StreamDetailPage() {
             <strong>{backendStream.signal_status || "sin_senal"}</strong>
 
             <span>Espectadores</span>
-            <strong>{backendStream.viewer_count}</strong>
+            <strong>{viewerCount}</strong>
 
             <span>Categoría</span>
             <strong>{backendStream.categoria.nombre}</strong>

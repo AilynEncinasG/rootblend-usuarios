@@ -1,66 +1,135 @@
-export type InteractionItem = {
-  id: string;
-  type: "follow" | "subscription" | "like" | "chat" | "notification";
-  title: string;
-  description: string;
-  time: string;
-  status: "active" | "pending" | "completed";
+import { apiRequest } from "../../../services/apiClient";
+
+export type ChannelInteractionState = {
+  id_usuario: number;
+  id_canal: number;
+  siguiendo: boolean;
+  suscrito: boolean;
+  seguimiento?: unknown;
+  suscripcion?: unknown;
 };
 
-export const interactionItems: InteractionItem[] = [
-  {
-    id: "interaction-1",
-    type: "follow",
-    title: "Siguiendo a NeonRunner",
-    description: "Recibirás actualizaciones cuando inicie directos.",
-    time: "Hace 5 min",
-    status: "active",
-  },
-  {
-    id: "interaction-2",
-    type: "subscription",
-    title: "Suscripción a RootCast",
-    description: "Nuevo episodio disponible sobre sistemas distribuidos.",
-    time: "Hace 1 h",
-    status: "completed",
-  },
-  {
-    id: "interaction-3",
-    type: "chat",
-    title: "Mensaje enviado en Cyberpunk 2077",
-    description: "Participaste en el chat en vivo del canal NeonRunner.",
-    time: "Hoy",
-    status: "completed",
-  },
-  {
-    id: "interaction-4",
-    type: "like",
-    title: "Highlight guardado",
-    description: "Marcaste un clip destacado para verlo después.",
-    time: "Ayer",
-    status: "active",
-  },
-  {
-    id: "interaction-5",
-    type: "notification",
-    title: "Alerta de servicio",
-    description: "El sistema registró una verificación de health checks.",
-    time: "Ayer",
-    status: "pending",
-  },
-];
+export type NotificationItem = {
+  id_notificacion: number;
+  id_usuario: number;
+  id_evento: number;
+  titulo: string;
+  mensaje: string;
+  tipo: string;
+  fecha_envio: string;
+  leida: boolean | number;
+  id_canal?: number;
+  tipo_evento?: string;
+  descripcion_evento?: string | null;
+  nombre_canal?: string | null;
+};
 
-export function getInteractions() {
-  return interactionItems;
+type ApiItemResponse<T> = {
+  success: boolean;
+  message: string;
+  data: T;
+};
+
+type ApiListResponse<T> = {
+  success: boolean;
+  message: string;
+  data: {
+    count: number;
+    results: T[];
+  };
+};
+
+export async function getChannelInteractionState(
+  channelId: number,
+): Promise<ChannelInteractionState> {
+  const response = await apiRequest<ApiItemResponse<ChannelInteractionState>>(
+    `/interactions/me/channel-state?id_canal=${channelId}`,
+    { auth: true },
+  );
+
+  return response.data;
 }
 
-export function getInteractionStats() {
-  return {
-    total: interactionItems.length,
-    active: interactionItems.filter((item) => item.status === "active").length,
-    completed: interactionItems.filter((item) => item.status === "completed")
-      .length,
-    pending: interactionItems.filter((item) => item.status === "pending")
-      .length,
-  };
+export async function followChannel(payload: {
+  id_canal: number;
+  nombre_canal: string;
+  tipo_canal?: string;
+  estado_transmision?: "online" | "offline";
+}): Promise<ChannelInteractionState> {
+  const response = await apiRequest<ApiItemResponse<ChannelInteractionState>>(
+    "/interactions/follows",
+    {
+      method: "POST",
+      body: payload,
+      auth: true,
+    },
+  );
+
+  return response.data;
+}
+
+export async function unfollowChannel(
+  channelId: number,
+): Promise<ChannelInteractionState> {
+  const response = await apiRequest<ApiItemResponse<ChannelInteractionState>>(
+    `/interactions/follows/${channelId}`,
+    {
+      method: "DELETE",
+      auth: true,
+    },
+  );
+
+  return response.data;
+}
+
+export async function subscribeChannel(payload: {
+  id_canal: number;
+  nombre_canal: string;
+  tipo_canal?: string;
+  estado_transmision?: "online" | "offline";
+  tipo_plan?: string;
+}): Promise<ChannelInteractionState> {
+  const response = await apiRequest<ApiItemResponse<ChannelInteractionState>>(
+    "/interactions/subscriptions",
+    {
+      method: "POST",
+      body: payload,
+      auth: true,
+    },
+  );
+
+  return response.data;
+}
+
+export async function unsubscribeChannel(
+  channelId: number,
+): Promise<ChannelInteractionState> {
+  const response = await apiRequest<ApiItemResponse<ChannelInteractionState>>(
+    `/interactions/subscriptions/${channelId}`,
+    {
+      method: "DELETE",
+      auth: true,
+    },
+  );
+
+  return response.data;
+}
+
+export async function getNotifications(): Promise<NotificationItem[]> {
+  const response = await apiRequest<ApiListResponse<NotificationItem>>(
+    "/interactions/notifications",
+    { auth: true },
+  );
+
+  return response.data.results;
+}
+
+export async function markNotificationRead(id: number): Promise<void> {
+  await apiRequest<ApiItemResponse<{ id_notificacion: number }>>(
+    `/interactions/notifications/${id}/read`,
+    {
+      method: "PATCH",
+      auth: true,
+    },
+  );
 }
