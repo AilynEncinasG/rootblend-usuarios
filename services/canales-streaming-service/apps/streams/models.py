@@ -134,3 +134,32 @@ class ConfiguracionStream(models.Model):
 
     def __str__(self):
         return f"Configuracion de {self.stream.titulo}"
+
+class StreamViewerSession(models.Model):
+    stream = models.ForeignKey(
+        Stream,
+        on_delete=models.CASCADE,
+        db_column="id_stream",
+        related_name="viewer_sessions",
+    )
+    viewer_key = models.CharField(max_length=120)
+    id_usuario = models.IntegerField(null=True, blank=True)
+    ip_address = models.GenericIPAddressField(null=True, blank=True)
+    user_agent = models.CharField(max_length=255, null=True, blank=True)
+    joined_at = models.DateTimeField(auto_now_add=True)
+    last_seen_at = models.DateTimeField(auto_now=True)
+    active = models.BooleanField(default=True)
+
+    class Meta:
+        db_table = "stream_viewer_sessions"
+        verbose_name = "Sesion de espectador"
+        verbose_name_plural = "Sesiones de espectadores"
+        constraints = [
+            models.UniqueConstraint(
+                fields=["stream", "viewer_key"],
+                name="uq_stream_viewer_key",
+            )
+        ]
+
+    def __str__(self):
+        return f"Viewer {self.viewer_key} - Stream {self.stream_id}"

@@ -38,6 +38,7 @@ import {
   getLiveStreams,
   getStreamById,
   getStreamSignalStatus,
+  heartbeatStreamViewer,
   joinStreamViewer,
   leaveStreamViewer,
   type Stream as BackendStream,
@@ -166,9 +167,13 @@ export default function StreamDetailPage() {
     if (!streamId || Number.isNaN(Number(streamId))) return undefined;
 
     const numericStreamId = Number(streamId);
+    const storageKey = `rootblend_viewer_key_stream_${numericStreamId}`;
+
     let active = true;
     let joined = false;
-    let intervalId: number | undefined;
+    let currentViewerKey = localStorage.getItem(storageKey);
+    let heartbeatIntervalId: number | undefined;
+    let statusIntervalId: number | undefined;
 
     async function connectViewerCounter() {
       try {
@@ -176,14 +181,40 @@ export default function StreamDetailPage() {
 
         if (!active || detail.estado !== "en_vivo") return;
 
-        const joinResult = await joinStreamViewer(numericStreamId);
+        const joinResult = await joinStreamViewer(
+          numericStreamId,
+          currentViewerKey,
+        );
 
         if (!active) return;
 
         joined = true;
+        currentViewerKey = joinResult.viewer_key || currentViewerKey;
+
+        if (currentViewerKey) {
+          localStorage.setItem(storageKey, currentViewerKey);
+        }
+
         setViewerCount(joinResult.viewer_count || 0);
 
-        intervalId = window.setInterval(async () => {
+        heartbeatIntervalId = window.setInterval(async () => {
+          if (!currentViewerKey) return;
+
+          try {
+            const heartbeat = await heartbeatStreamViewer(
+              numericStreamId,
+              currentViewerKey,
+            );
+
+            if (active) {
+              setViewerCount(heartbeat.viewer_count || 0);
+            }
+          } catch (heartbeatError) {
+            console.error("STREAM_VIEWER_HEARTBEAT_ERROR", heartbeatError);
+          }
+        }, 10000);
+
+        statusIntervalId = window.setInterval(async () => {
           try {
             const status = await getStreamSignalStatus(numericStreamId);
 
@@ -215,14 +246,20 @@ export default function StreamDetailPage() {
     return () => {
       active = false;
 
-      if (intervalId) {
-        window.clearInterval(intervalId);
+      if (heartbeatIntervalId) {
+        window.clearInterval(heartbeatIntervalId);
       }
 
-      if (joined) {
-        leaveStreamViewer(numericStreamId).catch((leaveError) => {
-          console.error("STREAM_VIEWER_COUNTER_LEAVE_ERROR", leaveError);
-        });
+      if (statusIntervalId) {
+        window.clearInterval(statusIntervalId);
+      }
+
+      if (joined && currentViewerKey) {
+        leaveStreamViewer(numericStreamId, currentViewerKey).catch(
+          (leaveError) => {
+            console.error("STREAM_VIEWER_COUNTER_LEAVE_ERROR", leaveError);
+          },
+        );
       }
     };
   }, [streamId]);
@@ -238,7 +275,9 @@ export default function StreamDetailPage() {
       }
 
       try {
-        const state = await getChannelInteractionState(backendStream.canal.id_canal);
+        const state = await getChannelInteractionState(
+          backendStream.canal.id_canal,
+        );
 
         if (!active) return;
 
@@ -270,7 +309,9 @@ export default function StreamDetailPage() {
           typeof backendStream.canal.tipo_canal === "string"
             ? backendStream.canal.tipo_canal
             : backendStream.canal.tipo_canal?.nombre_tipo || "streamer",
-        estado_transmision: (backendStream.estado === "en_vivo" ? "online" : "offline") as "online" | "offline",
+        estado_transmision: (
+          backendStream.estado === "en_vivo" ? "online" : "offline"
+        ) as "online" | "offline",
       };
 
       const state = following
@@ -278,7 +319,11 @@ export default function StreamDetailPage() {
         : await followChannel(payload);
 
       setFollowing(Boolean(state.siguiendo));
-      setInteractionFeedback(state.siguiendo ? "Canal seguido correctamente." : "Dejaste de seguir el canal.");
+      setInteractionFeedback(
+        state.siguiendo
+          ? "Canal seguido correctamente."
+          : "Dejaste de seguir el canal.",
+      );
     } catch (interactionError) {
       console.error("STREAM_FOLLOW_ERROR", interactionError);
       setInteractionFeedback("No se pudo actualizar el seguimiento.");
@@ -301,7 +346,9 @@ export default function StreamDetailPage() {
           typeof backendStream.canal.tipo_canal === "string"
             ? backendStream.canal.tipo_canal
             : backendStream.canal.tipo_canal?.nombre_tipo || "streamer",
-        estado_transmision: (backendStream.estado === "en_vivo" ? "online" : "offline") as "online" | "offline",
+        estado_transmision: (
+          backendStream.estado === "en_vivo" ? "online" : "offline"
+        ) as "online" | "offline",
         tipo_plan: "mensual",
       };
 
@@ -310,7 +357,9 @@ export default function StreamDetailPage() {
         : await subscribeChannel(payload);
 
       setSubscribed(Boolean(state.suscrito));
-      setInteractionFeedback(state.suscrito ? "Suscripcion registrada." : "Suscripcion cancelada.");
+      setInteractionFeedback(
+        state.suscrito ? "Suscripcion registrada." : "Suscripcion cancelada.",
+      );
     } catch (interactionError) {
       console.error("STREAM_SUBSCRIPTION_ERROR", interactionError);
       setInteractionFeedback("No se pudo actualizar la suscripcion.");

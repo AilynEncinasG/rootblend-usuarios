@@ -117,6 +117,8 @@ export type ViewerCounterResponse = {
   id_stream: number;
   viewer_count: number;
   estado: Stream["estado"];
+  viewer_key?: string;
+  is_new_session?: boolean;
 };
 
 export type MomentoUploadResponse = {
@@ -450,12 +452,29 @@ export async function getStreamSignalStatus(
 }
 
 export async function joinStreamViewer(
-  id: number
+  id: number,
+  viewerKey?: string | null
 ): Promise<ViewerCounterResponse> {
   const response = await apiRequest<ApiItemResponse<ViewerCounterResponse>>(
     `/streams/streams/${id}/viewer/join/`,
     {
       method: "POST",
+      body: viewerKey ? { viewer_key: viewerKey } : {},
+    }
+  );
+
+  return response.data;
+}
+
+export async function heartbeatStreamViewer(
+  id: number,
+  viewerKey: string
+): Promise<ViewerCounterResponse> {
+  const response = await apiRequest<ApiItemResponse<ViewerCounterResponse>>(
+    `/streams/streams/${id}/viewer/heartbeat/`,
+    {
+      method: "POST",
+      body: { viewer_key: viewerKey },
     }
   );
 
@@ -463,12 +482,14 @@ export async function joinStreamViewer(
 }
 
 export async function leaveStreamViewer(
-  id: number
+  id: number,
+  viewerKey?: string | null
 ): Promise<ViewerCounterResponse> {
   const response = await apiRequest<ApiItemResponse<ViewerCounterResponse>>(
     `/streams/streams/${id}/viewer/leave/`,
     {
       method: "POST",
+      body: viewerKey ? { viewer_key: viewerKey } : {},
     }
   );
 

@@ -15,6 +15,7 @@ from .views import (
     streams_en_vivo,
     join_stream_viewer,
     leave_stream_viewer,
+    heartbeat_stream_viewer,
 )
 
 urlpatterns = [
@@ -32,4 +33,5 @@ urlpatterns = [
     path("<int:stream_id>/signal-status/", signal_status, name="signal-status"),
     path("<int:stream_id>/viewer/join/", join_stream_viewer, name="join-stream-viewer"),
     path("<int:stream_id>/viewer/leave/", leave_stream_viewer, name="leave-stream-viewer"),
+    path("<int:stream_id>/viewer/heartbeat/", heartbeat_stream_viewer, name="heartbeat-stream-viewer"),
 ]

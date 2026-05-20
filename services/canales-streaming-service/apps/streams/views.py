@@ -1,7 +1,11 @@
 import json
 import urllib.error
 import urllib.request
-
+import json
+import urllib.error
+import urllib.request
+import uuid
+from datetime import timedelta
 from django.conf import settings
 from django.db import transaction
 from django.utils import timezone
@@ -12,11 +16,49 @@ from apps.canales.models import Canal, TipoCanal
 from apps.common.auth import get_current_user_id
 from apps.common.responses import error_response, success_response
 from apps.categorias.models import Categoria
-from .models import ConfiguracionStream, Stream
-
+from .models import ConfiguracionStream, Stream, StreamViewerSession
 
 SIGNAL_TIMEOUT_SECONDS = 20
 
+VIEWER_TIMEOUT_SECONDS = 30
+
+
+def get_client_ip(request):
+    forwarded_for = request.META.get("HTTP_X_FORWARDED_FOR")
+
+    if forwarded_for:
+        return forwarded_for.split(",")[0].strip()
+
+    return request.META.get("REMOTE_ADDR")
+
+
+def get_viewer_key(request, body):
+    viewer_key = (body.get("viewer_key") or "").strip()
+
+    if viewer_key:
+        return viewer_key
+
+    return uuid.uuid4().hex
+
+
+def expire_old_viewers(stream):
+    timeout_at = timezone.now() - timedelta(seconds=VIEWER_TIMEOUT_SECONDS)
+
+    StreamViewerSession.objects.filter(
+        stream=stream,
+        active=True,
+        last_seen_at__lt=timeout_at,
+    ).update(active=False)
+
+    active_count = StreamViewerSession.objects.filter(
+        stream=stream,
+        active=True,
+    ).count()
+
+    stream.viewer_count = active_count
+    stream.save(update_fields=["viewer_count"])
+
+    return active_count
 
 def post_internal_event(base_url, path, payload):
     """
@@ -775,6 +817,11 @@ def signal_status(request, stream_id):
 @csrf_exempt
 @require_http_methods(["POST"])
 def join_stream_viewer(request, stream_id):
+    body = parse_json_body(request)
+
+    if body is None:
+        return error_response("JSON invalido.", status=400)
+
     try:
         with transaction.atomic():
             stream = (
@@ -784,54 +831,7 @@ def join_stream_viewer(request, stream_id):
             )
 
             if stream.estado != Stream.EN_VIVO:
-                stream.viewer_count = 0
-                stream.save(update_fields=["viewer_count"])
-
-                return success_response(
-                    {
-                        "id_stream": stream.id,
-                        "viewer_count": stream.viewer_count or 0,
-                        "estado": stream.estado,
-                    },
-                    message="El stream no esta en vivo.",
-                    status=200,
-                )
-
-            stream.viewer_count = (stream.viewer_count or 0) + 1
-            stream.save(update_fields=["viewer_count"])
-
-            response_data = {
-                "id_stream": stream.id,
-                "viewer_count": stream.viewer_count,
-                "estado": stream.estado,
-            }
-
-        publish_viewer_metric(stream, "viewer.joined")
-
-        return success_response(
-            response_data,
-            message="Espectador conectado.",
-            status=200,
-        )
-
-    except Stream.DoesNotExist:
-        return error_response("Stream no encontrado.", status=404)
-
-
-@csrf_exempt
-@require_http_methods(["POST"])
-def leave_stream_viewer(request, stream_id):
-    try:
-        with transaction.atomic():
-            stream = (
-                Stream.objects.select_for_update()
-                .select_related("canal")
-                .get(id=stream_id)
-            )
-
-            current_count = stream.viewer_count or 0
-            stream.viewer_count = max(current_count - 1, 0)
-            if stream.estado != Stream.EN_VIVO:
+                StreamViewerSession.objects.filter(stream=stream, active=True).update(active=False)
                 stream.viewer_count = 0
                 stream.save(update_fields=["viewer_count"])
 
@@ -844,6 +844,74 @@ def leave_stream_viewer(request, stream_id):
                     message="El stream no esta en vivo.",
                     status=200,
                 )
+
+            viewer_key = get_viewer_key(request, body)
+            user_id = get_current_user_id(request)
+
+            session, created = StreamViewerSession.objects.update_or_create(
+                stream=stream,
+                viewer_key=viewer_key,
+                defaults={
+                    "id_usuario": int(user_id) if user_id else None,
+                    "ip_address": get_client_ip(request),
+                    "user_agent": (request.META.get("HTTP_USER_AGENT") or "")[:255],
+                    "active": True,
+                },
+            )
+
+            viewer_count = expire_old_viewers(stream)
+
+            response_data = {
+                "id_stream": stream.id,
+                "viewer_count": viewer_count,
+                "estado": stream.estado,
+                "viewer_key": viewer_key,
+                "is_new_session": created,
+            }
+
+        if created:
+            publish_viewer_metric(stream, "viewer.joined")
+
+        return success_response(
+            response_data,
+            message="Espectador conectado.",
+            status=200,
+        )
+
+    except Stream.DoesNotExist:
+        return error_response("Stream no encontrado.", status=404)
+@csrf_exempt
+@require_http_methods(["POST"])
+def leave_stream_viewer(request, stream_id):
+    body = parse_json_body(request)
+
+    if body is None:
+        return error_response("JSON invalido.", status=400)
+
+    try:
+        with transaction.atomic():
+            stream = (
+                Stream.objects.select_for_update()
+                .select_related("canal")
+                .get(id=stream_id)
+            )
+
+            viewer_key = (body.get("viewer_key") or "").strip()
+
+            if viewer_key:
+                StreamViewerSession.objects.filter(
+                    stream=stream,
+                    viewer_key=viewer_key,
+                    active=True,
+                ).update(active=False)
+
+            if stream.estado != Stream.EN_VIVO:
+                StreamViewerSession.objects.filter(stream=stream, active=True).update(active=False)
+                viewer_count = 0
+            else:
+                viewer_count = expire_old_viewers(stream)
+
+            stream.viewer_count = viewer_count
             stream.save(update_fields=["viewer_count"])
 
             response_data = {
@@ -857,6 +925,68 @@ def leave_stream_viewer(request, stream_id):
         return success_response(
             response_data,
             message="Espectador desconectado.",
+            status=200,
+        )
+
+    except Stream.DoesNotExist:
+        return error_response("Stream no encontrado.", status=404)
+
+@csrf_exempt
+@require_http_methods(["POST"])
+def heartbeat_stream_viewer(request, stream_id):
+    body = parse_json_body(request)
+
+    if body is None:
+        return error_response("JSON invalido.", status=400)
+
+    viewer_key = (body.get("viewer_key") or "").strip()
+
+    if not viewer_key:
+        return error_response("viewer_key es obligatorio.", status=400)
+
+    try:
+        with transaction.atomic():
+            stream = (
+                Stream.objects.select_for_update()
+                .select_related("canal")
+                .get(id=stream_id)
+            )
+
+            if stream.estado != Stream.EN_VIVO:
+                StreamViewerSession.objects.filter(stream=stream, active=True).update(active=False)
+                stream.viewer_count = 0
+                stream.save(update_fields=["viewer_count"])
+
+                return success_response(
+                    {
+                        "id_stream": stream.id,
+                        "viewer_count": 0,
+                        "estado": stream.estado,
+                    },
+                    message="El stream no esta en vivo.",
+                    status=200,
+                )
+
+            StreamViewerSession.objects.filter(
+                stream=stream,
+                viewer_key=viewer_key,
+            ).update(
+                active=True,
+                last_seen_at=timezone.now(),
+            )
+
+            viewer_count = expire_old_viewers(stream)
+
+            response_data = {
+                "id_stream": stream.id,
+                "viewer_count": viewer_count,
+                "estado": stream.estado,
+                "viewer_key": viewer_key,
+            }
+
+        return success_response(
+            response_data,
+            message="Heartbeat recibido.",
             status=200,
         )
 
