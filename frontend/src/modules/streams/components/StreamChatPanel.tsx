@@ -499,7 +499,9 @@ export default function StreamChatPanel({
                   <time>{formatMessageTime(message.data.timestamp)}</time>
                 </Name>
 
-                <p>{message.data.mensaje}</p>
+                <p className={message.data.deleted ? "deleted-message" : ""}>
+                  {message.data.mensaje}
+                </p>
               </Bubble>
 
               <MenuButton
@@ -543,12 +545,14 @@ export default function StreamChatPanel({
 
                   {canModerate && (
                     <>
-                      <button
-                        type="button"
-                        onClick={() => runAction("Eliminar mensaje", message)}
-                      >
-                        <FiTrash2 /> Eliminar mensaje
-                      </button>
+                      {!message.data.deleted && (
+                        <button
+                          type="button"
+                          onClick={() => runAction("Eliminar mensaje", message)}
+                        >
+                          <FiTrash2 /> Eliminar mensaje
+                        </button>
+                      )}
 
                       <button
                         type="button"
@@ -739,6 +743,11 @@ const Bubble = styled.div`
     color: rgba(226, 232, 240, 0.82);
     line-height: 1.35;
     overflow-wrap: anywhere;
+  }
+
+  .deleted-message {
+    color: rgba(248, 113, 113, 0.82);
+    font-style: italic;
   }
 `;
 
