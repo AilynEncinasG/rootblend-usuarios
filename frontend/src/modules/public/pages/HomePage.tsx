@@ -14,9 +14,7 @@ import {
 import { RootShell } from "../../../shared/layout";
 import {
   brandAssets,
-  podcasts,
   type Category,
-  type PodcastItem,
   type StreamItem,
 } from "../../../shared/mock/rootblendMock";
 import { isAuthenticated } from "../../auth/utils/authStorage";
@@ -36,9 +34,9 @@ import {
   CardBody,
   CardGrid,
   CardTitle,
+  ContentCard,
   CategoryCard,
   CategoryGrid,
-  ContentCard,
   Eyebrow,
   FeaturedFlag,
   FilterChip,
@@ -51,11 +49,9 @@ import {
   LiveBadge,
   MetaLine,
   Muted,
-  PodcastCover,
   PodcastGrid,
   PodcastTile,
   PrimaryLink,
-  RoundButton,
   SectionBlock,
   SectionHeader,
   StateIcon,
@@ -133,7 +129,9 @@ function backendCategoryToCard(
   liveStreams: HomeStreamItem[]
 ): Category {
   const activeCount = liveStreams.filter(
-    (stream) => stream.category === category.nombre
+    (stream) =>
+      stream.category.trim().toLowerCase() ===
+      category.nombre.trim().toLowerCase()
   ).length;
 
   const imageMap: Record<string, string> = {
@@ -145,15 +143,13 @@ function backendCategoryToCard(
     Podcasts: brandAssets.podcastsCategoria,
   };
 
-  const finalImage = imageMap[category.nombre] || brandAssets.charlasCategoria;
-
   return {
     id: String(category.id_categoria),
     name: category.nombre,
     icon: "grid",
     viewers: String(activeCount),
     color: "#00e5ff",
-    image: finalImage,
+    image: imageMap[category.nombre] || brandAssets.charlasCategoria,
   };
 }
 
@@ -250,26 +246,6 @@ function StreamCard({ stream }: { stream: HomeStreamItem }) {
         <Muted>{stream.category}</Muted>
       </CardBody>
     </ContentCard>
-  );
-}
-
-function PodcastCard({ podcast }: { podcast: PodcastItem }) {
-  return (
-    <PodcastTile to={`/podcasts/${podcast.id}`}>
-      <PodcastCover $image={podcast.image}>
-        <FiPlay />
-      </PodcastCover>
-
-      <div>
-        <CardTitle>{podcast.title}</CardTitle>
-        <Muted>{podcast.creator}</Muted>
-        <Muted>Ultimo episodio: {podcast.duration}</Muted>
-      </div>
-
-      <RoundButton type="button" title="Reproducir">
-        <FiPlay />
-      </RoundButton>
-    </PodcastTile>
   );
 }
 
@@ -382,13 +358,13 @@ export default function HomePage() {
 
       <HeroGrid>
         <HeroCopy>
-          <Eyebrow>{loggedIn ? "¡Bienvenido de nuevo!" : ""}</Eyebrow>
+          <Eyebrow>{loggedIn ? "¡Bienvenido de nuevo!" : "ROOTBLEND"}</Eyebrow>
           <h1>
             Explora transmisiones <span>en vivo</span>
           </h1>
           <p>
-            Descubre streams, canales y podcasts de creadores reales registrados
-            en la plataforma.
+            Descubre streams, canales, categorías y podcasts desde una sola
+            plataforma distribuida.
           </p>
 
           <ButtonRow>
@@ -397,7 +373,7 @@ export default function HomePage() {
             </PrimaryLink>
 
             <GhostLink to="/podcasts">
-              <FiHeadphones /> Podcasts de explorar
+              <FiHeadphones /> Ver podcasts
             </GhostLink>
           </ButtonRow>
         </HeroCopy>
@@ -428,8 +404,8 @@ export default function HomePage() {
         <AlertPanel>
           <FiRefreshCw />
           <div>
-            <strong>Cargando streams</strong>
-            <p>Preparando la información...</p>
+            <strong>Cargando </strong>
+            <p>Consultando streams, canales y categorías reales.</p>
           </div>
         </AlertPanel>
       ) : null}
@@ -461,7 +437,7 @@ export default function HomePage() {
           <EmptyPanel
             icon={<FiWifiOff />}
             title="No hay streams en esta categoría"
-            text="Prueba seleccionando otra categoría o vuelve a 'Todas'."
+            text="El home solo muestra transmisiones reales. Prueba seleccionando otra categoría o vuelve a Todas."
           />
         ) : (
           <CardGrid>
@@ -480,7 +456,7 @@ export default function HomePage() {
           <EmptyPanel
             icon={<FiStar />}
             title="No hay transmisiones destacadas"
-            text="Cuando un creador marque un stream como destacado, aparecerá en esta sección."
+            text="Cuando un creador marque un stream real como destacado, aparecerá en esta sección."
           />
         ) : (
           <CardGrid>
@@ -543,14 +519,14 @@ export default function HomePage() {
       </Section>
 
       <Section
-        title="Podcasts destacados"
-        action={<TextLink to="/podcasts">Ver todos</TextLink>}
+        title="Podcasts"
+        action={<TextLink to="/podcasts">Abrir sección</TextLink>}
       >
-        <PodcastGrid>
-          {podcasts.map((podcast) => (
-            <PodcastCard key={podcast.id} podcast={podcast} />
-          ))}
-        </PodcastGrid>
+        <EmptyPanel
+          icon={<FiHeadphones />}
+          title="Podcasts listos para conectar"
+          text="El home ya no muestra podcasts falsos. Cuando implementemos podcasts-service real, aquí aparecerán episodios y podcasts reales."
+        />
       </Section>
     </RootShell>
   );
