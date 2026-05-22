@@ -66,6 +66,22 @@ function isImageUrl(value?: string | null) {
   return value.startsWith("http://") || value.startsWith("https://");
 }
 
+function getSignalStatusLabel(status?: string | null) {
+  if (status === "conectado") {
+    return "OBS conectado";
+  }
+
+  if (status === "desconectado") {
+    return "OBS desconectado";
+  }
+
+  if (status === "error") {
+    return "Error de señal";
+  }
+
+  return "Sin señal OBS";
+}
+
 function ChannelDetailAvatar({
   image,
   name,
@@ -358,11 +374,11 @@ export default function StreamDetailPage() {
 
       setSubscribed(Boolean(state.suscrito));
       setInteractionFeedback(
-        state.suscrito ? "Suscripcion registrada." : "Suscripcion cancelada.",
+        state.suscrito ? "Suscripción registrada." : "Suscripción cancelada.",
       );
     } catch (interactionError) {
       console.error("STREAM_SUBSCRIPTION_ERROR", interactionError);
-      setInteractionFeedback("No se pudo actualizar la suscripcion.");
+      setInteractionFeedback("No se pudo actualizar la suscripción.");
     } finally {
       setInteractionLoading(false);
     }
@@ -405,6 +421,9 @@ export default function StreamDetailPage() {
 
   const isLive = backendStream.estado === "en_vivo";
   const isFinished = backendStream.estado === "finalizado";
+  const signalStatus = backendStream.signal_status || "sin_senal";
+  const signalLabel = getSignalStatusLabel(signalStatus);
+  const hasSignal = signalStatus === "conectado";
 
   return (
     <RootShell
@@ -446,6 +465,33 @@ export default function StreamDetailPage() {
             </p>
           </div>
           <PrimaryLink to="/streams">Ver streams en vivo</PrimaryLink>
+        </AlertPanel>
+      )}
+
+      {isLive && !hasSignal && (
+        <AlertPanel>
+          <FiWifiOff />
+          <div>
+            <strong>{signalLabel}</strong>
+            <p>
+              El directo está marcado como en vivo, pero todavía no se detecta
+              señal desde OBS. Inicia la transmisión en OBS usando la URL RTMP y
+              la clave del stream.
+            </p>
+          </div>
+        </AlertPanel>
+      )}
+
+      {isLive && hasSignal && (
+        <AlertPanel>
+          <FiRefreshCw />
+          <div>
+            <strong>{signalLabel}</strong>
+            <p>
+              La señal del directo está activa. Los espectadores ya pueden ver la
+              transmisión desde ROOTBLEND.
+            </p>
+          </div>
         </AlertPanel>
       )}
 
@@ -536,7 +582,7 @@ export default function StreamDetailPage() {
             <strong>{backendStream.estado}</strong>
 
             <span>Señal OBS</span>
-            <strong>{backendStream.signal_status || "sin_senal"}</strong>
+            <strong>{signalLabel}</strong>
 
             <span>Espectadores</span>
             <strong>{viewerCount}</strong>

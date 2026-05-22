@@ -85,6 +85,8 @@ export const brandAssets = {
   streamView,
   charlasCategoria,
   podcastsCategoria,
+  podcastsView: podcastsCategoria,
+  categoriesView: charlasCategoria,
   loginView,
   streamerPanel,
   streamControl,

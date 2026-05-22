@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { FiAlertTriangle, FiGrid, FiRefreshCw } from "react-icons/fi";
 import { RootShell } from "../../../shared/layout";
-import { type Category, type StreamItem } from "../../../shared/mock/rootblendMock";
+import { type Category } from "../../../shared/mock/rootblendMock";
 import {
   getCategories as getBackendCategories,
   getLiveStreams,
@@ -20,7 +20,6 @@ import {
 
 export default function CategoriesPage() {
   const [backendCategories, setBackendCategories] = useState<Category[]>([]);
-  const [liveStreams, setLiveStreams] = useState<StreamItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
@@ -41,7 +40,6 @@ export default function CategoriesPage() {
 
         const liveCards = live.map(backendStreamToCard);
 
-        setLiveStreams(liveCards);
         setBackendCategories(
           categoriesResult.map((item) => backendCategoryToCard(item, liveCards))
         );
