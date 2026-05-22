@@ -27,6 +27,14 @@ import {
   type MomentoDestacado,
   type Stream,
 } from "../../streams/services/streamsService";
+import { isAuthenticated } from "../../auth/utils/authStorage";
+import {
+  followChannel,
+  getChannelInteractionState,
+  subscribeChannel,
+  unfollowChannel,
+  unsubscribeChannel,
+} from "../../interactions/services/interactionsService";
 
 function normalizeMediaUrl(value?: string | null) {
   if (!value) return "";
@@ -36,21 +44,21 @@ function normalizeMediaUrl(value?: string | null) {
   if (cleanValue.startsWith("http://localhost/media/")) {
     return cleanValue.replace(
       "http://localhost/media/",
-      "http://localhost:8080/canales-media/"
+      "http://localhost:8080/canales-media/",
     );
   }
 
   if (cleanValue.startsWith("http://127.0.0.1/media/")) {
     return cleanValue.replace(
       "http://127.0.0.1/media/",
-      "http://localhost:8080/canales-media/"
+      "http://localhost:8080/canales-media/",
     );
   }
 
   if (cleanValue.startsWith("/media/")) {
     return cleanValue.replace(
       "/media/",
-      "http://localhost:8080/canales-media/"
+      "http://localhost:8080/canales-media/",
     );
   }
 
@@ -80,6 +88,18 @@ function streamStatusColor(status: Stream["estado"]) {
 }
 
 function getChannelTypeName(channel: Canal) {
+  const typeValue = channel.tipo_canal;
+
+  if (typeof typeValue === "string") {
+    return typeValue;
+  }
+
+  return typeValue?.nombre_tipo || "streamer";
+}
+
+function getInteractionChannelType(channel: Canal | null) {
+  if (!channel) return "streamer";
+
   const typeValue = channel.tipo_canal;
 
   if (typeof typeValue === "string") {
@@ -182,7 +202,9 @@ function StreamCard({ stream }: { stream: Stream }) {
 
 function MomentCard({ momento }: { momento: MomentoDestacado }) {
   const image = normalizeMediaUrl(
-    momento.thumbnail_url || momento.stream?.thumbnail_url || brandAssets.streamView
+    momento.thumbnail_url ||
+      momento.stream?.thumbnail_url ||
+      brandAssets.streamView,
   );
 
   return (
@@ -335,12 +357,18 @@ export default function ChannelPublicPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
+  const [following, setFollowing] = useState(false);
+  const [subscribed, setSubscribed] = useState(false);
+  const [interactionLoading, setInteractionLoading] = useState(false);
+  const [interactionFeedback, setInteractionFeedback] = useState("");
+
   useEffect(() => {
     let active = true;
 
     async function loadChannelPage() {
       setLoading(true);
       setError("");
+      setInteractionFeedback("");
 
       if (!Number.isFinite(numericChannelId) || numericChannelId <= 0) {
         setError("ID de canal inválido.");
@@ -358,7 +386,7 @@ export default function ChannelPublicPage() {
         if (!active) return;
 
         const channelStreams = allStreams.filter(
-          (stream) => stream.canal.id_canal === numericChannelId
+          (stream) => stream.canal.id_canal === numericChannelId,
         );
 
         setChannel(channelResult);
@@ -371,7 +399,7 @@ export default function ChannelPublicPage() {
           setError(
             requestError instanceof Error
               ? requestError.message
-              : "No se pudo cargar el canal."
+              : "No se pudo cargar el canal.",
           );
         }
       } finally {
@@ -386,27 +414,139 @@ export default function ChannelPublicPage() {
     };
   }, [numericChannelId]);
 
+  useEffect(() => {
+    let active = true;
+
+    async function loadInteractionState() {
+      if (
+        !Number.isFinite(numericChannelId) ||
+        numericChannelId <= 0 ||
+        !isAuthenticated()
+      ) {
+        setFollowing(false);
+        setSubscribed(false);
+        return;
+      }
+
+      try {
+        const state = await getChannelInteractionState(numericChannelId);
+
+        if (!active) return;
+
+        setFollowing(Boolean(state.siguiendo));
+        setSubscribed(Boolean(state.suscrito));
+      } catch (requestError) {
+        console.error("CHANNEL_INTERACTION_STATE_ERROR", requestError);
+
+        if (active) {
+          setFollowing(false);
+          setSubscribed(false);
+        }
+      }
+    }
+
+    loadInteractionState();
+
+    return () => {
+      active = false;
+    };
+  }, [numericChannelId]);
+
   const liveStreams = useMemo(
     () => streams.filter((stream) => stream.estado === "en_vivo"),
-    [streams]
+    [streams],
   );
 
   const recentStreams = useMemo(
-    () =>
-      streams
-        .filter((stream) => stream.estado !== "en_vivo")
-        .slice(0, 8),
-    [streams]
+    () => streams.filter((stream) => stream.estado !== "en_vivo").slice(0, 8),
+    [streams],
   );
 
   const featuredMoments = useMemo(
     () => momentos.filter((momento) => momento.destacado).slice(0, 8),
-    [momentos]
+    [momentos],
   );
 
   const channelBanner = normalizeMediaUrl(channel?.banner_canal || "");
   const channelPhoto = normalizeMediaUrl(channel?.foto_canal || "");
   const avatarText = getInitials(channel?.nombre_canal || "RB");
+
+  async function toggleFollow() {
+    if (!Number.isFinite(numericChannelId) || numericChannelId <= 0) return;
+
+    if (!isAuthenticated()) {
+      setInteractionFeedback("Debes iniciar sesión para seguir canales.");
+      return;
+    }
+
+    try {
+      setInteractionLoading(true);
+      setInteractionFeedback("");
+
+      if (following) {
+        const state = await unfollowChannel(numericChannelId);
+
+        setFollowing(Boolean(state.siguiendo));
+        setSubscribed(Boolean(state.suscrito));
+        setInteractionFeedback("Dejaste de seguir este canal.");
+      } else {
+        const state = await followChannel({
+          id_canal: numericChannelId,
+          nombre_canal: channel?.nombre_canal || "Canal ROOTBLEND",
+          tipo_canal: getInteractionChannelType(channel),
+          estado_transmision: liveStreams.length > 0 ? "online" : "offline",
+        });
+
+        setFollowing(Boolean(state.siguiendo));
+        setSubscribed(Boolean(state.suscrito));
+        setInteractionFeedback("Ahora sigues este canal.");
+      }
+    } catch (requestError) {
+      console.error("CHANNEL_FOLLOW_TOGGLE_ERROR", requestError);
+      setInteractionFeedback("No se pudo actualizar el seguimiento.");
+    } finally {
+      setInteractionLoading(false);
+    }
+  }
+
+  async function toggleSubscription() {
+    if (!Number.isFinite(numericChannelId) || numericChannelId <= 0) return;
+
+    if (!isAuthenticated()) {
+      setInteractionFeedback("Debes iniciar sesión para suscribirte.");
+      return;
+    }
+
+    try {
+      setInteractionLoading(true);
+      setInteractionFeedback("");
+
+      if (subscribed) {
+        const state = await unsubscribeChannel(numericChannelId);
+
+        setFollowing(Boolean(state.siguiendo));
+        setSubscribed(Boolean(state.suscrito));
+        setInteractionFeedback("Suscripción cancelada.");
+      } else {
+        const state = await subscribeChannel({
+          id_canal: numericChannelId,
+          nombre_canal: channel?.nombre_canal || "Canal ROOTBLEND",
+          tipo_canal: getInteractionChannelType(channel),
+          estado_transmision: liveStreams.length > 0 ? "online" : "offline",
+          tipo_plan: "comunidad",
+        });
+
+        setFollowing(Boolean(state.siguiendo));
+        setSubscribed(Boolean(state.suscrito));
+        setInteractionFeedback("Te suscribiste a este canal.");
+      }
+    } catch (requestError) {
+      console.error("CHANNEL_SUBSCRIPTION_TOGGLE_ERROR", requestError);
+      setInteractionFeedback("No se pudo actualizar la suscripción.");
+    } finally {
+      setInteractionLoading(false);
+    }
+  }
 
   return (
     <RootShell active="home">
@@ -491,8 +631,7 @@ export default function ChannelPublicPage() {
                     borderRadius: "50%",
                     overflow: "hidden",
                     border: "3px solid rgba(0, 234, 255, 0.65)",
-                    background:
-                      "linear-gradient(135deg, #00eaff, #8b5cf6)",
+                    background: "linear-gradient(135deg, #00eaff, #8b5cf6)",
                     display: "grid",
                     placeItems: "center",
                     color: "#020617",
@@ -561,52 +700,87 @@ export default function ChannelPublicPage() {
                   >
                     <button
                       type="button"
+                      onClick={toggleFollow}
+                      disabled={interactionLoading}
                       style={{
                         border: 0,
                         borderRadius: 14,
                         minHeight: 44,
                         padding: "0 18px",
-                        background: "linear-gradient(135deg, #00eaff, #22c55e)",
+                        background: following
+                          ? "linear-gradient(135deg, #22c55e, #16a34a)"
+                          : "linear-gradient(135deg, #00eaff, #22c55e)",
                         color: "#020617",
                         fontWeight: 900,
-                        cursor: "pointer",
+                        cursor: interactionLoading ? "not-allowed" : "pointer",
+                        opacity: interactionLoading ? 0.7 : 1,
+                        display: "inline-flex",
+                        alignItems: "center",
+                        gap: 8,
                       }}
                     >
-                      <FiUserPlus /> Seguir
+                      <FiUserPlus /> {following ? "Siguiendo" : "Seguir"}
                     </button>
 
                     <button
                       type="button"
+                      disabled={!following || interactionLoading}
                       style={{
                         border: "1px solid rgba(0, 234, 255, 0.45)",
                         borderRadius: 14,
                         minHeight: 44,
                         padding: "0 18px",
-                        background: "rgba(15, 23, 42, 0.72)",
-                        color: "#ffffff",
+                        background: following
+                          ? "rgba(0, 234, 255, 0.16)"
+                          : "rgba(15, 23, 42, 0.72)",
+                        color: following ? "#ffffff" : "rgba(226,232,240,.55)",
                         fontWeight: 900,
-                        cursor: "pointer",
+                        cursor: following ? "default" : "not-allowed",
+                        display: "inline-flex",
+                        alignItems: "center",
+                        gap: 8,
                       }}
                     >
-                      <FiBell /> Notificarme
+                      <FiBell />{" "}
+                      {following ? "Notificaciones activas" : "Notificarme"}
                     </button>
 
                     <button
                       type="button"
+                      onClick={toggleSubscription}
+                      disabled={interactionLoading}
                       style={{
                         border: "1px solid rgba(168, 85, 247, 0.45)",
                         borderRadius: 14,
                         minHeight: 44,
                         padding: "0 18px",
-                        background: "rgba(88, 28, 135, 0.30)",
+                        background: subscribed
+                          ? "rgba(34, 197, 94, 0.26)"
+                          : "rgba(88, 28, 135, 0.30)",
                         color: "#ffffff",
                         fontWeight: 900,
-                        cursor: "pointer",
+                        cursor: interactionLoading ? "not-allowed" : "pointer",
+                        opacity: interactionLoading ? 0.7 : 1,
+                        display: "inline-flex",
+                        alignItems: "center",
+                        gap: 8,
                       }}
                     >
-                      <FiHeart /> Suscribirse
+                      <FiHeart /> {subscribed ? "Suscrito" : "Suscribirse"}
                     </button>
                   </div>
+
+                  {interactionFeedback ? (
+                    <p
+                      style={{
+                        margin: "12px 0 0",
+                        color: "#00eaff",
+                        fontWeight: 850,
+                      }}
+                    >
+                      {interactionFeedback}
+                    </p>
+                  ) : null}
                 </div>
               </div>
             </section>
