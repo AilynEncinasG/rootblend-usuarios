@@ -18,8 +18,10 @@ import { getStoredUser, isAuthenticated } from "../../auth/utils/authStorage";
 
 import {
   assignChatModerator,
+  clearStreamChatMessages,
   createChatSanction,
   deleteChatMessage,
+  removeChatModerator,
   sendChatMessage,
   subscribeToChannelModerators,
   subscribeToChat,
@@ -98,7 +100,17 @@ function isUserModerator(
         item.data.nombre === currentUser.name),
   );
 }
-
+function isMessageAuthorModerator(
+  moderators: ChatModeratorRecord[],
+  message: ChatMessageRecord,
+) {
+  return moderators.some(
+    (item) =>
+      item.data.active &&
+      (item.data.usuarioId === message.data.usuarioId ||
+        item.data.nombre === message.data.nombre),
+  );
+}
 function getUserSanction(
   sanctions: ChatSanctionRecord[],
   currentUser: CurrentUser,
@@ -302,6 +314,31 @@ export default function StreamChatPanel({
     }
   }
 
+  async function clearChatForTesting() {
+    if (!canModerate) {
+      setFeedback("Necesitas ser dueño o moderador para limpiar el chat.");
+      return;
+    }
+
+    const confirmed = window.confirm(
+      "¿Seguro que deseas limpiar todos los mensajes de este stream?",
+    );
+
+    if (!confirmed) {
+      return;
+    }
+
+    try {
+      await clearStreamChatMessages(streamId);
+      setMessages([]);
+      setActiveId(null);
+      setFeedback("Chat limpiado correctamente para nuevas pruebas.");
+    } catch (error) {
+      console.error("FIREBASE_CHAT_CLEAR_ERROR", error);
+      setFeedback("No se pudo limpiar el chat en Firebase.");
+    }
+  }
+
   async function runAction(action: string, message: ChatMessageRecord) {
     const targetName = message.data.nombre;
     const targetUserId = message.data.usuarioId;
@@ -320,7 +357,16 @@ export default function StreamChatPanel({
 
         setFeedback(`${targetName} ahora es moderador de este canal.`);
       }
+      if (action === "Quitar moderador") {
+        if (!isOwner) {
+          setFeedback("Solo el dueño del canal puede retirar moderadores.");
+          return;
+        }
 
+        await removeChatModerator(channelId, targetUserId);
+
+        setFeedback(`${targetName} ya no es moderador de este canal.`);
+      }
       if (action === "Eliminar mensaje") {
         if (!canModerate) {
           setFeedback("Necesitas rol de moderador en este canal.");
@@ -404,6 +450,12 @@ export default function StreamChatPanel({
 
       <Feedback>{feedback}</Feedback>
 
+      {canModerate && messages.length > 0 && (
+        <ClearChatButton type="button" onClick={clearChatForTesting}>
+          <FiTrash2 /> Limpiar chat de prueba
+        </ClearChatButton>
+      )}
+
       {currentSanction && (
         <WarningBox>
           <FiAlertTriangle />
@@ -423,11 +475,9 @@ export default function StreamChatPanel({
         )}
 
         {messages.map((message) => {
-          const messageUserIsModerator = moderators.some(
-            (item) =>
-              item.data.active &&
-              (item.data.usuarioId === message.data.usuarioId ||
-                item.data.nombre === message.data.nombre),
+          const messageUserIsModerator = isMessageAuthorModerator(
+            moderators,
+            message,
           );
 
           return (
@@ -473,12 +523,21 @@ export default function StreamChatPanel({
                     <FiEye /> Ver perfil
                   </button>
 
-                  {isOwner && (
+                  {isOwner && !messageUserIsModerator && (
                     <button
                       type="button"
                       onClick={() => runAction("Hacer moderador", message)}
                     >
                       <FiShield /> Hacer moderador
+                    </button>
+                  )}
+
+                  {isOwner && messageUserIsModerator && (
+                    <button
+                      type="button"
+                      onClick={() => runAction("Quitar moderador", message)}
+                    >
+                      <FiXCircle /> Quitar moderador
                     </button>
                   )}
 
@@ -604,6 +663,25 @@ const Feedback = styled.div`
   background: rgba(20, 184, 166, 0.12);
   border: 1px solid rgba(20, 184, 166, 0.22);
   font-size: 12px;
+`;
+
+const ClearChatButton = styled.button`
+  margin: 0 10px 10px;
+  height: 36px;
+  border: 1px solid rgba(239, 68, 68, 0.32);
+  border-radius: 10px;
+  color: #fecaca;
+  background: rgba(239, 68, 68, 0.1);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-weight: 850;
+  cursor: pointer;
+
+  &:hover {
+    background: rgba(239, 68, 68, 0.18);
+  }
 `;
 
 const WarningBox = styled.div`
