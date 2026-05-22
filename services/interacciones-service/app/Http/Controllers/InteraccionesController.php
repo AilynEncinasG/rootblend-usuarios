@@ -477,4 +477,26 @@ class InteraccionesController extends Controller
             'notificaciones_creadas' => $created,
         ], 'Evento de inicio de directo procesado.');
     }
+
+    public function channelSummary(Request $request, int $idCanal): JsonResponse
+    {
+        $followers = Seguimiento::where('id_canal', $idCanal)
+            ->where('activo', true)
+            ->count();
+
+        $subscriptions = Suscripcion::where('id_canal', $idCanal)
+            ->where('activa', true)
+            ->count();
+
+        $channel = CanalInteraccion::where('id_canal', $idCanal)->first();
+
+        return $this->jsonOk([
+            'id_canal' => $idCanal,
+            'nombre_canal' => $channel?->nombre_canal,
+            'seguidores' => $followers,
+            'suscriptores' => $subscriptions,
+        ]);
+    }
+
+
 }

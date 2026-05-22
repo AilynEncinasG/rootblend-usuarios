@@ -69,6 +69,13 @@ export type SubscriptionItem = {
   };
 };
 
+export type ChannelInteractionSummary = {
+  id_canal: number;
+  nombre_canal?: string | null;
+  seguidores: number;
+  suscriptores: number;
+};
+
 type ApiItemResponse<T> = {
   success: boolean;
   message: string;
@@ -222,4 +229,14 @@ export async function updateNotificationConfig(payload: {
   });
 
   return response.data.configuracion;
+}
+export async function getChannelInteractionSummary(
+  channelId: number,
+): Promise<ChannelInteractionSummary> {
+  const response = await apiRequest<ApiItemResponse<ChannelInteractionSummary>>(
+    `/interactions/channels/${channelId}/summary`,
+    { auth: true },
+  );
+
+  return response.data;
 }

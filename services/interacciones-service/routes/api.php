@@ -18,7 +18,7 @@ Route::get('/follows/me', [InteraccionesController::class, 'myFollows']);
 Route::post('/subscriptions', [InteraccionesController::class, 'subscribe']);
 Route::delete('/subscriptions/{idCanal}', [InteraccionesController::class, 'unsubscribe'])->whereNumber('idCanal');
 Route::get('/subscriptions/me', [InteraccionesController::class, 'mySubscriptions']);
-
+Route::get('/channels/{idCanal}/summary', [InteraccionesController::class, 'channelSummary'])->whereNumber('idCanal');
 Route::get('/notifications', [InteraccionesController::class, 'notifications']);
 Route::patch('/notifications/{idNotificacion}/read', [InteraccionesController::class, 'markNotificationRead'])->whereNumber('idNotificacion');
 
