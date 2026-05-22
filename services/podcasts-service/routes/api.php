@@ -24,9 +24,9 @@ Route::get('/me/historial', [PodcastsController::class, 'myHistory']);
 Route::get('/me/stats', [PodcastsController::class, 'myStats']);
 
 Route::post('/podcasts', [PodcastsController::class, 'storePodcast']);
-Route::match(['put', 'patch'], '/podcasts/{idPodcast}', [PodcastsController::class, 'updatePodcast'])->whereNumber('idPodcast');
+Route::match(['put', 'patch', 'post'], '/podcasts/{idPodcast}', [PodcastsController::class, 'updatePodcast'])->whereNumber('idPodcast');
 Route::delete('/podcasts/{idPodcast}', [PodcastsController::class, 'deletePodcast'])->whereNumber('idPodcast');
 
 Route::post('/podcasts/{idPodcast}/episodios', [PodcastsController::class, 'storeEpisode'])->whereNumber('idPodcast');
-Route::match(['put', 'patch'], '/episodios/{idEpisode}', [PodcastsController::class, 'updateEpisode'])->whereNumber('idEpisode');
+Route::match(['put', 'patch', 'post'], '/episodios/{idEpisode}', [PodcastsController::class, 'updateEpisode'])->whereNumber('idEpisode');
 Route::delete('/episodios/{idEpisode}', [PodcastsController::class, 'deleteEpisode'])->whereNumber('idEpisode');

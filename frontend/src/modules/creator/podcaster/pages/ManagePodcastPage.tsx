@@ -1,6 +1,6 @@
 import { type FormEvent, useEffect, useMemo, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { FiAlertTriangle, FiHeadphones, FiImage, FiRefreshCw, FiSave } from "react-icons/fi";
+import { FiAlertTriangle, FiHeadphones, FiImage, FiLink, FiRefreshCw, FiSave, FiUpload } from "react-icons/fi";
 import { brandAssets } from "../../../../shared/mock/rootblendMock";
 import {
   AlertPanel,
@@ -31,6 +31,8 @@ import {
 } from "../services/podcasterCreatorService";
 import type { PodcastCategory } from "../../../podcasts/services/podcastsCatalogService";
 
+type CoverMode = "url" | "file";
+
 export default function ManagePodcastPage() {
   const { podcastId } = useParams();
   const [podcasts, setPodcasts] = useState<PodcasterPodcast[]>([]);
@@ -40,7 +42,9 @@ export default function ManagePodcastPage() {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [categoryId, setCategoryId] = useState("");
+  const [coverMode, setCoverMode] = useState<CoverMode>("url");
   const [coverUrl, setCoverUrl] = useState("");
+  const [coverFile, setCoverFile] = useState<File | null>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
@@ -97,6 +101,8 @@ export default function ManagePodcastPage() {
     setDescription(selectedPodcast.description);
     setCategoryId(String(selectedPodcast.id_categoria_podcast || categories[0]?.id_categoria_podcast || ""));
     setCoverUrl(selectedPodcast.cover || "");
+    setCoverMode("url");
+    setCoverFile(null);
   }, [categories, selectedPodcast]);
 
   const selectedEpisodes = episodes.filter(
@@ -108,6 +114,11 @@ export default function ManagePodcastPage() {
 
     if (!selectedPodcast) return;
 
+    if (coverMode === "url" && coverUrl.trim() && !/^https?:\/\//i.test(coverUrl.trim())) {
+      setError("La URL de portada debe empezar con http:// o https://.");
+      return;
+    }
+
     setSaving(true);
     setError("");
     setSuccess("");
@@ -117,10 +128,13 @@ export default function ManagePodcastPage() {
         nombre: name.trim(),
         descripcion: description.trim(),
         id_categoria_podcast: Number(categoryId),
-        imagen_portada: coverUrl.trim() || undefined,
+        imagen_portada: coverMode === "url" ? coverUrl.trim() || undefined : undefined,
+        portada: coverMode === "file" ? coverFile : null,
       });
 
       setPodcasts((items) => items.map((item) => (item.id === updated.id ? updated : item)));
+      setCoverMode("url");
+      setCoverFile(null);
       setSuccess("Podcast actualizado correctamente.");
     } catch (saveError) {
       console.error("MANAGE_PODCAST_SAVE_ERROR", saveError);
@@ -133,7 +147,7 @@ export default function ManagePodcastPage() {
   return (
     <CreatorScreen
       title="Administrar podcast"
-      subtitle="Información, episodios, configuración y estado público."
+      subtitle="Edita información, portada, episodios, configuración y estado público."
       image={brandAssets.podcasterPanel}
     >
       {loading ? (
@@ -201,11 +215,33 @@ export default function ManagePodcastPage() {
               ))}
             </Select>
 
-            <Label>URL de portada</Label>
-            <Field>
-              <FiImage />
-              <input value={coverUrl} onChange={(event) => setCoverUrl(event.target.value)} />
-            </Field>
+            <Label>Tipo de portada</Label>
+            <Select value={coverMode} onChange={(event) => setCoverMode(event.target.value as CoverMode)}>
+              <option value="url">Usar URL de imagen</option>
+              <option value="file">Subir imagen desde mi PC</option>
+            </Select>
+
+            {coverMode === "url" ? (
+              <>
+                <Label>URL de portada</Label>
+                <Field>
+                  <FiLink />
+                  <input value={coverUrl} onChange={(event) => setCoverUrl(event.target.value)} />
+                </Field>
+              </>
+            ) : (
+              <>
+                <Label>Nueva portada desde PC</Label>
+                <Field>
+                  <FiUpload />
+                  <input
+                    type="file"
+                    accept="image/png,image/jpeg,image/webp,image/gif"
+                    onChange={(event) => setCoverFile(event.target.files?.[0] || null)}
+                  />
+                </Field>
+              </>
+            )}
 
             <ButtonRow>
               <PrimaryButton type="submit" disabled={saving}>
@@ -219,6 +255,14 @@ export default function ManagePodcastPage() {
               <strong>Resumen</strong>
               <Link to={`/podcasts/${selectedPodcast.id}`}>Ver público</Link>
             </PanelHeader>
+
+            {selectedPodcast.cover ? (
+              <img
+                src={selectedPodcast.cover}
+                alt={selectedPodcast.title}
+                style={{ width: "100%", maxHeight: 220, objectFit: "cover", borderRadius: 14, marginBottom: 14 }}
+              />
+            ) : null}
 
             <TwoCol>
               <span>Nombre</span>
@@ -261,10 +305,10 @@ export default function ManagePodcastPage() {
       ) : (
         <StatePanel>
           <StateIcon>
-            <FiHeadphones />
+            <FiImage />
           </StateIcon>
-          <h2>No tienes podcasts creados</h2>
-          <p>Primero crea un podcast desde el panel podcaster.</p>
+          <h2>No tienes podcasts todavía</h2>
+          <p>Crea tu primer podcast para administrarlo.</p>
         </StatePanel>
       )}
     </CreatorScreen>

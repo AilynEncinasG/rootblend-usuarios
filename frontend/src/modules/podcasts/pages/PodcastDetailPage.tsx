@@ -4,11 +4,13 @@ import {
   FiAlertTriangle,
   FiArrowLeft,
   FiCheckCircle,
+  FiExternalLink,
   FiHeadphones,
   FiList,
   FiPause,
   FiPlay,
   FiRefreshCw,
+  FiVideo,
   FiVolume2,
   FiVolumeX,
 } from "react-icons/fi";
@@ -44,6 +46,14 @@ type LoadState = "loading" | "online" | "offline";
 
 function audioUrlFor(episode: PodcastEpisode): string | null {
   return episode.audio?.url || episode.audio?.url_archivo || null;
+}
+
+function embedUrlFor(episode: PodcastEpisode): string | null {
+  return episode.audio?.embedUrl || episode.audio?.embed_url || null;
+}
+
+function isYoutubeEpisode(episode: PodcastEpisode): boolean {
+  return Boolean(episode.audio?.isYoutube || episode.audio?.is_youtube || episode.audio?.sourceType === "youtube" || episode.audio?.tipo_origen === "youtube");
 }
 
 export default function PodcastDetailPage() {
@@ -193,6 +203,7 @@ export default function PodcastDetailPage() {
                 </button>
                 <span>{episode.title}</span>
                 <small>{episode.duration}</small>
+                <small>{isYoutubeEpisode(episode) ? "YouTube" : episode.audio?.sourceType || episode.audio?.tipo_origen || "Audio"}</small>
                 <small>{episode.plays ?? 0} plays</small>
               </EpisodeRow>
             ))
@@ -212,11 +223,38 @@ export default function PodcastDetailPage() {
         <PanelHeader>
           <strong>Reproductor de podcast</strong>
           <ServicePill $status={selectedEpisode && audioUrlFor(selectedEpisode) ? "Operativo" : "Degradado"}>
-            {selectedEpisode && audioUrlFor(selectedEpisode) ? "Audio disponible" : "Sin audio"}
+            {selectedEpisode && audioUrlFor(selectedEpisode)
+              ? isYoutubeEpisode(selectedEpisode)
+                ? "YouTube disponible"
+                : "Audio disponible"
+              : "Sin audio"}
           </ServicePill>
         </PanelHeader>
 
-        {selectedEpisode && audioUrlFor(selectedEpisode) ? (
+        {selectedEpisode && isYoutubeEpisode(selectedEpisode) && embedUrlFor(selectedEpisode) ? (
+          <AudioBar>
+            <strong>{selectedEpisode.title}</strong>
+            <div style={{ position: "relative", width: "100%", paddingTop: "56.25%", borderRadius: 14, overflow: "hidden", background: "#020617" }}>
+              <iframe
+                title={selectedEpisode.title}
+                src={embedUrlFor(selectedEpisode) || undefined}
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowFullScreen
+                style={{ position: "absolute", inset: 0, width: "100%", height: "100%", border: 0 }}
+              />
+            </div>
+            <ButtonRow>
+              <PrimaryButton type="button" onClick={() => registerPlay(selectedEpisode)}>
+                <FiVideo /> Registrar reproducción
+              </PrimaryButton>
+              {audioUrlFor(selectedEpisode) ? (
+                <a href={audioUrlFor(selectedEpisode) || "#"} target="_blank" rel="noreferrer">
+                  <FiExternalLink /> Abrir en YouTube
+                </a>
+              ) : null}
+            </ButtonRow>
+          </AudioBar>
+        ) : selectedEpisode && audioUrlFor(selectedEpisode) ? (
           <AudioBar>
             <strong>{selectedEpisode.title}</strong>
             <audio
@@ -235,7 +273,7 @@ export default function PodcastDetailPage() {
               <FiVolumeX />
             </StateIcon>
             <h2>Archivo de audio no disponible</h2>
-            <p>El episodio seleccionado no tiene URL de audio MP3, WAV o M4A registrada.</p>
+            <p>El episodio seleccionado no tiene audio, URL directa o YouTube registrado.</p>
           </StatePanel>
         )}
       </Panel>

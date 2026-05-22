@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { FiAlertTriangle, FiFile, FiHeadphones, FiLink } from "react-icons/fi";
+import { FiAlertTriangle, FiFile, FiHeadphones, FiLink, FiUpload, FiVideo } from "react-icons/fi";
 import {
   AlertPanel,
   Field,
@@ -15,6 +15,12 @@ import {
   type PodcasterPodcast,
 } from "../services/podcasterCreatorService";
 
+type AudioSource = "file" | "url" | "youtube";
+
+function extensionFromUrl(value: string): string {
+  return value.split(".").pop()?.split("?")[0]?.split("#")[0] || "mp3";
+}
+
 export default function UploadEpisodePage() {
   const navigate = useNavigate();
   const [podcasts, setPodcasts] = useState<PodcasterPodcast[]>([]);
@@ -23,7 +29,10 @@ export default function UploadEpisodePage() {
   const [description, setDescription] = useState("Descripción breve del episodio.");
   const [episodeNumber, setEpisodeNumber] = useState("1");
   const [duration, setDuration] = useState("00:25:00");
+  const [audioSource, setAudioSource] = useState<AudioSource>("file");
+  const [audioFile, setAudioFile] = useState<File | null>(null);
   const [audioUrl, setAudioUrl] = useState("");
+  const [youtubeUrl, setYoutubeUrl] = useState("");
   const [error, setError] = useState("");
 
   useEffect(() => {
@@ -61,9 +70,16 @@ export default function UploadEpisodePage() {
       throw new Error("Primero crea un podcast para poder subir episodios.");
     }
 
-    if (!audioUrl.trim()) {
-      setError("Para la prueba visual pega una URL de audio MP3, WAV o M4A.");
-      throw new Error("Falta URL de audio.");
+    if (audioSource === "file" && !audioFile) {
+      throw new Error("Selecciona un archivo de audio desde tu PC.");
+    }
+
+    if (audioSource === "url" && !audioUrl.trim()) {
+      throw new Error("Pega una URL directa de audio MP3, WAV, M4A, OGG o AAC.");
+    }
+
+    if (audioSource === "youtube" && !youtubeUrl.trim()) {
+      throw new Error("Pega un enlace de YouTube.");
     }
 
     const created = await createEpisode(selectedPodcastId, {
@@ -72,8 +88,10 @@ export default function UploadEpisodePage() {
       duracion: duration,
       estado: "publicado",
       numero_episodio: Number(episodeNumber) || undefined,
-      url_archivo: audioUrl.trim(),
-      formato: audioUrl.split(".").pop()?.split("?")[0] || "mp3",
+      audio: audioSource === "file" ? audioFile : null,
+      url_archivo: audioSource === "url" ? audioUrl.trim() : undefined,
+      youtube_url: audioSource === "youtube" ? youtubeUrl.trim() : undefined,
+      formato: audioSource === "url" ? extensionFromUrl(audioUrl) : undefined,
     });
 
     navigate(`/podcasts/${created.podcastId || selectedPodcastId}`);
@@ -82,7 +100,7 @@ export default function UploadEpisodePage() {
   return (
     <CreatorForm
       title="Subir episodio"
-      subtitle="Carga el audio, completa metadatos y publica. Para la prueba visual usaremos URL de audio."
+      subtitle="Publica el episodio con audio desde tu PC, una URL directa o YouTube."
       button="Publicar episodio"
       onSubmit={handleSubmit}
     >
@@ -106,15 +124,56 @@ export default function UploadEpisodePage() {
         ))}
       </Select>
 
-      <Label>URL del audio</Label>
-      <Field>
-        <FiLink />
-        <input
-          value={audioUrl}
-          onChange={(event) => setAudioUrl(event.target.value)}
-          placeholder="https://.../episodio.mp3"
-        />
-      </Field>
+      <Label>Fuente del audio</Label>
+      <Select value={audioSource} onChange={(event) => setAudioSource(event.target.value as AudioSource)}>
+        <option value="file">Subir audio desde mi PC</option>
+        <option value="url">URL directa de audio</option>
+        <option value="youtube">Link de YouTube</option>
+      </Select>
+
+      {audioSource === "file" ? (
+        <>
+          <Label>Archivo de audio</Label>
+          <Field>
+            <FiUpload />
+            <input
+              type="file"
+              accept="audio/mpeg,audio/wav,audio/x-wav,audio/mp4,audio/aac,audio/ogg,.mp3,.wav,.m4a,.aac,.ogg"
+              onChange={(event) => setAudioFile(event.target.files?.[0] || null)}
+            />
+          </Field>
+          <small>Formatos permitidos: MP3, WAV, M4A, OGG o AAC. Máximo 100MB.</small>
+        </>
+      ) : null}
+
+      {audioSource === "url" ? (
+        <>
+          <Label>URL directa del audio</Label>
+          <Field>
+            <FiLink />
+            <input
+              value={audioUrl}
+              onChange={(event) => setAudioUrl(event.target.value)}
+              placeholder="https://.../episodio.mp3"
+            />
+          </Field>
+        </>
+      ) : null}
+
+      {audioSource === "youtube" ? (
+        <>
+          <Label>Link de YouTube</Label>
+          <Field>
+            <FiVideo />
+            <input
+              value={youtubeUrl}
+              onChange={(event) => setYoutubeUrl(event.target.value)}
+              placeholder="https://www.youtube.com/watch?v=..."
+            />
+          </Field>
+          <small>Se mostrará como reproductor embebido de YouTube en el detalle del podcast.</small>
+        </>
+      ) : null}
 
       <Label>Título del episodio</Label>
       <Field>

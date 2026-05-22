@@ -19,6 +19,7 @@ class Podcast extends Model
         'nombre',
         'descripcion',
         'imagen_portada',
+        'tipo_portada',
         'fecha_creacion',
         'estado',
     ];

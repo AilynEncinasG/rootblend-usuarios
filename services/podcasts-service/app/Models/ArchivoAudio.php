@@ -13,8 +13,11 @@ class ArchivoAudio extends Model
 
     protected $fillable = [
         'id_episodio',
+        'tipo_origen',
         'nombre_archivo',
         'url_archivo',
+        'youtube_id',
+        'embed_url',
         'formato',
         'tamano_mb',
     ];

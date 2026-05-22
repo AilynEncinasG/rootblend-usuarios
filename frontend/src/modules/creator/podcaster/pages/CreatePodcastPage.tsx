@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { FiAlertTriangle, FiImage, FiMic } from "react-icons/fi";
+import { FiAlertTriangle, FiImage, FiLink, FiMic, FiUpload } from "react-icons/fi";
 import {
   AlertPanel,
   Field,
@@ -16,13 +16,17 @@ import {
 } from "../services/podcasterCreatorService";
 import type { PodcastCategory } from "../../../podcasts/services/podcastsCatalogService";
 
+type CoverMode = "url" | "file";
+
 export default function CreatePodcastPage() {
   const navigate = useNavigate();
   const [categories, setCategories] = useState<PodcastCategory[]>([]);
   const [channelId, setChannelId] = useState<number | null>(null);
   const [name, setName] = useState("Hablemos de Tecnología");
   const [description, setDescription] = useState("Podcast de tecnología, gadgets y futuro.");
+  const [coverMode, setCoverMode] = useState<CoverMode>("file");
   const [coverUrl, setCoverUrl] = useState("");
+  const [coverFile, setCoverFile] = useState<File | null>(null);
   const [selectedCategoryId, setSelectedCategoryId] = useState("");
   const [error, setError] = useState("");
 
@@ -68,12 +72,17 @@ export default function CreatePodcastPage() {
       throw new Error("Selecciona una categoría para el podcast.");
     }
 
+    if (coverMode === "url" && coverUrl.trim() && !/^https?:\/\//i.test(coverUrl.trim())) {
+      throw new Error("La URL de portada debe empezar con http:// o https://.");
+    }
+
     const created = await createPodcast({
       id_canal: channelId,
       id_categoria_podcast: Number(selectedCategoryId),
       nombre: name.trim(),
       descripcion: description.trim(),
-      imagen_portada: coverUrl.trim() || undefined,
+      imagen_portada: coverMode === "url" ? coverUrl.trim() || undefined : undefined,
+      portada: coverMode === "file" ? coverFile : null,
       estado: "activo",
     });
 
@@ -83,7 +92,7 @@ export default function CreatePodcastPage() {
   return (
     <CreatorForm
       title="Crear podcast"
-      subtitle="Configura el nombre, descripción, categoría y portada."
+      subtitle="Configura nombre, descripción, categoría y portada desde PC o URL."
       button="Crear podcast"
       onSubmit={handleSubmit}
     >
@@ -115,15 +124,48 @@ export default function CreatePodcastPage() {
         ))}
       </Select>
 
-      <Label>URL de portada opcional</Label>
-      <Field>
-        <FiImage />
-        <input
-          value={coverUrl}
-          onChange={(event) => setCoverUrl(event.target.value)}
-          placeholder="https://.../portada.jpg"
-        />
-      </Field>
+      <Label>Tipo de portada</Label>
+      <Select value={coverMode} onChange={(event) => setCoverMode(event.target.value as CoverMode)}>
+        <option value="file">Subir imagen desde mi PC</option>
+        <option value="url">Usar URL de imagen</option>
+      </Select>
+
+      {coverMode === "file" ? (
+        <>
+          <Label>Archivo de portada</Label>
+          <Field>
+            <FiUpload />
+            <input
+              type="file"
+              accept="image/png,image/jpeg,image/webp,image/gif"
+              onChange={(event) => setCoverFile(event.target.files?.[0] || null)}
+            />
+          </Field>
+          <small>Formatos permitidos: JPG, PNG, WEBP o GIF. Máximo 10MB.</small>
+        </>
+      ) : (
+        <>
+          <Label>URL de portada</Label>
+          <Field>
+            <FiLink />
+            <input
+              value={coverUrl}
+              onChange={(event) => setCoverUrl(event.target.value)}
+              placeholder="https://.../portada.jpg"
+            />
+          </Field>
+        </>
+      )}
+
+      {(coverMode === "url" && coverUrl) || (coverMode === "file" && coverFile) ? (
+        <AlertPanel>
+          <FiImage />
+          <div>
+            <strong>Portada seleccionada</strong>
+            <p>{coverMode === "file" ? coverFile?.name : coverUrl}</p>
+          </div>
+        </AlertPanel>
+      ) : null}
     </CreatorForm>
   );
 }

@@ -44,6 +44,31 @@ export type PodcastHistoryItem = {
   createdAt?: string | null;
 };
 
+export type PodcastPayload = {
+  id_canal?: number;
+  id_categoria_podcast?: number;
+  nombre?: string;
+  descripcion?: string;
+  imagen_portada?: string;
+  cover_url?: string;
+  portada?: File | null;
+  estado?: string;
+};
+
+export type EpisodePayload = {
+  titulo?: string;
+  descripcion?: string;
+  duracion?: string;
+  estado?: string;
+  numero_episodio?: number;
+  url_archivo?: string;
+  audio_url?: string;
+  youtube_url?: string;
+  audio?: File | null;
+  formato?: string;
+  tamano_mb?: number;
+};
+
 type ApiEnvelope<T> = {
   success: boolean;
   message: string;
@@ -79,6 +104,46 @@ function normalizeEpisode(item: PodcastEpisode): PodcastEpisode {
     duration: item.duration || item.duracion || "00:00:00",
     plays: item.plays ?? 0,
   };
+}
+
+function hasFile(values: PodcastPayload | EpisodePayload): boolean {
+  return Object.values(values).some((value) => value instanceof File);
+}
+
+function appendDefined(formData: FormData, key: string, value: unknown) {
+  if (value === undefined || value === null || value === "") return;
+  formData.append(key, value instanceof File ? value : String(value));
+}
+
+function toPodcastBody(payload: PodcastPayload): PodcastPayload | FormData {
+  if (!hasFile(payload)) return payload;
+
+  const formData = new FormData();
+  appendDefined(formData, "id_canal", payload.id_canal);
+  appendDefined(formData, "id_categoria_podcast", payload.id_categoria_podcast);
+  appendDefined(formData, "nombre", payload.nombre);
+  appendDefined(formData, "descripcion", payload.descripcion);
+  appendDefined(formData, "imagen_portada", payload.imagen_portada || payload.cover_url);
+  appendDefined(formData, "portada", payload.portada);
+  appendDefined(formData, "estado", payload.estado);
+  return formData;
+}
+
+function toEpisodeBody(payload: EpisodePayload): EpisodePayload | FormData {
+  if (!hasFile(payload)) return payload;
+
+  const formData = new FormData();
+  appendDefined(formData, "titulo", payload.titulo);
+  appendDefined(formData, "descripcion", payload.descripcion);
+  appendDefined(formData, "duracion", payload.duracion);
+  appendDefined(formData, "estado", payload.estado);
+  appendDefined(formData, "numero_episodio", payload.numero_episodio);
+  appendDefined(formData, "url_archivo", payload.url_archivo || payload.audio_url);
+  appendDefined(formData, "youtube_url", payload.youtube_url);
+  appendDefined(formData, "audio", payload.audio);
+  appendDefined(formData, "formato", payload.formato);
+  appendDefined(formData, "tamano_mb", payload.tamano_mb);
+  return formData;
 }
 
 export async function getPodcasterDashboard(): Promise<PodcasterDashboard> {
@@ -130,19 +195,12 @@ export async function getPodcasterHistory(): Promise<PodcastHistoryItem[]> {
   return response.data.results;
 }
 
-export async function createPodcast(payload: {
-  id_canal: number;
-  id_categoria_podcast: number;
-  nombre: string;
-  descripcion?: string;
-  imagen_portada?: string;
-  estado?: string;
-}): Promise<PodcastItem> {
+export async function createPodcast(payload: PodcastPayload & { id_canal: number; id_categoria_podcast: number; nombre: string }): Promise<PodcastItem> {
   const response = await apiRequest<ApiEnvelope<PodcastItem>>(
     "/podcasts/podcasts",
     {
       method: "POST",
-      body: payload,
+      body: toPodcastBody(payload),
       auth: true,
     }
   );
@@ -152,19 +210,14 @@ export async function createPodcast(payload: {
 
 export async function updatePodcast(
   idPodcast: string | number,
-  payload: {
-    id_categoria_podcast?: number;
-    nombre?: string;
-    descripcion?: string;
-    imagen_portada?: string;
-    estado?: string;
-  }
+  payload: PodcastPayload
 ): Promise<PodcastItem> {
+  const body = toPodcastBody(payload);
   const response = await apiRequest<ApiEnvelope<PodcastItem>>(
     `/podcasts/podcasts/${idPodcast}`,
     {
-      method: "PATCH",
-      body: payload,
+      method: body instanceof FormData ? "POST" : "PATCH",
+      body,
       auth: true,
     }
   );
@@ -174,22 +227,13 @@ export async function updatePodcast(
 
 export async function createEpisode(
   idPodcast: string | number,
-  payload: {
-    titulo: string;
-    descripcion?: string;
-    duracion?: string;
-    estado?: string;
-    numero_episodio?: number;
-    url_archivo?: string;
-    formato?: string;
-    tamano_mb?: number;
-  }
+  payload: EpisodePayload & { titulo: string }
 ): Promise<PodcastEpisode> {
   const response = await apiRequest<ApiEnvelope<PodcastEpisode>>(
     `/podcasts/podcasts/${idPodcast}/episodios`,
     {
       method: "POST",
-      body: payload,
+      body: toEpisodeBody(payload),
       auth: true,
     }
   );
@@ -199,22 +243,14 @@ export async function createEpisode(
 
 export async function updateEpisode(
   idEpisode: string | number,
-  payload: {
-    titulo?: string;
-    descripcion?: string;
-    duracion?: string;
-    estado?: string;
-    numero_episodio?: number;
-    url_archivo?: string;
-    formato?: string;
-    tamano_mb?: number;
-  }
+  payload: EpisodePayload
 ): Promise<PodcastEpisode> {
+  const body = toEpisodeBody(payload);
   const response = await apiRequest<ApiEnvelope<PodcastEpisode>>(
     `/podcasts/episodios/${idEpisode}`,
     {
-      method: "PATCH",
-      body: payload,
+      method: body instanceof FormData ? "POST" : "PATCH",
+      body,
       auth: true,
     }
   );

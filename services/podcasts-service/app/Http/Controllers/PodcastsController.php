@@ -143,6 +143,44 @@ class PodcastsController extends Controller
         };
     }
 
+    private function gatewayUrl(): string
+    {
+        return rtrim((string) (config('app.url') ?: env('APP_URL', 'http://localhost:8080')), '/');
+    }
+
+    private function storagePublicUrl(string $path): string
+    {
+        return $this->gatewayUrl() . '/podcasts-storage/' . ltrim($path, '/');
+    }
+
+    private function isYoutubeUrl(string $url): bool
+    {
+        return (bool) preg_match('/(youtube\.com|youtu\.be)/i', $url);
+    }
+
+    private function youtubeIdFromUrl(string $url): ?string
+    {
+        $patterns = [
+            '/youtu\.be\/([A-Za-z0-9_-]{6,})/i',
+            '/youtube\.com\/watch\?.*v=([A-Za-z0-9_-]{6,})/i',
+            '/youtube\.com\/embed\/([A-Za-z0-9_-]{6,})/i',
+            '/youtube\.com\/shorts\/([A-Za-z0-9_-]{6,})/i',
+        ];
+
+        foreach ($patterns as $pattern) {
+            if (preg_match($pattern, $url, $matches)) {
+                return $matches[1];
+            }
+        }
+
+        return null;
+    }
+
+    private function youtubeEmbedUrl(?string $youtubeId): ?string
+    {
+        return $youtubeId ? 'https://www.youtube.com/embed/' . $youtubeId : null;
+    }
+
     private function formatCategory(CategoriaPodcast $category): array
     {
         return [
@@ -178,6 +216,8 @@ class PodcastsController extends Controller
             'description' => $podcast->descripcion,
             'imagen_portada' => $podcast->imagen_portada,
             'cover' => $podcast->imagen_portada,
+            'tipo_portada' => $podcast->tipo_portada ?? null,
+            'coverType' => $podcast->tipo_portada ?? null,
             'fecha_creacion' => optional($podcast->fecha_creacion)->toISOString(),
             'createdAt' => optional($podcast->fecha_creacion)->toDateString(),
             'estado' => $podcast->estado,
@@ -207,6 +247,26 @@ class PodcastsController extends Controller
     {
         $episode->loadMissing('podcast.categoria', 'archivoAudio');
         $plays = ReproduccionPodcast::where('id_episodio', $episode->id_episodio)->count();
+        $audio = null;
+
+        if ($episode->archivoAudio) {
+            $audio = [
+                'id_archivo_audio' => $episode->archivoAudio->id_archivo_audio,
+                'nombre_archivo' => $episode->archivoAudio->nombre_archivo,
+                'url_archivo' => $episode->archivoAudio->url_archivo,
+                'url' => $episode->archivoAudio->url_archivo,
+                'formato' => $episode->archivoAudio->formato,
+                'tamano_mb' => $episode->archivoAudio->tamano_mb,
+                'tipo_origen' => $episode->archivoAudio->tipo_origen ?? 'url',
+                'sourceType' => $episode->archivoAudio->tipo_origen ?? 'url',
+                'youtube_id' => $episode->archivoAudio->youtube_id ?? null,
+                'youtubeId' => $episode->archivoAudio->youtube_id ?? null,
+                'embed_url' => $episode->archivoAudio->embed_url ?? null,
+                'embedUrl' => $episode->archivoAudio->embed_url ?? null,
+                'is_youtube' => ($episode->archivoAudio->tipo_origen ?? '') === 'youtube',
+                'isYoutube' => ($episode->archivoAudio->tipo_origen ?? '') === 'youtube',
+            ];
+        }
 
         return [
             'id_episodio' => $episode->id_episodio,
@@ -227,14 +287,7 @@ class PodcastsController extends Controller
             'numero_episodio' => $episode->numero_episodio,
             'episodeNumber' => $episode->numero_episodio,
             'plays' => $plays,
-            'audio' => $episode->archivoAudio ? [
-                'id_archivo_audio' => $episode->archivoAudio->id_archivo_audio,
-                'nombre_archivo' => $episode->archivoAudio->nombre_archivo,
-                'url_archivo' => $episode->archivoAudio->url_archivo,
-                'url' => $episode->archivoAudio->url_archivo,
-                'formato' => $episode->archivoAudio->formato,
-                'tamano_mb' => $episode->archivoAudio->tamano_mb,
-            ] : null,
+            'audio' => $audio,
         ];
     }
 
@@ -275,33 +328,87 @@ class PodcastsController extends Controller
         return null;
     }
 
+    private function saveCoverFromRequest(Request $request, array $validated, ?string $currentCover = null): array
+    {
+        $uploadedFile = $request->file('portada') ?: $request->file('cover') ?: $request->file('cover_file');
+        $url = trim((string) ($validated['imagen_portada'] ?? $request->input('cover_url', '')));
+
+        if ($uploadedFile) {
+            $path = $uploadedFile->store('podcast-covers', 'public');
+            return [
+                'imagen_portada' => $this->storagePublicUrl($path),
+                'tipo_portada' => 'archivo',
+            ];
+        }
+
+        if ($url !== '') {
+            return [
+                'imagen_portada' => $url,
+                'tipo_portada' => 'url',
+            ];
+        }
+
+        return [
+            'imagen_portada' => $currentCover,
+            'tipo_portada' => $currentCover ? 'url' : null,
+        ];
+    }
+
     private function saveAudioFromRequest(Request $request, Episodio $episode): ?ArchivoAudio
     {
-        $uploadedFile = $request->file('audio');
+        $uploadedFile = $request->file('audio') ?: $request->file('audio_file');
+        $youtubeUrl = trim((string) $request->input('youtube_url', $request->input('youtubeUrl', '')));
         $urlArchivo = trim((string) $request->input('url_archivo', $request->input('audio_url', '')));
+
+        if ($youtubeUrl === '' && $urlArchivo !== '' && $this->isYoutubeUrl($urlArchivo)) {
+            $youtubeUrl = $urlArchivo;
+        }
 
         if ($uploadedFile) {
             $path = $uploadedFile->store('podcast-audio', 'public');
-            $urlArchivo = Storage::url($path);
-            $nombreArchivo = $uploadedFile->getClientOriginalName();
-            $formato = strtolower($uploadedFile->getClientOriginalExtension() ?: $uploadedFile->extension() ?: 'audio');
-            $tamanoMb = round($uploadedFile->getSize() / 1024 / 1024, 2);
+            $data = [
+                'tipo_origen' => 'archivo',
+                'nombre_archivo' => $uploadedFile->getClientOriginalName(),
+                'url_archivo' => $this->storagePublicUrl($path),
+                'youtube_id' => null,
+                'embed_url' => null,
+                'formato' => strtolower($uploadedFile->getClientOriginalExtension() ?: $uploadedFile->extension() ?: 'audio'),
+                'tamano_mb' => round($uploadedFile->getSize() / 1024 / 1024, 2),
+            ];
+        } elseif ($youtubeUrl !== '') {
+            $youtubeId = $this->youtubeIdFromUrl($youtubeUrl);
+
+            if (!$youtubeId) {
+                return null;
+            }
+
+            $data = [
+                'tipo_origen' => 'youtube',
+                'nombre_archivo' => 'YouTube - ' . $youtubeId,
+                'url_archivo' => $youtubeUrl,
+                'youtube_id' => $youtubeId,
+                'embed_url' => $this->youtubeEmbedUrl($youtubeId),
+                'formato' => 'youtube',
+                'tamano_mb' => null,
+            ];
         } elseif ($urlArchivo !== '') {
             $nombreArchivo = basename(parse_url($urlArchivo, PHP_URL_PATH) ?: 'audio-podcast.mp3');
-            $formato = strtolower(pathinfo($nombreArchivo, PATHINFO_EXTENSION) ?: (string) $request->input('formato', 'mp3'));
-            $tamanoMb = $request->filled('tamano_mb') ? (float) $request->input('tamano_mb') : null;
+            $data = [
+                'tipo_origen' => 'url',
+                'nombre_archivo' => $nombreArchivo,
+                'url_archivo' => $urlArchivo,
+                'youtube_id' => null,
+                'embed_url' => null,
+                'formato' => strtolower(pathinfo($nombreArchivo, PATHINFO_EXTENSION) ?: (string) $request->input('formato', 'mp3')),
+                'tamano_mb' => $request->filled('tamano_mb') ? (float) $request->input('tamano_mb') : null,
+            ];
         } else {
             return null;
         }
 
         return ArchivoAudio::updateOrCreate(
             ['id_episodio' => $episode->id_episodio],
-            [
-                'nombre_archivo' => $nombreArchivo,
-                'url_archivo' => $urlArchivo,
-                'formato' => $formato,
-                'tamano_mb' => $tamanoMb,
-            ]
+            $data
         );
     }
 
@@ -464,7 +571,11 @@ class PodcastsController extends Controller
             'id_categoria_podcast' => ['required', 'integer', Rule::exists('categorias_podcast', 'id_categoria_podcast')],
             'nombre' => ['required', 'string', 'max:150'],
             'descripcion' => ['nullable', 'string'],
-            'imagen_portada' => ['nullable', 'string', 'max:255'],
+            'imagen_portada' => ['nullable', 'string', 'max:2048'],
+            'cover_url' => ['nullable', 'string', 'max:2048'],
+            'portada' => ['nullable', 'file', 'mimes:jpg,jpeg,png,webp,gif', 'max:10240'],
+            'cover' => ['nullable', 'file', 'mimes:jpg,jpeg,png,webp,gif', 'max:10240'],
+            'cover_file' => ['nullable', 'file', 'mimes:jpg,jpeg,png,webp,gif', 'max:10240'],
             'estado' => ['nullable', 'string'],
         ]);
 
@@ -478,13 +589,16 @@ class PodcastsController extends Controller
             return $this->jsonError('Ya existe un podcast con ese nombre en este canal.', 409);
         }
 
+        $coverData = $this->saveCoverFromRequest($request, $validated);
+
         $podcast = Podcast::create([
             'id_canal' => (int) $validated['id_canal'],
             'id_usuario_propietario' => $idUsuario,
             'id_categoria_podcast' => (int) $validated['id_categoria_podcast'],
             'nombre' => trim($validated['nombre']),
             'descripcion' => $validated['descripcion'] ?? null,
-            'imagen_portada' => $validated['imagen_portada'] ?? null,
+            'imagen_portada' => $coverData['imagen_portada'],
+            'tipo_portada' => $coverData['tipo_portada'],
             'fecha_creacion' => Carbon::now(),
             'estado' => $this->normalizedPodcastStatus($validated['estado'] ?? 'activo'),
         ]);
@@ -518,7 +632,11 @@ class PodcastsController extends Controller
             'id_categoria_podcast' => ['nullable', 'integer', Rule::exists('categorias_podcast', 'id_categoria_podcast')],
             'nombre' => ['nullable', 'string', 'max:150'],
             'descripcion' => ['nullable', 'string'],
-            'imagen_portada' => ['nullable', 'string', 'max:255'],
+            'imagen_portada' => ['nullable', 'string', 'max:2048'],
+            'cover_url' => ['nullable', 'string', 'max:2048'],
+            'portada' => ['nullable', 'file', 'mimes:jpg,jpeg,png,webp,gif', 'max:10240'],
+            'cover' => ['nullable', 'file', 'mimes:jpg,jpeg,png,webp,gif', 'max:10240'],
+            'cover_file' => ['nullable', 'file', 'mimes:jpg,jpeg,png,webp,gif', 'max:10240'],
             'estado' => ['nullable', 'string'],
         ]);
 
@@ -533,11 +651,14 @@ class PodcastsController extends Controller
             }
         }
 
+        $coverData = $this->saveCoverFromRequest($request, $validated, $podcast->imagen_portada);
+
         $podcast->fill([
             'id_categoria_podcast' => $validated['id_categoria_podcast'] ?? $podcast->id_categoria_podcast,
             'nombre' => isset($validated['nombre']) ? trim($validated['nombre']) : $podcast->nombre,
             'descripcion' => array_key_exists('descripcion', $validated) ? $validated['descripcion'] : $podcast->descripcion,
-            'imagen_portada' => array_key_exists('imagen_portada', $validated) ? $validated['imagen_portada'] : $podcast->imagen_portada,
+            'imagen_portada' => $coverData['imagen_portada'],
+            'tipo_portada' => $coverData['tipo_portada'] ?? $podcast->tipo_portada,
             'estado' => isset($validated['estado']) ? $this->normalizedPodcastStatus($validated['estado']) : $podcast->estado,
         ])->save();
 
@@ -622,17 +743,32 @@ class PodcastsController extends Controller
             'duracion' => ['nullable', 'date_format:H:i:s'],
             'estado' => ['nullable', 'string'],
             'numero_episodio' => ['nullable', 'integer', 'min:1'],
-            'audio' => ['nullable', 'file', 'mimes:mp3,wav,m4a', 'max:51200'],
-            'url_archivo' => ['nullable', 'string', 'max:255'],
-            'audio_url' => ['nullable', 'string', 'max:255'],
+            'audio' => ['nullable', 'file', 'mimes:mp3,wav,m4a,ogg,aac', 'max:102400'],
+            'audio_file' => ['nullable', 'file', 'mimes:mp3,wav,m4a,ogg,aac', 'max:102400'],
+            'url_archivo' => ['nullable', 'string', 'max:2048'],
+            'audio_url' => ['nullable', 'string', 'max:2048'],
+            'youtube_url' => ['nullable', 'string', 'max:2048'],
+            'youtubeUrl' => ['nullable', 'string', 'max:2048'],
             'formato' => ['nullable', 'string', 'max:20'],
             'tamano_mb' => ['nullable', 'numeric', 'min:0'],
         ]);
 
         $estado = $this->normalizedEpisodeStatus($validated['estado'] ?? 'publicado');
 
-        if ($estado === 'publicado' && !$request->hasFile('audio') && !$request->filled('url_archivo') && !$request->filled('audio_url')) {
-            return $this->jsonError('Debes subir un archivo de audio o enviar url_archivo para publicar el episodio.', 422);
+        if (
+            $estado === 'publicado'
+            && !$request->hasFile('audio')
+            && !$request->hasFile('audio_file')
+            && !$request->filled('url_archivo')
+            && !$request->filled('audio_url')
+            && !$request->filled('youtube_url')
+            && !$request->filled('youtubeUrl')
+        ) {
+            return $this->jsonError('Debes subir un archivo, pegar una URL de audio o pegar un enlace de YouTube.', 422);
+        }
+
+        if (($request->filled('youtube_url') || $request->filled('youtubeUrl')) && !$this->youtubeIdFromUrl((string) ($request->input('youtube_url') ?: $request->input('youtubeUrl')))) {
+            return $this->jsonError('El enlace de YouTube no parece válido.', 422);
         }
 
         $episode = Episodio::create([
@@ -677,12 +813,19 @@ class PodcastsController extends Controller
             'duracion' => ['nullable', 'date_format:H:i:s'],
             'estado' => ['nullable', 'string'],
             'numero_episodio' => ['nullable', 'integer', 'min:1'],
-            'audio' => ['nullable', 'file', 'mimes:mp3,wav,m4a', 'max:51200'],
-            'url_archivo' => ['nullable', 'string', 'max:255'],
-            'audio_url' => ['nullable', 'string', 'max:255'],
+            'audio' => ['nullable', 'file', 'mimes:mp3,wav,m4a,ogg,aac', 'max:102400'],
+            'audio_file' => ['nullable', 'file', 'mimes:mp3,wav,m4a,ogg,aac', 'max:102400'],
+            'url_archivo' => ['nullable', 'string', 'max:2048'],
+            'audio_url' => ['nullable', 'string', 'max:2048'],
+            'youtube_url' => ['nullable', 'string', 'max:2048'],
+            'youtubeUrl' => ['nullable', 'string', 'max:2048'],
             'formato' => ['nullable', 'string', 'max:20'],
             'tamano_mb' => ['nullable', 'numeric', 'min:0'],
         ]);
+
+        if (($request->filled('youtube_url') || $request->filled('youtubeUrl')) && !$this->youtubeIdFromUrl((string) ($request->input('youtube_url') ?: $request->input('youtubeUrl')))) {
+            return $this->jsonError('El enlace de YouTube no parece válido.', 422);
+        }
 
         $episode->fill([
             'titulo' => isset($validated['titulo']) ? trim($validated['titulo']) : $episode->titulo,

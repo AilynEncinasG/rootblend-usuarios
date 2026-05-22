@@ -16,6 +16,14 @@ export type PodcastAudio = {
   url?: string;
   formato?: string;
   tamano_mb?: number | string | null;
+  tipo_origen?: 'archivo' | 'url' | 'youtube' | string;
+  sourceType?: 'archivo' | 'url' | 'youtube' | string;
+  youtube_id?: string | null;
+  youtubeId?: string | null;
+  embed_url?: string | null;
+  embedUrl?: string | null;
+  is_youtube?: boolean;
+  isYoutube?: boolean;
 };
 
 export type PodcastEpisode = {
@@ -57,6 +65,8 @@ export type PodcastItem = {
   description: string;
   imagen_portada?: string | null;
   cover?: string | null;
+  tipo_portada?: string | null;
+  coverType?: string | null;
   fecha_creacion?: string | null;
   createdAt?: string | null;
   estado?: string;
