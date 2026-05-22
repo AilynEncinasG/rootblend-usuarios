@@ -2,6 +2,7 @@ import { type FormEvent, type ReactNode, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import {
   FiActivity,
+  FiAlertTriangle,
   FiCheckCircle,
   FiEdit3,
   FiHeadphones,
@@ -17,6 +18,7 @@ import {
 import { RootShell } from "../../../shared/layout";
 import { getCreatorRole } from "../../../shared/utils/rootblendHelpers";
 import {
+  AlertPanel,
   Avatar,
   ButtonRow,
   ChannelHero,
@@ -264,8 +266,11 @@ export function FormPanel({
   children,
   onSubmit,
 }: FormPanelProps) {
+  const role = getCreatorRole();
+  const cancelTo = role === "podcaster" ? "/creator/podcaster/dashboard" : "/creator/streamer/dashboard";
   const [saved, setSaved] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState("");
 
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -275,11 +280,19 @@ export function FormPanel({
     }
 
     setSaved(false);
+    setError("");
     setSubmitting(true);
 
     try {
       await onSubmit?.(event);
       setSaved(true);
+    } catch (submitError) {
+      console.error("CREATOR_FORM_SUBMIT_ERROR", submitError);
+      setError(
+        submitError instanceof Error
+          ? submitError.message
+          : "No se pudo guardar la información."
+      );
     } finally {
       setSubmitting(false);
     }
@@ -295,6 +308,16 @@ export function FormPanel({
 
       {children}
 
+      {error ? (
+        <AlertPanel>
+          <FiAlertTriangle />
+          <div>
+            <strong>No se pudo guardar</strong>
+            <p>{error}</p>
+          </div>
+        </AlertPanel>
+      ) : null}
+
       {saved ? (
         <SuccessBox>
           <FiCheckCircle />
@@ -303,7 +326,7 @@ export function FormPanel({
       ) : null}
 
       <ButtonRow>
-        <GhostLink to="/creator/streamer/dashboard">Cancelar</GhostLink>
+        <GhostLink to={cancelTo}>Cancelar</GhostLink>
 
         <PrimaryButton type="submit" disabled={submitting}>
           <FiSave /> {submitting ? "Guardando..." : button}

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
 import {
   FiAlertTriangle,
@@ -9,98 +9,118 @@ import {
   FiPause,
   FiPlay,
   FiRefreshCw,
-  FiServer,
+  FiVolume2,
   FiVolumeX,
 } from "react-icons/fi";
 import { RootShell } from "../../../shared/layout";
 import { brandAssets } from "../../../shared/mock/rootblendMock";
 import {
   AlertPanel,
+  AudioBar,
   ButtonRow,
   ChannelHero,
+  EpisodeRow,
   Eyebrow,
   GhostLink,
   InfoGrid,
-  MetricCard,
+  MetaLine,
   Muted,
   Panel,
   PanelHeader,
   PodcastCover,
+  PrimaryButton,
   ServicePill,
   StateIcon,
   StatePanel,
 } from "../../../shared/styles/legacyStyled";
+import {
+  getPodcastById,
+  playPodcastEpisode,
+  type PodcastEpisode,
+  type PodcastItem,
+} from "../services/podcastsCatalogService";
 
-const API_BASE_URL =
-  import.meta.env.VITE_API_BASE_URL || "http://localhost:8080";
+type LoadState = "loading" | "online" | "offline";
 
-type PodcastsHealthState = "loading" | "online" | "offline";
+function audioUrlFor(episode: PodcastEpisode): string | null {
+  return episode.audio?.url || episode.audio?.url_archivo || null;
+}
 
 export default function PodcastDetailPage() {
   const { podcastId } = useParams();
-  const [healthState, setHealthState] =
-    useState<PodcastsHealthState>("loading");
-  const [healthMessage, setHealthMessage] = useState(
-    "Verificando podcasts-service..."
-  );
+  const [loadState, setLoadState] = useState<LoadState>("loading");
+  const [message, setMessage] = useState("Cargando detalle del podcast...");
+  const [podcast, setPodcast] = useState<PodcastItem | null>(null);
+  const [selectedEpisodeId, setSelectedEpisodeId] = useState<string | null>(null);
+  const [registeredPlays, setRegisteredPlays] = useState<string[]>([]);
 
   useEffect(() => {
     let active = true;
 
-    async function checkPodcastsService() {
-      setHealthState("loading");
-      setHealthMessage("Verificando podcasts-service...");
+    async function loadPodcast() {
+      setLoadState("loading");
+      setMessage("Cargando podcast real desde podcasts-service...");
 
       try {
-        const response = await fetch(`${API_BASE_URL}/api/podcasts-health/`);
-        const result = await response.json().catch(() => null);
+        const item = await getPodcastById(podcastId);
 
         if (!active) return;
 
-        if (response.ok && result?.status === "ok") {
-          setHealthState("online");
-          setHealthMessage(
-            "podcasts-service está activo, pero todavía no existen podcasts ni archivos de audio reales."
-          );
-        } else {
-          setHealthState("offline");
-          setHealthMessage(
-            "podcasts-service respondió, pero no devolvió el formato esperado."
-          );
-        }
+        setPodcast(item);
+        setSelectedEpisodeId(item?.episodeList[0]?.id || null);
+        setLoadState("online");
+        setMessage("Podcast cargado correctamente desde el backend.");
       } catch (error) {
-        console.error("PODCAST_DETAIL_HEALTH_ERROR", error);
+        console.error("PODCAST_DETAIL_LOAD_ERROR", error);
 
-        if (active) {
-          setHealthState("offline");
-          setHealthMessage(
-            "No se pudo conectar con podcasts-service mediante el gateway."
-          );
-        }
+        if (!active) return;
+
+        setPodcast(null);
+        setLoadState("offline");
+        setMessage(error instanceof Error ? error.message : "No se pudo cargar el podcast.");
       }
     }
 
-    checkPodcastsService();
+    loadPodcast();
 
     return () => {
       active = false;
     };
-  }, []);
+  }, [podcastId]);
+
+  const selectedEpisode = useMemo(() => {
+    if (!podcast) return null;
+
+    return (
+      podcast.episodeList.find((episode) => episode.id === selectedEpisodeId) ||
+      podcast.episodeList[0] ||
+      null
+    );
+  }, [podcast, selectedEpisodeId]);
+
+  async function registerPlay(episode: PodcastEpisode) {
+    if (registeredPlays.includes(episode.id)) return;
+
+    setRegisteredPlays((items) => [...items, episode.id]);
+
+    try {
+      await playPodcastEpisode(episode.id);
+    } catch (error) {
+      console.error("PODCAST_PLAY_REGISTER_ERROR", error);
+    }
+  }
 
   return (
     <RootShell active="podcasts">
-      <ChannelHero $image={brandAssets.podcastsCategoria}>
-        <PodcastCover $image={brandAssets.podcastsCategoria}>
+      <ChannelHero $image={podcast?.cover || brandAssets.podcastsCategoria}>
+        <PodcastCover $image={podcast?.cover || brandAssets.podcastsCategoria}>
           <FiHeadphones />
         </PodcastCover>
 
         <div>
           <Eyebrow>Detalle de podcast</Eyebrow>
-          <h1>Podcast {podcastId || "sin seleccionar"}</h1>
-          <p>
-            Esta vista ya no muestra episodios ni reproducciones inventadas.
-            Cuando exista el backend real, aquí se cargará el audio del episodio.
-          </p>
+          <h1>{podcast?.title || `Podcast ${podcastId || "sin seleccionar"}`}</h1>
+          <p>{podcast?.description || "Cargando información del podcast."}</p>
 
           <ButtonRow>
             <GhostLink to="/podcasts">
@@ -110,65 +130,54 @@ export default function PodcastDetailPage() {
         </div>
       </ChannelHero>
 
-      {healthState === "loading" && (
+      {loadState === "loading" ? (
         <AlertPanel>
           <FiRefreshCw />
           <div>
-            <strong>Verificando servicio</strong>
-            <p>{healthMessage}</p>
+            <strong>Cargando servicio</strong>
+            <p>{message}</p>
           </div>
         </AlertPanel>
-      )}
+      ) : null}
 
-      {healthState === "offline" && (
+      {loadState === "offline" ? (
         <AlertPanel>
           <FiAlertTriangle />
           <div>
-            <strong>Podcasts no disponible</strong>
-            <p>{healthMessage}</p>
+            <strong>No se pudo abrir el podcast</strong>
+            <p>{message}</p>
           </div>
         </AlertPanel>
-      )}
+      ) : null}
 
-      {healthState === "online" && (
+      {loadState === "online" ? (
         <AlertPanel>
           <FiCheckCircle />
           <div>
             <strong>Servicio disponible</strong>
-            <p>{healthMessage}</p>
+            <p>{message}</p>
           </div>
         </AlertPanel>
-      )}
+      ) : null}
 
       <InfoGrid>
         <Panel>
           <PanelHeader>
-            <strong>Podcast solicitado</strong>
-            <ServicePill
-              $status={healthState === "online" ? "Operativo" : "Degradado"}
-            >
-              {healthState === "online" ? "Servicio activo" : "Pendiente"}
+            <strong>Información</strong>
+            <ServicePill $status={loadState === "online" ? "Operativo" : "Degradado"}>
+              {loadState === "online" ? "Real" : "Pendiente"}
             </ServicePill>
           </PanelHeader>
 
-          <MetricCard>
-            <FiServer />
-            <div>
-              <strong>ID solicitado</strong>
-              <Muted>{podcastId || "No especificado"}</Muted>
-            </div>
-          </MetricCard>
+          <MetaLine>
+            <span>Categoría: {podcast?.category || "Sin categoría"}</span>
+            <span>Episodios: {podcast?.episodes ?? 0}</span>
+            <span>Reproducciones: {podcast?.plays ?? 0}</span>
+          </MetaLine>
 
-          <MetricCard>
-            <FiHeadphones />
-            <div>
-              <strong>Catálogo real</strong>
-              <Muted>
-                Pendiente de crear endpoints reales de podcasts, episodios y
-                archivos de audio en podcasts-service.
-              </Muted>
-            </div>
-          </MetricCard>
+          <Muted>
+            Último episodio: {podcast?.latestEpisode || "Todavía no hay episodios publicados."}
+          </Muted>
         </Panel>
 
         <Panel>
@@ -176,60 +185,60 @@ export default function PodcastDetailPage() {
             <strong>Episodios</strong>
           </PanelHeader>
 
-          <StatePanel>
-            <StateIcon>
-              <FiList />
-            </StateIcon>
-
-            <h2>No hay episodios reales para mostrar</h2>
-
-            <p>
-              Esta página ya está limpia de mocks. Cuando implementemos crear
-              podcast, subir episodio y listar episodios, aquí aparecerán título,
-              duración y fecha de cada episodio real.
-            </p>
-          </StatePanel>
+          {podcast && podcast.episodeList.length > 0 ? (
+            podcast.episodeList.map((episode) => (
+              <EpisodeRow key={episode.id}>
+                <button type="button" onClick={() => setSelectedEpisodeId(episode.id)}>
+                  {selectedEpisode?.id === episode.id ? <FiPause /> : <FiPlay />}
+                </button>
+                <span>{episode.title}</span>
+                <small>{episode.duration}</small>
+                <small>{episode.plays ?? 0} plays</small>
+              </EpisodeRow>
+            ))
+          ) : (
+            <StatePanel>
+              <StateIcon>
+                <FiList />
+              </StateIcon>
+              <h2>No hay episodios publicados</h2>
+              <p>Sube un episodio desde el panel podcaster y aparecerá aquí.</p>
+            </StatePanel>
+          )}
         </Panel>
+      </InfoGrid>
 
-        <Panel>
-          <PanelHeader>
-            <strong>Reproductor de podcast</strong>
-            <ServicePill $status="Degradado">Sin audio real</ServicePill>
-          </PanelHeader>
+      <Panel>
+        <PanelHeader>
+          <strong>Reproductor de podcast</strong>
+          <ServicePill $status={selectedEpisode && audioUrlFor(selectedEpisode) ? "Operativo" : "Degradado"}>
+            {selectedEpisode && audioUrlFor(selectedEpisode) ? "Audio disponible" : "Sin audio"}
+          </ServicePill>
+        </PanelHeader>
 
+        {selectedEpisode && audioUrlFor(selectedEpisode) ? (
+          <AudioBar>
+            <strong>{selectedEpisode.title}</strong>
+            <audio
+              controls
+              src={audioUrlFor(selectedEpisode) || undefined}
+              onPlay={() => registerPlay(selectedEpisode)}
+              style={{ width: "100%" }}
+            />
+            <PrimaryButton type="button" onClick={() => registerPlay(selectedEpisode)}>
+              <FiVolume2 /> Registrar play
+            </PrimaryButton>
+          </AudioBar>
+        ) : (
           <StatePanel>
             <StateIcon>
               <FiVolumeX />
             </StateIcon>
-
             <h2>Archivo de audio no disponible</h2>
-
-            <p>
-              No se puede reproducir este podcast porque todavía no existe un
-              episodio real con archivo de audio cargado desde podcasts-service.
-            </p>
-
-            <MetricCard>
-              <FiPlay />
-              <div>
-                <strong>Reproducir</strong>
-                <Muted>Bloqueado hasta tener archivo real MP3 o WAV.</Muted>
-              </div>
-            </MetricCard>
-
-            <MetricCard>
-              <FiPause />
-              <div>
-                <strong>Pausar / continuar</strong>
-                <Muted>
-                  Se habilitará automáticamente cuando conectemos episodios
-                  reales.
-                </Muted>
-              </div>
-            </MetricCard>
+            <p>El episodio seleccionado no tiene URL de audio MP3, WAV o M4A registrada.</p>
           </StatePanel>
-        </Panel>
-      </InfoGrid>
+        )}
+      </Panel>
     </RootShell>
   );
 }

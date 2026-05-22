@@ -1,104 +1,243 @@
-export type PodcasterPodcast = {
-  id: string;
-  title: string;
-  category: string;
-  description: string;
+import { apiRequest } from "../../../../services/apiClient";
+import type {
+  PodcastCategory,
+  PodcastEpisode,
+  PodcastItem,
+} from "../../../podcasts/services/podcastsCatalogService";
+
+export type PodcasterPodcast = PodcastItem;
+export type PodcasterEpisode = PodcastEpisode;
+
+export type PodcasterStats = {
+  podcasts: number;
   episodes: number;
-  plays: string;
-  status: "published" | "draft";
+  publishedEpisodes: number;
+  draftEpisodes: number;
+  totalPlays: number;
+  playsByEpisode?: Array<{
+    id_episodio: number;
+    titulo: string;
+    reproducciones: number | string;
+  }>;
+  devices?: Array<{
+    dispositivo: string | null;
+    total: number | string;
+  }>;
 };
 
-export type PodcasterEpisode = {
+export type PodcasterDashboard = {
+  summary: PodcasterStats;
+  podcasts: PodcastItem[];
+  episodes: PodcastEpisode[];
+};
+
+export type PodcastHistoryItem = {
+  id_historial: number;
   id: string;
-  podcastId: string;
-  title: string;
-  duration: string;
-  status: "published" | "draft";
-  date: string;
-  plays: string;
-  description: string;
+  id_podcast: number;
+  podcastTitle?: string | null;
+  accion: string;
+  action: string;
+  detalle?: string | null;
+  detail?: string | null;
+  fecha_registro?: string | null;
+  createdAt?: string | null;
 };
 
-export const podcasterPodcasts: PodcasterPodcast[] = [
-  {
-    id: "rootcast",
-    title: "RootCast",
-    category: "Tecnología",
-    description: "Podcast sobre arquitectura, streaming, datos y producto.",
-    episodes: 12,
-    plays: "18.6K",
-    status: "published",
-  },
-  {
-    id: "neon-talks",
-    title: "Neon Talks",
-    category: "Gaming",
-    description: "Conversaciones sobre gaming, comunidad y cultura digital.",
-    episodes: 8,
-    plays: "9.4K",
-    status: "published",
-  },
-];
+type ApiEnvelope<T> = {
+  success: boolean;
+  message: string;
+  data: T;
+};
 
-export const podcasterEpisodes: PodcasterEpisode[] = [
-  {
-    id: "episode-1",
-    podcastId: "rootcast",
-    title: "Arquitectura distribuida para streaming",
-    duration: "34 min",
-    status: "published",
-    date: "2026-05-01",
-    plays: "4.8K",
-    description: "Gateway, microservicios, health checks y resiliencia.",
-  },
-  {
-    id: "episode-2",
-    podcastId: "rootcast",
-    title: "Chat en tiempo real con Firebase",
-    duration: "28 min",
-    status: "published",
-    date: "2026-04-24",
-    plays: "3.2K",
-    description: "Separación de mensajería en vivo del backend principal.",
-  },
-  {
-    id: "episode-3",
-    podcastId: "neon-talks",
-    title: "Comunidades gamer y directos nocturnos",
-    duration: "41 min",
-    status: "draft",
-    date: "2026-05-03",
-    plays: "0",
-    description: "Construcción de comunidad alrededor de streams y podcasts.",
-  },
-];
+type ApiList<T> = {
+  count: number;
+  results: T[];
+};
 
-export function getPodcasterStats() {
+function normalizePodcast(item: PodcastItem): PodcastItem {
   return {
-    podcasts: podcasterPodcasts.length,
-    episodes: podcasterEpisodes.length,
-    publishedEpisodes: podcasterEpisodes.filter((item) => item.status === "published").length,
-    draftEpisodes: podcasterEpisodes.filter((item) => item.status === "draft").length,
-    totalPlays: "31.2K",
+    ...item,
+    id: String(item.id_podcast ?? item.id),
+    title: item.title || item.nombre || "Podcast sin nombre",
+    description: item.description || item.descripcion || "Sin descripción.",
+    category: item.category || item.categoria?.nombre || "Sin categoría",
+    cover: item.cover || item.imagen_portada || null,
+    latestEpisode: item.latestEpisode || null,
+    plays: item.plays ?? 0,
+    episodeList: item.episodeList || [],
   };
 }
 
-export function getPodcasterPodcasts() {
-  return podcasterPodcasts;
+function normalizeEpisode(item: PodcastEpisode): PodcastEpisode {
+  return {
+    ...item,
+    id: String(item.id_episodio ?? item.id),
+    title: item.title || item.titulo || "Episodio sin título",
+    description: item.description || item.descripcion || "Sin descripción.",
+    publishedAt: item.publishedAt || item.fecha_publicacion || "Sin fecha",
+    duration: item.duration || item.duracion || "00:00:00",
+    plays: item.plays ?? 0,
+  };
 }
 
-export function getPodcasterEpisodes() {
-  return podcasterEpisodes;
+export async function getPodcasterDashboard(): Promise<PodcasterDashboard> {
+  const response = await apiRequest<ApiEnvelope<PodcasterDashboard>>(
+    "/podcasts/me/dashboard",
+    { auth: true }
+  );
+
+  return {
+    summary: response.data.summary,
+    podcasts: response.data.podcasts.map(normalizePodcast),
+    episodes: response.data.episodes.map(normalizeEpisode),
+  };
 }
 
-export function getEpisodeById(id?: string) {
-  if (!id) return podcasterEpisodes[0];
+export async function getPodcasterStats(): Promise<PodcasterStats> {
+  const response = await apiRequest<ApiEnvelope<PodcasterStats>>(
+    "/podcasts/me/stats",
+    { auth: true }
+  );
 
-  return podcasterEpisodes.find((item) => item.id === id) || podcasterEpisodes[0];
+  return response.data;
 }
 
-export function getPodcastById(id?: string) {
-  if (!id) return podcasterPodcasts[0];
+export async function getPodcasterPodcasts(): Promise<PodcasterPodcast[]> {
+  const response = await apiRequest<ApiEnvelope<ApiList<PodcastItem>>>(
+    "/podcasts/me/podcasts",
+    { auth: true }
+  );
 
-  return podcasterPodcasts.find((item) => item.id === id) || podcasterPodcasts[0];
+  return response.data.results.map(normalizePodcast);
+}
+
+export async function getPodcasterEpisodes(): Promise<PodcasterEpisode[]> {
+  const response = await apiRequest<ApiEnvelope<ApiList<PodcastEpisode>>>(
+    "/podcasts/me/episodios",
+    { auth: true }
+  );
+
+  return response.data.results.map(normalizeEpisode);
+}
+
+export async function getPodcasterHistory(): Promise<PodcastHistoryItem[]> {
+  const response = await apiRequest<ApiEnvelope<ApiList<PodcastHistoryItem>>>(
+    "/podcasts/me/historial",
+    { auth: true }
+  );
+
+  return response.data.results;
+}
+
+export async function createPodcast(payload: {
+  id_canal: number;
+  id_categoria_podcast: number;
+  nombre: string;
+  descripcion?: string;
+  imagen_portada?: string;
+  estado?: string;
+}): Promise<PodcastItem> {
+  const response = await apiRequest<ApiEnvelope<PodcastItem>>(
+    "/podcasts/podcasts",
+    {
+      method: "POST",
+      body: payload,
+      auth: true,
+    }
+  );
+
+  return normalizePodcast(response.data);
+}
+
+export async function updatePodcast(
+  idPodcast: string | number,
+  payload: {
+    id_categoria_podcast?: number;
+    nombre?: string;
+    descripcion?: string;
+    imagen_portada?: string;
+    estado?: string;
+  }
+): Promise<PodcastItem> {
+  const response = await apiRequest<ApiEnvelope<PodcastItem>>(
+    `/podcasts/podcasts/${idPodcast}`,
+    {
+      method: "PATCH",
+      body: payload,
+      auth: true,
+    }
+  );
+
+  return normalizePodcast(response.data);
+}
+
+export async function createEpisode(
+  idPodcast: string | number,
+  payload: {
+    titulo: string;
+    descripcion?: string;
+    duracion?: string;
+    estado?: string;
+    numero_episodio?: number;
+    url_archivo?: string;
+    formato?: string;
+    tamano_mb?: number;
+  }
+): Promise<PodcastEpisode> {
+  const response = await apiRequest<ApiEnvelope<PodcastEpisode>>(
+    `/podcasts/podcasts/${idPodcast}/episodios`,
+    {
+      method: "POST",
+      body: payload,
+      auth: true,
+    }
+  );
+
+  return normalizeEpisode(response.data);
+}
+
+export async function updateEpisode(
+  idEpisode: string | number,
+  payload: {
+    titulo?: string;
+    descripcion?: string;
+    duracion?: string;
+    estado?: string;
+    numero_episodio?: number;
+    url_archivo?: string;
+    formato?: string;
+    tamano_mb?: number;
+  }
+): Promise<PodcastEpisode> {
+  const response = await apiRequest<ApiEnvelope<PodcastEpisode>>(
+    `/podcasts/episodios/${idEpisode}`,
+    {
+      method: "PATCH",
+      body: payload,
+      auth: true,
+    }
+  );
+
+  return normalizeEpisode(response.data);
+}
+
+export async function deleteEpisode(idEpisode: string | number): Promise<PodcastEpisode> {
+  const response = await apiRequest<ApiEnvelope<PodcastEpisode>>(
+    `/podcasts/episodios/${idEpisode}`,
+    {
+      method: "DELETE",
+      auth: true,
+    }
+  );
+
+  return normalizeEpisode(response.data);
+}
+
+export async function getPodcastCategoriesForCreator(): Promise<PodcastCategory[]> {
+  const response = await apiRequest<ApiEnvelope<ApiList<PodcastCategory>>>(
+    "/podcasts/categorias"
+  );
+
+  return response.data.results;
 }

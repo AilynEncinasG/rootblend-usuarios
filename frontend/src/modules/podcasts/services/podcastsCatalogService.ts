@@ -1,124 +1,155 @@
-export type PodcastEpisode = {
+import { apiRequest } from "../../../services/apiClient";
+
+export type PodcastCategory = {
+  id_categoria_podcast: number;
   id: string;
+  nombre: string;
+  name: string;
+  descripcion?: string | null;
+  description?: string | null;
+};
+
+export type PodcastAudio = {
+  id_archivo_audio?: number;
+  nombre_archivo?: string;
+  url_archivo?: string;
+  url?: string;
+  formato?: string;
+  tamano_mb?: number | string | null;
+};
+
+export type PodcastEpisode = {
+  id_episodio?: number;
+  id: string;
+  id_podcast?: number;
+  podcastId?: string;
+  podcastTitle?: string | null;
+  titulo?: string;
   title: string;
-  duration: string;
-  publishedAt: string;
+  descripcion?: string | null;
   description: string;
+  fecha_publicacion?: string | null;
+  publishedAt: string;
+  duracion?: string | null;
+  duration: string;
+  estado?: string;
+  status?: "published" | "draft" | "deleted" | string;
+  numero_episodio?: number | null;
+  episodeNumber?: number | null;
+  plays?: number | string;
+  audio?: PodcastAudio | null;
 };
 
 export type PodcastItem = {
+  id_podcast?: number;
   id: string;
+  id_canal?: number;
+  id_usuario_propietario?: number | null;
+  id_categoria_podcast?: number;
+  nombre?: string;
   title: string;
-  host: string;
-  category: string;
+  host?: string;
+  categoria?: PodcastCategory | null;
+  category?: string | null;
   episodes: number;
+  publishedEpisodes?: number;
+  descripcion?: string | null;
   description: string;
-  cover?: string;
-  latestEpisode: string;
+  imagen_portada?: string | null;
+  cover?: string | null;
+  fecha_creacion?: string | null;
+  createdAt?: string | null;
+  estado?: string;
+  status?: "published" | "draft" | string;
+  latestEpisode?: string | null;
+  plays?: number | string;
   episodeList: PodcastEpisode[];
 };
 
-export const podcastsCatalog: PodcastItem[] = [
-  {
-    id: "rootcast",
-    title: "RootCast",
-    host: "Equipo ROOTBLEND",
-    category: "Tecnología",
-    episodes: 12,
-    latestEpisode: "Arquitectura distribuida para streaming",
-    description:
-      "Conversaciones sobre arquitectura, backend, datos, streaming y producto dentro de ROOTBLEND.",
-    episodeList: [
-      {
-        id: "rootcast-01",
-        title: "Arquitectura distribuida para streaming",
-        duration: "34 min",
-        publishedAt: "2026-05-01",
-        description:
-          "Gateway, microservicios, health checks, desacoplamiento y resiliencia en ROOTBLEND.",
-      },
-      {
-        id: "rootcast-02",
-        title: "Chat en tiempo real con Firebase",
-        duration: "28 min",
-        publishedAt: "2026-04-24",
-        description:
-          "Cómo separar mensajería en vivo del backend principal sin bloquear la experiencia.",
-      },
-      {
-        id: "rootcast-03",
-        title: "Diseño de datos para canales y podcasts",
-        duration: "31 min",
-        publishedAt: "2026-04-17",
-        description:
-          "Relaciones entre usuarios, canales, streams, episodios, interacciones y estadísticas.",
-      },
-    ],
-  },
-  {
-    id: "neon-talks",
-    title: "Neon Talks",
-    host: "NeonRunner",
-    category: "Gaming",
-    episodes: 8,
-    latestEpisode: "Comunidades gamer y directos nocturnos",
-    description:
-      "Podcast sobre gaming, cultura digital, comunidades en vivo y creación de contenido.",
-    episodeList: [
-      {
-        id: "neon-talks-01",
-        title: "Comunidades gamer y directos nocturnos",
-        duration: "41 min",
-        publishedAt: "2026-05-03",
-        description:
-          "Cómo construir comunidad alrededor de streams, moderación y eventos recurrentes.",
-      },
-      {
-        id: "neon-talks-02",
-        title: "Del directo al episodio",
-        duration: "26 min",
-        publishedAt: "2026-04-26",
-        description:
-          "Reutilización de contenido en vivo para clips, episodios y highlights.",
-      },
-    ],
-  },
-  {
-    id: "codewave-audio",
-    title: "CodeWave Audio",
-    host: "CodeWave",
-    category: "Programación",
-    episodes: 15,
-    latestEpisode: "Productividad para devs con música y focus",
-    description:
-      "Sesiones y charlas sobre programación, hábitos de estudio, productividad y herramientas.",
-    episodeList: [
-      {
-        id: "codewave-01",
-        title: "Productividad para devs con música y focus",
-        duration: "37 min",
-        publishedAt: "2026-05-06",
-        description:
-          "Métodos para estudiar, programar y crear contenido técnico sin perder concentración.",
-      },
-      {
-        id: "codewave-02",
-        title: "Cómo explicar sistemas distribuidos",
-        duration: "33 min",
-        publishedAt: "2026-04-29",
-        description:
-          "Ideas para presentar gateway, servicios, fallos parciales y observabilidad.",
-      },
-    ],
-  },
-];
+type ApiEnvelope<T> = {
+  success: boolean;
+  message: string;
+  data: T;
+};
 
-export function getPodcasts() {
-  return podcastsCatalog;
+type ApiList<T> = {
+  count: number;
+  results: T[];
+};
+
+function normalizePodcast(item: PodcastItem): PodcastItem {
+  return {
+    ...item,
+    id: String(item.id_podcast ?? item.id),
+    title: item.title || item.nombre || "Podcast sin nombre",
+    description: item.description || item.descripcion || "Sin descripción.",
+    category: item.category || item.categoria?.nombre || "Sin categoría",
+    cover: item.cover || item.imagen_portada || null,
+    latestEpisode: item.latestEpisode || null,
+    plays: item.plays ?? 0,
+    episodeList: item.episodeList || [],
+  };
 }
 
-export function getPodcastById(id?: string) {
-  if (!id) return podcastsCatalog[0];
+function normalizeEpisode(item: PodcastEpisode): PodcastEpisode {
+  return {
+    ...item,
+    id: String(item.id_episodio ?? item.id),
+    title: item.title || item.titulo || "Episodio sin título",
+    description: item.description || item.descripcion || "Sin descripción.",
+    publishedAt: item.publishedAt || item.fecha_publicacion || "Sin fecha",
+    duration: item.duration || item.duracion || "00:00:00",
+    plays: item.plays ?? 0,
+  };
+}
 
-  return podcastsCatalog.find((podcast) => podcast.id === id) || podcastsCatalog[0];
+export async function getPodcastCategories(): Promise<PodcastCategory[]> {
+  const response = await apiRequest<ApiEnvelope<ApiList<PodcastCategory>>>(
+    "/podcasts/categorias"
+  );
+
+  return response.data.results;
+}
+
+export async function getPodcasts(): Promise<PodcastItem[]> {
+  const response = await apiRequest<ApiEnvelope<ApiList<PodcastItem>>>(
+    "/podcasts/podcasts"
+  );
+
+  return response.data.results.map(normalizePodcast);
+}
+
+export async function getPodcastById(id?: string): Promise<PodcastItem | null> {
+  if (!id) return null;
+
+  const response = await apiRequest<ApiEnvelope<PodcastItem>>(
+    `/podcasts/podcasts/${id}`
+  );
+
+  return normalizePodcast(response.data);
+}
+
+export async function getPodcastEpisodes(idPodcast: string | number): Promise<PodcastEpisode[]> {
+  const response = await apiRequest<ApiEnvelope<ApiList<PodcastEpisode>>>(
+    `/podcasts/podcasts/${idPodcast}/episodios`
+  );
+
+  return response.data.results.map(normalizeEpisode);
+}
+
+export async function playPodcastEpisode(idEpisode: string | number): Promise<PodcastEpisode> {
+  const response = await apiRequest<ApiEnvelope<{ episode: PodcastEpisode }>>(
+    `/podcasts/episodios/${idEpisode}/play`,
+    {
+      method: "POST",
+      body: {
+        tiempo_escuchado: "00:00:00",
+        completado: false,
+        dispositivo: "web",
+      },
+      auth: true,
+    }
+  );
+
+  return normalizeEpisode(response.data.episode);
 }
