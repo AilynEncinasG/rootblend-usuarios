@@ -15,6 +15,7 @@ import {
 } from "react-icons/fi";
 
 import { getStoredUser, isAuthenticated } from "../../auth/utils/authStorage";
+
 import {
   assignChatModerator,
   createChatSanction,
@@ -23,10 +24,12 @@ import {
   subscribeToChannelModerators,
   subscribeToChat,
   subscribeToStreamSanctions,
+  upsertStreamChatInfo,
   type ChatMessageRecord,
   type ChatModeratorRecord,
   type ChatSanctionRecord,
 } from "../../../services/chatService";
+
 import { getMyChannel } from "../services/streamsService";
 import { recordStreamStatsEvent } from "../services/streamStatsService";
 
@@ -41,6 +44,9 @@ type CurrentUser = {
   id: string;
   name: string;
 };
+
+const MAX_CHAT_MESSAGE_LENGTH = 500;
+const CHAT_COOLDOWN_MS = 3000;
 
 function getCurrentUser(): CurrentUser {
   const user = getStoredUser() as {
@@ -121,6 +127,8 @@ export default function StreamChatPanel({
   const [feedback, setFeedback] = useState("Conectando chat con Firebase...");
   const [loading, setLoading] = useState(true);
   const [isOwner, setIsOwner] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [lastSentAt, setLastSentAt] = useState(0);
 
   const loggedIn = isAuthenticated();
   const currentUser = useMemo(() => getCurrentUser(), []);
@@ -128,25 +136,51 @@ export default function StreamChatPanel({
   const canModerate = isOwner || userIsModerator;
   const currentSanction = getUserSanction(sanctions, currentUser);
 
+  const cleanText = text.trim();
+  const messageTooLong = cleanText.length > MAX_CHAT_MESSAGE_LENGTH;
+
+  const canSendMessage =
+    loggedIn &&
+    allowInput &&
+    isLive &&
+    !currentSanction &&
+    !sending &&
+    cleanText.length > 0 &&
+    !messageTooLong;
+
   useEffect(() => {
+    let active = true;
+
     setLoading(true);
     setMessages([]);
-    setFeedback("Conectando chat con Firebase...");
+    setFeedback(`Conectando chat del stream #${streamId} con Firebase...`);
 
-    const unsubscribe = subscribeToChat(streamId, (incomingMessages) => {
-      setMessages(incomingMessages);
-      setLoading(false);
-      setFeedback("Chat conectado a Firebase por stream.");
+    upsertStreamChatInfo(streamId, channelId, isLive).catch((error) => {
+      console.error("FIREBASE_CHAT_INFO_ERROR", error);
+
+      if (active) {
+        setFeedback("El chat lee mensajes, pero no pudo actualizar su info.");
+      }
     });
 
-    return () => unsubscribe();
-  }, [streamId]);
+    const unsubscribe = subscribeToChat(streamId, (incomingMessages) => {
+      if (!active) return;
+
+      setMessages(incomingMessages);
+      setLoading(false);
+      setFeedback(
+        `Chat conectado al stream #${streamId}. Mensajes: ${incomingMessages.length}.`,
+      );
+    });
+
+    return () => {
+      active = false;
+      unsubscribe();
+    };
+  }, [streamId, channelId, isLive]);
 
   useEffect(() => {
-    const unsubscribe = subscribeToChannelModerators(
-      channelId,
-      setModerators,
-    );
+    const unsubscribe = subscribeToChannelModerators(channelId, setModerators);
 
     return () => unsubscribe();
   }, [channelId]);
@@ -191,56 +225,82 @@ export default function StreamChatPanel({
     };
   }, [channelId, loggedIn]);
 
-async function submit(event: FormEvent<HTMLFormElement>) {
-  event.preventDefault();
+  async function submit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
 
-  const cleanText = text.trim();
+    const now = Date.now();
+    const remainingCooldown = CHAT_COOLDOWN_MS - (now - lastSentAt);
 
-  if (!cleanText) return;
+    if (!cleanText) {
+      setFeedback("No puedes enviar mensajes vacíos.");
+      return;
+    }
 
-  if (!loggedIn || !allowInput) {
-    setFeedback("Debes iniciar sesion para escribir en el chat.");
-    return;
+    if (messageTooLong) {
+      setFeedback(
+        `El mensaje supera el límite de ${MAX_CHAT_MESSAGE_LENGTH} caracteres.`,
+      );
+      return;
+    }
+
+    if (!loggedIn || !allowInput) {
+      setFeedback("Debes iniciar sesión para escribir en el chat.");
+      return;
+    }
+
+    if (!isLive) {
+      setFeedback("El chat está cerrado porque el stream no está en vivo.");
+      return;
+    }
+
+    if (currentSanction?.data.tipo === "bloqueado") {
+      setFeedback("No puedes escribir porque estás bloqueado en este chat.");
+      return;
+    }
+
+    if (currentSanction?.data.tipo === "silenciado") {
+      setFeedback("No puedes escribir porque estás silenciado temporalmente.");
+      return;
+    }
+
+    if (remainingCooldown > 0) {
+      setFeedback(
+        `Espera ${Math.ceil(
+          remainingCooldown / 1000,
+        )} segundo(s) antes de enviar otro mensaje.`,
+      );
+      return;
+    }
+
+    try {
+      setSending(true);
+
+      const messagePayload = {
+        usuarioId: currentUser.id,
+        nombre: currentUser.name,
+        mensaje: cleanText,
+        timestamp: Date.now(),
+        ...(canModerate ? { badge: "MOD" } : {}),
+      };
+
+      await sendChatMessage(streamId, messagePayload);
+
+      await recordStreamStatsEvent({
+        event_type: "chat.message",
+        id_stream: Number(streamId),
+        usuarios_activos: messages.length + 1,
+      });
+
+      setText("");
+      setLastSentAt(Date.now());
+      setFeedback("Mensaje enviado correctamente.");
+    } catch (error) {
+      console.error("FIREBASE_CHAT_SEND_ERROR", error);
+      setFeedback("No se pudo enviar el mensaje en Firebase.");
+    } finally {
+      setSending(false);
+    }
   }
-
-  if (!isLive) {
-    setFeedback("El chat esta cerrado porque el stream no esta en vivo.");
-    return;
-  }
-
-  if (currentSanction?.data.tipo === "bloqueado") {
-    setFeedback("No puedes escribir porque estas bloqueado en este chat.");
-    return;
-  }
-
-  if (currentSanction?.data.tipo === "silenciado") {
-    setFeedback("No puedes escribir porque estas silenciado temporalmente.");
-    return;
-  }
-
-  try {
-    const messagePayload = {
-      usuarioId: currentUser.id,
-      nombre: currentUser.name,
-      mensaje: cleanText,
-      timestamp: Date.now(),
-      ...(canModerate ? { badge: "MOD" } : {}),
-    };
-
-    await sendChatMessage(streamId, messagePayload);
-    await recordStreamStatsEvent({
-      event_type: "chat.message",
-      id_stream: Number(streamId),
-      usuarios_activos: messages.length + 1,
-    });
-
-    setText("");
-    setFeedback("Mensaje enviado.");
-  } catch (error) {
-    console.error("FIREBASE_CHAT_SEND_ERROR", error);
-    setFeedback("No se pudo enviar el mensaje en Firebase.");
-  }
-}
 
   async function runAction(action: string, message: ChatMessageRecord) {
     const targetName = message.data.nombre;
@@ -268,11 +328,13 @@ async function submit(event: FormEvent<HTMLFormElement>) {
         }
 
         await deleteChatMessage(streamId, message.id, currentUser.name);
+
         await recordStreamStatsEvent({
           event_type: "chat.message.deleted",
           id_stream: Number(streamId),
           usuarios_activos: messages.length,
         });
+
         setFeedback(`Mensaje de ${targetName} eliminado para todos.`);
       }
 
@@ -286,7 +348,7 @@ async function submit(event: FormEvent<HTMLFormElement>) {
           usuarioId: targetUserId,
           nombre: targetName,
           tipo: "silenciado",
-          motivo: "Moderacion temporal",
+          motivo: "Moderación temporal",
           active: true,
           createdAt: Date.now(),
           createdBy: currentUser.name,
@@ -321,7 +383,7 @@ async function submit(event: FormEvent<HTMLFormElement>) {
       }
     } catch (error) {
       console.error("FIREBASE_CHAT_ACTION_ERROR", error);
-      setFeedback("No se pudo completar la accion en Firebase.");
+      setFeedback("No se pudo completar la acción en Firebase.");
     } finally {
       setActiveId(null);
     }
@@ -330,8 +392,14 @@ async function submit(event: FormEvent<HTMLFormElement>) {
   return (
     <ChatBox>
       <Header>
-        <strong>Chat en vivo</strong>
-        <span>{canModerate ? "MOD activo" : loggedIn ? "Viewer" : "Solo lectura"}</span>
+        <div>
+          <strong>Chat en vivo</strong>
+          <small>Stream #{streamId}</small>
+        </div>
+
+        <span>
+          {canModerate ? "MOD activo" : loggedIn ? "Viewer" : "Solo lectura"}
+        </span>
       </Header>
 
       <Feedback>{feedback}</Feedback>
@@ -341,8 +409,8 @@ async function submit(event: FormEvent<HTMLFormElement>) {
           <FiAlertTriangle />
           <span>
             {currentSanction.data.tipo === "bloqueado"
-              ? "Estas bloqueado en este chat."
-              : "Estas silenciado temporalmente."}
+              ? "Estás bloqueado en este chat."
+              : "Estás silenciado temporalmente."}
           </span>
         </WarningBox>
       )}
@@ -351,7 +419,7 @@ async function submit(event: FormEvent<HTMLFormElement>) {
         {loading && <EmptyState>Cargando mensajes...</EmptyState>}
 
         {!loading && messages.length === 0 && (
-          <EmptyState>Aun no hay mensajes en este directo.</EmptyState>
+          <EmptyState>Aún no hay mensajes en este directo.</EmptyState>
         )}
 
         {messages.map((message) => {
@@ -374,7 +442,9 @@ async function submit(event: FormEvent<HTMLFormElement>) {
                     <Badge>{message.data.badge || "MOD"}</Badge>
                   )}
 
-                  {message.data.deleted && <DeletedBadge>Eliminado</DeletedBadge>}
+                  {message.data.deleted && (
+                    <DeletedBadge>Eliminado</DeletedBadge>
+                  )}
 
                   <time>{formatMessageTime(message.data.timestamp)}</time>
                 </Name>
@@ -448,32 +518,39 @@ async function submit(event: FormEvent<HTMLFormElement>) {
           <input
             value={text}
             onChange={(event) => setText(event.target.value)}
+            maxLength={MAX_CHAT_MESSAGE_LENGTH}
             placeholder={
               currentSanction
-                ? "No puedes escribir por una sancion activa..."
-                : "Enviar mensaje..."
+                ? "No puedes escribir por una sanción activa..."
+                : sending
+                  ? "Enviando mensaje..."
+                  : "Enviar mensaje..."
             }
-            disabled={Boolean(currentSanction)}
+            disabled={Boolean(currentSanction) || sending}
           />
 
           <button
             type="submit"
             aria-label="Enviar mensaje"
-            disabled={Boolean(currentSanction)}
+            disabled={!canSendMessage}
           >
             <FiSend />
           </button>
+
+          <small>
+            {cleanText.length}/{MAX_CHAT_MESSAGE_LENGTH} caracteres
+          </small>
         </ChatForm>
       ) : !isLive ? (
         <LoginNotice>
           <FiWifiOff />
-          El chat esta cerrado porque el stream no esta en vivo.
+          El chat está cerrado porque el stream no está en vivo.
         </LoginNotice>
       ) : (
         <LoginNotice>
           <FiLock />
-          Inicia sesion para escribir en el chat.
-          <Link to="/login">Iniciar sesion</Link>
+          Inicia sesión para escribir en el chat.
+          <Link to="/login">Iniciar sesión</Link>
         </LoginNotice>
       )}
     </ChatBox>
@@ -497,12 +574,25 @@ const Header = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 10px;
   border-bottom: 1px solid rgba(148, 163, 184, 0.12);
+
+  div {
+    display: grid;
+    gap: 3px;
+  }
+
+  small {
+    color: rgba(226, 232, 240, 0.52);
+    font-size: 11px;
+    font-weight: 700;
+  }
 
   span {
     color: #00e5ff;
     font-size: 12px;
     font-weight: 850;
+    white-space: nowrap;
   }
 `;
 
@@ -681,6 +771,13 @@ const ChatForm = styled.form`
   button:disabled {
     opacity: 0.55;
     cursor: not-allowed;
+  }
+
+  small {
+    grid-column: 1 / -1;
+    color: rgba(226, 232, 240, 0.52);
+    font-size: 11px;
+    text-align: right;
   }
 `;
 

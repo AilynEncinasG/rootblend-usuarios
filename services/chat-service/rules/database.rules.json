@@ -3,10 +3,14 @@
     "stream_chats": {
       "$streamId": {
         ".read": true,
+        "info": {
+          ".write": true,
+          ".validate": "newData.hasChildren(['id_stream', 'id_canal', 'estado_chat', 'updatedAt']) && newData.child('id_stream').isString() && newData.child('id_canal').isString() && (newData.child('estado_chat').val() == 'activo' || newData.child('estado_chat').val() == 'cerrado') && newData.child('updatedAt').isNumber()"
+        },
         "messages": {
           "$messageId": {
             ".write": true,
-            ".validate": "newData.hasChildren(['usuarioId', 'nombre', 'mensaje', 'timestamp']) && newData.child('usuarioId').isString() && newData.child('nombre').isString() && newData.child('mensaje').isString() && newData.child('mensaje').val().length <= 500 && newData.child('timestamp').isNumber()"
+            ".validate": "newData.hasChildren(['usuarioId', 'nombre', 'mensaje', 'timestamp']) && newData.child('usuarioId').isString() && newData.child('nombre').isString() && newData.child('mensaje').isString() && newData.child('mensaje').val().length > 0 && newData.child('mensaje').val().length <= 500 && newData.child('timestamp').isNumber()"
           }
         },
         "sanctions": {
@@ -23,17 +27,6 @@
         "$userId": {
           ".write": true,
           ".validate": "newData.hasChildren(['usuarioId', 'nombre', 'active', 'assignedAt']) && newData.child('usuarioId').isString() && newData.child('nombre').isString() && newData.child('active').isBoolean() && newData.child('assignedAt').isNumber()"
-        }
-      }
-    },
-    "chats": {
-      "$chatId": {
-        ".read": true,
-        "messages": {
-          "$messageId": {
-            ".write": true,
-            ".validate": "newData.hasChildren(['usuarioId', 'nombre', 'mensaje', 'timestamp'])"
-          }
         }
       }
     }

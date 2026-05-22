@@ -30,6 +30,13 @@ export type ChatSanction = {
   expiresAt?: number | null;
 };
 
+export type StreamChatInfo = {
+  id_stream: string;
+  id_canal: string;
+  estado_chat: "activo" | "cerrado";
+  updatedAt: number;
+};
+
 export type ChatMessageRecord = {
   id: string;
   data: ChatMessage;
@@ -61,6 +68,21 @@ function streamChatPath(streamId: string | number) {
 
 function channelModeratorsPath(channelId: string | number) {
   return `channel_moderators/${safeKey(channelId)}`;
+}
+
+export async function upsertStreamChatInfo(
+  streamId: string | number,
+  channelId: string | number,
+  isLive: boolean,
+) {
+  const infoRef = ref(database, `${streamChatPath(streamId)}/info`);
+
+  await set(infoRef, {
+    id_stream: String(streamId),
+    id_canal: String(channelId),
+    estado_chat: isLive ? "activo" : "cerrado",
+    updatedAt: Date.now(),
+  } satisfies StreamChatInfo);
 }
 
 export function subscribeToChat(
@@ -147,7 +169,7 @@ export async function deleteChatMessage(
   );
 
   await update(messageRef, {
-    mensaje: "Mensaje eliminado por moderacion.",
+    mensaje: "Mensaje eliminado por moderación.",
     deleted: true,
     deletedAt: Date.now(),
     deletedBy: moderatorName,
