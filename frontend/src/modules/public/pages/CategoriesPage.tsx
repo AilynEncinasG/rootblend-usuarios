@@ -64,9 +64,7 @@ export default function CategoriesPage() {
   }, []);
 
   return (
-    <RootShell
-      active="categories"
-    >
+    <RootShell active="categories">
       <PageHeading>
         <h1>Categorías de Streams</h1>
         <p>Elige una categoría para encontrar contenido relacionado.</p>
@@ -87,12 +85,12 @@ export default function CategoriesPage() {
           <FiRefreshCw />
           <div>
             <strong>Cargando categorías</strong>
-            <p>Cargando categorías disponibles.</p>
+            <p>Cargando categorías disponibles desde el servicio de canales.</p>
           </div>
         </AlertPanel>
       )}
 
-      {backendCategories.length === 0 ? (
+      {!loading && backendCategories.length === 0 ? (
         <EmptyPanel
           icon={<FiGrid />}
           title="No hay categorías disponibles"
