@@ -62,7 +62,10 @@ type PendingMute = {
   durationMs: number;
   reason: string;
 };
-
+type PendingBlock = {
+  message: ChatMessageRecord;
+  reason: string;
+};
 function getCurrentUser(): CurrentUser {
   const user = getStoredUser() as {
     id_usuario?: number;
@@ -155,6 +158,7 @@ export default function StreamChatPanel({
   const [sending, setSending] = useState(false);
   const [lastSentAt, setLastSentAt] = useState(0);
   const [pendingMute, setPendingMute] = useState<PendingMute | null>(null);
+  const [pendingBlock, setPendingBlock] = useState<PendingBlock | null>(null);
   const loggedIn = isAuthenticated();
   const currentUser = useMemo(() => getCurrentUser(), []);
   const userIsModerator = isUserModerator(moderators, currentUser);
@@ -388,7 +392,39 @@ async function confirmMuteUser() {
       setFeedback("No se pudo limpiar el chat en Firebase.");
     }
   }
+  async function confirmBlockUser() {
+    if (!pendingBlock) {
+      return;
+    }
 
+    if (!canModerate) {
+      setFeedback("Necesitas rol de moderador en este canal.");
+      setPendingBlock(null);
+      return;
+    }
+
+    const targetName = pendingBlock.message.data.nombre;
+    const targetUserId = pendingBlock.message.data.usuarioId;
+
+    try {
+      await createChatSanction(streamId, {
+        usuarioId: targetUserId,
+        nombre: targetName,
+        tipo: "bloqueado",
+        motivo: pendingBlock.reason.trim() || "Bloqueo de chat",
+        active: true,
+        createdAt: Date.now(),
+        createdBy: currentUser.name,
+        expiresAt: null,
+      });
+
+      setFeedback(`${targetName} fue bloqueado en este chat.`);
+      setPendingBlock(null);
+    } catch (error) {
+      console.error("FIREBASE_CHAT_BLOCK_ERROR", error);
+      setFeedback("No se pudo bloquear al usuario en Firebase.");
+    }
+  }
   async function runAction(action: string, message: ChatMessageRecord) {
     const targetName = message.data.nombre;
     const targetUserId = message.data.usuarioId;
@@ -455,18 +491,12 @@ async function confirmMuteUser() {
           return;
         }
 
-        await createChatSanction(streamId, {
-          usuarioId: targetUserId,
-          nombre: targetName,
-          tipo: "bloqueado",
-          motivo: "Bloqueo de chat",
-          active: true,
-          createdAt: Date.now(),
-          createdBy: currentUser.name,
-          expiresAt: null,
+        setPendingBlock({
+          message,
+          reason: "Bloqueo de chat",
         });
 
-        setFeedback(`${targetName} fue bloqueado en este stream.`);
+        setFeedback(`Confirma el bloqueo de ${targetName}.`);
       }
 
       if (action === "Ver perfil") {
@@ -681,6 +711,50 @@ async function confirmMuteUser() {
               <ConfirmButton type="button" onClick={confirmMuteUser}>
                 Silenciar
               </ConfirmButton>
+            </ModalActions>
+          </ModalCard>
+        </ModalBackdrop>
+      )}
+
+      {pendingBlock && (
+        <ModalBackdrop>
+          <ModalCard>
+            <FiXCircle size={34} />
+
+            <h2>Bloquear usuario</h2>
+
+            <p>
+              Vas a bloquear a <strong>{pendingBlock.message.data.nombre}</strong>.
+              Esta sanción no tiene tiempo de expiración y el usuario no podrá
+              escribir en este chat mientras siga bloqueado.
+            </p>
+
+            <label>
+              Motivo
+              <input
+                value={pendingBlock.reason}
+                onChange={(event) =>
+                  setPendingBlock((current) =>
+                    current
+                      ? {
+                          ...current,
+                          reason: event.target.value,
+                        }
+                      : current,
+                  )
+                }
+                placeholder="Ejemplo: spam grave, insultos, acoso..."
+              />
+            </label>
+
+            <ModalActions>
+              <CancelButton type="button" onClick={() => setPendingBlock(null)}>
+                Cancelar
+              </CancelButton>
+
+              <DangerConfirmButton type="button" onClick={confirmBlockUser}>
+                Bloquear
+              </DangerConfirmButton>
             </ModalActions>
           </ModalCard>
         </ModalBackdrop>
@@ -1084,4 +1158,17 @@ const ConfirmButton = styled.button`
   background: #00e5ff;
   font-weight: 900;
   cursor: pointer;
+`;
+const DangerConfirmButton = styled.button`
+  height: 40px;
+  border: 0;
+  border-radius: 10px;
+  color: #fff;
+  background: #ef4444;
+  font-weight: 900;
+  cursor: pointer;
+
+  &:hover {
+    background: #dc2626;
+  }
 `;
