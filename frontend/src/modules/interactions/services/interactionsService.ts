@@ -24,6 +24,15 @@ export type NotificationItem = {
   nombre_canal?: string | null;
 };
 
+export type NotificationConfig = {
+  id_configuracion: number;
+  id_usuario: number;
+  notificar_directos: boolean;
+  notificar_suscripciones: boolean;
+  notificar_promociones: boolean;
+  canal_web: boolean;
+};
+
 type ApiItemResponse<T> = {
   success: boolean;
   message: string;
@@ -132,4 +141,31 @@ export async function markNotificationRead(id: number): Promise<void> {
       auth: true,
     },
   );
+}
+
+export async function getNotificationConfig(): Promise<NotificationConfig> {
+  const response = await apiRequest<
+    ApiItemResponse<{ configuracion: NotificationConfig }>
+  >("/interactions/notifications/config/me", {
+    auth: true,
+  });
+
+  return response.data.configuracion;
+}
+
+export async function updateNotificationConfig(payload: {
+  notificar_directos?: boolean;
+  notificar_suscripciones?: boolean;
+  notificar_promociones?: boolean;
+  canal_web?: boolean;
+}): Promise<NotificationConfig> {
+  const response = await apiRequest<
+    ApiItemResponse<{ configuracion: NotificationConfig }>
+  >("/interactions/notifications/config/me", {
+    method: "PUT",
+    body: payload,
+    auth: true,
+  });
+
+  return response.data.configuracion;
 }

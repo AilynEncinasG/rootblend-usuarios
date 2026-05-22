@@ -1,18 +1,51 @@
 import { type FormEvent, useEffect, useState } from "react";
-import { FiAlertTriangle, FiCheckCircle, FiRefreshCw, FiSave } from "react-icons/fi";
+import {
+  FiAlertTriangle,
+  FiBell,
+  FiCheckCircle,
+  FiRefreshCw,
+  FiSave,
+  FiServer,
+} from "react-icons/fi";
 import { RootShell } from "../../../shared/layout";
 import { getPreferences, updatePreferences } from "../../../services/userService";
+import {
+  getNotificationConfig,
+  updateNotificationConfig,
+} from "../../interactions/services/interactionsService";
 import { formatApiError } from "../../../shared/utils/rootblendHelpers";
-import { AlertPanel, ButtonRow, Eyebrow, FilterChip, FormCard, GhostLink, Label, PageHeading, PrimaryButton, Select, SuccessBox, Tabs, ToggleLine } from "../../../shared/styles/legacyStyled";
+import {
+  AlertPanel,
+  ButtonRow,
+  Eyebrow,
+  FilterChip,
+  FormCard,
+  Label,
+  GhostLink,
+  PageHeading,
+  PrimaryButton,
+  Select,
+  ServicePill,
+  SuccessBox,
+  Tabs,
+  ToggleLine,
+} from "../../../shared/styles/legacyStyled";
 
 export default function SettingsPage() {
   const [tema, setTema] = useState<"claro" | "oscuro">("oscuro");
   const [idioma, setIdioma] = useState<"es" | "en">("es");
   const [autoplay, setAutoplay] = useState(true);
+
   const [recibirNotificaciones, setRecibirNotificaciones] = useState(true);
+  const [notificarDirectos, setNotificarDirectos] = useState(true);
+  const [notificarSuscripciones, setNotificarSuscripciones] = useState(true);
+  const [notificarPromociones, setNotificarPromociones] = useState(false);
+  const [canalWeb, setCanalWeb] = useState(true);
 
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [interactionsReady, setInteractionsReady] = useState(false);
+
   const [error, setError] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
 
@@ -22,28 +55,58 @@ export default function SettingsPage() {
     async function loadPreferences() {
       setLoading(true);
       setError("");
+      setSuccessMessage("");
+      setInteractionsReady(false);
 
       try {
-        const result = await getPreferences();
+        const [userPreferencesResult, interactionConfigResult] =
+          await Promise.allSettled([
+            getPreferences(),
+            getNotificationConfig(),
+          ]);
 
         if (!active) return;
 
-        if (!result.success || !result.data) {
-          setError(result.message || "No se pudieron cargar las preferencias.");
-          return;
+        if (userPreferencesResult.status === "fulfilled") {
+          const result = userPreferencesResult.value;
+
+          if (!result.success || !result.data) {
+            setError(result.message || "No se pudieron cargar las preferencias.");
+          } else {
+            const preferences = result.data.preferencias;
+
+            setTema(preferences.tema);
+            setIdioma(preferences.idioma);
+            setAutoplay(Boolean(preferences.autoplay));
+            setRecibirNotificaciones(
+              Boolean(preferences.recibir_notificaciones),
+            );
+          }
+        } else {
+          setError("No se pudo conectar con usuarios-service.");
         }
 
-        const preferences = result.data.preferencias;
+        if (interactionConfigResult.status === "fulfilled") {
+          const config = interactionConfigResult.value;
 
-        setTema(preferences.tema);
-        setIdioma(preferences.idioma);
-        setAutoplay(Boolean(preferences.autoplay));
-        setRecibirNotificaciones(Boolean(preferences.recibir_notificaciones));
+          setInteractionsReady(true);
+          setNotificarDirectos(Boolean(config.notificar_directos));
+          setNotificarSuscripciones(Boolean(config.notificar_suscripciones));
+          setNotificarPromociones(Boolean(config.notificar_promociones));
+          setCanalWeb(Boolean(config.canal_web));
+        } else {
+          setInteractionsReady(false);
+          setError((current) =>
+            current
+              ? `${current} Además, no se pudo cargar interacciones-service.`
+              : "No se pudo cargar configuración real de notificaciones desde interacciones-service.",
+          );
+        }
       } catch (error) {
         console.error("PREFERENCES_LOAD_ERROR", error);
 
         if (active) {
-          setError("No se pudo conectar con el servicio de usuarios.");
+          setError("No se pudieron cargar las configuraciones.");
         }
       } finally {
         if (active) {
@@ -78,16 +141,30 @@ export default function SettingsPage() {
         setError(
           formatApiError(
             result.errors,
-            result.message || "No se pudieron actualizar las preferencias."
-          )
+            result.message || "No se pudieron actualizar las preferencias.",
+          ),
         );
         return;
       }
 
-      setSuccessMessage("Preferencias actualizadas correctamente.");
+      await updateNotificationConfig({
+        notificar_directos: recibirNotificaciones && notificarDirectos,
+        notificar_suscripciones:
+          recibirNotificaciones && notificarSuscripciones,
+        notificar_promociones:
+          recibirNotificaciones && notificarPromociones,
+        canal_web: recibirNotificaciones && canalWeb,
+      });
+
+      setInteractionsReady(true);
+      setSuccessMessage(
+        "Preferencias guardadas en usuarios-service e interacciones-service.",
+      );
     } catch (error) {
       console.error("PREFERENCES_UPDATE_ERROR", error);
-      setError("No se pudo conectar con el servicio de usuarios.");
+      setError(
+        "No se pudieron guardar todas las configuraciones. Revisa usuarios-service e interacciones-service.",
+      );
     } finally {
       setSaving(false);
     }
@@ -101,7 +178,7 @@ export default function SettingsPage() {
           <h1>Configuración</h1>
           <p>
             Gestiona idioma, tema, reproducción automática y notificaciones.
-            Estos datos se guardan en usuarios-service usando tu JWT.
+            Ahora las notificaciones se guardan también en interacciones-service.
           </p>
         </PageHeading>
 
@@ -110,7 +187,7 @@ export default function SettingsPage() {
             <FiRefreshCw />
             <div>
               <strong>Cargando preferencias</strong>
-              <p>Consultando configuración real del usuario.</p>
+              <p>Consultando usuarios-service e interacciones-service.</p>
             </div>
           </AlertPanel>
         )}
@@ -119,7 +196,7 @@ export default function SettingsPage() {
           <AlertPanel>
             <FiAlertTriangle />
             <div>
-              <strong>Error</strong>
+              <strong>Atención</strong>
               <p>{error}</p>
             </div>
           </AlertPanel>
@@ -131,17 +208,37 @@ export default function SettingsPage() {
           </SuccessBox>
         )}
 
+        <AlertPanel>
+          <FiServer />
+
+          <div>
+            <strong>Estado de interacciones-service</strong>
+            <p>
+              {interactionsReady
+                ? "Configuración de notificaciones conectada al microservicio de interacciones."
+                : "La pantalla funciona, pero todavía no se pudo sincronizar con interacciones-service."}
+            </p>
+          </div>
+
+          <ServicePill $status={interactionsReady ? "Operativo" : "Degradado"}>
+            {interactionsReady ? "Conectado" : "Pendiente"}
+          </ServicePill>
+        </AlertPanel>
+
         <Tabs>
           <FilterChip $active>Cuenta</FilterChip>
           <FilterChip>Privacidad</FilterChip>
           <FilterChip>Apariencia</FilterChip>
           <FilterChip>Reproducción</FilterChip>
+          <FilterChip>Notificaciones</FilterChip>
         </Tabs>
 
         <Label>Tema</Label>
         <Select
           value={tema}
-          onChange={(event) => setTema(event.target.value as "claro" | "oscuro")}
+          onChange={(event) =>
+            setTema(event.target.value as "claro" | "oscuro")
+          }
           disabled={loading || saving}
         >
           <option value="oscuro">Oscuro</option>
@@ -168,13 +265,81 @@ export default function SettingsPage() {
           />
         </ToggleLine>
 
+        <AlertPanel>
+          <FiBell />
+
+          <div>
+            <strong>Notificaciones reales</strong>
+            <p>
+              Si desactivas recibir notificaciones, interacciones-service no debe
+              generar avisos web para directos ni suscripciones.
+            </p>
+          </div>
+        </AlertPanel>
+
         <ToggleLine>
           <span>Recibir notificaciones</span>
           <input
             type="checkbox"
             checked={recibirNotificaciones}
             disabled={loading || saving}
-            onChange={(event) => setRecibirNotificaciones(event.target.checked)}
+            onChange={(event) => {
+              const checked = event.target.checked;
+              setRecibirNotificaciones(checked);
+
+              if (!checked) {
+                setNotificarDirectos(false);
+                setNotificarSuscripciones(false);
+                setNotificarPromociones(false);
+                setCanalWeb(false);
+              } else {
+                setNotificarDirectos(true);
+                setNotificarSuscripciones(true);
+                setCanalWeb(true);
+              }
+            }}
+          />
+        </ToggleLine>
+
+        <ToggleLine>
+          <span>Notificar cuando un canal seguido inicia directo</span>
+          <input
+            type="checkbox"
+            checked={notificarDirectos}
+            disabled={loading || saving || !recibirNotificaciones}
+            onChange={(event) => setNotificarDirectos(event.target.checked)}
+          />
+        </ToggleLine>
+
+        <ToggleLine>
+          <span>Notificar eventos de suscripciones</span>
+          <input
+            type="checkbox"
+            checked={notificarSuscripciones}
+            disabled={loading || saving || !recibirNotificaciones}
+            onChange={(event) =>
+              setNotificarSuscripciones(event.target.checked)
+            }
+          />
+        </ToggleLine>
+
+        <ToggleLine>
+          <span>Notificar promociones</span>
+          <input
+            type="checkbox"
+            checked={notificarPromociones}
+            disabled={loading || saving || !recibirNotificaciones}
+            onChange={(event) => setNotificarPromociones(event.target.checked)}
+          />
+        </ToggleLine>
+
+        <ToggleLine>
+          <span>Canal web activo</span>
+          <input
+            type="checkbox"
+            checked={canalWeb}
+            disabled={loading || saving || !recibirNotificaciones}
+            onChange={(event) => setCanalWeb(event.target.checked)}
           />
         </ToggleLine>
 

@@ -334,6 +334,63 @@ class InteraccionesController extends Controller
         return $this->jsonOk(['count' => $items->count(), 'results' => $items]);
     }
 
+
+    public function notificationConfig(Request $request): JsonResponse
+    {
+        $user = $this->currentUser($request);
+
+        if ($user instanceof JsonResponse) {
+            return $user;
+        }
+
+        $config = ConfiguracionNotificacion::firstOrCreate(
+            ['id_usuario' => $user->id_usuario],
+            [
+                'notificar_directos' => true,
+                'notificar_suscripciones' => true,
+                'notificar_promociones' => false,
+                'canal_web' => true,
+            ]
+        );
+
+        return $this->jsonOk([
+            'configuracion' => $config,
+        ]);
+    }
+
+    public function updateNotificationConfig(Request $request): JsonResponse
+    {
+        $user = $this->currentUser($request);
+
+        if ($user instanceof JsonResponse) {
+            return $user;
+        }
+
+        $validated = $request->validate([
+            'notificar_directos' => ['sometimes', 'boolean'],
+            'notificar_suscripciones' => ['sometimes', 'boolean'],
+            'notificar_promociones' => ['sometimes', 'boolean'],
+            'canal_web' => ['sometimes', 'boolean'],
+        ]);
+
+        $config = ConfiguracionNotificacion::firstOrCreate(
+            ['id_usuario' => $user->id_usuario],
+            [
+                'notificar_directos' => true,
+                'notificar_suscripciones' => true,
+                'notificar_promociones' => false,
+                'canal_web' => true,
+            ]
+        );
+
+        $config->fill($validated);
+        $config->save();
+
+        return $this->jsonOk([
+            'configuracion' => $config,
+        ], 'Configuración de notificaciones actualizada correctamente.');
+    }
+
     public function markNotificationRead(Request $request, int $idNotificacion): JsonResponse
     {
         $user = $this->currentUser($request);

@@ -22,4 +22,7 @@ Route::get('/subscriptions/me', [InteraccionesController::class, 'mySubscription
 Route::get('/notifications', [InteraccionesController::class, 'notifications']);
 Route::patch('/notifications/{idNotificacion}/read', [InteraccionesController::class, 'markNotificationRead'])->whereNumber('idNotificacion');
 
+Route::get('/notifications/config/me', [InteraccionesController::class, 'notificationConfig']);
+Route::put('/notifications/config/me', [InteraccionesController::class, 'updateNotificationConfig']);
+
 Route::post('/events/stream-started', [InteraccionesController::class, 'streamStarted']);
