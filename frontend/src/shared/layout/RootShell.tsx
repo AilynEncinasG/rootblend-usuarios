@@ -1,5 +1,5 @@
 import { type FormEvent, type ReactNode, useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import {
   FiActivity,
   FiBell,
@@ -19,7 +19,9 @@ import {
   FiUser,
   FiUsers,
 } from "react-icons/fi";
-import { brandAssets, notifications } from "../mock/rootblendMock";
+
+import NotificationsBell from "../../modules/interactions/components/NotificationsBell";
+import { brandAssets } from "../mock/rootblendMock";
 import {
   clearAuthStorage,
   getStoredUser,
@@ -36,16 +38,12 @@ import {
   Avatar,
   BrandLink,
   ChannelMini,
-  DropdownHeader,
-  DropdownItem,
   DropdownMenuLink,
   DropdownMenuLoading,
   DropdownPanel,
   GhostLink,
-  IconRound,
   MainArea,
   MiniText,
-  NotificationMark,
   PrimaryLink,
   ProfileHeader,
   PromoPanel,
@@ -59,7 +57,6 @@ import {
   TopActions,
   Topbar,
   TopPopoverWrap,
-  UnreadDot,
   UserPill,
   ViewerDot,
   RightRail,
@@ -294,14 +291,13 @@ export function RootShell({
 
   const [query, setQuery] = useState("");
   const [menuOpen, setMenuOpen] = useState(false);
-  const [notificationsOpen, setNotificationsOpen] = useState(false);
   const [loggedIn, setLoggedIn] = useState(() => isAuthenticated());
   const [role, setRole] = useState<CreatorRole | null>(() => getCreatorRole());
   const [creatorReady, setCreatorReady] = useState(() => !isAuthenticated());
   const [, setMyChannel] = useState<BackendCanal | null>(null);
   const [realChannels, setRealChannels] = useState<ChannelCard[]>([]);
   const [userSnapshot, setUserSnapshot] = useState<UserSnapshot>(() =>
-    readStoredUserSnapshot()
+    readStoredUserSnapshot(),
   );
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -398,9 +394,7 @@ export function RootShell({
       try {
         const result = await getMyChannel();
 
-        if (!activeRequest) {
-          return;
-        }
+        if (!activeRequest) return;
 
         const backendRole = result.canal?.tipo_canal?.nombre_tipo;
         const normalizedRole =
@@ -476,7 +470,6 @@ export function RootShell({
     setCreatorReady(true);
     setMyChannel(null);
     setMenuOpen(false);
-    setNotificationsOpen(false);
     setLoggedIn(false);
     setUserSnapshot(readStoredUserSnapshot());
 
@@ -520,59 +513,12 @@ export function RootShell({
         <TopActions>
           {loggedIn ? (
             <>
-              <TopPopoverWrap>
-                <IconRound
-                  type="button"
-                  title="Notificaciones"
-                  onClick={() => {
-                    setNotificationsOpen((value) => !value);
-                    setMenuOpen(false);
-                  }}
-                >
-                  <FiBell />
-                  <UnreadDot />
-                </IconRound>
-
-                {notificationsOpen ? (
-                  <DropdownPanel $wide>
-                    <DropdownHeader>
-                      <strong>Notificaciones</strong>
-                      <Link
-                        to="/notifications"
-                        onClick={() => setNotificationsOpen(false)}
-                      >
-                        Ver todas
-                      </Link>
-                    </DropdownHeader>
-
-                    {notifications.map((item, index) => (
-                      <DropdownItem
-                        key={item.title}
-                        to={
-                          index === 1
-                            ? "/podcasts/rootcast"
-                            : "/streams/cyberpunk-2077"
-                        }
-                        onClick={() => setNotificationsOpen(false)}
-                      >
-                        <NotificationMark $accent={item.accent} />
-                        <div>
-                          <strong>{item.title}</strong>
-                          <small>{item.meta}</small>
-                        </div>
-                      </DropdownItem>
-                    ))}
-                  </DropdownPanel>
-                ) : null}
-              </TopPopoverWrap>
+              <NotificationsBell />
 
               <TopPopoverWrap>
                 <UserPill
                   type="button"
-                  onClick={() => {
-                    setMenuOpen((value) => !value);
-                    setNotificationsOpen(false);
-                  }}
+                  onClick={() => setMenuOpen((value) => !value)}
                 >
                   <UserProfileAvatar
                     label={userSnapshot.label}

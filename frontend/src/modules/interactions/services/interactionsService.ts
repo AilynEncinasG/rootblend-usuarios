@@ -33,6 +33,42 @@ export type NotificationConfig = {
   canal_web: boolean;
 };
 
+export type FollowedChannelItem = {
+  id_seguimiento?: number;
+  id_usuario?: number;
+  id_canal: number;
+  fecha_seguimiento?: string;
+  activo?: boolean | number;
+  nombre_canal?: string;
+  tipo_canal?: string;
+  estado_transmision?: "online" | "offline";
+  canal?: {
+    id_canal?: number;
+    nombre_canal?: string;
+    tipo_canal?: string;
+    estado_transmision?: "online" | "offline";
+  };
+};
+
+export type SubscriptionItem = {
+  id_suscripcion?: number;
+  id_usuario?: number;
+  id_canal: number;
+  fecha_suscripcion?: string;
+  tipo_plan?: string;
+  activa?: boolean | number;
+  fecha_vencimiento?: string | null;
+  nombre_canal?: string;
+  tipo_canal?: string;
+  estado_transmision?: "online" | "offline";
+  canal?: {
+    id_canal?: number;
+    nombre_canal?: string;
+    tipo_canal?: string;
+    estado_transmision?: "online" | "offline";
+  };
+};
+
 type ApiItemResponse<T> = {
   success: boolean;
   message: string;
@@ -91,6 +127,15 @@ export async function unfollowChannel(
   return response.data;
 }
 
+export async function getMyFollowedChannels(): Promise<FollowedChannelItem[]> {
+  const response = await apiRequest<ApiListResponse<FollowedChannelItem>>(
+    "/interactions/follows/me",
+    { auth: true },
+  );
+
+  return response.data.results;
+}
+
 export async function subscribeChannel(payload: {
   id_canal: number;
   nombre_canal: string;
@@ -122,6 +167,15 @@ export async function unsubscribeChannel(
   );
 
   return response.data;
+}
+
+export async function getMySubscriptions(): Promise<SubscriptionItem[]> {
+  const response = await apiRequest<ApiListResponse<SubscriptionItem>>(
+    "/interactions/subscriptions/me",
+    { auth: true },
+  );
+
+  return response.data.results;
 }
 
 export async function getNotifications(): Promise<NotificationItem[]> {
