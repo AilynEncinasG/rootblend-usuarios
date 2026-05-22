@@ -242,3 +242,20 @@ export async function getChannelInteractionSummary(
 
   return response.data;
 }
+export async function createDirectNotification(payload: {
+  id_usuario_destino: number;
+  id_canal: number;
+  tipo_evento: string;
+  titulo: string;
+  mensaje: string;
+  descripcion?: string;
+}): Promise<void> {
+  await apiRequest<ApiItemResponse<{ notificacion_creada: boolean }>>(
+    "/interactions/notifications/direct",
+    {
+      method: "POST",
+      body: payload,
+      auth: true,
+    },
+  );
+}

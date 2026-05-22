@@ -13,7 +13,7 @@ import {
   FiWifiOff,
   FiXCircle,
 } from "react-icons/fi";
-
+import { createDirectNotification } from "../../interactions/services/interactionsService";
 import { getStoredUser, isAuthenticated } from "../../auth/utils/authStorage";
 
 import {
@@ -126,6 +126,43 @@ function isMessageAuthorModerator(
       (item.data.usuarioId === message.data.usuarioId ||
         item.data.nombre === message.data.nombre),
   );
+}
+function getNumericUserId(value: string | number | undefined | null) {
+  const parsed = Number(value);
+
+  if (!Number.isFinite(parsed) || parsed <= 0) {
+    return null;
+  }
+
+  return parsed;
+}
+
+async function notifyModerationTarget(payload: {
+  targetUserId: string;
+  channelId: string | number;
+  tipo_evento: string;
+  titulo: string;
+  mensaje: string;
+  descripcion?: string;
+}) {
+  const numericTargetUserId = getNumericUserId(payload.targetUserId);
+
+  if (!numericTargetUserId) {
+    console.warn(
+      "No se pudo enviar notificación porque usuarioId no es numérico:",
+      payload.targetUserId,
+    );
+    return;
+  }
+
+  await createDirectNotification({
+    id_usuario_destino: numericTargetUserId,
+    id_canal: Number(payload.channelId),
+    tipo_evento: payload.tipo_evento,
+    titulo: payload.titulo,
+    mensaje: payload.mensaje,
+    descripcion: payload.descripcion,
+  });
 }
 function getUserSanction(
   sanctions: ChatSanctionRecord[],
@@ -356,7 +393,16 @@ async function confirmMuteUser() {
         createdBy: currentUser.name,
         expiresAt: Date.now() + pendingMute.durationMs,
       });
-
+      await notifyModerationTarget({
+        targetUserId,
+        channelId,
+        tipo_evento: "usuario_silenciado",
+        titulo: "Has sido silenciado",
+        mensaje: `Fuiste silenciado temporalmente en el chat.`,
+        descripcion: `Motivo: ${
+          pendingMute.reason.trim() || "Moderación temporal"
+        }. Stream #${streamId}.`,
+      });
       const durationLabel =
         MUTE_DURATIONS.find((item) => item.value === pendingMute.durationMs)
           ?.label || "tiempo definido";
@@ -417,7 +463,16 @@ async function confirmMuteUser() {
         createdBy: currentUser.name,
         expiresAt: null,
       });
-
+      await notifyModerationTarget({
+        targetUserId,
+        channelId,
+        tipo_evento: "usuario_bloqueado",
+        titulo: "Has sido bloqueado",
+        mensaje: `Fuiste bloqueado en el chat de este canal.`,
+        descripcion: `Motivo: ${
+          pendingBlock.reason.trim() || "Bloqueo de chat"
+        }. Stream #${streamId}.`,
+      });
       setFeedback(`${targetName} fue bloqueado en este chat.`);
       setPendingBlock(null);
     } catch (error) {
@@ -461,6 +516,14 @@ async function confirmMuteUser() {
 
         await deleteChatMessage(streamId, message.id, currentUser.name);
 
+        await notifyModerationTarget({
+          targetUserId,
+          channelId,
+          tipo_evento: "mensaje_eliminado",
+          titulo: "Mensaje eliminado",
+          mensaje: `Tu mensaje en el chat fue eliminado por moderación.`,
+          descripcion: `Moderador: ${currentUser.name}. Stream #${streamId}.`,
+        });
         await recordStreamStatsEvent({
           event_type: "chat.message.deleted",
           id_stream: Number(streamId),

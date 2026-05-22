@@ -527,6 +527,43 @@ class InteraccionesController extends Controller
         return $this->jsonOk(['id_notificacion' => $idNotificacion], 'Notificación marcada como leída.');
     }
 
+    public function directNotification(Request $request): JsonResponse
+    {
+        $sender = $this->currentUser($request);
+
+        if ($sender instanceof JsonResponse) {
+            return $sender;
+        }
+
+        $validated = $request->validate([
+            'id_usuario_destino' => ['required', 'integer'],
+            'id_canal' => ['required', 'integer'],
+            'tipo_evento' => ['required', 'string', 'max:80'],
+            'titulo' => ['required', 'string', 'max:180'],
+            'mensaje' => ['required', 'string', 'max:500'],
+            'descripcion' => ['nullable', 'string', 'max:500'],
+        ]);
+
+        if ((int) $validated['id_usuario_destino'] === (int) $sender->id_usuario) {
+            return $this->jsonOk([
+                'notificacion_creada' => false,
+            ], 'No se envió notificación al mismo usuario.');
+        }
+
+        $this->createNotificationForUser(
+            (int) $validated['id_usuario_destino'],
+            (int) $validated['id_canal'],
+            (string) $validated['tipo_evento'],
+            (string) $validated['titulo'],
+            (string) $validated['mensaje'],
+            $validated['descripcion'] ?? null
+        );
+
+        return $this->jsonOk([
+            'notificacion_creada' => true,
+        ], 'Notificación enviada correctamente.');
+    }
+
     public function streamStarted(Request $request): JsonResponse
     {
         $idCanal = (int) $request->input('id_canal');

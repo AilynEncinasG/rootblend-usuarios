@@ -14,7 +14,7 @@ Route::get('/me/channel-state', [InteraccionesController::class, 'getChannelStat
 Route::post('/follows', [InteraccionesController::class, 'follow']);
 Route::delete('/follows/{idCanal}', [InteraccionesController::class, 'unfollow'])->whereNumber('idCanal');
 Route::get('/follows/me', [InteraccionesController::class, 'myFollows']);
-
+Route::post('/notifications/direct', [InteraccionesController::class, 'directNotification']);
 Route::post('/subscriptions', [InteraccionesController::class, 'subscribe']);
 Route::delete('/subscriptions/{idCanal}', [InteraccionesController::class, 'unsubscribe'])->whereNumber('idCanal');
 Route::get('/subscriptions/me', [InteraccionesController::class, 'mySubscriptions']);
