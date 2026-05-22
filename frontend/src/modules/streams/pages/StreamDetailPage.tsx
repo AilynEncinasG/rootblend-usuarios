@@ -6,6 +6,7 @@ import {
   FiLock,
   FiRefreshCw,
   FiStar,
+  FiUser,
   FiWifiOff,
 } from "react-icons/fi";
 
@@ -524,6 +525,10 @@ export default function StreamDetailPage() {
           </InfoMain>
 
           <ButtonRow>
+            <GhostLink to={`/channels/${backendStream.canal.id_canal}`}>
+              <FiUser /> Ver canal
+            </GhostLink>
+
             {loggedIn ? (
               <>
                 <GhostButton
