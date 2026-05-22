@@ -50,6 +50,19 @@ type CurrentUser = {
 const MAX_CHAT_MESSAGE_LENGTH = 500;
 const CHAT_COOLDOWN_MS = 3000;
 
+const MUTE_DURATIONS = [
+  { label: "5 minutos", value: 5 * 60 * 1000 },
+  { label: "10 minutos", value: 10 * 60 * 1000 },
+  { label: "1 hora", value: 60 * 60 * 1000 },
+  { label: "24 horas", value: 24 * 60 * 60 * 1000 },
+];
+
+type PendingMute = {
+  message: ChatMessageRecord;
+  durationMs: number;
+  reason: string;
+};
+
 function getCurrentUser(): CurrentUser {
   const user = getStoredUser() as {
     id_usuario?: number;
@@ -141,7 +154,7 @@ export default function StreamChatPanel({
   const [isOwner, setIsOwner] = useState(false);
   const [sending, setSending] = useState(false);
   const [lastSentAt, setLastSentAt] = useState(0);
-
+  const [pendingMute, setPendingMute] = useState<PendingMute | null>(null);
   const loggedIn = isAuthenticated();
   const currentUser = useMemo(() => getCurrentUser(), []);
   const userIsModerator = isUserModerator(moderators, currentUser);
@@ -314,6 +327,43 @@ export default function StreamChatPanel({
     }
   }
 
+async function confirmMuteUser() {
+    if (!pendingMute) {
+      return;
+    }
+
+    if (!canModerate) {
+      setFeedback("Necesitas rol de moderador en este canal.");
+      setPendingMute(null);
+      return;
+    }
+
+    const targetName = pendingMute.message.data.nombre;
+    const targetUserId = pendingMute.message.data.usuarioId;
+
+    try {
+      await createChatSanction(streamId, {
+        usuarioId: targetUserId,
+        nombre: targetName,
+        tipo: "silenciado",
+        motivo: pendingMute.reason.trim() || "Moderación temporal",
+        active: true,
+        createdAt: Date.now(),
+        createdBy: currentUser.name,
+        expiresAt: Date.now() + pendingMute.durationMs,
+      });
+
+      const durationLabel =
+        MUTE_DURATIONS.find((item) => item.value === pendingMute.durationMs)
+          ?.label || "tiempo definido";
+
+      setFeedback(`${targetName} fue silenciado por ${durationLabel}.`);
+      setPendingMute(null);
+    } catch (error) {
+      console.error("FIREBASE_CHAT_MUTE_ERROR", error);
+      setFeedback("No se pudo silenciar al usuario en Firebase.");
+    }
+  }
   async function clearChatForTesting() {
     if (!canModerate) {
       setFeedback("Necesitas ser dueño o moderador para limpiar el chat.");
@@ -390,18 +440,13 @@ export default function StreamChatPanel({
           return;
         }
 
-        await createChatSanction(streamId, {
-          usuarioId: targetUserId,
-          nombre: targetName,
-          tipo: "silenciado",
-          motivo: "Moderación temporal",
-          active: true,
-          createdAt: Date.now(),
-          createdBy: currentUser.name,
-          expiresAt: Date.now() + 10 * 60 * 1000,
+        setPendingMute({
+          message,
+          durationMs: 10 * 60 * 1000,
+          reason: "Moderación temporal",
         });
 
-        setFeedback(`${targetName} fue silenciado por 10 minutos.`);
+        setFeedback(`Selecciona duración para silenciar a ${targetName}.`);
       }
 
       if (action === "Bloquear usuario") {
@@ -575,6 +620,71 @@ export default function StreamChatPanel({
           );
         })}
       </Messages>
+
+      {pendingMute && (
+        <ModalBackdrop>
+          <ModalCard>
+            <FiVolume2 size={34} />
+
+            <h2>Silenciar usuario</h2>
+
+            <p>
+              Vas a silenciar a <strong>{pendingMute.message.data.nombre}</strong>.
+              Mientras dure la sanción, no podrá escribir en este chat.
+            </p>
+
+            <label>
+              Motivo
+              <input
+                value={pendingMute.reason}
+                onChange={(event) =>
+                  setPendingMute((current) =>
+                    current
+                      ? {
+                          ...current,
+                          reason: event.target.value,
+                        }
+                      : current,
+                  )
+                }
+                placeholder="Ejemplo: spam, insultos, flood..."
+              />
+            </label>
+
+            <DurationGrid>
+              {MUTE_DURATIONS.map((duration) => (
+                <DurationButton
+                  key={duration.value}
+                  type="button"
+                  $active={pendingMute.durationMs === duration.value}
+                  onClick={() =>
+                    setPendingMute((current) =>
+                      current
+                        ? {
+                            ...current,
+                            durationMs: duration.value,
+                          }
+                        : current,
+                    )
+                  }
+                >
+                  {duration.label}
+                </DurationButton>
+              ))}
+            </DurationGrid>
+
+            <ModalActions>
+              <CancelButton type="button" onClick={() => setPendingMute(null)}>
+                Cancelar
+              </CancelButton>
+
+              <ConfirmButton type="button" onClick={confirmMuteUser}>
+                Silenciar
+              </ConfirmButton>
+            </ModalActions>
+          </ModalCard>
+        </ModalBackdrop>
+      )}
 
       {loggedIn && allowInput && isLive ? (
         <ChatForm onSubmit={submit}>
@@ -879,4 +989,99 @@ const LoginNotice = styled.div`
     color: #00e5ff;
     font-weight: 850;
   }
+`;
+const ModalBackdrop = styled.div`
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+  display: grid;
+  place-items: center;
+  padding: 18px;
+  background: rgba(2, 6, 23, 0.72);
+  backdrop-filter: blur(6px);
+`;
+
+const ModalCard = styled.div`
+  width: min(420px, 100%);
+  padding: 18px;
+  border-radius: 18px;
+  color: #e5e7eb;
+  background: #111827;
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  box-shadow: 0 28px 80px rgba(0, 0, 0, 0.48);
+
+  h2 {
+    margin: 10px 0 8px;
+    color: #fff;
+  }
+
+  p {
+    margin: 0 0 14px;
+    color: rgba(226, 232, 240, 0.72);
+    line-height: 1.5;
+  }
+
+  label {
+    display: grid;
+    gap: 7px;
+    color: rgba(226, 232, 240, 0.76);
+    font-size: 13px;
+    font-weight: 800;
+  }
+
+  input {
+    height: 40px;
+    border: 1px solid rgba(148, 163, 184, 0.18);
+    border-radius: 10px;
+    color: #fff;
+    background: rgba(2, 6, 23, 0.72);
+    padding: 0 10px;
+  }
+`;
+
+const DurationGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  margin-top: 14px;
+`;
+
+const DurationButton = styled.button<{ $active: boolean }>`
+  height: 38px;
+  border-radius: 10px;
+  border: 1px solid
+    ${({ $active }) =>
+      $active ? "rgba(0, 229, 255, 0.85)" : "rgba(148, 163, 184, 0.18)"};
+  color: ${({ $active }) => ($active ? "#03111c" : "#e5e7eb")};
+  background: ${({ $active }) =>
+    $active ? "#00e5ff" : "rgba(15, 23, 42, 0.92)"};
+  font-weight: 850;
+  cursor: pointer;
+`;
+
+const ModalActions = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-top: 16px;
+`;
+
+const CancelButton = styled.button`
+  height: 40px;
+  border-radius: 10px;
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  color: #e5e7eb;
+  background: transparent;
+  font-weight: 850;
+  cursor: pointer;
+`;
+
+const ConfirmButton = styled.button`
+  height: 40px;
+  border: 0;
+  border-radius: 10px;
+  color: #03111c;
+  background: #00e5ff;
+  font-weight: 900;
+  cursor: pointer;
 `;
