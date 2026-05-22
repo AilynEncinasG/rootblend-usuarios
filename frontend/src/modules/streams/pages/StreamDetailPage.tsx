@@ -319,17 +319,18 @@ export default function StreamDetailPage() {
     setInteractionFeedback("");
 
     try {
-      const payload = {
-        id_canal: backendStream.canal.id_canal,
-        nombre_canal: backendStream.canal.nombre_canal,
-        tipo_canal:
-          typeof backendStream.canal.tipo_canal === "string"
-            ? backendStream.canal.tipo_canal
-            : backendStream.canal.tipo_canal?.nombre_tipo || "streamer",
-        estado_transmision: (
-          backendStream.estado === "en_vivo" ? "online" : "offline"
-        ) as "online" | "offline",
-      };
+        const payload = {
+          id_canal: backendStream.canal.id_canal,
+          nombre_canal: backendStream.canal.nombre_canal,
+          tipo_canal:
+            typeof backendStream.canal.tipo_canal === "string"
+              ? backendStream.canal.tipo_canal
+              : backendStream.canal.tipo_canal?.nombre_tipo || "streamer",
+          estado_transmision: (
+            backendStream.estado === "en_vivo" ? "online" : "offline"
+          ) as "online" | "offline",
+          id_usuario_propietario: backendStream.canal.id_usuario_propietario || null,
+        };
 
       const state = following
         ? await unfollowChannel(backendStream.canal.id_canal)
@@ -356,19 +357,19 @@ export default function StreamDetailPage() {
     setInteractionFeedback("");
 
     try {
-      const payload = {
-        id_canal: backendStream.canal.id_canal,
-        nombre_canal: backendStream.canal.nombre_canal,
-        tipo_canal:
-          typeof backendStream.canal.tipo_canal === "string"
-            ? backendStream.canal.tipo_canal
-            : backendStream.canal.tipo_canal?.nombre_tipo || "streamer",
-        estado_transmision: (
-          backendStream.estado === "en_vivo" ? "online" : "offline"
-        ) as "online" | "offline",
-        tipo_plan: "mensual",
-      };
-
+        const payload = {
+          id_canal: backendStream.canal.id_canal,
+          nombre_canal: backendStream.canal.nombre_canal,
+          tipo_canal:
+            typeof backendStream.canal.tipo_canal === "string"
+              ? backendStream.canal.tipo_canal
+              : backendStream.canal.tipo_canal?.nombre_tipo || "streamer",
+          estado_transmision: (
+            backendStream.estado === "en_vivo" ? "online" : "offline"
+          ) as "online" | "offline",
+          tipo_plan: "mensual",
+          id_usuario_propietario: backendStream.canal.id_usuario_propietario || null,
+        };
       const state = subscribed
         ? await unsubscribeChannel(backendStream.canal.id_canal)
         : await subscribeChannel(payload);

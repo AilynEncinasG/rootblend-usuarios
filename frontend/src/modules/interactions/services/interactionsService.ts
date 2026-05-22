@@ -107,6 +107,7 @@ export async function followChannel(payload: {
   nombre_canal: string;
   tipo_canal?: string;
   estado_transmision?: "online" | "offline";
+  id_usuario_propietario?: number | null;
 }): Promise<ChannelInteractionState> {
   const response = await apiRequest<ApiItemResponse<ChannelInteractionState>>(
     "/interactions/follows",
@@ -149,6 +150,7 @@ export async function subscribeChannel(payload: {
   tipo_canal?: string;
   estado_transmision?: "online" | "offline";
   tipo_plan?: string;
+  id_usuario_propietario?: number | null;
 }): Promise<ChannelInteractionState> {
   const response = await apiRequest<ApiItemResponse<ChannelInteractionState>>(
     "/interactions/subscriptions",

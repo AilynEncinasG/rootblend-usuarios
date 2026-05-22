@@ -490,13 +490,13 @@ export default function ChannelPublicPage() {
         setSubscribed(Boolean(state.suscrito));
         setInteractionFeedback("Dejaste de seguir este canal.");
       } else {
-        const state = await followChannel({
-          id_canal: numericChannelId,
-          nombre_canal: channel?.nombre_canal || "Canal ROOTBLEND",
-          tipo_canal: getInteractionChannelType(channel),
-          estado_transmision: liveStreams.length > 0 ? "online" : "offline",
-        });
-
+          const state = await followChannel({
+            id_canal: numericChannelId,
+            nombre_canal: channel?.nombre_canal || "Canal ROOTBLEND",
+            tipo_canal: getInteractionChannelType(channel),
+            estado_transmision: liveStreams.length > 0 ? "online" : "offline",
+            id_usuario_propietario: channel?.id_usuario_propietario || null,
+          });
         setFollowing(Boolean(state.siguiendo));
         setSubscribed(Boolean(state.suscrito));
         setInteractionFeedback("Ahora sigues este canal.");
@@ -534,8 +534,8 @@ export default function ChannelPublicPage() {
           tipo_canal: getInteractionChannelType(channel),
           estado_transmision: liveStreams.length > 0 ? "online" : "offline",
           tipo_plan: "comunidad",
+          id_usuario_propietario: channel?.id_usuario_propietario || null,
         });
-
         setFollowing(Boolean(state.siguiendo));
         setSubscribed(Boolean(state.suscrito));
         setInteractionFeedback("Te suscribiste a este canal.");

@@ -59,7 +59,15 @@ class InteraccionesController extends Controller
 
         [$header64, $payload64, $signature64] = $parts;
         $secret = env('JWT_ACCESS_SECRET', 'rootblend-access-secret');
-        $expected = rtrim(strtr(base64_encode(hash_hmac('sha256', $header64 . '.' . $payload64, $secret, true)), '+/', '-_'), '=');
+
+        $expected = rtrim(
+            strtr(
+                base64_encode(hash_hmac('sha256', $header64 . '.' . $payload64, $secret, true)),
+                '+/',
+                '-_'
+            ),
+            '='
+        );
 
         if (!hash_equals($expected, $signature64)) {
             return null;
@@ -120,6 +128,18 @@ class InteraccionesController extends Controller
         );
     }
 
+    private function ensureUserMirrorById(int $idUsuario): UsuarioInteraccion
+    {
+        return UsuarioInteraccion::firstOrCreate(
+            ['id_usuario' => $idUsuario],
+            [
+                'nombre_usuario' => 'Usuario ' . $idUsuario,
+                'correo' => 'rootblend-user-' . $idUsuario . '@local.rootblend',
+                'estado' => 'activo',
+            ]
+        );
+    }
+
     private function ensureChannelFromRequest(Request $request): CanalInteraccion|JsonResponse
     {
         $idCanal = (int) $request->input('id_canal');
@@ -138,7 +158,7 @@ class InteraccionesController extends Controller
         );
     }
 
-    private function channelState(int $idUsuario, int $idCanal): array
+    private function interactionState(int $idUsuario, int $idCanal): array
     {
         $seguimiento = Seguimiento::where('id_usuario', $idUsuario)
             ->where('id_canal', $idCanal)
@@ -158,6 +178,49 @@ class InteraccionesController extends Controller
         ];
     }
 
+    private function createNotificationForUser(
+        int $idUsuario,
+        int $idCanal,
+        string $tipoEvento,
+        string $titulo,
+        string $mensaje,
+        ?string $descripcion = null
+    ): void {
+        $this->ensureUserMirrorById($idUsuario);
+
+        $config = ConfiguracionNotificacion::firstOrCreate(
+            ['id_usuario' => $idUsuario],
+            [
+                'notificar_directos' => true,
+                'notificar_suscripciones' => true,
+                'notificar_promociones' => false,
+                'canal_web' => true,
+            ]
+        );
+
+        if (!$config->canal_web) {
+            return;
+        }
+
+        $evento = EventoNotificable::create([
+            'id_canal' => $idCanal,
+            'tipo_evento' => $tipoEvento,
+            'descripcion' => $descripcion ?: $mensaje,
+            'fecha_evento' => Carbon::now(),
+            'estado' => 'generado',
+        ]);
+
+        Notificacion::create([
+            'id_usuario' => $idUsuario,
+            'id_evento' => $evento->id_evento,
+            'titulo' => $titulo,
+            'mensaje' => $mensaje,
+            'tipo' => $tipoEvento,
+            'fecha_envio' => Carbon::now(),
+            'leida' => false,
+        ]);
+    }
+
     public function getChannelState(Request $request): JsonResponse
     {
         $user = $this->currentUser($request);
@@ -172,7 +235,7 @@ class InteraccionesController extends Controller
             return $this->jsonError('Debes enviar id_canal.', 400);
         }
 
-        return $this->jsonOk($this->channelState((int) $user->id_usuario, $idCanal));
+        return $this->jsonOk($this->interactionState((int) $user->id_usuario, $idCanal));
     }
 
     public function follow(Request $request): JsonResponse
@@ -182,6 +245,14 @@ class InteraccionesController extends Controller
         if ($user instanceof JsonResponse) {
             return $user;
         }
+
+        $validated = $request->validate([
+            'id_canal' => ['required', 'integer'],
+            'nombre_canal' => ['required', 'string'],
+            'tipo_canal' => ['nullable', 'string'],
+            'estado_transmision' => ['nullable', 'string'],
+            'id_usuario_propietario' => ['nullable', 'integer'],
+        ]);
 
         $channel = $this->ensureChannelFromRequest($request);
 
@@ -196,8 +267,22 @@ class InteraccionesController extends Controller
             ['fecha_seguimiento' => Carbon::now(), 'activo' => true]
         );
 
+        if (
+            !empty($validated['id_usuario_propietario']) &&
+            (int) $validated['id_usuario_propietario'] !== (int) $user->id_usuario
+        ) {
+            $this->createNotificationForUser(
+                (int) $validated['id_usuario_propietario'],
+                (int) $validated['id_canal'],
+                'nuevo_seguidor',
+                'Nuevo seguidor',
+                $user->nombre_usuario . ' empezó a seguir tu canal ' . $validated['nombre_canal'] . '.',
+                'Un usuario siguió el canal.'
+            );
+        }
+
         return $this->jsonOk(
-            $this->channelState((int) $user->id_usuario, (int) $channel->id_canal),
+            $this->interactionState((int) $user->id_usuario, (int) $channel->id_canal),
             'Canal seguido correctamente.'
         );
     }
@@ -215,7 +300,7 @@ class InteraccionesController extends Controller
             ->update(['activo' => false]);
 
         return $this->jsonOk(
-            $this->channelState((int) $user->id_usuario, $idCanal),
+            $this->interactionState((int) $user->id_usuario, $idCanal),
             'Dejaste de seguir el canal.'
         );
     }
@@ -227,6 +312,15 @@ class InteraccionesController extends Controller
         if ($user instanceof JsonResponse) {
             return $user;
         }
+
+        $validated = $request->validate([
+            'id_canal' => ['required', 'integer'],
+            'nombre_canal' => ['required', 'string'],
+            'tipo_canal' => ['nullable', 'string'],
+            'estado_transmision' => ['nullable', 'string'],
+            'tipo_plan' => ['nullable', 'string'],
+            'id_usuario_propietario' => ['nullable', 'integer'],
+        ]);
 
         $channel = $this->ensureChannelFromRequest($request);
 
@@ -240,15 +334,29 @@ class InteraccionesController extends Controller
             ['id_usuario' => $user->id_usuario, 'id_canal' => $channel->id_canal],
             [
                 'fecha_suscripcion' => Carbon::now(),
-                'tipo_plan' => (string) $request->input('tipo_plan', 'mensual'),
+                'tipo_plan' => (string) ($validated['tipo_plan'] ?? 'mensual'),
                 'activa' => true,
                 'fecha_vencimiento' => Carbon::now()->addDays(30),
             ]
         );
 
+        if (
+            !empty($validated['id_usuario_propietario']) &&
+            (int) $validated['id_usuario_propietario'] !== (int) $user->id_usuario
+        ) {
+            $this->createNotificationForUser(
+                (int) $validated['id_usuario_propietario'],
+                (int) $validated['id_canal'],
+                'nueva_suscripcion',
+                'Nueva suscripción',
+                $user->nombre_usuario . ' se suscribió a tu canal ' . $validated['nombre_canal'] . '.',
+                'Un usuario se suscribió al canal.'
+            );
+        }
+
         return $this->jsonOk(
-            $this->channelState((int) $user->id_usuario, (int) $channel->id_canal),
-            'Suscripcion registrada correctamente.'
+            $this->interactionState((int) $user->id_usuario, (int) $channel->id_canal),
+            'Suscripción registrada correctamente.'
         );
     }
 
@@ -265,8 +373,8 @@ class InteraccionesController extends Controller
             ->update(['activa' => false]);
 
         return $this->jsonOk(
-            $this->channelState((int) $user->id_usuario, $idCanal),
-            'Suscripcion cancelada correctamente.'
+            $this->interactionState((int) $user->id_usuario, $idCanal),
+            'Suscripción cancelada correctamente.'
         );
     }
 
@@ -282,7 +390,12 @@ class InteraccionesController extends Controller
             ->join('canales_interaccion', 'canales_interaccion.id_canal', '=', 'seguimientos.id_canal')
             ->where('seguimientos.id_usuario', $user->id_usuario)
             ->where('seguimientos.activo', true)
-            ->select('seguimientos.*', 'canales_interaccion.nombre_canal', 'canales_interaccion.tipo_canal', 'canales_interaccion.estado_transmision')
+            ->select(
+                'seguimientos.*',
+                'canales_interaccion.nombre_canal',
+                'canales_interaccion.tipo_canal',
+                'canales_interaccion.estado_transmision'
+            )
             ->orderByDesc('seguimientos.fecha_seguimiento')
             ->get();
 
@@ -301,7 +414,12 @@ class InteraccionesController extends Controller
             ->join('canales_interaccion', 'canales_interaccion.id_canal', '=', 'suscripciones.id_canal')
             ->where('suscripciones.id_usuario', $user->id_usuario)
             ->where('suscripciones.activa', true)
-            ->select('suscripciones.*', 'canales_interaccion.nombre_canal', 'canales_interaccion.tipo_canal', 'canales_interaccion.estado_transmision')
+            ->select(
+                'suscripciones.*',
+                'canales_interaccion.nombre_canal',
+                'canales_interaccion.tipo_canal',
+                'canales_interaccion.estado_transmision'
+            )
             ->orderByDesc('suscripciones.fecha_suscripcion')
             ->get();
 
@@ -333,7 +451,6 @@ class InteraccionesController extends Controller
 
         return $this->jsonOk(['count' => $items->count(), 'results' => $items]);
     }
-
 
     public function notificationConfig(Request $request): JsonResponse
     {
@@ -404,10 +521,10 @@ class InteraccionesController extends Controller
             ->update(['leida' => true]);
 
         if (!$updated) {
-            return $this->jsonError('Notificacion no encontrada.', 404);
+            return $this->jsonError('Notificación no encontrada.', 404);
         }
 
-        return $this->jsonOk(['id_notificacion' => $idNotificacion], 'Notificacion marcada como leida.');
+        return $this->jsonOk(['id_notificacion' => $idNotificacion], 'Notificación marcada como leída.');
     }
 
     public function streamStarted(Request $request): JsonResponse
@@ -433,7 +550,7 @@ class InteraccionesController extends Controller
         $evento = EventoNotificable::create([
             'id_canal' => $idCanal,
             'tipo_evento' => 'inicio_directo',
-            'descripcion' => $nombreCanal . ' inicio una transmision: ' . $titulo,
+            'descripcion' => $nombreCanal . ' inició una transmisión: ' . $titulo,
             'fecha_evento' => Carbon::now(),
             'estado' => 'generado',
         ]);
@@ -462,8 +579,8 @@ class InteraccionesController extends Controller
             Notificacion::create([
                 'id_usuario' => $follow->id_usuario,
                 'id_evento' => $evento->id_evento,
-                'titulo' => $nombreCanal . ' esta en vivo',
-                'mensaje' => 'El canal que sigues inicio el directo: ' . $titulo,
+                'titulo' => $nombreCanal . ' está en vivo',
+                'mensaje' => 'El canal que sigues inició el directo: ' . $titulo,
                 'tipo' => 'directo',
                 'fecha_envio' => Carbon::now(),
                 'leida' => false,
@@ -497,6 +614,4 @@ class InteraccionesController extends Controller
             'suscriptores' => $subscriptions,
         ]);
     }
-
-
 }
