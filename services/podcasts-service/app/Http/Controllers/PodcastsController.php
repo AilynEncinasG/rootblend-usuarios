@@ -8,6 +8,7 @@ use App\Models\Episodio;
 use App\Models\HistorialPodcast;
 use App\Models\Podcast;
 use App\Models\ReproduccionPodcast;
+use App\Support\RabbitMqPublisher;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -146,6 +147,70 @@ class PodcastsController extends Controller
     private function gatewayUrl(): string
     {
         return rtrim((string) (config('app.url') ?: env('APP_URL', 'http://localhost:8080')), '/');
+    }
+
+    private function canalesServiceUrl(): string
+    {
+        return rtrim((string) env('CANALES_SERVICE_URL', 'http://canales-streaming-service:8001/api/canales'), '/');
+    }
+
+    private function fetchChannelById(int $idCanal): ?array
+    {
+        $url = $this->canalesServiceUrl() . '/' . $idCanal . '/';
+        $context = stream_context_create([
+            'http' => [
+                'method' => 'GET',
+                'timeout' => 3,
+                'header' => "Accept: application/json\r\n",
+            ],
+        ]);
+
+        $response = @file_get_contents($url, false, $context);
+
+        if ($response === false) {
+            return null;
+        }
+
+        $decoded = json_decode($response, true);
+
+        if (!is_array($decoded) || empty($decoded['success']) || !is_array($decoded['data'] ?? null)) {
+            return null;
+        }
+
+        return $decoded['data'];
+    }
+
+    private function validatePodcastChannelOwnership(int $idCanal, int $idUsuario): ?JsonResponse
+    {
+        $required = filter_var(env('PODCAST_CHANNEL_OWNERSHIP_REQUIRED', true), FILTER_VALIDATE_BOOL);
+        $channel = $this->fetchChannelById($idCanal);
+
+        if (!$channel) {
+            return $required
+                ? $this->jsonError('No se pudo verificar el canal del podcast.', 503)
+                : null;
+        }
+
+        $ownerId = (int) ($channel['id_usuario_propietario'] ?? 0);
+        $channelState = (string) ($channel['estado_canal'] ?? '');
+        $tipoCanal = $channel['tipo_canal'] ?? '';
+        $channelType = is_array($tipoCanal)
+            ? (string) ($tipoCanal['nombre_tipo'] ?? '')
+            : (string) $tipoCanal;
+
+        if ($ownerId !== $idUsuario) {
+            return $this->jsonError('No puedes crear podcasts en un canal que no te pertenece.', 403);
+        }
+
+        if ($channelState !== 'activo') {
+            return $this->jsonError('El canal no esta activo.', 403);
+        }
+
+        if ($channelType !== 'podcaster') {
+            return $this->jsonError('Solo los canales de tipo podcaster pueden crear podcasts.', 403);
+        }
+
+        return null;
     }
 
     private function storagePublicUrl(string $path): string
@@ -530,6 +595,20 @@ class PodcastsController extends Controller
             'dispositivo' => $validated['dispositivo'] ?? $request->userAgent(),
         ]);
 
+        RabbitMqPublisher::publish('episode.played', [
+            'id_reproduccion' => $play->id_reproduccion,
+            'id_podcast' => $episode->id_podcast,
+            'id_episodio' => $episode->id_episodio,
+            'id_usuario' => $play->id_usuario,
+            'tiempo_escuchado' => $play->tiempo_escuchado,
+            'completado' => (bool) $play->completado,
+            'dispositivo' => $play->dispositivo,
+            'fecha_reproduccion' => optional($play->fecha_reproduccion)->toISOString(),
+            'episodios_publicados' => Episodio::where('id_podcast', $episode->id_podcast)
+                ->where('estado', 'publicado')
+                ->count(),
+        ]);
+
         return $this->jsonOk([
             'id_reproduccion' => $play->id_reproduccion,
             'episode' => $this->formatEpisode($episode),
@@ -580,6 +659,12 @@ class PodcastsController extends Controller
         ]);
 
         $idUsuario = (int) $payload['sub'];
+
+        $channelError = $this->validatePodcastChannelOwnership((int) $validated['id_canal'], $idUsuario);
+
+        if ($channelError) {
+            return $channelError;
+        }
 
         $duplicate = Podcast::where('id_canal', (int) $validated['id_canal'])
             ->where('nombre', $validated['nombre'])
@@ -735,6 +820,12 @@ class PodcastsController extends Controller
 
         if ($permissionError) {
             return $permissionError;
+        }
+
+        $channelError = $this->validatePodcastChannelOwnership((int) $podcast->id_canal, (int) $payload['sub']);
+
+        if ($channelError) {
+            return $channelError;
         }
 
         $validated = $request->validate([

@@ -126,3 +126,13 @@ STATIC_ROOT = BASE_DIR / "staticfiles"
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+RABBITMQ_ENABLED = os.getenv("RABBITMQ_ENABLED", "true").lower() == "true"
+RABBITMQ_HOST = os.getenv("RABBITMQ_HOST", "rabbitmq")
+RABBITMQ_PORT = int(os.getenv("RABBITMQ_PORT", "5672"))
+RABBITMQ_USER = os.getenv("RABBITMQ_USER", "rootblend")
+RABBITMQ_PASSWORD = os.getenv("RABBITMQ_PASSWORD", "rootblend123")
+RABBITMQ_VHOST = os.getenv("RABBITMQ_VHOST", "/")
+RABBITMQ_EXCHANGE = os.getenv("RABBITMQ_EXCHANGE", "rootblend.events")
+RABBITMQ_STATS_STREAM_QUEUE = os.getenv("RABBITMQ_STATS_STREAM_QUEUE", "rootblend.estadisticas.stream")
+RABBITMQ_STATS_PODCAST_QUEUE = os.getenv("RABBITMQ_STATS_PODCAST_QUEUE", "rootblend.estadisticas.podcast")

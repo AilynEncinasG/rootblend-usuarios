@@ -127,10 +127,22 @@ services:
       STREAM_RTMP_SERVER: "rtmp://localhost:1935/live"
       STREAM_PLAYBACK_BASE_URL: "http://localhost:8080/hls/live"
       STREAM_PLAYBACK_PROBE_BASE_URL: "http://media-server:8888/live"
+      RABBITMQ_ENABLED: "true"
+      RABBITMQ_HOST: "rabbitmq"
+      RABBITMQ_PORT: "5672"
+      RABBITMQ_USER: "rootblend"
+      RABBITMQ_PASSWORD: "rootblend123"
+      RABBITMQ_VHOST: "/"
+      RABBITMQ_EXCHANGE: "rootblend.events"
+      RABBITMQ_MANAGEMENT_URL: "http://rabbitmq:15672/api"
+      INTERNAL_HTTP_EVENTS_FALLBACK: "false"
     ports:
       - "8001:8001"
     depends_on:
-      - media-server
+      media-server:
+        condition: service_started
+      rabbitmq:
+        condition: service_healthy
     healthcheck:
       test: ["CMD-SHELL", "python -c \"import urllib.request; urllib.request.urlopen('http://127.0.0.1:8001/api/health/')\""]
       interval: 20s
@@ -149,6 +161,15 @@ services:
       DJANGO_ALLOWED_HOSTS: "localhost,127.0.0.1,0.0.0.0,gateway,usuarios-service,canales-streaming-service,estadisticas-service"
       DJANGO_CSRF_TRUSTED_ORIGINS: "http://localhost:5173,http://localhost:8080,http://127.0.0.1:5173,http://127.0.0.1:8080"
       CORS_ALLOWED_ORIGINS: "http://localhost:5173,http://127.0.0.1:5173"
+      RABBITMQ_ENABLED: "true"
+      RABBITMQ_HOST: "rabbitmq"
+      RABBITMQ_PORT: "5672"
+      RABBITMQ_USER: "rootblend"
+      RABBITMQ_PASSWORD: "rootblend123"
+      RABBITMQ_VHOST: "/"
+      RABBITMQ_EXCHANGE: "rootblend.events"
+      RABBITMQ_STATS_STREAM_QUEUE: "rootblend.estadisticas.stream"
+      RABBITMQ_STATS_PODCAST_QUEUE: "rootblend.estadisticas.podcast"
     ports:
       - "8002:8002"
     healthcheck:
@@ -170,6 +191,16 @@ services:
       FRONTEND_URL: "http://localhost:5173"
       SANCTUM_STATEFUL_DOMAINS: "localhost:5173,127.0.0.1:5173"
       SESSION_DOMAIN: ""
+      CANALES_SERVICE_URL: "http://canales-streaming-service:8001/api/canales"
+      PODCAST_CHANNEL_OWNERSHIP_REQUIRED: "true"
+      RABBITMQ_ENABLED: "true"
+      RABBITMQ_HOST: "rabbitmq"
+      RABBITMQ_PORT: "5672"
+      RABBITMQ_USER: "rootblend"
+      RABBITMQ_PASSWORD: "rootblend123"
+      RABBITMQ_VHOST: "/"
+      RABBITMQ_EXCHANGE: "rootblend.events"
+      RABBITMQ_MANAGEMENT_URL: "http://rabbitmq:15672/api"
     ports:
       - "8003:8003"
     healthcheck:
@@ -191,6 +222,15 @@ services:
       FRONTEND_URL: "http://localhost:5173"
       SANCTUM_STATEFUL_DOMAINS: "localhost:5173,127.0.0.1:5173"
       SESSION_DOMAIN: ""
+      RABBITMQ_ENABLED: "true"
+      RABBITMQ_HOST: "rabbitmq"
+      RABBITMQ_PORT: "5672"
+      RABBITMQ_USER: "rootblend"
+      RABBITMQ_PASSWORD: "rootblend123"
+      RABBITMQ_VHOST: "/"
+      RABBITMQ_EXCHANGE: "rootblend.events"
+      RABBITMQ_INTERACCIONES_STREAM_QUEUE: "rootblend.interacciones.stream"
+      RABBITMQ_MANAGEMENT_URL: "http://rabbitmq:15672/api"
     ports:
       - "8004:8004"
     healthcheck:
@@ -199,6 +239,61 @@ services:
       timeout: 10s
       retries: 5
       start_period: 20s
+    restart: unless-stopped
+
+  estadisticas-events-consumer:
+    build:
+      context: ./services/estadisticas-service
+    container_name: rootblend-estadisticas-events-consumer
+    env_file:
+      - ./services/estadisticas-service/.env
+    environment:
+      DJANGO_ALLOWED_HOSTS: "localhost,127.0.0.1,0.0.0.0,gateway,usuarios-service,canales-streaming-service,estadisticas-service"
+      DJANGO_CSRF_TRUSTED_ORIGINS: "http://localhost:5173,http://localhost:8080,http://127.0.0.1:5173,http://127.0.0.1:8080"
+      CORS_ALLOWED_ORIGINS: "http://localhost:5173,http://127.0.0.1:5173"
+      RABBITMQ_ENABLED: "true"
+      RABBITMQ_HOST: "rabbitmq"
+      RABBITMQ_PORT: "5672"
+      RABBITMQ_USER: "rootblend"
+      RABBITMQ_PASSWORD: "rootblend123"
+      RABBITMQ_VHOST: "/"
+      RABBITMQ_EXCHANGE: "rootblend.events"
+      RABBITMQ_STATS_STREAM_QUEUE: "rootblend.estadisticas.stream"
+      RABBITMQ_STATS_PODCAST_QUEUE: "rootblend.estadisticas.podcast"
+    command: ["python", "manage.py", "consume_events"]
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+      estadisticas-service:
+        condition: service_started
+    restart: unless-stopped
+
+  interacciones-events-consumer:
+    build:
+      context: ./services/interacciones-service
+    container_name: rootblend-interacciones-events-consumer
+    env_file:
+      - ./services/interacciones-service/.env
+    environment:
+      APP_URL: "http://localhost:8080"
+      FRONTEND_URL: "http://localhost:5173"
+      SANCTUM_STATEFUL_DOMAINS: "localhost:5173,127.0.0.1:5173"
+      SESSION_DOMAIN: ""
+      RABBITMQ_ENABLED: "true"
+      RABBITMQ_HOST: "rabbitmq"
+      RABBITMQ_PORT: "5672"
+      RABBITMQ_USER: "rootblend"
+      RABBITMQ_PASSWORD: "rootblend123"
+      RABBITMQ_VHOST: "/"
+      RABBITMQ_EXCHANGE: "rootblend.events"
+      RABBITMQ_INTERACCIONES_STREAM_QUEUE: "rootblend.interacciones.stream"
+      RABBITMQ_MANAGEMENT_URL: "http://rabbitmq:15672/api"
+    command: ["php", "artisan", "rabbitmq:consume-interacciones"]
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+      interacciones-service:
+        condition: service_started
     restart: unless-stopped
 
   gateway:

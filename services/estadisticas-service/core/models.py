@@ -99,3 +99,16 @@ class ResumenAnalitico(models.Model):
         db_table = "resumenes_analiticos"
         verbose_name = "Resumen analitico"
         verbose_name_plural = "Resumenes analiticos"
+
+
+class ProcessedEvent(models.Model):
+    id_processed_event = models.AutoField(primary_key=True)
+    event_id = models.CharField(max_length=64, unique=True)
+    event_type = models.CharField(max_length=80)
+    source_service = models.CharField(max_length=80, null=True, blank=True)
+    processed_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        db_table = "processed_events"
+        verbose_name = "Evento procesado"
+        verbose_name_plural = "Eventos procesados"

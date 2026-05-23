@@ -20,6 +20,7 @@ from .views import (
 
 urlpatterns = [
     path("", listar_streams, name="listar-streams"),
+    path("active-streamers/", streams_en_vivo, name="active-streamers"),
     path("en-vivo/", streams_en_vivo, name="streams-en-vivo"),
     path("destacados/", streams_destacados, name="streams-destacados"),
     path("mis-streams/", mis_streams, name="mis-streams"),

@@ -18,5 +18,10 @@ Firebase actúa como servicio externo administrado.
 - rules/database.rules.json
 - docs/eventos-chat.md
 
+## Seguridad actual
+- Las reglas ya no aceptan escrituras publicas anonimas (`auth != null`).
+- El frontend inicia sesion anonima en Firebase antes de escribir para poder usar esas reglas.
+- Para endurecer a 10/10, el siguiente paso es emitir custom tokens desde backend con claims de usuario/canal/moderador.
+
 ## Estructura esperada
 /chats/{chatId}/messages/{messageId}

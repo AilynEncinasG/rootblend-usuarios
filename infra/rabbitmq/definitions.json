@@ -20,6 +20,26 @@
       "read": ".*"
     }
   ],
+  "exchanges": [
+    {
+      "name": "rootblend.events",
+      "vhost": "/",
+      "type": "topic",
+      "durable": true,
+      "auto_delete": false,
+      "internal": false,
+      "arguments": {}
+    },
+    {
+      "name": "rootblend.events.dlx",
+      "vhost": "/",
+      "type": "topic",
+      "durable": true,
+      "auto_delete": false,
+      "internal": false,
+      "arguments": {}
+    }
+  ],
   "queues": [
     {
       "name": "usuarios.events",
@@ -54,6 +74,151 @@
       "vhost": "/",
       "durable": true,
       "auto_delete": false,
+      "arguments": {}
+    },
+    {
+      "name": "rootblend.interacciones.stream",
+      "vhost": "/",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {
+        "x-dead-letter-exchange": "rootblend.events.dlx"
+      }
+    },
+    {
+      "name": "rootblend.estadisticas.stream",
+      "vhost": "/",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {
+        "x-dead-letter-exchange": "rootblend.events.dlx"
+      }
+    },
+    {
+      "name": "rootblend.estadisticas.podcast",
+      "vhost": "/",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {
+        "x-dead-letter-exchange": "rootblend.events.dlx"
+      }
+    },
+    {
+      "name": "rootblend.audit.all",
+      "vhost": "/",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {}
+    },
+    {
+      "name": "rootblend.interacciones.stream.dlq",
+      "vhost": "/",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {}
+    },
+    {
+      "name": "rootblend.estadisticas.stream.dlq",
+      "vhost": "/",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {}
+    },
+    {
+      "name": "rootblend.estadisticas.podcast.dlq",
+      "vhost": "/",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {}
+    }
+  ],
+  "bindings": [
+    {
+      "source": "rootblend.events",
+      "vhost": "/",
+      "destination": "rootblend.interacciones.stream",
+      "destination_type": "queue",
+      "routing_key": "stream.started",
+      "arguments": {}
+    },
+    {
+      "source": "rootblend.events",
+      "vhost": "/",
+      "destination": "rootblend.interacciones.stream",
+      "destination_type": "queue",
+      "routing_key": "stream.ended",
+      "arguments": {}
+    },
+    {
+      "source": "rootblend.events",
+      "vhost": "/",
+      "destination": "rootblend.estadisticas.stream",
+      "destination_type": "queue",
+      "routing_key": "stream.*",
+      "arguments": {}
+    },
+    {
+      "source": "rootblend.events",
+      "vhost": "/",
+      "destination": "rootblend.estadisticas.stream",
+      "destination_type": "queue",
+      "routing_key": "viewer.*",
+      "arguments": {}
+    },
+    {
+      "source": "rootblend.events",
+      "vhost": "/",
+      "destination": "rootblend.estadisticas.stream",
+      "destination_type": "queue",
+      "routing_key": "chat.message.*",
+      "arguments": {}
+    },
+    {
+      "source": "rootblend.events",
+      "vhost": "/",
+      "destination": "rootblend.estadisticas.podcast",
+      "destination_type": "queue",
+      "routing_key": "episode.played",
+      "arguments": {}
+    },
+    {
+      "source": "rootblend.events",
+      "vhost": "/",
+      "destination": "rootblend.audit.all",
+      "destination_type": "queue",
+      "routing_key": "#",
+      "arguments": {}
+    },
+    {
+      "source": "rootblend.events.dlx",
+      "vhost": "/",
+      "destination": "rootblend.interacciones.stream.dlq",
+      "destination_type": "queue",
+      "routing_key": "stream.*",
+      "arguments": {}
+    },
+    {
+      "source": "rootblend.events.dlx",
+      "vhost": "/",
+      "destination": "rootblend.estadisticas.stream.dlq",
+      "destination_type": "queue",
+      "routing_key": "viewer.*",
+      "arguments": {}
+    },
+    {
+      "source": "rootblend.events.dlx",
+      "vhost": "/",
+      "destination": "rootblend.estadisticas.stream.dlq",
+      "destination_type": "queue",
+      "routing_key": "stream.*",
+      "arguments": {}
+    },
+    {
+      "source": "rootblend.events.dlx",
+      "vhost": "/",
+      "destination": "rootblend.estadisticas.podcast.dlq",
+      "destination_type": "queue",
+      "routing_key": "episode.played",
       "arguments": {}
     }
   ]

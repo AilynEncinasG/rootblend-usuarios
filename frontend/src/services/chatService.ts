@@ -1,4 +1,4 @@
-import { database } from "./firebase";
+import { database, ensureFirebaseAuth } from "./firebase";
 import { onValue, push, ref, remove, set, update } from "firebase/database";
 
 export type ChatMessage = {
@@ -75,6 +75,8 @@ export async function upsertStreamChatInfo(
   channelId: string | number,
   isLive: boolean,
 ) {
+  await ensureFirebaseAuth();
+
   const infoRef = ref(database, `${streamChatPath(streamId)}/info`);
 
   await set(infoRef, {
@@ -154,6 +156,8 @@ export async function sendChatMessage(
   streamId: string | number,
   message: ChatMessage,
 ) {
+  await ensureFirebaseAuth();
+
   const messagesRef = ref(database, `${streamChatPath(streamId)}/messages`);
   await push(messagesRef, message);
 }
@@ -163,6 +167,8 @@ export async function deleteChatMessage(
   messageId: string,
   moderatorName: string,
 ) {
+  await ensureFirebaseAuth();
+
   const messageRef = ref(
     database,
     `${streamChatPath(streamId)}/messages/${messageId}`,
@@ -183,6 +189,8 @@ export async function assignChatModerator(
     nombre: string;
   },
 ) {
+  await ensureFirebaseAuth();
+
   const moderatorRef = ref(
     database,
     `${channelModeratorsPath(channelId)}/${safeKey(moderator.usuarioId)}`,
@@ -200,6 +208,8 @@ export async function removeChatModerator(
   channelId: string | number,
   usuarioId: string,
 ) {
+  await ensureFirebaseAuth();
+
   const moderatorRef = ref(
     database,
     `${channelModeratorsPath(channelId)}/${safeKey(usuarioId)}`,
@@ -214,6 +224,8 @@ export async function createChatSanction(
   streamId: string | number,
   sanction: ChatSanction,
 ) {
+  await ensureFirebaseAuth();
+
   const sanctionRef = ref(
     database,
     `${streamChatPath(streamId)}/sanctions/${safeKey(sanction.usuarioId)}`,
@@ -226,6 +238,8 @@ export async function clearChatSanction(
   streamId: string | number,
   usuarioId: string,
 ) {
+  await ensureFirebaseAuth();
+
   const sanctionRef = ref(
     database,
     `${streamChatPath(streamId)}/sanctions/${safeKey(usuarioId)}`,
@@ -237,6 +251,8 @@ export async function clearChatSanction(
 }
 
 export async function clearStreamChatMessages(streamId: string | number) {
+  await ensureFirebaseAuth();
+
   const messagesRef = ref(database, `${streamChatPath(streamId)}/messages`);
   await remove(messagesRef);
 }

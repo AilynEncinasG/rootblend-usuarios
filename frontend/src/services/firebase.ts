@@ -1,4 +1,5 @@
 import { initializeApp } from "firebase/app";
+import { getAuth, signInAnonymously } from "firebase/auth";
 import { getDatabase } from "firebase/database";
 
 const firebaseConfig = {
@@ -25,3 +26,23 @@ if (missingKeys.length > 0) {
 const app = initializeApp(firebaseConfig);
 
 export const database = getDatabase(app);
+export const firebaseAuth = getAuth(app);
+
+let authPromise: Promise<void> | null = null;
+
+export async function ensureFirebaseAuth() {
+  if (firebaseAuth.currentUser) {
+    return;
+  }
+
+  if (!authPromise) {
+    authPromise = signInAnonymously(firebaseAuth)
+      .then(() => undefined)
+      .catch((error) => {
+        authPromise = null;
+        throw error;
+      });
+  }
+
+  await authPromise;
+}

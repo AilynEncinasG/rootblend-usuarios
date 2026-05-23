@@ -1,9 +1,6 @@
 import json
 import urllib.error
 import urllib.request
-import json
-import urllib.error
-import urllib.request
 import uuid
 from datetime import timedelta
 from django.conf import settings
@@ -14,6 +11,7 @@ from django.views.decorators.http import require_http_methods
 
 from apps.canales.models import Canal, TipoCanal
 from apps.common.auth import get_current_user_id
+from apps.common.rabbitmq import publish_event
 from apps.common.responses import error_response, success_response
 from apps.categorias.models import Categoria
 from .models import ConfiguracionStream, Stream, StreamViewerSession
@@ -88,19 +86,24 @@ def post_internal_event(base_url, path, payload):
         print(f"ROOTBLEND_INTERNAL_EVENT_ERROR {url}: {exc}")
 
 
+def dispatch_event(event_type, payload, http_fallbacks=None):
+    """
+    Publica el evento por RabbitMQ.
+
+    Si INTERNAL_HTTP_EVENTS_FALLBACK=true, conserva el envio HTTP viejo como respaldo.
+    En modo defensa debe quedar en false para demostrar que RabbitMQ es el bus real.
+    """
+    published = publish_event(event_type, payload, routing_key=event_type)
+
+    if published or not getattr(settings, "INTERNAL_HTTP_EVENTS_FALLBACK", False):
+        return
+
+    for base_url, path in http_fallbacks or []:
+        post_internal_event(base_url, path, {"event_type": event_type, **payload})
+
+
 def publish_stream_started(stream):
-    """
-    Publica evento cuando un stream inicia.
-
-    Importante:
-    - No debe romper el inicio del stream si otro microservicio esta caido.
-    - Usa getattr para evitar AttributeError si falta una variable en settings.py.
-    """
-    interacciones_url = getattr(settings, "INTERACCIONES_SERVICE_URL", None)
-    estadisticas_url = getattr(settings, "ESTADISTICAS_SERVICE_URL", None)
-
     payload = {
-        "event_type": "stream.started",
         "id_stream": stream.id,
         "id_canal": stream.canal.id,
         "nombre_canal": stream.canal.nombre_canal,
@@ -109,34 +112,26 @@ def publish_stream_started(stream):
         "descripcion": stream.descripcion,
         "categoria": stream.categoria.nombre if stream.categoria else None,
         "fecha_inicio": stream.fecha_inicio.isoformat() if stream.fecha_inicio else None,
+        "espectadores_actuales": stream.viewer_count or 0,
     }
 
-    if interacciones_url:
-        post_internal_event(interacciones_url, "/events/stream-started", payload)
-
-    if estadisticas_url:
-        post_internal_event(estadisticas_url, "/events/stream/", payload)
+    dispatch_event(
+        "stream.started",
+        payload,
+        http_fallbacks=[
+            (getattr(settings, "INTERACCIONES_SERVICE_URL", None), "/events/stream-started"),
+            (getattr(settings, "ESTADISTICAS_SERVICE_URL", None), "/events/stream/"),
+        ],
+    )
 
 
 def publish_stream_ended(stream):
-    """
-    Publica evento cuando un stream termina.
-
-    Importante:
-    - Si estadisticas-service falla, el stream igual debe finalizar correctamente.
-    """
-    estadisticas_url = getattr(settings, "ESTADISTICAS_SERVICE_URL", None)
-
-    if not estadisticas_url:
-        return
-
     duration_seconds = None
 
     if stream.fecha_inicio and stream.fecha_fin:
         duration_seconds = int((stream.fecha_fin - stream.fecha_inicio).total_seconds())
 
     payload = {
-        "event_type": "stream.ended",
         "id_stream": stream.id,
         "id_canal": stream.canal.id,
         "nombre_canal": stream.canal.nombre_canal,
@@ -147,32 +142,32 @@ def publish_stream_ended(stream):
         "espectadores_actuales": stream.viewer_count or 0,
     }
 
-    post_internal_event(estadisticas_url, "/events/stream/", payload)
+    dispatch_event(
+        "stream.ended",
+        payload,
+        http_fallbacks=[
+            (getattr(settings, "ESTADISTICAS_SERVICE_URL", None), "/events/stream/"),
+        ],
+    )
 
 
 def publish_viewer_metric(stream, event_type):
-    """
-    Publica eventos de espectadores:
-    - viewer.joined
-    - viewer.left
-
-    No debe romper el contador si estadisticas-service no responde.
-    """
-    estadisticas_url = getattr(settings, "ESTADISTICAS_SERVICE_URL", None)
-
-    if not estadisticas_url:
-        return
-
     canal = getattr(stream, "canal", None)
 
     payload = {
-        "event_type": event_type,
         "id_stream": stream.id,
         "viewer_count": stream.viewer_count or 0,
+        "espectadores_actuales": stream.viewer_count or 0,
         "id_canal": canal.id if canal else None,
     }
 
-    post_internal_event(estadisticas_url, "/events/stream/", payload)
+    dispatch_event(
+        event_type,
+        payload,
+        http_fallbacks=[
+            (getattr(settings, "ESTADISTICAS_SERVICE_URL", None), "/events/stream/"),
+        ],
+    )
 
 
 def parse_json_body(request):

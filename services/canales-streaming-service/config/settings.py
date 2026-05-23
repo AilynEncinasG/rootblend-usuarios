@@ -165,3 +165,12 @@ PUBLIC_CHANNEL_MEDIA_BASE_URL = os.getenv(
 
 FILE_UPLOAD_MAX_MEMORY_SIZE = 6 * 1024 * 1024
 DATA_UPLOAD_MAX_MEMORY_SIZE = 6 * 1024 * 1024
+
+RABBITMQ_ENABLED = os.getenv("RABBITMQ_ENABLED", "true").lower() == "true"
+RABBITMQ_HOST = os.getenv("RABBITMQ_HOST", "rabbitmq")
+RABBITMQ_PORT = int(os.getenv("RABBITMQ_PORT", "5672"))
+RABBITMQ_USER = os.getenv("RABBITMQ_USER", "rootblend")
+RABBITMQ_PASSWORD = os.getenv("RABBITMQ_PASSWORD", "rootblend123")
+RABBITMQ_VHOST = os.getenv("RABBITMQ_VHOST", "/")
+RABBITMQ_EXCHANGE = os.getenv("RABBITMQ_EXCHANGE", "rootblend.events")
+INTERNAL_HTTP_EVENTS_FALLBACK = os.getenv("INTERNAL_HTTP_EVENTS_FALLBACK", "false").lower() == "true"

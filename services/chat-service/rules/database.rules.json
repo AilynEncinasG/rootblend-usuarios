@@ -4,19 +4,19 @@
       "$streamId": {
         ".read": true,
         "info": {
-          ".write": true,
+          ".write": "auth != null",
           ".validate": "newData.hasChildren(['id_stream', 'id_canal', 'estado_chat', 'updatedAt']) && newData.child('id_stream').isString() && newData.child('id_canal').isString() && (newData.child('estado_chat').val() == 'activo' || newData.child('estado_chat').val() == 'cerrado') && newData.child('updatedAt').isNumber()"
         },
         "messages": {
+          ".write": "auth != null",
           "$messageId": {
-            ".write": true,
-            ".validate": "newData.hasChildren(['usuarioId', 'nombre', 'mensaje', 'timestamp']) && newData.child('usuarioId').isString() && newData.child('nombre').isString() && newData.child('mensaje').isString() && newData.child('mensaje').val().length > 0 && newData.child('mensaje').val().length <= 500 && newData.child('timestamp').isNumber()"
+            ".validate": "!newData.exists() || (newData.hasChildren(['usuarioId', 'nombre', 'mensaje', 'timestamp']) && newData.child('usuarioId').isString() && newData.child('nombre').isString() && newData.child('mensaje').isString() && newData.child('mensaje').val().length > 0 && newData.child('mensaje').val().length <= 500 && newData.child('timestamp').isNumber() && (!root.child('stream_chats').child($streamId).child('sanctions').child(newData.child('usuarioId').val()).child('active').val() || newData.child('deleted').val() == true))"
           }
         },
         "sanctions": {
+          ".write": "auth != null",
           "$userId": {
-            ".write": true,
-            ".validate": "newData.hasChildren(['usuarioId', 'nombre', 'tipo', 'motivo', 'active', 'createdAt', 'createdBy']) && newData.child('usuarioId').isString() && newData.child('nombre').isString() && (newData.child('tipo').val() == 'silenciado' || newData.child('tipo').val() == 'bloqueado') && newData.child('active').isBoolean() && newData.child('createdAt').isNumber()"
+            ".validate": "!newData.exists() || (newData.hasChildren(['usuarioId', 'nombre', 'tipo', 'motivo', 'active', 'createdAt', 'createdBy']) && newData.child('usuarioId').isString() && newData.child('nombre').isString() && (newData.child('tipo').val() == 'silenciado' || newData.child('tipo').val() == 'bloqueado') && newData.child('active').isBoolean() && newData.child('createdAt').isNumber())"
           }
         }
       }
@@ -24,9 +24,9 @@
     "channel_moderators": {
       "$channelId": {
         ".read": true,
+        ".write": "auth != null",
         "$userId": {
-          ".write": true,
-          ".validate": "newData.hasChildren(['usuarioId', 'nombre', 'active', 'assignedAt']) && newData.child('usuarioId').isString() && newData.child('nombre').isString() && newData.child('active').isBoolean() && newData.child('assignedAt').isNumber()"
+          ".validate": "!newData.exists() || (newData.hasChildren(['usuarioId', 'nombre', 'active', 'assignedAt']) && newData.child('usuarioId').isString() && newData.child('nombre').isString() && newData.child('active').isBoolean() && newData.child('assignedAt').isNumber())"
         }
       }
     }

@@ -22,6 +22,8 @@ services:
     depends_on:
       mysql-local:
         condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
 
   estadisticas-service:
     environment:
@@ -33,6 +35,8 @@ services:
       DB_PORT: 3306
     depends_on:
       mysql-local:
+        condition: service_healthy
+      rabbitmq:
         condition: service_healthy
 
   podcasts-service:
@@ -47,6 +51,10 @@ services:
     depends_on:
       mysql-local:
         condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+      canales-streaming-service:
+        condition: service_started
 
   interacciones-service:
     environment:
@@ -59,4 +67,35 @@ services:
       MYSQL_ATTR_SSL_CA: ""
     depends_on:
       mysql-local:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+
+  estadisticas-events-consumer:
+    environment:
+      DB_ENGINE: django.db.backends.mysql
+      DB_NAME: rootblend_estadisticas
+      DB_USER: root
+      DB_PASSWORD: root
+      DB_HOST: mysql-local
+      DB_PORT: 3306
+    depends_on:
+      mysql-local:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+
+  interacciones-events-consumer:
+    environment:
+      DB_CONNECTION: mysql
+      DB_HOST: mysql-local
+      DB_PORT: 3306
+      DB_DATABASE: rootblend_interacciones
+      DB_USERNAME: root
+      DB_PASSWORD: root
+      MYSQL_ATTR_SSL_CA: ""
+    depends_on:
+      mysql-local:
+        condition: service_healthy
+      rabbitmq:
         condition: service_healthy
