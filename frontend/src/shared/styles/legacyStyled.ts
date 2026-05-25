@@ -1691,14 +1691,42 @@ export const AuthScreen = styled.main<{ $image: string }>`
 
 export const AuthCard = styled.form`
   width: min(440px, 100%);
-  padding: 28px;
-  border-radius: 14px;
-  background: rgba(7, 12, 27, 0.92);
-  border: 1px solid rgba(148, 163, 184, 0.16);
-  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.45);
+  padding: 30px;
+  border-radius: 18px;
+  background:
+    radial-gradient(
+      circle at top left,
+      color-mix(in srgb, var(--rb-accent) 10%, transparent),
+      transparent 34%
+    ),
+    var(--rb-panel);
+  border: 1px solid var(--rb-border);
+  color: var(--rb-text);
+  box-shadow: 0 30px 80px var(--rb-shadow);
 
   display: flex;
   flex-direction: column;
+  gap: 14px;
+
+  label {
+    margin: 4px 0 -6px;
+  }
+
+  button[type="submit"] {
+    width: 100%;
+    margin-top: 8px;
+  }
+
+  a {
+    width: 100%;
+  }
+
+  @media (max-width: 520px) {
+    width: 100%;
+    padding: 24px 18px;
+    border-radius: 16px;
+    gap: 13px;
+  }
 `;
 
 export const BrandBlock = styled.div`
@@ -2239,12 +2267,195 @@ export const FormCard = styled.form`
 `;
 
 export const ToggleLine = styled.label`
+  width: 100%;
+  min-width: 0;
+  min-height: 58px;
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  gap: 14px;
-  min-height: 44px;
-  color: rgba(226, 232, 240, 0.82);
+  justify-content: space-between;
+  gap: 18px;
+  margin: 0 0 12px;
+  padding: 14px 16px;
+  border-radius: 16px;
+  border: 1px solid var(--rb-border);
+  background:
+    radial-gradient(
+      circle at left,
+      color-mix(in srgb, var(--rb-accent) 8%, transparent),
+      transparent 34%
+    ),
+    var(--rb-panel);
+  color: var(--rb-text);
+  box-shadow: 0 14px 36px color-mix(in srgb, var(--rb-shadow) 58%, transparent);
+  cursor: pointer;
+  transition:
+    border-color 0.18s ease,
+    background 0.18s ease,
+    transform 0.18s ease,
+    box-shadow 0.18s ease;
+
+  &:last-of-type {
+    margin-bottom: 0;
+  }
+
+  &:hover {
+    transform: translateY(-1px);
+    border-color: var(--rb-border-strong);
+    background:
+      radial-gradient(
+        circle at left,
+        color-mix(in srgb, var(--rb-accent) 12%, transparent),
+        transparent 38%
+      ),
+      var(--rb-panel-strong);
+  }
+
+  span {
+    min-width: 0;
+    color: var(--rb-text);
+    font-size: 0.95rem;
+    font-weight: 850;
+    line-height: 1.35;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+  }
+
+  input[type="checkbox"] {
+    position: relative;
+    flex: 0 0 auto;
+    width: 62px;
+    height: 34px;
+    margin: 0;
+    appearance: none;
+    border-radius: 999px;
+    border: 1px solid var(--rb-border);
+    background:
+      linear-gradient(
+        135deg,
+        color-mix(in srgb, var(--rb-muted-soft) 24%, transparent),
+        color-mix(in srgb, var(--rb-panel-strong) 88%, transparent)
+      );
+    box-shadow:
+      inset 0 2px 8px color-mix(in srgb, var(--rb-shadow) 70%, transparent),
+      0 8px 20px color-mix(in srgb, var(--rb-shadow) 40%, transparent);
+    cursor: pointer;
+    outline: none;
+    transition:
+      background 0.22s ease,
+      border-color 0.22s ease,
+      box-shadow 0.22s ease;
+  }
+
+  input[type="checkbox"]::before {
+    content: "";
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    width: 24px;
+    height: 24px;
+    border-radius: 999px;
+    background: var(--rb-text);
+    box-shadow:
+      0 8px 18px color-mix(in srgb, var(--rb-shadow) 70%, transparent),
+      inset 0 1px 0 rgba(255, 255, 255, 0.42);
+    transition:
+      transform 0.22s ease,
+      background 0.22s ease;
+  }
+
+  input[type="checkbox"]::after {
+    content: "NO";
+    position: absolute;
+    top: 50%;
+    right: 9px;
+    transform: translateY(-50%);
+    color: var(--rb-muted);
+    font-size: 10px;
+    font-weight: 950;
+    letter-spacing: 0.04em;
+    transition:
+      left 0.22s ease,
+      right 0.22s ease,
+      color 0.22s ease;
+  }
+
+  input[type="checkbox"]:checked {
+    border-color: color-mix(in srgb, var(--rb-accent) 70%, var(--rb-border));
+    background: linear-gradient(
+      135deg,
+      var(--rb-accent),
+      var(--rb-accent-2),
+      var(--rb-success)
+    );
+    box-shadow:
+      0 0 0 3px color-mix(in srgb, var(--rb-accent) 14%, transparent),
+      0 12px 28px color-mix(in srgb, var(--rb-accent) 22%, transparent);
+  }
+
+  input[type="checkbox"]:checked::before {
+    transform: translateX(28px);
+    background: #ffffff;
+  }
+
+  input[type="checkbox"]:checked::after {
+    content: "SÍ";
+    right: auto;
+    left: 10px;
+    color: #ffffff;
+  }
+
+  input[type="checkbox"]:focus-visible {
+    box-shadow:
+      0 0 0 4px color-mix(in srgb, var(--rb-accent) 20%, transparent),
+      0 12px 28px color-mix(in srgb, var(--rb-accent) 18%, transparent);
+  }
+
+  input[type="checkbox"]:disabled {
+    cursor: not-allowed;
+    opacity: 0.52;
+    filter: grayscale(0.3);
+  }
+
+  &:has(input[type="checkbox"]:disabled) {
+    cursor: not-allowed;
+    opacity: 0.72;
+  }
+
+  &:has(input[type="checkbox"]:checked) {
+    border-color: color-mix(in srgb, var(--rb-accent) 45%, var(--rb-border));
+    background:
+      radial-gradient(
+        circle at right,
+        color-mix(in srgb, var(--rb-accent) 15%, transparent),
+        transparent 42%
+      ),
+      var(--rb-panel);
+  }
+
+  @media (max-width: 640px) {
+    align-items: flex-start;
+    gap: 14px;
+    padding: 14px;
+    border-radius: 14px;
+
+    span {
+      font-size: 0.9rem;
+    }
+
+    input[type="checkbox"] {
+      width: 58px;
+      height: 32px;
+    }
+
+    input[type="checkbox"]::before {
+      width: 22px;
+      height: 22px;
+    }
+
+    input[type="checkbox"]:checked::before {
+      transform: translateX(26px);
+    }
+  }
 `;
 
 export const AlertPanel = styled.div`
