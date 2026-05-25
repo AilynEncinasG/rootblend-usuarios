@@ -26,9 +26,14 @@ import {
   SuccessBox,
   ToggleLine,
 } from "../../../shared/styles/legacyStyled";
+import {
+  applyRootblendTheme,
+  normalizeRootblendTheme,
+  type RootblendTheme,
+} from "../../../shared/theme/rootblendTheme";
 
 export default function SettingsPage() {
-  const [tema, setTema] = useState<"claro" | "oscuro">("oscuro");
+  const [tema, setTema] = useState<RootblendTheme>("oscuro");
   const [idioma, setIdioma] = useState<"es" | "en">("es");
   const [autoplay, setAutoplay] = useState(true);
 
@@ -68,8 +73,10 @@ export default function SettingsPage() {
             setError(result.message || "No se pudieron cargar las preferencias.");
           } else {
             const preferences = result.data.preferencias;
+            const nextTheme = normalizeRootblendTheme(preferences.tema);
 
-            setTema(preferences.tema);
+            setTema(nextTheme);
+            applyRootblendTheme(nextTheme);
             setIdioma(preferences.idioma);
             setAutoplay(Boolean(preferences.autoplay));
             setRecibirNotificaciones(
@@ -159,6 +166,15 @@ export default function SettingsPage() {
     } finally {
       setSaving(false);
     }
+    setSuccessMessage("Preferencias guardadas correctamente.");
+    applyRootblendTheme(tema);
+  }
+
+  function handleThemeChange(event: React.ChangeEvent<HTMLSelectElement>) {
+    const nextTheme = normalizeRootblendTheme(event.target.value);
+
+    setTema(nextTheme);
+    applyRootblendTheme(nextTheme);
   }
 
   return (
@@ -202,9 +218,7 @@ export default function SettingsPage() {
         <Label>Tema</Label>
         <Select
           value={tema}
-          onChange={(event) =>
-            setTema(event.target.value as "claro" | "oscuro")
-          }
+          onChange={handleThemeChange}
           disabled={loading || saving}
         >
           <option value="oscuro">Oscuro</option>

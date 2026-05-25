@@ -1,11 +1,94 @@
 :root {
   font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  color: #f8fbff;
-  background: #020617;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+:root,
+html[data-theme="oscuro"] {
+  --rb-bg: #020617;
+  --rb-bg-deep: #030712;
+  --rb-bg-soft: rgba(15, 23, 42, 0.82);
+
+  --rb-panel: rgba(15, 23, 42, 0.78);
+  --rb-panel-strong: rgba(2, 6, 23, 0.72);
+  --rb-panel-hover: rgba(255, 255, 255, 0.06);
+
+  --rb-border: rgba(148, 163, 184, 0.14);
+  --rb-border-strong: rgba(0, 229, 255, 0.28);
+
+  --rb-text: #f8fafc;
+  --rb-text-strong: #ffffff;
+  --rb-text-inverse: #04111f;
+
+  --rb-muted: rgba(226, 232, 240, 0.72);
+  --rb-muted-soft: rgba(226, 232, 240, 0.58);
+
+  --rb-accent: #00e5ff;
+  --rb-accent-2: #8b5cf6;
+  --rb-success: #22c55e;
+  --rb-danger: #fb7185;
+  --rb-warning: #fde68a;
+
+  --rb-shadow: rgba(0, 0, 0, 0.34);
+
+  --rb-app-overlay-start: rgba(2, 6, 23, 0.98);
+  --rb-app-overlay-end: rgba(3, 7, 18, 1);
+
+  --rb-input-bg: rgba(15, 23, 42, 0.76);
+  --rb-input-border: rgba(148, 163, 184, 0.14);
+
+  --rb-card-bg: rgba(15, 23, 42, 0.78);
+  --rb-card-bg-hover: rgba(15, 23, 42, 0.92);
+
+  --rb-chip-bg: rgba(0, 229, 255, 0.12);
+  --rb-chip-text: #dffaff;
+
+  color-scheme: dark;
+}
+
+html[data-theme="claro"] {
+  --rb-bg: #edf5ff;
+  --rb-bg-deep: #dbeafe;
+  --rb-bg-soft: rgba(255, 255, 255, 0.9);
+
+  --rb-panel: rgba(255, 255, 255, 0.96);
+  --rb-panel-strong: rgba(241, 245, 249, 0.98);
+  --rb-panel-hover: rgba(2, 132, 199, 0.08);
+
+  --rb-border: rgba(15, 23, 42, 0.14);
+  --rb-border-strong: rgba(2, 132, 199, 0.34);
+
+  --rb-text: #0f172a;
+  --rb-text-strong: #020617;
+  --rb-text-inverse: #f8fafc;
+
+  --rb-muted: rgba(15, 23, 42, 0.72);
+  --rb-muted-soft: rgba(15, 23, 42, 0.56);
+
+  --rb-accent: #0284c7;
+  --rb-accent-2: #7c3aed;
+  --rb-success: #15803d;
+  --rb-danger: #e11d48;
+  --rb-warning: #92400e;
+
+  --rb-shadow: rgba(15, 23, 42, 0.16);
+
+  --rb-app-overlay-start: rgba(237, 245, 255, 0.96);
+  --rb-app-overlay-end: rgba(248, 250, 252, 0.98);
+
+  --rb-input-bg: rgba(255, 255, 255, 0.98);
+  --rb-input-border: rgba(15, 23, 42, 0.16);
+
+  --rb-card-bg: rgba(255, 255, 255, 0.94);
+  --rb-card-bg-hover: rgba(240, 249, 255, 0.98);
+
+  --rb-chip-bg: rgba(2, 132, 199, 0.1);
+  --rb-chip-text: #075985;
+
+  color-scheme: light;
 }
 
 html,
@@ -14,11 +97,19 @@ body,
   min-height: 100%;
   width: 100%;
   margin: 0;
-  background: #020617;
+  background: var(--rb-bg);
+  color: var(--rb-text);
 }
 
 body {
   overflow-x: hidden;
+  transition:
+    background 0.25s ease,
+    color 0.25s ease;
+}
+
+* {
+  box-sizing: border-box;
 }
 
 button,
@@ -30,4 +121,23 @@ textarea {
 
 button {
   letter-spacing: 0;
+}
+
+html[data-theme="claro"] a {
+  color: var(--rb-accent);
+}
+
+html[data-theme="claro"] input,
+html[data-theme="claro"] textarea,
+html[data-theme="claro"] select {
+  color: var(--rb-text);
+}
+
+html[data-theme="claro"] input::placeholder,
+html[data-theme="claro"] textarea::placeholder {
+  color: var(--rb-muted-soft);
+}
+
+html[data-theme="claro"] button {
+  color: inherit;
 }

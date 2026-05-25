@@ -18,10 +18,11 @@ import { brandAssets } from "../mock/rootblendMock";
 export const AppFrame = styled.div`
   min-height: 100vh;
   background:
-    linear-gradient(180deg, rgba(2, 6, 23, 0.98), rgba(3, 7, 18, 1)),
+    linear-gradient(180deg, var(--rb-app-overlay-start), var(--rb-app-overlay-end)),
     url(${brandAssets.fondo});
   background-size: cover;
-  color: #f8fbff;
+  background-attachment: fixed;
+  color: var(--rb-text);
 `;
 
 export const Topbar = styled.header`
@@ -34,18 +35,19 @@ export const Topbar = styled.header`
   align-items: center;
   gap: 22px;
   padding: 0 22px;
-  background: rgba(3, 7, 18, 0.94);
-  border-bottom: 1px solid rgba(148, 163, 184, 0.12);
+  background: color-mix(in srgb, var(--rb-bg-deep) 88%, transparent);
+  border-bottom: 1px solid var(--rb-border);
+  color: var(--rb-text);
   backdrop-filter: blur(18px);
 
   @media (max-height: 500px) and (orientation: landscape) {
-    height: 48px; 
+    height: 48px;
     gap: 10px;
     padding: 0 12px;
   }
 
   @media (max-width: 900px) {
-    grid-template-columns: 1fr auto; 
+    grid-template-columns: 1fr auto;
   }
 `;
 
@@ -56,7 +58,7 @@ export const BrandLink = styled(Link)`
   font-weight: 950;
   font-size: 18px;
   text-decoration: none;
-  color: inherit;
+  color: var(--rb-text);
   cursor: pointer;
 
   img {
@@ -66,7 +68,7 @@ export const BrandLink = styled(Link)`
   }
 
   span {
-    color: #00e5ff;
+    color: var(--rb-accent);
   }
 
   @media (max-width: 768px) {
@@ -84,17 +86,21 @@ export const SearchForm = styled.form`
   gap: 10px;
   padding: 0 14px;
   border-radius: 12px;
-  border: 1px solid rgba(148, 163, 184, 0.14);
-  background: rgba(15, 23, 42, 0.82);
-  color: rgba(255, 255, 255, 0.54);
+  border: 1px solid var(--rb-input-border);
+  background: var(--rb-input-bg);
+  color: var(--rb-muted-soft);
 
   input {
     width: 100%;
     border: 0;
     outline: 0;
     background: transparent;
-    color: #fff;
+    color: var(--rb-text);
     font-size: 13px;
+  }
+
+  input::placeholder {
+    color: var(--rb-muted-soft);
   }
 
   @media (max-width: 900px) {
@@ -135,7 +141,7 @@ export const DropdownHeader = styled.div`
   margin-bottom: 10px;
 
   a {
-    color: #00e5ff;
+    color: var(--rb-accent);
     font-size: 12px;
     font-weight: 850;
   }
@@ -160,13 +166,13 @@ export const DropdownItem = styled(Link)`
   }
 
   strong {
-    color: #fff;
+    color: var(--rb-text);
     font-size: 13px;
   }
 
   small {
     margin-top: 3px;
-    color: rgba(226, 232, 240, 0.58);
+    color: var(--rb-muted-soft);
     font-size: 12px;
   }
 `;
@@ -184,11 +190,11 @@ export const DropdownMenuLoading = styled.div`
   align-items: center;
   gap: 12px;
   padding: 13px 16px;
-  color: rgba(226, 232, 240, 0.72);
+  color: var(--rb-muted);
   font-weight: 900;
 
   svg {
-    color: #00e5ff;
+    color: var(--rb-accent);
   }
 `;
 
@@ -205,7 +211,7 @@ export const DropdownMenuLink = styled(Link)`
 
   &:hover {
     background: rgba(255, 255, 255, 0.06);
-    color: #fff;
+    color: var(--rb-text);
   }
 `;
 
@@ -292,7 +298,7 @@ export const SidebarTitle = styled.h3`
 export const SidebarEmptyText = styled.p`
   margin: 0;
   padding: 8px;
-  color: rgba(226, 232, 240, 0.58);
+  color: var(--rb-muted-soft);
   font-size: 12px;
   line-height: 1.45;
 `;
@@ -313,7 +319,7 @@ export const SidebarLink = styled(Link)<{ $active?: boolean }>`
 
   &:hover {
     background: rgba(255, 255, 255, 0.07);
-    color: #fff;
+    color: var(--rb-text);
   }
 
   @media (max-width: 1180px) {
@@ -379,13 +385,13 @@ export const MiniText = styled.div`
   }
 
   small {
-    color: rgba(226, 232, 240, 0.58);
+    color: var(--rb-muted-soft);
     font-size: 11px;
   }
 `;
 
 export const ViewerDot = styled.span`
-  color: #00e5ff;
+  color: var(--rb-accent);
   font-size: 11px;
   font-weight: 800;
 `;
@@ -427,14 +433,14 @@ export const HeroCopy = styled.div`
     font-weight: 950;
 
     span {
-      color: #00e5ff;
+      color: var(--rb-accent);
       display: block;
     }
   }
 
   p {
     margin: 18px 0 0;
-    color: rgba(226, 232, 240, 0.72);
+    color: var(--rb-muted);
     line-height: 1.6;
   }
 `;
@@ -442,7 +448,7 @@ export const HeroCopy = styled.div`
 export const Eyebrow = styled.span`
   display: inline-flex;
   margin-bottom: 10px;
-  color: #00e5ff;
+  color: var(--rb-accent);
   font-size: 12px;
   font-weight: 950;
   text-transform: uppercase;
@@ -468,7 +474,7 @@ export const FeaturedFlag = styled.span`
   padding: 7px 10px;
   border-radius: 8px;
   color: #021016;
-  background: #00e5ff;
+  background: var(--rb-accent);
   font-size: 11px;
   font-weight: 950;
 `;
@@ -517,8 +523,8 @@ export const PrimaryLink = styled(Link)`
   padding: 0 16px;
   border: 0;
   border-radius: 8px;
-  color: #03111c;
-  background: linear-gradient(135deg, #00e5ff, #22c55e);
+  color: var(--rb-text-inverse);
+  background: linear-gradient(135deg, var(--rb-accent), var(--rb-success));
   font-weight: 850;
   font-size: 13px;
   text-decoration: none;
@@ -526,12 +532,12 @@ export const PrimaryLink = styled(Link)`
   cursor: pointer;
 
   @media (max-width: 768px) {
-    flex: initial;    
+    flex: initial;
     min-height: 32px;
-    padding: 0 10px;    
-    font-size: 11.5px;   
-    font-weight: 700;   
-    border-radius: 6px;  
+    padding: 0 10px;
+    font-size: 11.5px;
+    font-weight: 700;
+    border-radius: 6px;
   }
 `;
 
@@ -563,9 +569,9 @@ export const GhostLink = styled(Link)`
   min-height: 40px;
   padding: 0 16px;
   border-radius: 8px;
-  border: 1px solid rgba(0, 229, 255, 0.28);
-  color: #e8fbff;
-  background: rgba(15, 23, 42, 0.7);
+  border: 1px solid var(--rb-border-strong);
+  color: var(--rb-text);
+  background: var(--rb-panel);
   font-weight: 850;
   font-size: 13px;
   text-decoration: none;
@@ -574,8 +580,8 @@ export const GhostLink = styled(Link)`
   transition: all 0.2s ease;
 
   &:hover {
-    background: rgba(0, 229, 255, 0.1);
-    border-color: #00e5ff;
+    background: color-mix(in srgb, var(--rb-accent) 10%, var(--rb-panel));
+    border-color: var(--rb-accent);
   }
 
   @media (max-width: 768px) {
@@ -612,11 +618,16 @@ export const PrimaryButton = styled.button`
   padding: 0 16px;
   border: 0;
   border-radius: 8px;
-  color: #03111c;
-  background: linear-gradient(135deg, #00e5ff, #22c55e);
+  color: var(--rb-text-inverse);
+  background: linear-gradient(135deg, var(--rb-accent), var(--rb-success));
   font-weight: 950;
   font-size: 13px;
   cursor: pointer;
+
+  &:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+  }
 `;
 
 export const GhostButton = styled.button`
@@ -627,9 +638,9 @@ export const GhostButton = styled.button`
   min-height: 40px;
   padding: 0 16px;
   border-radius: 10px;
-  border: 1px solid rgba(0, 229, 255, 0.28);
-  color: #e8fbff;
-  background: rgba(15, 23, 42, 0.72);
+  border: 1px solid var(--rb-border-strong);
+  color: var(--rb-text);
+  background: var(--rb-panel);
   font-weight: 850;
   font-size: 13px;
   cursor: pointer;
@@ -641,9 +652,9 @@ export const GhostButton = styled.button`
 
   &:hover:not(:disabled) {
     transform: translateY(-1px);
-    border-color: rgba(0, 229, 255, 0.55);
-    background: rgba(15, 23, 42, 0.92);
-    box-shadow: 0 12px 28px rgba(0, 229, 255, 0.12);
+    border-color: var(--rb-accent);
+    background: color-mix(in srgb, var(--rb-accent) 10%, var(--rb-panel));
+    box-shadow: 0 12px 28px color-mix(in srgb, var(--rb-accent) 14%, transparent);
   }
 
   &:disabled {
@@ -677,7 +688,7 @@ export const IconRound = styled.button`
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  color: #fff;
+  color: var(--rb-text);
   background: rgba(15, 23, 42, 0.72);
   border: 1px solid rgba(148, 163, 184, 0.16);
   cursor: pointer;
@@ -690,8 +701,8 @@ export const UserPill = styled.button`
   min-height: 36px;
   padding: 0 10px 0 4px;
   border-radius: 999px;
-  color: #fff;
-  background: rgba(15, 23, 42, 0.74);
+  color: var(--rb-text);
+  background: var(--rb-panel);
   border: 1px solid rgba(148, 163, 184, 0.16);
   font-size: 13px;
   font-weight: 800;
@@ -796,7 +807,7 @@ export const SectionHeader = styled.div`
 `;
 
 export const TextLink = styled(Link)`
-  color: #00e5ff;
+  color: var(--rb-accent);
   font-size: 13px;
   font-weight: 900;
 `;
@@ -808,15 +819,23 @@ export const CardGrid = styled.div`
 `;
 
 export const ContentCard = styled(Link)`
+  display: block;
   overflow: hidden;
-  border-radius: 10px;
-  background: rgba(15, 23, 42, 0.76);
-  border: 1px solid rgba(148, 163, 184, 0.12);
-  box-shadow: 0 16px 34px rgba(0, 0, 0, 0.24);
+  border-radius: 14px;
+  text-decoration: none;
+  color: var(--rb-text);
+  background: var(--rb-card-bg);
+  border: 1px solid var(--rb-border);
+  box-shadow: 0 18px 44px var(--rb-shadow);
+  transition:
+    transform 0.18s ease,
+    border-color 0.18s ease,
+    background 0.18s ease;
 
   &:hover {
-    border-color: rgba(0, 229, 255, 0.38);
     transform: translateY(-2px);
+    background: var(--rb-card-bg-hover);
+    border-color: var(--rb-border-strong);
   }
 `;
 
@@ -835,7 +854,7 @@ export const LiveBadge = styled.span`
   align-items: center;
   border-radius: 5px;
   padding: 4px 7px;
-  color: #fff;
+  color: var(--rb-text);
   background: #ef123f;
   font-size: 10px;
   font-weight: 950;
@@ -862,41 +881,43 @@ export const CardBody = styled.div`
 
 export const CardTitle = styled.h3`
   margin: 0 0 7px;
-  color: #fff;
+  color: var(--rb-text-strong);
   font-size: 14px;
   line-height: 1.25;
 `;
 
 export const MetaLine = styled.div`
   display: flex;
-  align-items: center;
-  gap: 7px;
-  min-width: 0;
-  color: rgba(226, 232, 240, 0.82);
+  flex-wrap: wrap;
+  gap: 8px;
+  color: var(--rb-muted);
   font-size: 12px;
-  font-weight: 800;
+
+  span {
+    color: var(--rb-muted);
+  }
 `;
 
 export const VerifiedDot = styled.span`
   width: 7px;
   height: 7px;
   border-radius: 50%;
-  background: #00e5ff;
+  background: var(--rb-accent);
 `;
 
 export const Muted = styled.p`
-  margin: 20px 0 0; /* Le di un poco más de margen arriba (20px) para separar del botón */
-  color: rgba(226, 232, 240, 0.62);
+  margin: 4px 0 0;
+  color: var(--rb-muted);
   font-size: 12px;
-  
-  text-align: center; 
-  width: 100%;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 
   a {
-    color: #00e5ff;
+    color: var(--rb-accent);
     text-decoration: none;
     font-weight: 700;
-    
+
     &:hover {
       text-decoration: underline;
     }
@@ -910,15 +931,36 @@ export const PodcastGrid = styled.div`
 `;
 
 export const PodcastTile = styled(Link)`
-  display: grid;
-  grid-template-columns: 68px 1fr auto;
+  display: flex;
   align-items: center;
-  gap: 12px;
-  min-height: 86px;
-  padding: 10px;
-  border-radius: 10px;
-  background: linear-gradient(135deg, rgba(15, 23, 42, 0.86), rgba(88, 28, 135, 0.24));
-  border: 1px solid rgba(148, 163, 184, 0.12);
+  gap: 14px;
+  min-width: 0;
+  padding: 14px;
+  border-radius: 14px;
+  text-decoration: none;
+  color: var(--rb-text);
+  background: var(--rb-card-bg);
+  border: 1px solid var(--rb-border);
+  box-shadow: 0 16px 42px var(--rb-shadow);
+  transition:
+    transform 0.18s ease,
+    border-color 0.18s ease,
+    background 0.18s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    background: var(--rb-card-bg-hover);
+    border-color: var(--rb-border-strong);
+  }
+
+  > div {
+    min-width: 0;
+  }
+
+  svg {
+    color: var(--rb-accent);
+    flex: 0 0 auto;
+  }
 `;
 
 export const PodcastCover = styled.div<{ $image: string }>`
@@ -933,7 +975,7 @@ export const PodcastCover = styled.div<{ $image: string }>`
     url(${({ $image }) => $image});
   background-size: cover;
   background-position: center;
-  color: #fff;
+  color: var(--rb-text);
 `;
 
 export const RoundButton = styled.button`
@@ -944,7 +986,7 @@ export const RoundButton = styled.button`
   justify-content: center;
   border: 1px solid rgba(255, 255, 255, 0.18);
   border-radius: 50%;
-  color: #fff;
+  color: var(--rb-text);
   background: rgba(15, 23, 42, 0.78);
   cursor: pointer;
 `;
@@ -984,13 +1026,13 @@ export const InputWrap = styled.label`
   padding: 0 14px;
   border-radius: 10px;
   border: 1px solid rgba(148, 163, 184, 0.14);
-  background: rgba(15, 23, 42, 0.74);
+  background: var(--rb-panel);
 
   input {
     width: 100%;
     border: 0;
     outline: 0;
-    color: #fff;
+    color: var(--rb-text);
     background: transparent;
   }
 `;
@@ -998,10 +1040,21 @@ export const InputWrap = styled.label`
 export const Select = styled.select`
   min-height: 42px;
   border-radius: 10px;
-  border: 1px solid rgba(148, 163, 184, 0.14);
-  color: #fff;
-  background: rgba(15, 23, 42, 0.92);
+  border: 1px solid var(--rb-input-border);
+  color: var(--rb-text);
+  background: var(--rb-input-bg);
   padding: 0 12px;
+  outline: 0;
+
+  &:focus {
+    border-color: var(--rb-border-strong);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--rb-accent) 14%, transparent);
+  }
+
+  option {
+    color: var(--rb-text);
+    background: var(--rb-bg);
+  }
 `;
 
 export const CategoryGrid = styled.div`
@@ -1126,7 +1179,7 @@ export const VideoControls = styled.div`
   gap: 12px;
   padding: 9px 12px;
   border-radius: 10px;
-  background: rgba(2, 6, 23, 0.72);
+  background: var(--rb-panel-strong);
 `;
 
 export const Progress = styled.div`
@@ -1140,7 +1193,7 @@ export const Progress = styled.div`
     display: block;
     width: 42%;
     height: 100%;
-    background: #00e5ff;
+    background: var(--rb-accent);
   }
 `;
 
@@ -1181,9 +1234,9 @@ export const MetaTag = styled.span`
   align-items: center;
   padding: 0 10px;
   border-radius: 999px;
-  color: #dffaff;
-  background: rgba(0, 229, 255, 0.12);
-  border: 1px solid rgba(0, 229, 255, 0.16);
+  color: var(--rb-chip-text);
+  background: var(--rb-chip-bg);
+  border: 1px solid var(--rb-border-strong);
   font-size: 12px;
   font-weight: 850;
 `;
@@ -1196,28 +1249,51 @@ export const InfoGrid = styled.div`
 `;
 
 export const Panel = styled.div`
+  min-width: 0;
+  overflow: hidden;
   padding: 16px;
   border-radius: 12px;
-  background: rgba(15, 23, 42, 0.72);
-  border: 1px solid rgba(148, 163, 184, 0.12);
+  background: var(--rb-panel);
+  border: 1px solid var(--rb-border);
+  color: var(--rb-text);
+  box-shadow: 0 18px 50px var(--rb-shadow);
 
   p {
-    color: rgba(226, 232, 240, 0.68);
+    color: var(--rb-muted);
     line-height: 1.6;
+  }
+
+  strong,
+  h1,
+  h2,
+  h3 {
+    color: var(--rb-text-strong);
   }
 `;
 
 export const PanelHeader = styled.div`
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  gap: 10px;
-  margin-bottom: 12px;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+  color: var(--rb-text);
+
+  strong {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--rb-text-strong);
+  }
 
   a {
-    color: #00e5ff;
-    font-size: 12px;
+    color: var(--rb-accent);
     font-weight: 850;
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
   }
 `;
 
@@ -1234,12 +1310,12 @@ export const TwoCol = styled.div`
   }
 
   span {
-    color: rgba(226, 232, 240, 0.62);
+    color: var(--rb-muted-soft);
     font-size: 0.92rem;
   }
 
   strong {
-    color: #f8fafc;
+    color: var(--rb-text);
     font-size: 0.96rem;
     line-height: 1.45;
     overflow-wrap: anywhere;
@@ -1261,8 +1337,8 @@ export const TwoCol = styled.div`
     strong {
       padding: 10px 12px;
       border-radius: 12px;
-      background: rgba(15, 23, 42, 0.64);
-      border: 1px solid rgba(148, 163, 184, 0.12);
+      background: var(--rb-panel-strong);
+      border: 1px solid var(--rb-border);
     }
   }
 `;
@@ -1274,14 +1350,18 @@ export const ProfileBioBox = styled.div`
   padding: 16px;
   border-radius: 16px;
   background:
-    radial-gradient(circle at top left, rgba(0, 229, 255, 0.08), transparent 36%),
-    rgba(15, 23, 42, 0.58);
-  border: 1px solid rgba(148, 163, 184, 0.12);
+    radial-gradient(
+      circle at top left,
+      color-mix(in srgb, var(--rb-accent) 10%, transparent),
+      transparent 36%
+    ),
+    var(--rb-panel-strong);
+  border: 1px solid var(--rb-border);
 
   span {
     display: block;
     margin-bottom: 8px;
-    color: rgba(226, 232, 240, 0.62);
+    color: var(--rb-muted-soft);
     font-size: 0.82rem;
     font-weight: 800;
     text-transform: uppercase;
@@ -1290,7 +1370,7 @@ export const ProfileBioBox = styled.div`
 
   p {
     margin: 0;
-    color: rgba(248, 250, 252, 0.92);
+    color: var(--rb-text);
     font-size: 0.96rem;
     line-height: 1.65;
     overflow-wrap: anywhere;
@@ -1313,7 +1393,7 @@ export const ResponsiveEmail = styled.strong`
   min-width: 0;
   max-width: 100%;
   display: block;
-  color: #f8fafc;
+  color: var(--rb-text);
   line-height: 1.45;
   overflow-wrap: anywhere;
   word-break: break-word;
@@ -1330,7 +1410,7 @@ export const ChatBox = styled.div`
   display: flex;
   flex-direction: column;
   border-radius: 12px;
-  background: rgba(15, 23, 42, 0.74);
+  background: var(--rb-panel);
   border: 1px solid rgba(148, 163, 184, 0.12);
 `;
 
@@ -1390,7 +1470,7 @@ export const ChatName = styled.div<{ $color: string }>`
 
   span {
     color: #04111f;
-    background: #00e5ff;
+    background: var(--rb-accent);
     border-radius: 4px;
     padding: 1px 4px;
     font-size: 9px;
@@ -1408,12 +1488,12 @@ export const ChatActionButton = styled.button`
   height: 28px;
   border: 1px solid rgba(148, 163, 184, 0.12);
   border-radius: 8px;
-  color: rgba(226, 232, 240, 0.72);
+  color: var(--rb-muted);
   background: rgba(2, 6, 23, 0.56);
   cursor: pointer;
 
   &:hover {
-    color: #fff;
+    color: var(--rb-text);
     border-color: rgba(0, 229, 255, 0.28);
   }
 `;
@@ -1448,7 +1528,7 @@ export const ChatActionMenu = styled.div`
 
   button:hover {
     background: rgba(255, 255, 255, 0.07);
-    color: #fff;
+    color: var(--rb-text);
   }
 `;
 
@@ -1464,7 +1544,7 @@ export const ChatForm = styled.form`
     border: 1px solid rgba(148, 163, 184, 0.12);
     border-radius: 8px;
     padding: 0 11px;
-    color: #fff;
+    color: var(--rb-text);
     background: rgba(2, 6, 23, 0.78);
     outline: 0;
   }
@@ -1505,7 +1585,7 @@ export const SideListItem = styled(Link)`
   }
 
   small {
-    color: #00e5ff;
+    color: var(--rb-accent);
     font-weight: 800;
   }
 `;
@@ -1540,23 +1620,24 @@ export const MetricGrid = styled.div`
 export const MetricCard = styled.div`
   padding: 14px;
   border-radius: 12px;
-  background: rgba(15, 23, 42, 0.74);
-  border: 1px solid rgba(148, 163, 184, 0.12);
+  background: var(--rb-panel);
+  border: 1px solid var(--rb-border);
 
   span,
   small {
-    color: rgba(226, 232, 240, 0.64);
+    color: var(--rb-muted-soft);
     font-size: 12px;
   }
 
   strong {
     display: block;
     margin: 6px 0 3px;
+    color: var(--rb-text);
     font-size: 27px;
   }
 
   small {
-    color: #22c55e;
+    color: var(--rb-success);
     font-weight: 850;
   }
 `;
@@ -1588,7 +1669,7 @@ export const EpisodeRow = styled.div`
     border: 0;
     border-radius: 50%;
     color: #03111c;
-    background: #00e5ff;
+    background: var(--rb-accent);
   }
 
   small {
@@ -1631,7 +1712,7 @@ export const BrandBlock = styled.div`
   svg {
     width: 42px;
     height: 42px;
-    color: #00e5ff;
+    color: var(--rb-accent);
     margin-bottom: 12px; 
   }
 
@@ -1641,7 +1722,7 @@ export const BrandBlock = styled.div`
     color: white;
 
     span {
-      color: #00e5ff;
+      color: var(--rb-accent);
     }
   }
 
@@ -1656,7 +1737,7 @@ export const BrandBlock = styled.div`
 export const Label = styled.label`
   display: block;
   margin: 12px 0 7px;
-  color: rgba(226, 232, 240, 0.8);
+  color: var(--rb-muted);
   font-size: 12px;
   font-weight: 850;
 `;
@@ -1665,57 +1746,127 @@ export const Field = styled.div`
   display: flex;
   align-items: center;
   gap: 10px;
-  min-height: 42px;
+  min-height: 44px;
+  width: 100%;
+  min-width: 0;
   padding: 0 12px;
-  border-radius: 10px;
-  border: 1px solid rgba(148, 163, 184, 0.14);
-  background: rgba(15, 23, 42, 0.76);
-  color: #00e5ff;
+  border-radius: 12px;
+  border: 1px solid var(--rb-input-border, var(--rb-border));
+  background:
+    linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--rb-panel) 92%, transparent),
+      color-mix(in srgb, var(--rb-panel-strong) 72%, transparent)
+    );
+  color: var(--rb-accent);
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, var(--rb-text) 7%, transparent),
+    0 10px 28px color-mix(in srgb, var(--rb-shadow) 58%, transparent);
+  backdrop-filter: blur(14px);
   transition:
     border-color 0.18s ease,
     box-shadow 0.18s ease,
-    background 0.18s ease;
+    background 0.18s ease,
+    transform 0.18s ease;
+
+  svg {
+    flex: 0 0 auto;
+    color: var(--rb-accent);
+  }
+
+  &:hover {
+    border-color: var(--rb-border-strong);
+    background:
+      linear-gradient(
+        135deg,
+        color-mix(in srgb, var(--rb-panel) 96%, transparent),
+        color-mix(in srgb, var(--rb-panel-strong) 86%, transparent)
+      );
+  }
 
   &:focus-within {
-    border-color: rgba(0, 229, 255, 0.5);
-    box-shadow: 0 0 0 3px rgba(0, 229, 255, 0.08);
-    background: rgba(15, 23, 42, 0.92);
+    border-color: var(--rb-border-strong);
+    box-shadow:
+      0 0 0 3px color-mix(in srgb, var(--rb-accent) 15%, transparent),
+      0 16px 36px color-mix(in srgb, var(--rb-accent) 11%, transparent);
+    background: var(--rb-input-bg, var(--rb-panel-strong));
+    transform: translateY(-1px);
   }
 
   input {
     width: 100%;
+    min-width: 0;
     border: 0;
     outline: 0;
-    color: #fff;
+    color: var(--rb-text);
     background: transparent;
+    font-weight: 650;
+  }
+
+  input::placeholder {
+    color: var(--rb-muted-soft);
+    font-weight: 500;
+  }
+
+  input:disabled {
+    cursor: not-allowed;
+    opacity: 0.62;
+  }
+
+  input[type="date"] {
+    color-scheme: inherit;
+  }
+
+  input[type="date"]::-webkit-calendar-picker-indicator {
+    cursor: pointer;
+    opacity: 0.8;
+    filter: drop-shadow(0 0 6px color-mix(in srgb, var(--rb-accent) 35%, transparent));
   }
 
   &:has(input[type="file"]) {
-    min-height: 58px;
+    min-height: 62px;
+    align-items: center;
     padding: 10px 12px;
-    border-color: rgba(0, 229, 255, 0.28);
+    border-color: var(--rb-border-strong);
     background:
-      radial-gradient(circle at left, rgba(0, 229, 255, 0.13), transparent 38%),
-      rgba(15, 23, 42, 0.86);
+      radial-gradient(
+        circle at left,
+        color-mix(in srgb, var(--rb-accent) 15%, transparent),
+        transparent 42%
+      ),
+      linear-gradient(
+        135deg,
+        color-mix(in srgb, var(--rb-panel) 96%, transparent),
+        color-mix(in srgb, var(--rb-panel-strong) 82%, transparent)
+      );
   }
 
   input[type="file"] {
-    color: rgba(226, 232, 240, 0.86);
+    color: var(--rb-muted);
     font-size: 13px;
+    font-weight: 700;
     cursor: pointer;
   }
 
   input[type="file"]::file-selector-button {
     margin-right: 14px;
-    min-height: 38px;
+    min-height: 40px;
     padding: 0 16px;
     border: 0;
-    border-radius: 12px;
-    color: #04111f;
-    background: linear-gradient(135deg, #00e5ff, #8b5cf6, #fb7185);
+    border-radius: 13px;
+    color: #ffffff;
+    background:
+      linear-gradient(
+        135deg,
+        var(--rb-accent),
+        var(--rb-accent-2),
+        var(--rb-danger)
+      );
     font-weight: 950;
     cursor: pointer;
-    box-shadow: 0 12px 28px rgba(0, 229, 255, 0.18);
+    box-shadow:
+      0 12px 28px color-mix(in srgb, var(--rb-accent) 24%, transparent),
+      inset 0 1px 0 rgba(255, 255, 255, 0.26);
     transition:
       transform 0.18s ease,
       box-shadow 0.18s ease,
@@ -1724,8 +1875,38 @@ export const Field = styled.div`
 
   input[type="file"]::file-selector-button:hover {
     transform: translateY(-1px);
-    filter: brightness(1.08);
-    box-shadow: 0 16px 34px rgba(139, 92, 246, 0.24);
+    filter: brightness(1.08) saturate(1.08);
+    box-shadow:
+      0 16px 34px color-mix(in srgb, var(--rb-accent-2) 30%, transparent),
+      inset 0 1px 0 rgba(255, 255, 255, 0.32);
+  }
+
+  input[type="file"]::file-selector-button:active {
+    transform: translateY(0);
+  }
+
+  @media (max-width: 640px) {
+    min-height: 42px;
+    border-radius: 11px;
+    padding: 0 10px;
+
+    &:has(input[type="file"]) {
+      min-height: auto;
+      align-items: flex-start;
+      flex-direction: column;
+      gap: 8px;
+      padding: 12px;
+    }
+
+    input[type="file"] {
+      width: 100%;
+      font-size: 12px;
+    }
+
+    input[type="file"]::file-selector-button {
+      width: 100%;
+      margin: 0 0 8px;
+    }
   }
 `;
 
@@ -1755,11 +1936,20 @@ export const TextArea = styled.textarea`
   min-height: 98px;
   resize: vertical;
   border-radius: 10px;
-  border: 1px solid rgba(148, 163, 184, 0.14);
+  border: 1px solid var(--rb-input-border);
   padding: 12px;
-  color: #fff;
-  background: rgba(15, 23, 42, 0.76);
+  color: var(--rb-text);
+  background: var(--rb-input-bg);
   outline: 0;
+
+  &::placeholder {
+    color: var(--rb-muted-soft);
+  }
+
+  &:focus {
+    border-color: var(--rb-border-strong);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--rb-accent) 14%, transparent);
+  }
 `;
 
 export const FormLine = styled.div`
@@ -1808,7 +1998,7 @@ export const NarrowPanel = styled.div`
   width: min(460px, 100%);
   padding: 18px;
   border-radius: 14px;
-  background: rgba(15, 23, 42, 0.74);
+  background: var(--rb-panel);
   border: 1px solid rgba(148, 163, 184, 0.12);
 `;
 
@@ -1898,7 +2088,7 @@ export const NotificationRow = styled.div<{ $accent: string }>`
   }
 
   small {
-    color: rgba(226, 232, 240, 0.58);
+    color: var(--rb-muted-soft);
     margin-top: 4px;
   }
 `;
@@ -1913,7 +2103,7 @@ export const ProgressSteps = styled.div`
     padding: 9px;
     border-radius: 999px;
     text-align: center;
-    color: #00e5ff;
+    color: var(--rb-accent);
     background: rgba(0, 229, 255, 0.1);
     font-size: 12px;
     font-weight: 850;
@@ -1941,7 +2131,7 @@ export const ChannelDataPanel = styled.div`
   }
 
   b {
-    color: #00e5ff;
+    color: var(--rb-accent);
   }
 `;
 
@@ -2021,7 +2211,7 @@ export const UploadZone = styled.div`
   background: rgba(88, 28, 135, 0.18);
 
   small {
-    color: rgba(226, 232, 240, 0.58);
+    color: var(--rb-muted-soft);
   }
 `;
 
@@ -2031,10 +2221,15 @@ export const FormCard = styled.form`
   padding: 24px;
   border-radius: 18px;
   background:
-    radial-gradient(circle at top left, rgba(0, 229, 255, 0.08), transparent 34%),
-    rgba(15, 23, 42, 0.82);
-  border: 1px solid rgba(148, 163, 184, 0.14);
-  box-shadow: 0 22px 70px rgba(0, 0, 0, 0.32);
+    radial-gradient(
+      circle at top left,
+      color-mix(in srgb, var(--rb-accent) 12%, transparent),
+      transparent 34%
+    ),
+    var(--rb-panel);
+  border: 1px solid var(--rb-border);
+  color: var(--rb-text);
+  box-shadow: 0 22px 70px var(--rb-shadow);
 
   @media (max-width: 640px) {
     width: 100%;
@@ -2059,13 +2254,21 @@ export const AlertPanel = styled.div`
   margin-bottom: 18px;
   padding: 14px;
   border-radius: 12px;
-  color: #fde68a;
-  background: rgba(202, 138, 4, 0.12);
-  border: 1px solid rgba(202, 138, 4, 0.26);
+  color: var(--rb-warning);
+  background: color-mix(in srgb, var(--rb-warning) 14%, transparent);
+  border: 1px solid color-mix(in srgb, var(--rb-warning) 30%, transparent);
+
+  strong {
+    color: var(--rb-text-strong);
+  }
 
   p {
     margin: 4px 0 0;
-    color: rgba(226, 232, 240, 0.7);
+    color: var(--rb-muted);
+  }
+
+  svg {
+    flex: 0 0 auto;
   }
 `;
 
@@ -2115,16 +2318,19 @@ export const StatePanel = styled.div`
   text-align: center;
   padding: 34px;
   border-radius: 14px;
-  background: rgba(15, 23, 42, 0.74);
-  border: 1px solid rgba(148, 163, 184, 0.12);
+  background: var(--rb-panel);
+  border: 1px solid var(--rb-border);
+  color: var(--rb-text);
+  box-shadow: 0 18px 50px var(--rb-shadow);
 
   h1,
   h2 {
     margin: 12px 0 8px;
+    color: var(--rb-text-strong);
   }
 
   p {
-    color: rgba(226, 232, 240, 0.68);
+    color: var(--rb-muted);
   }
 `;
 
@@ -2135,7 +2341,7 @@ export const StateIcon = styled.div`
   align-items: center;
   justify-content: center;
   border-radius: 28px;
-  color: #00e5ff;
+  color: var(--rb-accent);
   background: rgba(0, 229, 255, 0.1);
   border: 1px solid rgba(0, 229, 255, 0.2);
 
