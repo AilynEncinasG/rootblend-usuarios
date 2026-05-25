@@ -80,6 +80,7 @@ import SanctionsPage from "../modules/moderation/pages/SanctionsPage";
 import ModeratorDashboardPage from "../modules/moderation/pages/ModeratorDashboardPage";
 import ModeratorPermissionsPage from "../modules/moderation/pages/ModeratorPermissionsPage";
 
+import RouteLoading from "../components/RouteLoading";
 const MODERATORS_KEY = "rootblend:moderators:cyberpunk-2077";
 
 type CreatorRole = "streamer" | "podcaster";
@@ -148,33 +149,6 @@ function Private({ children }: { children: ReactNode }) {
 
 function GuestOnly({ children }: { children: ReactNode }) {
   return <AuthOnlyRoute>{children}</AuthOnlyRoute>;
-}
-
-function RouteLoading() {
-  return (
-    <div
-      style={{
-        minHeight: "100vh",
-        background: "#030712",
-        color: "#f8fbff",
-        display: "grid",
-        placeItems: "center",
-        fontFamily: "Inter, system-ui, sans-serif",
-      }}
-    >
-      <div
-        style={{
-          padding: "18px 22px",
-          borderRadius: "18px",
-          background: "rgba(15, 23, 42, 0.82)",
-          border: "1px solid rgba(0, 229, 255, 0.22)",
-          boxShadow: "0 18px 45px rgba(0, 0, 0, 0.35)",
-        }}
-      >
-        Cargando ROOTBLEND...
-      </div>
-    </div>
-  );
 }
 
 function CreatorRoute({

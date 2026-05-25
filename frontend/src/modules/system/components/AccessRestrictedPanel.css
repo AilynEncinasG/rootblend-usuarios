@@ -1,0 +1,260 @@
+.access-restricted-page {
+  min-height: 100vh;
+  padding: 42px 22px;
+  display: grid;
+  place-items: center;
+  background:
+    radial-gradient(circle at 18% 18%, rgba(251, 113, 133, 0.22), transparent 34%),
+    radial-gradient(circle at 82% 20%, rgba(0, 234, 255, 0.16), transparent 32%),
+    radial-gradient(circle at 50% 100%, rgba(168, 85, 247, 0.26), transparent 38%),
+    #020617;
+}
+
+.access-restricted-card {
+  position: relative;
+  width: min(100%, 920px);
+  overflow: hidden;
+  border-radius: 38px;
+  padding: 44px 28px;
+  display: grid;
+  justify-items: center;
+  gap: 22px;
+  text-align: center;
+  border: 1px solid rgba(251, 113, 133, 0.28);
+  background: linear-gradient(135deg, rgba(15, 23, 42, 0.96), rgba(24, 24, 27, 0.94));
+  box-shadow:
+    0 30px 100px rgba(0, 0, 0, 0.52),
+    inset 0 0 80px rgba(251, 113, 133, 0.05);
+}
+
+.access-restricted-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(251, 113, 133, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 234, 255, 0.035) 1px, transparent 1px);
+  background-size: 34px 34px;
+  mask-image: radial-gradient(circle at center, black, transparent 72%);
+  pointer-events: none;
+}
+
+.access-restricted-card::after {
+  content: "";
+  position: absolute;
+  width: 500px;
+  height: 500px;
+  border-radius: 999px;
+  background: rgba(251, 113, 133, 0.11);
+  filter: blur(82px);
+  bottom: -270px;
+  left: 50%;
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+.access-restricted-badges,
+.access-restricted-visual,
+.access-restricted-copy,
+.access-restricted-actions {
+  position: relative;
+  z-index: 1;
+}
+
+.access-restricted-badges {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+}
+
+.access-restricted-badges span {
+  padding: 8px 13px;
+  border-radius: 999px;
+  color: #fecaca;
+  background: rgba(127, 29, 29, 0.35);
+  border: 1px solid rgba(251, 113, 133, 0.30);
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+}
+
+.access-restricted-visual {
+  width: min(100%, 390px);
+  display: grid;
+  place-items: center;
+}
+
+.access-restricted-orbit {
+  position: absolute;
+  width: 330px;
+  height: 330px;
+  border-radius: 999px;
+  border: 1px dashed rgba(251, 113, 133, 0.38);
+  animation: accessRestrictedRotate 18s linear infinite;
+}
+
+.access-restricted-orbit.orbit-two {
+  width: 260px;
+  height: 260px;
+  border-color: rgba(0, 234, 255, 0.34);
+  animation-duration: 12s;
+  animation-direction: reverse;
+}
+
+.access-restricted-dot {
+  position: absolute;
+  width: 11px;
+  height: 11px;
+  border-radius: 999px;
+}
+
+.access-restricted-dot.dot-one {
+  top: 22px;
+  left: 62px;
+  background: #fb7185;
+  box-shadow: 0 0 24px #fb7185;
+}
+
+.access-restricted-dot.dot-two {
+  right: 42px;
+  bottom: 64px;
+  background: #00eaff;
+  box-shadow: 0 0 24px #00eaff;
+}
+
+.access-restricted-svg {
+  position: relative;
+  z-index: 2;
+  width: 345px;
+  max-width: 100%;
+  filter:
+    drop-shadow(0 30px 55px rgba(0, 0, 0, 0.50))
+    drop-shadow(0 0 30px rgba(251, 113, 133, 0.16));
+  animation: accessRestrictedFloat 4.5s ease-in-out infinite;
+}
+
+.access-restricted-kicker {
+  margin: 0 0 10px;
+  color: #fb7185;
+  font-size: 13px;
+  font-weight: 950;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.access-restricted-copy h1 {
+  margin: 0;
+  font-size: clamp(42px, 8vw, 84px);
+  line-height: 0.9;
+  letter-spacing: -0.07em;
+  color: #f8fafc;
+  text-shadow:
+    0 0 24px rgba(251, 113, 133, 0.22),
+    3px 3px 0 rgba(0, 234, 255, 0.16);
+}
+
+.access-restricted-copy h1 span {
+  display: block;
+  color: #fb7185;
+}
+
+.access-restricted-copy p:last-child {
+  max-width: 680px;
+  margin: 16px auto 0;
+  color: rgba(226, 232, 240, 0.84);
+  font-size: 16px;
+  line-height: 1.7;
+}
+
+.access-restricted-actions {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.access-restricted-primary,
+.access-restricted-secondary {
+  min-height: 48px;
+  padding: 0 22px;
+  border-radius: 16px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  font-weight: 950;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.access-restricted-primary {
+  background: linear-gradient(135deg, #fb7185, #a855f7, #00eaff);
+  color: white;
+  box-shadow: 0 18px 42px rgba(251, 113, 133, 0.20);
+}
+
+.access-restricted-secondary {
+  color: #f8fafc;
+  background: rgba(15, 23, 42, 0.74);
+  border: 1px solid rgba(251, 113, 133, 0.22);
+}
+
+.access-restricted-primary:hover,
+.access-restricted-secondary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 22px 46px rgba(251, 113, 133, 0.17);
+  border-color: rgba(251, 113, 133, 0.55);
+}
+
+@keyframes accessRestrictedFloat {
+  0%,
+  100% {
+    transform: translateY(0) rotate(-1deg);
+  }
+
+  50% {
+    transform: translateY(-12px) rotate(1deg);
+  }
+}
+
+@keyframes accessRestrictedRotate {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 640px) {
+  .access-restricted-page {
+    padding: 24px 14px;
+  }
+
+  .access-restricted-card {
+    border-radius: 28px;
+    padding: 34px 18px;
+  }
+
+  .access-restricted-orbit {
+    width: 270px;
+    height: 270px;
+  }
+
+  .access-restricted-orbit.orbit-two {
+    width: 220px;
+    height: 220px;
+  }
+
+  .access-restricted-svg {
+    width: 285px;
+  }
+
+  .access-restricted-copy h1 {
+    font-size: clamp(38px, 13vw, 58px);
+  }
+}

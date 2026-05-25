@@ -51,6 +51,7 @@ import {
   Muted,
   PodcastGrid,
   PodcastTile,
+  PodcastCover,
   PrimaryLink,
   SectionBlock,
   SectionHeader,
@@ -61,6 +62,10 @@ import {
   VerifiedDot,
   ViewBadge,
 } from "../../../shared/styles/legacyStyled";
+import {
+  getPodcasts,
+  type PodcastItem,
+} from "../../podcasts/services/podcastsCatalogService";
 
 type HomeStreamItem = StreamItem & {
   channelId?: number;
@@ -278,6 +283,8 @@ export default function HomePage() {
   const [featuredStreams, setFeaturedStreams] = useState<HomeStreamItem[]>([]);
   const [backendCategories, setBackendCategories] = useState<Category[]>([]);
   const [backendChannels, setBackendChannels] = useState<HomeChannelItem[]>([]);
+  const [homePodcasts, setHomePodcasts] = useState<PodcastItem[]>([]);
+  const [podcastsError, setPodcastsError] = useState("");
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -311,6 +318,23 @@ export default function HomePage() {
           )
         );
         setBackendChannels(channelsResult.map(backendChannelToCard));
+        try {
+          const podcastsResult = await getPodcasts();
+
+          if (!active) return;
+
+          setHomePodcasts(podcastsResult.slice(0, 4));
+          setPodcastsError("");
+        } catch (error) {
+          console.error("HOME_PODCASTS_LOAD_ERROR", error);
+
+          if (active) {
+            setHomePodcasts([]);
+            setPodcastsError(
+              "No pudimos cargar los podcasts reales en este momento."
+            );
+          }
+        }
       } catch (error) {
         console.error("HOME_STREAMS_LOAD_ERROR", error);
 
@@ -405,7 +429,7 @@ export default function HomePage() {
           <FiRefreshCw />
           <div>
             <strong>Cargando </strong>
-            <p>Consultando streams, canales y categorías reales.</p>
+            <p>Consultando streams, canales, categorías y podcasts reales.</p>
           </div>
         </AlertPanel>
       ) : null}
@@ -522,11 +546,43 @@ export default function HomePage() {
         title="Podcasts"
         action={<TextLink to="/podcasts">Abrir sección</TextLink>}
       >
-        <EmptyPanel
-          icon={<FiHeadphones />}
-          title="Podcasts listos para conectar"
-          text="El home ya no muestra podcasts falsos. Cuando implementemos podcasts-service real, aquí aparecerán episodios y podcasts reales."
-        />
+        {podcastsError ? (
+          <EmptyPanel
+            icon={<FiHeadphones />}
+            title="Podcasts no disponibles"
+            text={podcastsError}
+          />
+        ) : homePodcasts.length === 0 ? (
+          <EmptyPanel
+            icon={<FiHeadphones />}
+            title="No hay podcasts publicados"
+            text="Cuando existan podcasts reales publicados, aparecerán aquí."
+          />
+        ) : (
+          <PodcastGrid>
+            {homePodcasts.map((podcast) => (
+              <PodcastTile key={podcast.id} to={`/podcasts/${podcast.id}`}>
+                <PodcastCover $image={podcast.cover || brandAssets.podcastsCategoria}>
+                  <FiHeadphones />
+                </PodcastCover>
+
+                <div>
+                  <CardTitle>{podcast.title}</CardTitle>
+
+                  <MetaLine>
+                    <span>{podcast.category || "Sin categoría"}</span>
+                    <span>{podcast.episodes} episodios</span>
+                    <span>{podcast.plays ?? 0} reproducciones</span>
+                  </MetaLine>
+
+                  <Muted>{podcast.description}</Muted>
+                </div>
+
+                <FiArrowRight />
+              </PodcastTile>
+            ))}
+          </PodcastGrid>
+        )}
       </Section>
     </RootShell>
   );
