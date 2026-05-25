@@ -4,6 +4,7 @@ import {
   useEffect,
   useMemo,
   useState,
+  useRef,
 } from "react";
 import { useNavigate } from "react-router-dom";
 import {
@@ -28,7 +29,6 @@ import {
   AlertPanel,
   Avatar,
   ButtonRow,
-  Eyebrow,
   Field,
   FormCard,
   GhostButton,
@@ -89,7 +89,6 @@ function updateStoredProfileUser(data: {
         ...(JSON.parse(raw) as Record<string, unknown>),
       };
     } catch {
-      // Si localStorage tiene datos viejos o corruptos, lo ignoramos.
     }
   }
 
@@ -135,6 +134,46 @@ export default function EditProfilePage() {
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
+
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const BIO_MAX_LENGTH = 250;
+
+  function getMaxBirthDateForAge(minAge: number) {
+    const today = new Date();
+    const maxDate = new Date(
+      today.getFullYear() - minAge,
+      today.getMonth(),
+      today.getDate()
+    );
+
+    return maxDate.toISOString().split("T")[0];
+  }
+
+  const maxBirthDate = getMaxBirthDateForAge(15);
+
+  function handleBirthDateChange(event: React.ChangeEvent<HTMLInputElement>) {
+    const nextDate = event.target.value;
+
+    if (!nextDate) {
+      setFechaNacimiento("");
+      return;
+    }
+
+    if (nextDate > maxBirthDate) {
+      setFechaNacimiento(maxBirthDate);
+      return;
+    }
+
+    setFechaNacimiento(nextDate);
+  }
+
+  function handleBiographyChange(event: React.ChangeEvent<HTMLTextAreaElement>) {
+    const nextValue = event.target.value;
+
+    if (nextValue.length <= BIO_MAX_LENGTH) {
+      setBiografia(nextValue);
+    }
+  }
 
   useEffect(() => {
     let active = true;
@@ -222,37 +261,39 @@ export default function EditProfilePage() {
   }, [fotoPerfil, previewLocal]);
 
   function handleFileChange(event: ChangeEvent<HTMLInputElement>) {
-    const file = event.target.files?.[0] || null;
-
-    setError("");
-    setSuccessMessage("");
-
-    if (!file) {
-      setSelectedFile(null);
-      return;
-    }
-
-    if (!file.type.startsWith("image/")) {
-      setError("Selecciona un archivo de imagen válido.");
-      event.target.value = "";
-      setSelectedFile(null);
-      return;
-    }
-
-    const maxSize = 3 * 1024 * 1024;
-
-    if (file.size > maxSize) {
-      setError("La imagen no debe superar los 3 MB.");
-      event.target.value = "";
-      setSelectedFile(null);
-      return;
-    }
+    const file = event.target.files?.[0] ?? null;
 
     setSelectedFile(file);
+
+    if (file) {
+      setFotoPerfil("");
+    }
+  }
+
+  function handlePhotoUrlChange(event: ChangeEvent<HTMLInputElement>) {
+    const nextUrl = event.target.value;
+
+    setFotoPerfil(nextUrl);
+    setSelectedFile(null);
+    setPreviewLocal("");
+
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
   }
 
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+
+    if (fechaNacimiento && fechaNacimiento > maxBirthDate) {
+      setError("Debes tener al menos 15 años para usar esta fecha de nacimiento.");
+      return;
+    }
+
+    if (biografia.length > BIO_MAX_LENGTH) {
+      setError("La biografía no puede tener más de 250 caracteres.");
+      return;
+    }
 
     setSaving(true);
     setError("");
@@ -334,7 +375,6 @@ export default function EditProfilePage() {
     <RootShell active="home">
       <FormCard onSubmit={submit}>
         <PageHeading>
-          <Eyebrow>Perfil real</Eyebrow>
           <h1>Editar perfil</h1>
           <p>
             Actualiza tu información pública. Puedes subir una imagen desde tu
@@ -371,24 +411,14 @@ export default function EditProfilePage() {
         <ProfileHeader>
           <Avatar $large>
             {avatarPreview ? (
-              <img
-                src={avatarPreview}
-                alt={nombreVisible || "Usuario"}
-                style={{
-                  width: "100%",
-                  height: "100%",
-                  borderRadius: "50%",
-                  objectFit: "cover",
-                  display: "block",
-                }}
-              />
+              <img src={avatarPreview} alt={nombreVisible || "Usuario"} />
             ) : (
               getInitials(nombreVisible || correo || "Usuario")
             )}
           </Avatar>
 
-          <GhostButton type="button" onClick={() => navigate("/profile")}>
-            Vista previa de perfil
+          <GhostButton>
+            Vista previa
           </GhostButton>
         </ProfileHeader>
 
@@ -409,6 +439,7 @@ export default function EditProfilePage() {
         <Field>
           <FiUpload />
           <input
+            ref={fileInputRef}
             type="file"
             accept="image/png,image/jpeg,image/jpg,image/webp,image/gif"
             onChange={handleFileChange}
@@ -428,10 +459,7 @@ export default function EditProfilePage() {
           <FiFile />
           <input
             value={fotoPerfil}
-            onChange={(event) => {
-              setFotoPerfil(event.target.value);
-              setSelectedFile(null);
-            }}
+            onChange={handlePhotoUrlChange}
             placeholder="https://ejemplo.com/mi-foto.png"
             disabled={loading || saving}
           />
@@ -443,7 +471,8 @@ export default function EditProfilePage() {
           <input
             type="date"
             value={fechaNacimiento}
-            onChange={(event) => setFechaNacimiento(event.target.value)}
+            max={maxBirthDate}
+            onChange={handleBirthDateChange}
             disabled={loading || saving}
           />
         </Field>
@@ -451,10 +480,15 @@ export default function EditProfilePage() {
         <Label>Biografía</Label>
         <TextArea
           value={biografia}
-          onChange={(event) => setBiografia(event.target.value)}
+          onChange={handleBiographyChange}
+          maxLength={BIO_MAX_LENGTH}
           placeholder="Cuéntale a la comunidad quién eres..."
           disabled={loading || saving}
         />
+
+        <small style={{ color: "rgba(226, 232, 240, 0.68)" }}>
+          {biografia.length}/{BIO_MAX_LENGTH} caracteres
+        </small>
 
         <ButtonRow>
           <GhostButton type="button" onClick={() => navigate("/profile")}>

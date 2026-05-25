@@ -8,7 +8,6 @@ import {
   FiRefreshCw,
   FiSettings,
   FiShield,
-  FiUser,
 } from "react-icons/fi";
 import { RootShell } from "../../../shared/layout";
 import { brandAssets } from "../../../shared/mock/rootblendMock";
@@ -25,29 +24,11 @@ import {
   Panel,
   PanelHeader,
   PrimaryLink,
+  ProfileBioBox,
+  ProfileHeroInfo,
   TwoCol,
 } from "../../../shared/styles/legacyStyled";
 import { StatCard } from "../../public/utils/publicLegacyHelpers";
-
-function formatDate(value: string | null | undefined) {
-  if (!value) {
-    return "No disponible";
-  }
-
-  const date = new Date(value);
-
-  if (Number.isNaN(date.getTime())) {
-    return String(value);
-  }
-
-  return date.toLocaleString("es-BO", {
-    year: "numeric",
-    month: "2-digit",
-    day: "2-digit",
-    hour: "2-digit",
-    minute: "2-digit",
-  });
-}
 
 function formatShortDate(value: string | null | undefined) {
   if (!value) {
@@ -214,7 +195,7 @@ export default function ProfilePage() {
           )}
         </Avatar>
 
-        <div>
+        <ProfileHeroInfo>
           <h1>{displayName}</h1>
           <p>{bio}</p>
 
@@ -227,7 +208,7 @@ export default function ProfilePage() {
               <FiSettings /> Preferencias
             </GhostLink>
           </ButtonRow>
-        </div>
+        </ProfileHeroInfo>
       </ChannelHero>
 
       <MetricGrid>
@@ -246,30 +227,6 @@ export default function ProfilePage() {
       </MetricGrid>
 
       <InfoGrid>
-        <Panel>
-          <PanelHeader>
-            <strong>
-              <FiUser /> Datos de usuario
-            </strong>
-          </PanelHeader>
-
-          <TwoCol>
-            <span>ID usuario</span>
-            <strong>{profileData?.usuario.id_usuario || "—"}</strong>
-
-            <span>Correo</span>
-            <strong>{email}</strong>
-
-            <span>Estado</span>
-            <strong>{estado}</strong>
-
-            <span>Fecha de registro</span>
-            <strong>{formatDate(fechaRegistro)}</strong>
-
-            <span>Último acceso</span>
-            <strong>{formatDate(ultimoAcceso)}</strong>
-          </TwoCol>
-        </Panel>
 
         <Panel>
           <PanelHeader>
@@ -292,7 +249,10 @@ export default function ProfilePage() {
             </strong>
           </TwoCol>
 
-          <p>{bio}</p>
+          <ProfileBioBox>
+            <span>Biografía</span>
+            <p>{bio || "Sin biografía configurada."}</p>
+          </ProfileBioBox>
         </Panel>
 
         <Panel>

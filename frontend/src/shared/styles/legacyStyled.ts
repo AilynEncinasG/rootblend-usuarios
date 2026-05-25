@@ -492,10 +492,21 @@ export const HeroOverlay = styled.div`
 
 export const ButtonRow = styled.div`
   display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
   align-items: center;
-  margin-top: 18px;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 8px;
+
+  @media (max-width: 640px) {
+    width: 100%;
+    justify-content: center;
+
+    a,
+    button {
+      width: 100%;
+      max-width: 280px;
+    }
+  }
 `;
 
 export const PrimaryLink = styled(Link)`
@@ -613,15 +624,32 @@ export const GhostButton = styled.button`
   align-items: center;
   justify-content: center;
   gap: 8px;
-  min-height: 38px;
+  min-height: 40px;
   padding: 0 16px;
-  border-radius: 8px;
+  border-radius: 10px;
   border: 1px solid rgba(0, 229, 255, 0.28);
   color: #e8fbff;
-  background: rgba(15, 23, 42, 0.7);
+  background: rgba(15, 23, 42, 0.72);
   font-weight: 850;
   font-size: 13px;
   cursor: pointer;
+  transition:
+    transform 0.18s ease,
+    border-color 0.18s ease,
+    box-shadow 0.18s ease,
+    background 0.18s ease;
+
+  &:hover:not(:disabled) {
+    transform: translateY(-1px);
+    border-color: rgba(0, 229, 255, 0.55);
+    background: rgba(15, 23, 42, 0.92);
+    box-shadow: 0 12px 28px rgba(0, 229, 255, 0.12);
+  }
+
+  &:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+  }
 `;
 
 export const DangerButton = styled.button`
@@ -671,18 +699,33 @@ export const UserPill = styled.button`
 `;
 
 export const Avatar = styled.div<{ $large?: boolean; $small?: boolean }>`
-  width: ${({ $large, $small }) => ($large ? "82px" : $small ? "26px" : "34px")};
-  height: ${({ $large, $small }) => ($large ? "82px" : $small ? "26px" : "34px")};
-  border-radius: 50%;
+  width: ${({ $large, $small }) => ($large ? "96px" : $small ? "26px" : "34px")};
+  height: ${({ $large, $small }) => ($large ? "96px" : $small ? "26px" : "34px")};
+  min-width: ${({ $large, $small }) => ($large ? "96px" : $small ? "26px" : "34px")};
+  min-height: ${({ $large, $small }) => ($large ? "96px" : $small ? "26px" : "34px")};
+  aspect-ratio: 1 / 1;
+  border-radius: 999px;
+  overflow: hidden;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   flex: 0 0 auto;
   color: #04111f;
   background: linear-gradient(135deg, #00e5ff, #8b5cf6);
-  font-size: ${({ $large, $small }) => ($large ? "25px" : $small ? "10px" : "12px")};
+  font-size: ${({ $large, $small }) => ($large ? "28px" : $small ? "10px" : "12px")};
   font-weight: 950;
-  border: 2px solid rgba(255, 255, 255, 0.18);
+  border: 3px solid rgba(255, 255, 255, 0.18);
+  box-shadow:
+    0 16px 38px rgba(0, 0, 0, 0.28),
+    0 0 28px rgba(0, 229, 255, 0.16);
+
+  img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+    border-radius: inherit;
+  }
 `;
 
 export const PromoPanel = styled.div`
@@ -1180,11 +1223,105 @@ export const PanelHeader = styled.div`
 
 export const TwoCol = styled.div`
   display: grid;
-  grid-template-columns: 1fr auto;
-  gap: 10px 16px;
+  grid-template-columns: minmax(130px, 0.42fr) minmax(0, 1fr);
+  gap: 12px 18px;
+  width: 100%;
+  min-width: 0;
+
+  span,
+  strong {
+    min-width: 0;
+  }
 
   span {
-    color: rgba(226, 232, 240, 0.6);
+    color: rgba(226, 232, 240, 0.62);
+    font-size: 0.92rem;
+  }
+
+  strong {
+    color: #f8fafc;
+    font-size: 0.96rem;
+    line-height: 1.45;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+    white-space: normal;
+  }
+
+  @media (max-width: 680px) {
+    grid-template-columns: 1fr;
+    gap: 6px;
+
+    span {
+      margin-top: 10px;
+      font-size: 0.82rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    strong {
+      padding: 10px 12px;
+      border-radius: 12px;
+      background: rgba(15, 23, 42, 0.64);
+      border: 1px solid rgba(148, 163, 184, 0.12);
+    }
+  }
+`;
+
+export const ProfileBioBox = styled.div`
+  width: 100%;
+  min-width: 0;
+  margin-top: 18px;
+  padding: 16px;
+  border-radius: 16px;
+  background:
+    radial-gradient(circle at top left, rgba(0, 229, 255, 0.08), transparent 36%),
+    rgba(15, 23, 42, 0.58);
+  border: 1px solid rgba(148, 163, 184, 0.12);
+
+  span {
+    display: block;
+    margin-bottom: 8px;
+    color: rgba(226, 232, 240, 0.62);
+    font-size: 0.82rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  p {
+    margin: 0;
+    color: rgba(248, 250, 252, 0.92);
+    font-size: 0.96rem;
+    line-height: 1.65;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+    white-space: normal;
+  }
+
+  @media (max-width: 680px) {
+    padding: 14px;
+    border-radius: 14px;
+
+    p {
+      font-size: 0.92rem;
+      line-height: 1.6;
+    }
+  }
+`;
+
+export const ResponsiveEmail = styled.strong`
+  min-width: 0;
+  max-width: 100%;
+  display: block;
+  color: #f8fafc;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  white-space: normal;
+
+  @media (max-width: 680px) {
+    font-size: clamp(0.72rem, 3.4vw, 0.9rem);
+    line-height: 1.35;
   }
 `;
 
@@ -1530,10 +1667,20 @@ export const Field = styled.div`
   gap: 10px;
   min-height: 42px;
   padding: 0 12px;
-  border-radius: 9px;
+  border-radius: 10px;
   border: 1px solid rgba(148, 163, 184, 0.14);
   background: rgba(15, 23, 42, 0.76);
   color: #00e5ff;
+  transition:
+    border-color 0.18s ease,
+    box-shadow 0.18s ease,
+    background 0.18s ease;
+
+  &:focus-within {
+    border-color: rgba(0, 229, 255, 0.5);
+    box-shadow: 0 0 0 3px rgba(0, 229, 255, 0.08);
+    background: rgba(15, 23, 42, 0.92);
+  }
 
   input {
     width: 100%;
@@ -1541,6 +1688,44 @@ export const Field = styled.div`
     outline: 0;
     color: #fff;
     background: transparent;
+  }
+
+  &:has(input[type="file"]) {
+    min-height: 58px;
+    padding: 10px 12px;
+    border-color: rgba(0, 229, 255, 0.28);
+    background:
+      radial-gradient(circle at left, rgba(0, 229, 255, 0.13), transparent 38%),
+      rgba(15, 23, 42, 0.86);
+  }
+
+  input[type="file"] {
+    color: rgba(226, 232, 240, 0.86);
+    font-size: 13px;
+    cursor: pointer;
+  }
+
+  input[type="file"]::file-selector-button {
+    margin-right: 14px;
+    min-height: 38px;
+    padding: 0 16px;
+    border: 0;
+    border-radius: 12px;
+    color: #04111f;
+    background: linear-gradient(135deg, #00e5ff, #8b5cf6, #fb7185);
+    font-weight: 950;
+    cursor: pointer;
+    box-shadow: 0 12px 28px rgba(0, 229, 255, 0.18);
+    transition:
+      transform 0.18s ease,
+      box-shadow 0.18s ease,
+      filter 0.18s ease;
+  }
+
+  input[type="file"]::file-selector-button:hover {
+    transform: translateY(-1px);
+    filter: brightness(1.08);
+    box-shadow: 0 16px 34px rgba(139, 92, 246, 0.24);
   }
 `;
 
@@ -1629,39 +1814,55 @@ export const NarrowPanel = styled.div`
 
 export const ProfileHeader = styled.div`
   display: flex;
+  flex-direction: column;
   align-items: center;
+  justify-content: center;
   gap: 14px;
-  margin-bottom: 16px;
-  width: 100%;
+  padding: 22px;
+  margin: 8px 0 18px;
+  border-radius: 18px;
+  background:
+    radial-gradient(circle at top, rgba(139, 92, 246, 0.16), transparent 42%),
+    rgba(2, 6, 23, 0.28);
+  border: 1px solid rgba(148, 163, 184, 0.12);
+  text-align: center;
+`;
 
-  > :first-child { 
-    flex: 0 0 calc(30% - 7px);
-    width: calc(30% - 7px);
-    max-width: 30%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
+export const ProfileHeroInfo = styled.div`
+  min-width: 0;
+  flex: 1;
+  max-width: 760px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 
-  > div {
-    flex: 0 0 calc(70% - 7px);
-    width: calc(70% - 7px);
-    min-width: 0;
-  }
-
-  h2 {
+  h1 {
     margin: 0;
-    font-size: 16px;
+    font-size: clamp(2rem, 4vw, 3.4rem);
+    line-height: 0.95;
+    overflow-wrap: anywhere;
     word-break: break-word;
-    overflow-wrap: break-word;
   }
 
   p {
-    margin: 4px 0 0;
-    color: rgba(226, 232, 240, 0.62);
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
+    width: 100%;
+    max-width: 680px;
+    margin: 0;
+    color: rgba(226, 232, 240, 0.86);
+    font-size: clamp(0.95rem, 2vw, 1.05rem);
+    line-height: 1.65;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+    white-space: normal;
+  }
+
+  @media (max-width: 760px) {
+    align-items: center;
+    text-align: center;
+
+    p {
+      max-width: 100%;
+    }
   }
 `;
 
@@ -1825,11 +2026,21 @@ export const UploadZone = styled.div`
 `;
 
 export const FormCard = styled.form`
-  width: min(760px, 100%);
-  padding: 20px;
-  border-radius: 14px;
-  background: rgba(15, 23, 42, 0.74);
-  border: 1px solid rgba(148, 163, 184, 0.12);
+  width: min(760px, calc(100% - 32px));
+  margin: 0 auto;
+  padding: 24px;
+  border-radius: 18px;
+  background:
+    radial-gradient(circle at top left, rgba(0, 229, 255, 0.08), transparent 34%),
+    rgba(15, 23, 42, 0.82);
+  border: 1px solid rgba(148, 163, 184, 0.14);
+  box-shadow: 0 22px 70px rgba(0, 0, 0, 0.32);
+
+  @media (max-width: 640px) {
+    width: 100%;
+    padding: 18px;
+    border-radius: 16px;
+  }
 `;
 
 export const ToggleLine = styled.label`

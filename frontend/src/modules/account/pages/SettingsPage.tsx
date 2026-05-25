@@ -5,7 +5,6 @@ import {
   FiCheckCircle,
   FiRefreshCw,
   FiSave,
-  FiServer,
 } from "react-icons/fi";
 import { RootShell } from "../../../shared/layout";
 import { getPreferences, updatePreferences } from "../../../services/userService";
@@ -18,16 +17,13 @@ import {
   AlertPanel,
   ButtonRow,
   Eyebrow,
-  FilterChip,
   FormCard,
   Label,
   GhostLink,
   PageHeading,
   PrimaryButton,
   Select,
-  ServicePill,
   SuccessBox,
-  Tabs,
   ToggleLine,
 } from "../../../shared/styles/legacyStyled";
 
@@ -44,7 +40,6 @@ export default function SettingsPage() {
 
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
-  const [interactionsReady, setInteractionsReady] = useState(false);
 
   const [error, setError] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
@@ -56,7 +51,6 @@ export default function SettingsPage() {
       setLoading(true);
       setError("");
       setSuccessMessage("");
-      setInteractionsReady(false);
 
       try {
         const [userPreferencesResult, interactionConfigResult] =
@@ -89,13 +83,11 @@ export default function SettingsPage() {
         if (interactionConfigResult.status === "fulfilled") {
           const config = interactionConfigResult.value;
 
-          setInteractionsReady(true);
           setNotificarDirectos(Boolean(config.notificar_directos));
           setNotificarSuscripciones(Boolean(config.notificar_suscripciones));
           setNotificarPromociones(Boolean(config.notificar_promociones));
           setCanalWeb(Boolean(config.canal_web));
         } else {
-          setInteractionsReady(false);
           setError((current) =>
             current
               ? `${current} Además, no se pudo cargar interacciones-service.`
@@ -156,9 +148,8 @@ export default function SettingsPage() {
         canal_web: recibirNotificaciones && canalWeb,
       });
 
-      setInteractionsReady(true);
       setSuccessMessage(
-        "Preferencias guardadas en usuarios-service e interacciones-service.",
+        "Preferencias guardadas",
       );
     } catch (error) {
       console.error("PREFERENCES_UPDATE_ERROR", error);
@@ -207,31 +198,6 @@ export default function SettingsPage() {
             <FiCheckCircle /> {successMessage}
           </SuccessBox>
         )}
-
-        <AlertPanel>
-          <FiServer />
-
-          <div>
-            <strong>Estado de interacciones-service</strong>
-            <p>
-              {interactionsReady
-                ? "Configuración de notificaciones conectada al microservicio de interacciones."
-                : "La pantalla funciona, pero todavía no se pudo sincronizar con interacciones-service."}
-            </p>
-          </div>
-
-          <ServicePill $status={interactionsReady ? "Operativo" : "Degradado"}>
-            {interactionsReady ? "Conectado" : "Pendiente"}
-          </ServicePill>
-        </AlertPanel>
-
-        <Tabs>
-          <FilterChip $active>Cuenta</FilterChip>
-          <FilterChip>Privacidad</FilterChip>
-          <FilterChip>Apariencia</FilterChip>
-          <FilterChip>Reproducción</FilterChip>
-          <FilterChip>Notificaciones</FilterChip>
-        </Tabs>
 
         <Label>Tema</Label>
         <Select
