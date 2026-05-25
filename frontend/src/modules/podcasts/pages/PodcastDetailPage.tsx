@@ -1,7 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
 import {
-  FiAlertTriangle,
   FiArrowLeft,
   FiCheckCircle,
   FiExternalLink,
@@ -41,6 +40,7 @@ import {
   type PodcastEpisode,
   type PodcastItem,
 } from "../services/podcastsCatalogService";
+import { PodcastErrorPanel } from "../components/PodcastErrorPanel";
 
 type LoadState = "loading" | "online" | "offline";
 
@@ -63,6 +63,7 @@ export default function PodcastDetailPage() {
   const [podcast, setPodcast] = useState<PodcastItem | null>(null);
   const [selectedEpisodeId, setSelectedEpisodeId] = useState<string | null>(null);
   const [registeredPlays, setRegisteredPlays] = useState<string[]>([]);
+  const [reloadKey, setReloadKey] = useState(0);
 
   useEffect(() => {
     let active = true;
@@ -96,7 +97,7 @@ export default function PodcastDetailPage() {
     return () => {
       active = false;
     };
-  }, [podcastId]);
+  }, [podcastId, reloadKey]);
 
   const selectedEpisode = useMemo(() => {
     if (!podcast) return null;
@@ -118,6 +119,18 @@ export default function PodcastDetailPage() {
     } catch (error) {
       console.error("PODCAST_PLAY_REGISTER_ERROR", error);
     }
+  }
+
+  if (loadState === "offline") {
+    return (
+      <RootShell active="podcasts">
+        <PodcastErrorPanel
+          message={message}
+          podcastId={podcastId}
+          onRetry={() => setReloadKey((current) => current + 1)}
+        />
+      </RootShell>
+    );
   }
 
   return (
@@ -145,16 +158,6 @@ export default function PodcastDetailPage() {
           <FiRefreshCw />
           <div>
             <strong>Cargando servicio</strong>
-            <p>{message}</p>
-          </div>
-        </AlertPanel>
-      ) : null}
-
-      {loadState === "offline" ? (
-        <AlertPanel>
-          <FiAlertTriangle />
-          <div>
-            <strong>No se pudo abrir el podcast</strong>
             <p>{message}</p>
           </div>
         </AlertPanel>

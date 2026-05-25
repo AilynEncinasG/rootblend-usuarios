@@ -58,6 +58,7 @@ import {
   unfollowChannel,
   unsubscribeChannel,
 } from "../../interactions/services/interactionsService";
+import { StreamErrorPanel } from "../components/StreamErrorPanel";
 
 function isImageUrl(value?: string | null) {
   if (!value) {
@@ -126,6 +127,7 @@ export default function StreamDetailPage() {
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [reloadKey, setReloadKey] = useState(0);
 
   const loggedIn = isAuthenticated();
 
@@ -178,7 +180,7 @@ export default function StreamDetailPage() {
     return () => {
       active = false;
     };
-  }, [streamId]);
+  }, [streamId, reloadKey]);
 
   useEffect(() => {
     if (!streamId || Number.isNaN(Number(streamId))) return undefined;
@@ -407,16 +409,11 @@ export default function StreamDetailPage() {
   if (error || !stream || !backendStream) {
     return (
       <RootShell active="streams">
-        <EmptyPanel
-          icon={<FiAlertTriangle />}
-          title="Stream no disponible"
-          text={error || "El stream no existe o fue eliminado."}
+        <StreamErrorPanel
+          message={error || "El stream no existe o fue eliminado."}
+          streamId={streamId}
+          onRetry={() => setReloadKey((current) => current + 1)}
         />
-
-        <ButtonRow>
-          <PrimaryLink to="/streams">Volver a transmisiones</PrimaryLink>
-          <GhostLink to="/">Ir al inicio</GhostLink>
-        </ButtonRow>
       </RootShell>
     );
   }

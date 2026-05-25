@@ -1,0 +1,218 @@
+.stream-error-shell {
+  position: relative;
+  min-height: 530px;
+  overflow: hidden;
+  border-radius: 34px;
+  padding: 42px 26px;
+  display: grid;
+  place-items: center;
+  text-align: center;
+  border: 1px solid rgba(0, 234, 255, 0.28);
+  background:
+    radial-gradient(circle at 18% 18%, rgba(0, 234, 255, 0.20), transparent 34%),
+    radial-gradient(circle at 82% 20%, rgba(251, 113, 133, 0.24), transparent 32%),
+    radial-gradient(circle at 50% 100%, rgba(168, 85, 247, 0.22), transparent 38%),
+    linear-gradient(135deg, rgba(2, 6, 23, 0.98), rgba(15, 23, 42, 0.94));
+  box-shadow:
+    0 28px 90px rgba(0, 0, 0, 0.44),
+    inset 0 0 70px rgba(0, 234, 255, 0.06);
+}
+
+.stream-error-shell::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(0, 234, 255, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 234, 255, 0.035) 1px, transparent 1px);
+  background-size: 34px 34px;
+  mask-image: radial-gradient(circle at center, black, transparent 72%);
+  pointer-events: none;
+}
+
+.stream-error-card {
+  position: relative;
+  z-index: 1;
+  width: min(100%, 790px);
+  display: grid;
+  justify-items: center;
+  gap: 20px;
+}
+
+.stream-error-badges {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+}
+
+.stream-error-badges span {
+  padding: 8px 13px;
+  border-radius: 999px;
+  color: #bae6fd;
+  background: rgba(14, 165, 233, 0.12);
+  border: 1px solid rgba(125, 211, 252, 0.28);
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+}
+
+.stream-error-visual {
+  position: relative;
+  width: min(100%, 390px);
+  display: grid;
+  place-items: center;
+}
+
+.stream-error-signal-ring {
+  position: absolute;
+  width: 325px;
+  height: 325px;
+  border-radius: 999px;
+  border: 1px dashed rgba(0, 234, 255, 0.38);
+  animation: streamRotate 18s linear infinite;
+}
+
+.stream-error-signal-ring.two {
+  width: 260px;
+  height: 260px;
+  border-color: rgba(251, 113, 133, 0.34);
+  animation-duration: 12s;
+  animation-direction: reverse;
+}
+
+.stream-error-svg {
+  position: relative;
+  z-index: 2;
+  width: 345px;
+  max-width: 100%;
+  filter:
+    drop-shadow(0 30px 55px rgba(0, 0, 0, 0.48))
+    drop-shadow(0 0 30px rgba(0, 234, 255, 0.14));
+  animation: streamFloat 4.4s ease-in-out infinite;
+}
+
+.stream-error-kicker {
+  margin: 0 0 8px;
+  color: #fb7185;
+  font-size: 13px;
+  font-weight: 950;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.stream-error-copy h1 {
+  margin: 0;
+  font-size: clamp(38px, 7vw, 76px);
+  line-height: 0.92;
+  letter-spacing: -0.06em;
+  color: #f8fafc;
+  text-shadow:
+    0 0 22px rgba(0, 234, 255, 0.24),
+    3px 3px 0 rgba(251, 113, 133, 0.16);
+}
+
+.stream-error-copy h1 span {
+  display: block;
+  color: #00eaff;
+}
+
+.stream-error-copy > p:last-child {
+  max-width: 650px;
+  margin: 14px auto 0;
+  color: rgba(226, 232, 240, 0.84);
+  font-size: 16px;
+  line-height: 1.7;
+}
+
+.stream-error-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+}
+
+.stream-error-actions button,
+.stream-error-actions a {
+  min-height: 46px;
+  padding: 0 20px;
+  border-radius: 16px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  text-decoration: none;
+  cursor: pointer;
+  font-weight: 950;
+  font-size: 14px;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.stream-error-actions button {
+  background: linear-gradient(135deg, #00eaff, #a855f7, #fb7185);
+  color: white;
+  box-shadow: 0 18px 40px rgba(0, 234, 255, 0.20);
+}
+
+.stream-error-actions a {
+  color: #f8fafc;
+  background: rgba(15, 23, 42, 0.74);
+  border: 1px solid rgba(125, 211, 252, 0.22);
+}
+
+.stream-error-actions button:hover,
+.stream-error-actions a:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 20px 44px rgba(0, 234, 255, 0.18);
+  border-color: rgba(0, 234, 255, 0.55);
+}
+
+@keyframes streamFloat {
+  0%,
+  100% {
+    transform: translateY(0) rotate(-1deg);
+  }
+
+  50% {
+    transform: translateY(-12px) rotate(1deg);
+  }
+}
+
+@keyframes streamRotate {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 640px) {
+  .stream-error-shell {
+    min-height: 470px;
+    padding: 32px 18px;
+    border-radius: 26px;
+  }
+
+  .stream-error-signal-ring {
+    width: 265px;
+    height: 265px;
+  }
+
+  .stream-error-signal-ring.two {
+    width: 215px;
+    height: 215px;
+  }
+
+  .stream-error-svg {
+    width: 285px;
+  }
+
+  .stream-error-copy h1 {
+    font-size: clamp(34px, 12vw, 58px);
+  }
+}

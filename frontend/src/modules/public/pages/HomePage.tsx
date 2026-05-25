@@ -469,7 +469,7 @@ export default function HomePage() {
 
       <Section
         title="Canales registrados"
-        action={<TextLink to="/channels">Ver todos</TextLink>}
+        action={<TextLink to="/creators">Ver todos</TextLink>}
       >
         {backendChannels.length === 0 ? (
           <EmptyPanel

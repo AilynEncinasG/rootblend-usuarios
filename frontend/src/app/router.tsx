@@ -11,6 +11,7 @@ import ExploreStreamsPage from "../modules/public/pages/ExploreStreamsPage";
 import CategoriesPage from "../modules/public/pages/CategoriesPage";
 import SearchResultsPage from "../modules/public/pages/SearchResultsPage";
 import ChannelPublicPage from "../modules/public/pages/ChannelPublicPage";
+import CreatorsPage from "../modules/public/pages/CreatorsPage";
 
 import StreamWithChatPage from "../modules/streams/pages/StreamWithChatPage";
 import StreamGuestPage from "../modules/streams/pages/StreamGuestPage";
@@ -343,6 +344,7 @@ export function AppRouter() {
       <Route path="/streams" element={<ExploreStreamsPage />} />
       <Route path="/categories" element={<CategoriesPage />} />
       <Route path="/search" element={<SearchResultsPage />} />
+      <Route path="/creators" element={<CreatorsPage />} />
 
       <Route path="/channels/:channelId" element={<ChannelPublicPage />} />
       <Route

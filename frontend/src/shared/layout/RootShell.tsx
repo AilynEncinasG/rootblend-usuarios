@@ -60,6 +60,7 @@ import {
   UserPill,
   ViewerDot,
   RightRail,
+  ButtonGroup,
 } from "../styles/legacyStyled";
 
 type ShellProps = {
@@ -648,10 +649,10 @@ export function RootShell({
               </TopPopoverWrap>
             </>
           ) : (
-            <>
+            <ButtonGroup>
               <GhostLink to="/login">Iniciar sesion</GhostLink>
               <PrimaryLink to="/register">Registrarse</PrimaryLink>
-            </>
+            </ButtonGroup>
           )}
         </TopActions>
       </Topbar>

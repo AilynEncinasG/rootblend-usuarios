@@ -7,7 +7,6 @@ import {
 } from "react";
 import { Link, useParams } from "react-router-dom";
 import {
-  FiAlertTriangle,
   FiBell,
   FiHeart,
   FiPlay,
@@ -35,6 +34,7 @@ import {
   unfollowChannel,
   unsubscribeChannel,
 } from "../../interactions/services/interactionsService";
+import { ChannelNotFoundPanel } from "../components/ChannelNotFoundPanel";
 
 function normalizeMediaUrl(value?: string | null) {
   if (!value) return "";
@@ -579,25 +579,7 @@ export default function ChannelPublicPage() {
           </div>
         ) : null}
 
-        {error ? (
-          <div
-            style={{
-              border: "1px solid rgba(250, 204, 21, 0.35)",
-              borderRadius: 22,
-              padding: 24,
-              background: "rgba(250, 204, 21, 0.10)",
-              display: "flex",
-              gap: 12,
-              alignItems: "center",
-            }}
-          >
-            <FiAlertTriangle />
-            <div>
-              <strong>No se pudo cargar el canal</strong>
-              <p style={{ margin: "4px 0 0" }}>{error}</p>
-            </div>
-          </div>
-        ) : null}
+        {error ? <ChannelNotFoundPanel error={error} /> : null}
 
         {!loading && !error && channel ? (
           <>

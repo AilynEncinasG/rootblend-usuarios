@@ -1,0 +1,255 @@
+.podcast-error-shell {
+  position: relative;
+  min-height: 520px;
+  overflow: hidden;
+  border-radius: 34px;
+  padding: 42px 26px;
+  display: grid;
+  place-items: center;
+  text-align: center;
+  border: 1px solid rgba(251, 113, 133, 0.30);
+  background:
+    radial-gradient(circle at 18% 16%, rgba(251, 113, 133, 0.26), transparent 34%),
+    radial-gradient(circle at 82% 20%, rgba(0, 234, 255, 0.16), transparent 32%),
+    radial-gradient(circle at 50% 100%, rgba(168, 85, 247, 0.24), transparent 38%),
+    linear-gradient(135deg, rgba(2, 6, 23, 0.98), rgba(15, 23, 42, 0.94));
+  box-shadow:
+    0 28px 90px rgba(0, 0, 0, 0.44),
+    inset 0 0 70px rgba(251, 113, 133, 0.06);
+}
+
+.podcast-error-shell::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    repeating-linear-gradient(
+      90deg,
+      rgba(0, 234, 255, 0.025) 0px,
+      rgba(0, 234, 255, 0.025) 2px,
+      transparent 2px,
+      transparent 26px
+    );
+  mask-image: radial-gradient(circle at center, black, transparent 72%);
+  pointer-events: none;
+}
+
+.podcast-error-card {
+  position: relative;
+  z-index: 1;
+  width: min(100%, 780px);
+  display: grid;
+  justify-items: center;
+  gap: 20px;
+}
+
+.podcast-error-badges {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+}
+
+.podcast-error-badges span {
+  padding: 8px 13px;
+  border-radius: 999px;
+  color: #fecaca;
+  background: rgba(127, 29, 29, 0.35);
+  border: 1px solid rgba(251, 113, 133, 0.30);
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+}
+
+.podcast-error-visual {
+  position: relative;
+  width: min(100%, 390px);
+  display: grid;
+  place-items: center;
+}
+
+.podcast-error-pulse {
+  position: absolute;
+  width: 300px;
+  height: 300px;
+  border-radius: 999px;
+  background:
+    radial-gradient(circle, rgba(251, 113, 133, 0.18), transparent 62%),
+    radial-gradient(circle, rgba(0, 234, 255, 0.12), transparent 74%);
+  filter: blur(10px);
+  animation: podcastPulse 3.8s ease-in-out infinite;
+}
+
+.podcast-error-orbit {
+  position: absolute;
+  width: 315px;
+  height: 315px;
+  border-radius: 999px;
+  border: 1px dashed rgba(251, 113, 133, 0.38);
+  animation: podcastRotate 18s linear infinite;
+}
+
+.podcast-error-dot {
+  position: absolute;
+  width: 11px;
+  height: 11px;
+  border-radius: 999px;
+}
+
+.podcast-error-dot.one {
+  top: 25px;
+  left: 64px;
+  background: #fb7185;
+  box-shadow: 0 0 24px #fb7185;
+}
+
+.podcast-error-dot.two {
+  right: 46px;
+  bottom: 66px;
+  background: #00eaff;
+  box-shadow: 0 0 24px #00eaff;
+}
+
+.podcast-error-svg {
+  position: relative;
+  z-index: 2;
+  width: 340px;
+  max-width: 100%;
+  filter:
+    drop-shadow(0 30px 55px rgba(0, 0, 0, 0.48))
+    drop-shadow(0 0 30px rgba(251, 113, 133, 0.16));
+  animation: podcastFloat 4.4s ease-in-out infinite;
+}
+
+.podcast-error-kicker {
+  margin: 0 0 8px;
+  color: #fb7185;
+  font-size: 13px;
+  font-weight: 950;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.podcast-error-copy h1 {
+  margin: 0;
+  font-size: clamp(38px, 7vw, 76px);
+  line-height: 0.92;
+  letter-spacing: -0.06em;
+  color: #f8fafc;
+  text-shadow:
+    0 0 22px rgba(251, 113, 133, 0.24),
+    3px 3px 0 rgba(0, 234, 255, 0.14);
+}
+
+.podcast-error-copy h1 span {
+  display: block;
+  color: #fb7185;
+}
+
+.podcast-error-copy > p:last-child {
+  max-width: 640px;
+  margin: 14px auto 0;
+  color: rgba(226, 232, 240, 0.84);
+  font-size: 16px;
+  line-height: 1.7;
+}
+
+.podcast-error-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+}
+
+.podcast-error-actions button,
+.podcast-error-actions a {
+  min-height: 46px;
+  padding: 0 20px;
+  border-radius: 16px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  text-decoration: none;
+  cursor: pointer;
+  font-weight: 950;
+  font-size: 14px;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.podcast-error-actions button {
+  background: linear-gradient(135deg, #fb7185, #a855f7, #00eaff);
+  color: white;
+  box-shadow: 0 18px 40px rgba(251, 113, 133, 0.22);
+}
+
+.podcast-error-actions a {
+  color: #f8fafc;
+  background: rgba(15, 23, 42, 0.74);
+  border: 1px solid rgba(251, 113, 133, 0.22);
+}
+
+.podcast-error-actions button:hover,
+.podcast-error-actions a:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 20px 44px rgba(251, 113, 133, 0.18);
+  border-color: rgba(251, 113, 133, 0.55);
+}
+
+@keyframes podcastFloat {
+  0%,
+  100% {
+    transform: translateY(0) rotate(-1deg);
+  }
+
+  50% {
+    transform: translateY(-12px) rotate(1deg);
+  }
+}
+
+@keyframes podcastPulse {
+  0%,
+  100% {
+    transform: scale(0.94);
+    opacity: 0.78;
+  }
+
+  50% {
+    transform: scale(1.05);
+    opacity: 1;
+  }
+}
+
+@keyframes podcastRotate {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 640px) {
+  .podcast-error-shell {
+    min-height: 470px;
+    padding: 32px 18px;
+    border-radius: 26px;
+  }
+
+  .podcast-error-orbit {
+    width: 260px;
+    height: 260px;
+  }
+
+  .podcast-error-svg {
+    width: 280px;
+  }
+
+  .podcast-error-copy h1 {
+    font-size: clamp(34px, 12vw, 58px);
+  }
+}

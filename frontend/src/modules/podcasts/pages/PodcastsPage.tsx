@@ -1,17 +1,13 @@
 import { useEffect, useMemo, useState } from "react";
 import {
-  FiAlertTriangle,
-  FiCheckCircle,
   FiHeadphones,
   FiMic,
   FiPlus,
-  FiRefreshCw,
   FiSearch,
 } from "react-icons/fi";
 import { RootShell } from "../../../shared/layout";
 import { brandAssets } from "../../../shared/mock/rootblendMock";
 import {
-  AlertPanel,
   ButtonRow,
   FeaturedFlag,
   Field,
@@ -104,8 +100,8 @@ export default function PodcastsPage() {
         <HeroCopy>
           <h1>Podcasts ROOTBLEND</h1>
           <p>
-            Catálogo público conectado a podcasts-service. Aquí se prueban visualmente
-            HU-012, HU-013 y HU-014: listar podcasts, ver episodios y reproducir audio.
+            ✨¡Dale play a tus podcasts! ✨
+            Explora nuestro catálogo, elige un episodio y disfruta del mejor audio.
           </p>
 
           <ButtonRow>
@@ -128,7 +124,7 @@ export default function PodcastsPage() {
           </HeroOverlay>
         </HeroMedia>
       </HeroGrid>
-
+{/* 
       {loadState === "loading" ? (
         <AlertPanel>
           <FiRefreshCw />
@@ -158,7 +154,7 @@ export default function PodcastsPage() {
           </div>
         </AlertPanel>
       ) : null}
-
+*/}
       <Panel>
         <PanelHeader>
           <strong>Podcasts disponibles</strong>
