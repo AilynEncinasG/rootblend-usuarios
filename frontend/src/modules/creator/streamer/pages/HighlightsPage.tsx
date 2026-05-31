@@ -1,3 +1,4 @@
+//frontend/src/modules/creator/streamer/pages/HighlightsPage.tsx
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import {
@@ -164,9 +165,11 @@ export default function HighlightsPage() {
                 minHeight: 92,
                 padding: 14,
                 borderRadius: 18,
-                border: "1px solid rgba(0, 234, 255, 0.16)",
+                border: "1px solid var(--rb-border)",
                 background:
-                  "linear-gradient(90deg, rgba(15,23,42,.88), rgba(45,18,82,.72))",
+                  "linear-gradient(90deg, color-mix(in srgb, var(--rb-panel) 88%, transparent), color-mix(in srgb, var(--rb-accent-2) 18%, var(--rb-panel)))",
+                boxShadow: "0 14px 34px color-mix(in srgb, var(--rb-shadow) 38%, transparent)",
+                color: "var(--rb-text)",
               }}
             >
               <Link
@@ -219,10 +222,10 @@ export default function HighlightsPage() {
                     borderRadius: 12,
                     display: "grid",
                     placeItems: "center",
-                    border: "1px solid rgba(0, 234, 255, 0.35)",
-                    color: "#00eaff",
+                    border: "1px solid var(--rb-border-strong)",
+                    color: "var(--rb-accent)",
                     textDecoration: "none",
-                    background: "rgba(2, 6, 23, 0.56)",
+                    background: "var(--rb-panel)",
                   }}
                   title="Reproducir"
                 >
@@ -237,10 +240,10 @@ export default function HighlightsPage() {
                     borderRadius: 12,
                     display: "grid",
                     placeItems: "center",
-                    border: "1px solid rgba(34, 197, 94, 0.45)",
-                    color: "#22c55e",
+                    border: "1px solid color-mix(in srgb, var(--rb-success) 45%, transparent)",
+                    color: "var(--rb-success)",
                     textDecoration: "none",
-                    background: "rgba(2, 6, 23, 0.56)",
+                    background: "var(--rb-panel)",
                   }}
                   title="Editar"
                 >

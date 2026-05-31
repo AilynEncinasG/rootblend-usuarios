@@ -1,3 +1,4 @@
+//frontend/src/styles/DashboardStyles.ts
 import { styled } from "styled-components";
 
 export const DashboardLayout = styled.div`
@@ -19,9 +20,32 @@ export const SidebarWrapper = styled.aside`
   top: 72px;
   height: calc(100vh - 72px);
   padding: 18px 14px;
-  background: linear-gradient(180deg, rgba(10,14,32,0.96), rgba(7,10,24,0.98));
-  border-right: 1px solid rgba(255,255,255,0.06);
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--rb-panel) 96%, transparent),
+      color-mix(in srgb, var(--rb-panel-strong) 98%, transparent)
+    );
+  border-right: 1px solid var(--rb-border);
+  color: var(--rb-text);
   overflow-y: auto;
+  box-shadow: inset -1px 0 0 color-mix(in srgb, var(--rb-border) 70%, transparent);
+
+  [data-theme="light"] &,
+  html[data-theme="light"] &,
+  body[data-theme="light"] &,
+  .light &,
+  .theme-light & {
+    background:
+      linear-gradient(
+        180deg,
+        rgba(255, 255, 255, 0.86),
+        rgba(239, 246, 255, 0.92)
+      );
+    border-right: 1px solid rgba(15, 23, 42, 0.12);
+    color: #0f172a;
+    box-shadow: inset -1px 0 0 rgba(15, 23, 42, 0.08);
+  }
 
   @media (max-width: 860px) {
     display: none;
@@ -31,10 +55,18 @@ export const SidebarWrapper = styled.aside`
 export const SidebarSectionTitle = styled.h3`
   font-size: 0.72rem;
   font-weight: 900;
-  color: rgba(255,255,255,0.55);
+  color: var(--rb-muted-soft);
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  margin-bottom: 14px;
+  margin: 0 0 14px;
+
+  [data-theme="light"] &,
+  html[data-theme="light"] &,
+  body[data-theme="light"] &,
+  .light &,
+  .theme-light & {
+    color: rgba(15, 23, 42, 0.55);
+  }
 `;
 
 export const SidebarList = styled.div`
@@ -50,11 +82,26 @@ export const ChannelItemRow = styled.div`
   gap: 10px;
   padding: 9px 10px;
   border-radius: 14px;
-  transition: 0.18s ease;
+  transition:
+    background 0.18s ease,
+    border-color 0.18s ease,
+    transform 0.18s ease;
   cursor: pointer;
+  border: 1px solid transparent;
 
   &:hover {
-    background: rgba(255,255,255,0.05);
+    background: var(--rb-panel-hover);
+    border-color: var(--rb-border);
+    transform: translateX(2px);
+  }
+
+  [data-theme="light"] &:hover,
+  html[data-theme="light"] &:hover,
+  body[data-theme="light"] &:hover,
+  .light &:hover,
+  .theme-light &:hover {
+    background: rgba(2, 132, 199, 0.08);
+    border-color: rgba(2, 132, 199, 0.18);
   }
 `;
 
@@ -62,13 +109,14 @@ export const ChannelAvatar = styled.div`
   width: 34px;
   height: 34px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #00e5ff, #7c3aed);
-  color: #06101b;
+  background: linear-gradient(135deg, var(--rb-accent), var(--rb-accent-2));
+  color: var(--rb-text-inverse);
   font-weight: 900;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+  box-shadow: 0 8px 18px color-mix(in srgb, var(--rb-accent) 20%, transparent);
 `;
 
 export const ChannelText = styled.div`
@@ -78,22 +126,39 @@ export const ChannelText = styled.div`
 export const ChannelName = styled.div`
   font-size: 0.92rem;
   font-weight: 800;
-  color: #fff;
+  color: var(--rb-text-strong);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+
+  [data-theme="light"] &,
+  html[data-theme="light"] &,
+  body[data-theme="light"] &,
+  .light &,
+  .theme-light & {
+    color: #0f172a;
+  }
 `;
 
 export const ChannelSubtitle = styled.div`
   font-size: 0.78rem;
-  color: rgba(255,255,255,0.55);
+  color: var(--rb-muted-soft);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+
+  [data-theme="light"] &,
+  html[data-theme="light"] &,
+  body[data-theme="light"] &,
+  .light &,
+  .theme-light & {
+    color: rgba(15, 23, 42, 0.58);
+  }
 `;
 
 export const MainContent = styled.main`
   padding: 18px 24px 30px;
+  color: var(--rb-text);
   overflow: hidden;
 
   @media (max-width: 860px) {
@@ -107,7 +172,7 @@ export const ContentHeader = styled.div`
 `;
 
 export const SmallLabel = styled.div`
-  color: #00e5ff;
+  color: var(--rb-accent);
   font-weight: 900;
   font-size: 0.8rem;
   text-transform: uppercase;
@@ -119,12 +184,12 @@ export const PageTitle = styled.h1`
   font-size: clamp(2rem, 4vw, 3.4rem);
   line-height: 1;
   font-weight: 900;
-  color: #ffffff;
+  color: var(--rb-text-strong);
   margin-bottom: 10px;
 `;
 
 export const PageSubtitle = styled.p`
-  color: rgba(255,255,255,0.68);
+  color: var(--rb-muted);
   max-width: 760px;
   margin: 0 auto;
   line-height: 1.6;
@@ -145,29 +210,40 @@ export const SearchInput = styled.input`
   width: 100%;
   height: 46px;
   border-radius: 14px;
-  background: rgba(255,255,255,0.04);
-  border: 1px solid rgba(255,255,255,0.08);
-  color: #fff;
+  background: var(--rb-input-bg);
+  border: 1px solid var(--rb-input-border);
+  color: var(--rb-text);
   padding: 0 16px;
   outline: none;
 
   &::placeholder {
-    color: rgba(255,255,255,0.42);
+    color: var(--rb-muted-soft);
   }
 
   &:focus {
-    border-color: rgba(0,229,255,0.45);
+    border-color: var(--rb-border-strong);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--rb-accent) 14%, transparent);
   }
 `;
 
 export const CategorySelect = styled.select`
   height: 46px;
   border-radius: 14px;
-  background: rgba(255,255,255,0.04);
-  border: 1px solid rgba(255,255,255,0.08);
-  color: #fff;
+  background: var(--rb-input-bg);
+  border: 1px solid var(--rb-input-border);
+  color: var(--rb-text);
   padding: 0 16px;
   outline: none;
+
+  &:focus {
+    border-color: var(--rb-border-strong);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--rb-accent) 14%, transparent);
+  }
+
+  option {
+    background: var(--rb-panel);
+    color: var(--rb-text);
+  }
 `;
 
 export const SectionBlock = styled.section`
@@ -185,12 +261,12 @@ export const SectionHeader = styled.div`
 export const SectionTitle = styled.h2`
   font-size: 1.8rem;
   font-weight: 900;
-  color: #ffffff;
+  color: var(--rb-text-strong);
 `;
 
 export const SectionCount = styled.div`
   font-size: 0.92rem;
-  color: #00e5ff;
+  color: var(--rb-accent);
   font-weight: 700;
 `;
 
@@ -203,24 +279,26 @@ export const StreamsGrid = styled.div`
 export const FeedbackBox = styled.div`
   padding: 18px;
   border-radius: 18px;
-  background: rgba(255,255,255,0.04);
-  border: 1px solid rgba(255,255,255,0.08);
-  color: rgba(255,255,255,0.74);
+  background: var(--rb-panel);
+  border: 1px solid var(--rb-border);
+  color: var(--rb-muted);
+  box-shadow: 0 12px 34px var(--rb-shadow);
 `;
 
 export const StreamCardWrapper = styled.article`
   overflow: hidden;
   border-radius: 22px;
-  background:
-    linear-gradient(180deg, rgba(12,18,44,0.98) 0%, rgba(8,11,28,0.98) 100%);
-  border: 1px solid rgba(255,255,255,0.08);
+  background: var(--rb-card-bg);
+  border: 1px solid var(--rb-border);
+  color: var(--rb-text);
   transition: 0.2s ease;
-  box-shadow: 0 12px 36px rgba(0,0,0,0.22);
+  box-shadow: 0 12px 36px var(--rb-shadow);
 
   &:hover {
     transform: translateY(-3px);
-    border-color: rgba(0,229,255,0.25);
-    box-shadow: 0 18px 40px rgba(0,0,0,0.3);
+    background: var(--rb-card-bg-hover);
+    border-color: var(--rb-border-strong);
+    box-shadow: 0 18px 40px var(--rb-shadow);
   }
 `;
 
@@ -228,8 +306,13 @@ export const StreamThumb = styled.div`
   position: relative;
   height: 170px;
   background:
-    radial-gradient(circle at top left, rgba(0,229,255,0.15), transparent 30%),
-    linear-gradient(135deg, #142a52 0%, #0f2349 35%, #163f55 100%);
+    radial-gradient(circle at top left, color-mix(in srgb, var(--rb-accent) 18%, transparent), transparent 30%),
+    linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--rb-accent) 20%, var(--rb-bg-deep)) 0%,
+      color-mix(in srgb, var(--rb-accent-2) 22%, var(--rb-bg-deep)) 45%,
+      color-mix(in srgb, var(--rb-success) 18%, var(--rb-bg-deep)) 100%
+    );
 `;
 
 export const ThumbCenterText = styled.div`
@@ -238,7 +321,7 @@ export const ThumbCenterText = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  color: rgba(255,255,255,0.6);
+  color: color-mix(in srgb, var(--rb-text) 72%, transparent);
   font-size: 0.95rem;
   font-weight: 800;
 `;
@@ -249,7 +332,7 @@ export const LiveBadge = styled.span`
   left: 12px;
   font-size: 0.74rem;
   font-weight: 900;
-  color: #fff;
+  color: var(--rb-text-inverse);
   background: linear-gradient(135deg, #ff4b5c, #ff6b7d);
   border-radius: 9px;
   padding: 6px 10px;
@@ -261,8 +344,8 @@ export const FeaturedBadge = styled.span`
   right: 12px;
   font-size: 0.74rem;
   font-weight: 900;
-  color: #041019;
-  background: linear-gradient(135deg, #00e5ff, #20c8ff);
+  color: var(--rb-text-inverse);
+  background: linear-gradient(135deg, var(--rb-accent), color-mix(in srgb, var(--rb-accent) 72%, #20c8ff));
   border-radius: 9px;
   padding: 6px 10px;
 `;
@@ -275,26 +358,27 @@ export const StreamTitle = styled.h3`
   font-size: 1.08rem;
   line-height: 1.2;
   font-weight: 900;
+  color: var(--rb-text-strong);
   margin-bottom: 8px;
 `;
 
 export const StreamChannel = styled.p`
   font-size: 0.95rem;
-  color: rgba(255,255,255,0.82);
+  color: var(--rb-muted);
   margin-bottom: 8px;
 `;
 
 export const StreamCategory = styled.div`
   font-size: 0.85rem;
   font-weight: 800;
-  color: #00e5ff;
+  color: var(--rb-accent);
   margin-bottom: 10px;
 `;
 
 export const StreamDescription = styled.p`
   font-size: 0.85rem;
   line-height: 1.55;
-  color: rgba(255,255,255,0.58);
+  color: var(--rb-muted-soft);
   min-height: 44px;
   margin-bottom: 14px;
 `;
@@ -308,8 +392,9 @@ export const StreamMetaRow = styled.div`
 export const MetaChip = styled.span`
   padding: 6px 10px;
   border-radius: 999px;
-  background: rgba(255,255,255,0.06);
-  color: rgba(255,255,255,0.7);
+  background: var(--rb-chip-bg);
+  color: var(--rb-chip-text);
+  border: 1px solid var(--rb-border);
   font-size: 0.76rem;
   font-weight: 700;
 `;

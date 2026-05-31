@@ -1,3 +1,4 @@
+//frontend/src/modules/creator/streamer/pages/CreateStreamPage.tsx
 import { type FormEvent, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import {
@@ -301,8 +302,9 @@ export default function CreateStreamPage() {
                     width: "100%",
                     minHeight: 190,
                     borderRadius: 18,
-                    border: "1px solid rgba(0, 234, 255, 0.18)",
-                    background: `linear-gradient(180deg, rgba(2,8,26,.15), rgba(2,8,26,.55)), url(${thumbnailUrl.trim()}) center/cover`,
+                    border: "1px solid var(--rb-border-strong)",
+                    background: `linear-gradient(180deg, color-mix(in srgb, var(--rb-bg-deep) 15%, transparent), color-mix(in srgb, var(--rb-bg-deep) 55%, transparent)), url(${thumbnailUrl.trim()}) center/cover`,
+                    boxShadow: "0 16px 40px color-mix(in srgb, var(--rb-shadow) 42%, transparent)",
                   }}
                 />
               ) : null}

@@ -1,3 +1,4 @@
+//frontend/src/shared/styles/feedback.ts
 import styled from "styled-components";
 
 export const AlertPanel = styled.div`
@@ -7,13 +8,13 @@ export const AlertPanel = styled.div`
   margin-bottom: 18px;
   padding: 14px;
   border-radius: 12px;
-  color: #fde68a;
-  background: rgba(202, 138, 4, 0.12);
-  border: 1px solid rgba(202, 138, 4, 0.26);
+  color: var(--rb-warning);
+  background: color-mix(in srgb, var(--rb-warning) 12%, transparent);
+  border: 1px solid color-mix(in srgb, var(--rb-warning) 26%, transparent);
 
   p {
     margin: 4px 0 0;
-    color: rgba(226, 232, 240, 0.7);
+    color: var(--rb-muted);
   }
 `;
 
@@ -27,9 +28,14 @@ export const SkeletonCard = styled.div`
   height: 190px;
   border-radius: 12px;
   background:
-    linear-gradient(90deg, rgba(148, 163, 184, 0.08), rgba(148, 163, 184, 0.18), rgba(148, 163, 184, 0.08));
+    linear-gradient(
+      90deg,
+      color-mix(in srgb, var(--rb-muted-soft) 8%, transparent),
+      color-mix(in srgb, var(--rb-muted-soft) 18%, transparent),
+      color-mix(in srgb, var(--rb-muted-soft) 8%, transparent)
+    );
   background-size: 200% 100%;
-  border: 1px solid rgba(148, 163, 184, 0.1);
+  border: 1px solid var(--rb-border);
   animation: shimmer 1.5s infinite linear;
 
   @keyframes shimmer {
@@ -44,16 +50,19 @@ export const StatePanel = styled.div`
   text-align: center;
   padding: 34px;
   border-radius: 14px;
-  background: rgba(15, 23, 42, 0.74);
-  border: 1px solid rgba(148, 163, 184, 0.12);
+  background: var(--rb-panel);
+  border: 1px solid var(--rb-border);
+  color: var(--rb-text);
+  box-shadow: 0 16px 42px color-mix(in srgb, var(--rb-shadow) 42%, transparent);
 
   h1,
   h2 {
     margin: 12px 0 8px;
+    color: var(--rb-text-strong);
   }
 
   p {
-    color: rgba(226, 232, 240, 0.68);
+    color: var(--rb-muted);
   }
 `;
 
@@ -64,9 +73,9 @@ export const StateIcon = styled.div`
   align-items: center;
   justify-content: center;
   border-radius: 28px;
-  color: #00e5ff;
-  background: rgba(0, 229, 255, 0.1);
-  border: 1px solid rgba(0, 229, 255, 0.2);
+  color: var(--rb-accent);
+  background: color-mix(in srgb, var(--rb-accent) 10%, transparent);
+  border: 1px solid color-mix(in srgb, var(--rb-accent) 20%, transparent);
 
   svg {
     width: 44px;
@@ -84,11 +93,19 @@ export const DialogCard = styled.div`
   text-align: center;
   padding: 24px;
   border-radius: 14px;
-  background: rgba(15, 23, 42, 0.88);
-  border: 1px solid rgba(148, 163, 184, 0.14);
+  background: var(--rb-panel);
+  border: 1px solid var(--rb-border);
+  color: var(--rb-text);
+  box-shadow: 0 16px 42px color-mix(in srgb, var(--rb-shadow) 42%, transparent);
+
+  h1,
+  h2,
+  h3 {
+    color: var(--rb-text-strong);
+  }
 
   p {
-    color: rgba(226, 232, 240, 0.68);
+    color: var(--rb-muted);
   }
 `;
 
@@ -99,9 +116,9 @@ export const DangerIcon = styled.div`
   align-items: center;
   justify-content: center;
   border-radius: 50%;
-  color: #fecdd3;
-  background: rgba(220, 38, 38, 0.14);
-  border: 1px solid rgba(248, 113, 113, 0.28);
+  color: var(--rb-danger);
+  background: color-mix(in srgb, var(--rb-danger) 14%, transparent);
+  border: 1px solid color-mix(in srgb, var(--rb-danger) 28%, transparent);
 
   svg {
     width: 36px;
@@ -115,10 +132,11 @@ export const ServiceRow = styled.div`
   gap: 10px;
   align-items: center;
   padding: 10px 0;
-  border-bottom: 1px solid rgba(148, 163, 184, 0.1);
+  border-bottom: 1px solid var(--rb-border);
+  color: var(--rb-text);
 
   small {
-    color: rgba(226, 232, 240, 0.62);
+    color: var(--rb-muted-soft);
   }
 
   @media (max-width: 760px) {
@@ -130,17 +148,22 @@ export const Table = styled.table`
   width: 100%;
   border-collapse: collapse;
   font-size: 13px;
+  color: var(--rb-text);
 
   th,
   td {
     padding: 10px;
-    border-bottom: 1px solid rgba(148, 163, 184, 0.1);
+    border-bottom: 1px solid var(--rb-border);
     text-align: left;
   }
 
   th {
-    color: rgba(226, 232, 240, 0.62);
+    color: var(--rb-muted-soft);
     font-size: 11px;
     text-transform: uppercase;
+  }
+
+  td {
+    color: var(--rb-text);
   }
 `;

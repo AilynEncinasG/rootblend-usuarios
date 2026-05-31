@@ -1,3 +1,4 @@
+//frontend/src/modules/creator/shared/creatorLegacy.tsx
 import { type FormEvent, type ReactNode, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import {
@@ -83,15 +84,17 @@ function CreatorSideLink({
         marginBottom: 8,
         padding: "8px 10px",
         borderRadius: 10,
-        color: isActive ? "#04111f" : "rgba(226, 232, 240, 0.82)",
+        color: isActive ? "var(--rb-text-inverse)" : "var(--rb-muted)",
         background: isActive
-          ? "linear-gradient(135deg, #00e5ff, #22c55e)"
+          ? "linear-gradient(135deg, var(--rb-accent), var(--rb-success))"
           : "transparent",
         fontSize: 13,
         fontWeight: 850,
         lineHeight: 1.15,
         textDecoration: "none",
         whiteSpace: "normal",
+        border: isActive ? "1px solid var(--rb-border-strong)" : "1px solid transparent",
+        transition: "0.18s ease",
       }}
     >
       <span

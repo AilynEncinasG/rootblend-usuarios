@@ -4,10 +4,11 @@
   display: grid;
   place-items: center;
   background:
-    radial-gradient(circle at 18% 18%, rgba(251, 113, 133, 0.22), transparent 34%),
-    radial-gradient(circle at 82% 20%, rgba(0, 234, 255, 0.16), transparent 32%),
-    radial-gradient(circle at 50% 100%, rgba(168, 85, 247, 0.26), transparent 38%),
-    #020617;
+    radial-gradient(circle at 18% 18%, color-mix(in srgb, var(--rb-danger) 22%, transparent), transparent 34%),
+    radial-gradient(circle at 82% 20%, color-mix(in srgb, var(--rb-accent) 16%, transparent), transparent 32%),
+    radial-gradient(circle at 50% 100%, color-mix(in srgb, var(--rb-accent-2) 26%, transparent), transparent 38%),
+    var(--rb-bg);
+  color: var(--rb-text);
 }
 
 .access-restricted-card {
@@ -20,11 +21,16 @@
   justify-items: center;
   gap: 22px;
   text-align: center;
-  border: 1px solid rgba(251, 113, 133, 0.28);
-  background: linear-gradient(135deg, rgba(15, 23, 42, 0.96), rgba(24, 24, 27, 0.94));
+  border: 1px solid color-mix(in srgb, var(--rb-danger) 28%, transparent);
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--rb-panel) 96%, transparent),
+    color-mix(in srgb, var(--rb-panel-strong) 94%, transparent)
+  );
   box-shadow:
-    0 30px 100px rgba(0, 0, 0, 0.52),
-    inset 0 0 80px rgba(251, 113, 133, 0.05);
+    0 30px 100px var(--rb-shadow),
+    inset 0 0 80px color-mix(in srgb, var(--rb-danger) 5%, transparent);
+  color: var(--rb-text);
 }
 
 .access-restricted-card::before {
@@ -32,8 +38,8 @@
   position: absolute;
   inset: 0;
   background-image:
-    linear-gradient(rgba(251, 113, 133, 0.04) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0, 234, 255, 0.035) 1px, transparent 1px);
+    linear-gradient(color-mix(in srgb, var(--rb-danger) 4%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in srgb, var(--rb-accent) 3.5%, transparent) 1px, transparent 1px);
   background-size: 34px 34px;
   mask-image: radial-gradient(circle at center, black, transparent 72%);
   pointer-events: none;
@@ -45,7 +51,7 @@
   width: 500px;
   height: 500px;
   border-radius: 999px;
-  background: rgba(251, 113, 133, 0.11);
+  background: color-mix(in srgb, var(--rb-danger) 11%, transparent);
   filter: blur(82px);
   bottom: -270px;
   left: 50%;
@@ -71,9 +77,9 @@
 .access-restricted-badges span {
   padding: 8px 13px;
   border-radius: 999px;
-  color: #fecaca;
-  background: rgba(127, 29, 29, 0.35);
-  border: 1px solid rgba(251, 113, 133, 0.30);
+  color: var(--rb-danger);
+  background: color-mix(in srgb, var(--rb-danger) 12%, transparent);
+  border: 1px solid color-mix(in srgb, var(--rb-danger) 30%, transparent);
   font-size: 12px;
   font-weight: 900;
   letter-spacing: 0.08em;
@@ -90,14 +96,14 @@
   width: 330px;
   height: 330px;
   border-radius: 999px;
-  border: 1px dashed rgba(251, 113, 133, 0.38);
+  border: 1px dashed color-mix(in srgb, var(--rb-danger) 38%, transparent);
   animation: accessRestrictedRotate 18s linear infinite;
 }
 
 .access-restricted-orbit.orbit-two {
   width: 260px;
   height: 260px;
-  border-color: rgba(0, 234, 255, 0.34);
+  border-color: color-mix(in srgb, var(--rb-accent) 34%, transparent);
   animation-duration: 12s;
   animation-direction: reverse;
 }
@@ -112,15 +118,15 @@
 .access-restricted-dot.dot-one {
   top: 22px;
   left: 62px;
-  background: #fb7185;
-  box-shadow: 0 0 24px #fb7185;
+  background: var(--rb-danger);
+  box-shadow: 0 0 24px var(--rb-danger);
 }
 
 .access-restricted-dot.dot-two {
   right: 42px;
   bottom: 64px;
-  background: #00eaff;
-  box-shadow: 0 0 24px #00eaff;
+  background: var(--rb-accent);
+  box-shadow: 0 0 24px var(--rb-accent);
 }
 
 .access-restricted-svg {
@@ -129,14 +135,14 @@
   width: 345px;
   max-width: 100%;
   filter:
-    drop-shadow(0 30px 55px rgba(0, 0, 0, 0.50))
-    drop-shadow(0 0 30px rgba(251, 113, 133, 0.16));
+    drop-shadow(0 30px 55px color-mix(in srgb, var(--rb-shadow) 72%, transparent))
+    drop-shadow(0 0 30px color-mix(in srgb, var(--rb-danger) 16%, transparent));
   animation: accessRestrictedFloat 4.5s ease-in-out infinite;
 }
 
 .access-restricted-kicker {
   margin: 0 0 10px;
-  color: #fb7185;
+  color: var(--rb-danger);
   font-size: 13px;
   font-weight: 950;
   letter-spacing: 0.12em;
@@ -148,21 +154,21 @@
   font-size: clamp(42px, 8vw, 84px);
   line-height: 0.9;
   letter-spacing: -0.07em;
-  color: #f8fafc;
+  color: var(--rb-text-strong);
   text-shadow:
-    0 0 24px rgba(251, 113, 133, 0.22),
-    3px 3px 0 rgba(0, 234, 255, 0.16);
+    0 0 24px color-mix(in srgb, var(--rb-danger) 22%, transparent),
+    3px 3px 0 color-mix(in srgb, var(--rb-accent) 16%, transparent);
 }
 
 .access-restricted-copy h1 span {
   display: block;
-  color: #fb7185;
+  color: var(--rb-danger);
 }
 
 .access-restricted-copy p:last-child {
   max-width: 680px;
   margin: 16px auto 0;
-  color: rgba(226, 232, 240, 0.84);
+  color: var(--rb-muted);
   font-size: 16px;
   line-height: 1.7;
 }
@@ -187,26 +193,33 @@
   transition:
     transform 0.2s ease,
     box-shadow 0.2s ease,
-    border-color 0.2s ease;
+    border-color 0.2s ease,
+    background 0.2s ease,
+    color 0.2s ease;
 }
 
 .access-restricted-primary {
-  background: linear-gradient(135deg, #fb7185, #a855f7, #00eaff);
-  color: white;
-  box-shadow: 0 18px 42px rgba(251, 113, 133, 0.20);
+  background: linear-gradient(135deg, var(--rb-danger), var(--rb-accent-2), var(--rb-accent));
+  color: var(--rb-text-inverse);
+  box-shadow: 0 18px 42px color-mix(in srgb, var(--rb-danger) 20%, transparent);
 }
 
 .access-restricted-secondary {
-  color: #f8fafc;
-  background: rgba(15, 23, 42, 0.74);
-  border: 1px solid rgba(251, 113, 133, 0.22);
+  color: var(--rb-text);
+  background: var(--rb-panel);
+  border: 1px solid color-mix(in srgb, var(--rb-danger) 22%, transparent);
 }
 
 .access-restricted-primary:hover,
 .access-restricted-secondary:hover {
   transform: translateY(-2px);
-  box-shadow: 0 22px 46px rgba(251, 113, 133, 0.17);
-  border-color: rgba(251, 113, 133, 0.55);
+  box-shadow: 0 22px 46px color-mix(in srgb, var(--rb-danger) 17%, transparent);
+  border-color: color-mix(in srgb, var(--rb-danger) 55%, transparent);
+}
+
+.access-restricted-secondary:hover {
+  color: var(--rb-text-strong);
+  background: var(--rb-panel-hover);
 }
 
 @keyframes accessRestrictedFloat {

@@ -1,3 +1,4 @@
+//frontend/src/shared/styles/navigation.ts
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 
@@ -11,8 +12,9 @@ export const Topbar = styled.header`
   align-items: center;
   gap: 22px;
   padding: 0 22px;
-  background: rgba(3, 7, 18, 0.94);
-  border-bottom: 1px solid rgba(148, 163, 184, 0.12);
+  background: color-mix(in srgb, var(--rb-bg-deep) 92%, transparent);
+  border-bottom: 1px solid var(--rb-border);
+  color: var(--rb-text);
   backdrop-filter: blur(18px);
 
   @media (max-width: 900px) {
@@ -24,6 +26,7 @@ export const BrandLink = styled(Link)`
   display: inline-flex;
   align-items: center;
   gap: 10px;
+  color: var(--rb-text-strong);
   font-weight: 950;
   font-size: 18px;
 
@@ -34,7 +37,7 @@ export const BrandLink = styled(Link)`
   }
 
   span {
-    color: #00e5ff;
+    color: var(--rb-accent);
   }
 `;
 
@@ -45,17 +48,21 @@ export const SearchForm = styled.form`
   gap: 10px;
   padding: 0 14px;
   border-radius: 12px;
-  border: 1px solid rgba(148, 163, 184, 0.14);
-  background: rgba(15, 23, 42, 0.82);
-  color: rgba(255, 255, 255, 0.54);
+  border: 1px solid var(--rb-input-border);
+  background: var(--rb-input-bg);
+  color: var(--rb-muted-soft);
 
   input {
     width: 100%;
     border: 0;
     outline: 0;
     background: transparent;
-    color: #fff;
+    color: var(--rb-text);
     font-size: 13px;
+
+    &::placeholder {
+      color: var(--rb-muted-soft);
+    }
   }
 
   @media (max-width: 900px) {
@@ -83,9 +90,11 @@ export const DropdownPanel = styled.div<{ $wide?: boolean }>`
   max-width: calc(100vw - 24px);
   padding: 12px;
   border-radius: 12px;
-  background: rgba(7, 12, 27, 0.98);
-  border: 1px solid rgba(0, 229, 255, 0.22);
-  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.44);
+  background: var(--rb-panel);
+  border: 1px solid var(--rb-border-strong);
+  color: var(--rb-text);
+  box-shadow: 0 24px 70px var(--rb-shadow);
+  backdrop-filter: blur(18px);
 `;
 
 export const DropdownHeader = styled.div`
@@ -96,7 +105,7 @@ export const DropdownHeader = styled.div`
   margin-bottom: 10px;
 
   a {
-    color: #00e5ff;
+    color: var(--rb-accent);
     font-size: 12px;
     font-weight: 850;
   }
@@ -110,9 +119,10 @@ export const DropdownItem = styled(Link)`
   min-height: 58px;
   padding: 9px;
   border-radius: 10px;
+  color: var(--rb-text);
 
   &:hover {
-    background: rgba(255, 255, 255, 0.06);
+    background: var(--rb-panel-hover);
   }
 
   strong,
@@ -121,13 +131,13 @@ export const DropdownItem = styled(Link)`
   }
 
   strong {
-    color: #fff;
+    color: var(--rb-text-strong);
     font-size: 13px;
   }
 
   small {
     margin-top: 3px;
-    color: rgba(226, 232, 240, 0.58);
+    color: var(--rb-muted-soft);
     font-size: 12px;
   }
 `;
@@ -145,11 +155,11 @@ export const DropdownMenuLoading = styled.div`
   align-items: center;
   gap: 12px;
   padding: 13px 16px;
-  color: rgba(226, 232, 240, 0.72);
+  color: var(--rb-muted);
   font-weight: 900;
 
   svg {
-    color: #00e5ff;
+    color: var(--rb-accent);
   }
 `;
 
@@ -160,13 +170,13 @@ export const DropdownMenuLink = styled(Link)`
   min-height: 40px;
   padding: 0 10px;
   border-radius: 9px;
-  color: rgba(226, 232, 240, 0.86);
+  color: var(--rb-muted);
   font-size: 13px;
   font-weight: 850;
 
   &:hover {
-    background: rgba(255, 255, 255, 0.06);
-    color: #fff;
+    background: var(--rb-panel-hover);
+    color: var(--rb-text-strong);
   }
 `;
 
@@ -177,8 +187,8 @@ export const UnreadDot = styled.span`
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: #a855f7;
-  box-shadow: 0 0 12px rgba(168, 85, 247, 0.9);
+  background: var(--rb-accent-2);
+  box-shadow: 0 0 12px color-mix(in srgb, var(--rb-accent-2) 85%, transparent);
 `;
 
 export const Sidebar = styled.aside`
@@ -186,8 +196,9 @@ export const Sidebar = styled.aside`
   top: 64px;
   height: calc(100vh - 64px);
   padding: 18px 14px;
-  background: rgba(4, 10, 24, 0.9);
-  border-right: 1px solid rgba(148, 163, 184, 0.11);
+  background: color-mix(in srgb, var(--rb-bg-deep) 88%, transparent);
+  border-right: 1px solid var(--rb-border);
+  color: var(--rb-text);
   overflow-y: auto;
 
   @media (max-width: 760px) {
@@ -201,7 +212,7 @@ export const SidebarSection = styled.div`
 
 export const SidebarTitle = styled.h3`
   margin: 0 0 12px;
-  color: rgba(226, 232, 240, 0.62);
+  color: var(--rb-muted-soft);
   font-size: 11px;
   text-transform: uppercase;
   letter-spacing: 0;
@@ -210,7 +221,7 @@ export const SidebarTitle = styled.h3`
 export const SidebarEmptyText = styled.p`
   margin: 0;
   padding: 8px;
-  color: rgba(226, 232, 240, 0.58);
+  color: var(--rb-muted-soft);
   font-size: 12px;
   line-height: 1.45;
 `;
@@ -223,14 +234,15 @@ export const SidebarLink = styled(Link)<{ $active?: boolean }>`
   margin-bottom: 6px;
   padding: 8px 10px;
   border-radius: 10px;
-  color: ${({ $active }) => ($active ? "#04111f" : "rgba(226, 232, 240, 0.78)")};
-  background: ${({ $active }) => ($active ? "linear-gradient(135deg, #00e5ff, #22c55e)" : "transparent")};
+  color: ${({ $active }) => ($active ? "var(--rb-text-inverse)" : "var(--rb-muted)")};
+  background: ${({ $active }) =>
+    $active ? "linear-gradient(135deg, var(--rb-accent), var(--rb-success))" : "transparent"};
   font-size: 13px;
   font-weight: 800;
 
   &:hover {
-    background: rgba(255, 255, 255, 0.07);
-    color: #fff;
+    background: ${({ $active }) => ($active ? "linear-gradient(135deg, var(--rb-accent), var(--rb-success))" : "var(--rb-panel-hover)")};
+    color: ${({ $active }) => ($active ? "var(--rb-text-inverse)" : "var(--rb-text-strong)")};
   }
 
   @media (max-width: 1180px) {
@@ -247,9 +259,10 @@ export const ChannelMini = styled(Link)`
   gap: 10px;
   padding: 8px;
   border-radius: 12px;
+  color: var(--rb-text);
 
   &:hover {
-    background: rgba(255, 255, 255, 0.06);
+    background: var(--rb-panel-hover);
   }
 
   @media (max-width: 1180px) {
@@ -274,17 +287,18 @@ export const MiniText = styled.div`
   }
 
   strong {
+    color: var(--rb-text-strong);
     font-size: 13px;
   }
 
   small {
-    color: rgba(226, 232, 240, 0.58);
+    color: var(--rb-muted-soft);
     font-size: 11px;
   }
 `;
 
 export const ViewerDot = styled.span`
-  color: #00e5ff;
+  color: var(--rb-accent);
   font-size: 11px;
   font-weight: 800;
 `;
@@ -296,12 +310,17 @@ export const UserPill = styled.button`
   min-height: 36px;
   padding: 0 10px 0 4px;
   border-radius: 999px;
-  color: #fff;
-  background: rgba(15, 23, 42, 0.74);
-  border: 1px solid rgba(148, 163, 184, 0.16);
+  color: var(--rb-text);
+  background: var(--rb-panel);
+  border: 1px solid var(--rb-border);
   font-size: 13px;
   font-weight: 800;
   cursor: pointer;
+
+  &:hover {
+    background: var(--rb-panel-hover);
+    border-color: var(--rb-border-strong);
+  }
 `;
 
 export const Avatar = styled.div<{ $large?: boolean; $small?: boolean }>`
@@ -312,9 +331,9 @@ export const Avatar = styled.div<{ $large?: boolean; $small?: boolean }>`
   align-items: center;
   justify-content: center;
   flex: 0 0 auto;
-  color: #04111f;
-  background: linear-gradient(135deg, #00e5ff, #8b5cf6);
+  color: var(--rb-text-inverse);
+  background: linear-gradient(135deg, var(--rb-accent), var(--rb-accent-2));
   font-size: ${({ $large, $small }) => ($large ? "25px" : $small ? "10px" : "12px")};
   font-weight: 950;
-  border: 2px solid rgba(255, 255, 255, 0.18);
+  border: 2px solid color-mix(in srgb, var(--rb-text) 18%, transparent);
 `;

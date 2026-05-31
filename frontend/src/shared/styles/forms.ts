@@ -1,3 +1,4 @@
+// frontend/src/shared/styles/forms.ts
 import styled from "styled-components";
 
 export const Toolbar = styled.div`
@@ -18,25 +19,41 @@ export const InputWrap = styled.label`
   min-height: 42px;
   padding: 0 14px;
   border-radius: 10px;
-  border: 1px solid rgba(148, 163, 184, 0.14);
-  background: rgba(15, 23, 42, 0.74);
+  border: 1px solid var(--rb-input-border);
+  background: var(--rb-input-bg);
+  color: var(--rb-accent);
 
   input {
     width: 100%;
     border: 0;
     outline: 0;
-    color: #fff;
+    color: var(--rb-text);
     background: transparent;
+  }
+
+  input::placeholder {
+    color: var(--rb-muted-soft);
   }
 `;
 
 export const Select = styled.select`
   min-height: 42px;
   border-radius: 10px;
-  border: 1px solid rgba(148, 163, 184, 0.14);
-  color: #fff;
-  background: rgba(15, 23, 42, 0.92);
+  border: 1px solid var(--rb-input-border);
+  color: var(--rb-text);
+  background: var(--rb-input-bg);
   padding: 0 12px;
+  outline: 0;
+
+  &:focus {
+    border-color: var(--rb-border-strong);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--rb-accent) 14%, transparent);
+  }
+
+  option {
+    color: var(--rb-text);
+    background: var(--rb-panel-strong);
+  }
 `;
 
 export const AuthScreen = styled.main<{ $image: string }>`
@@ -45,19 +62,21 @@ export const AuthScreen = styled.main<{ $image: string }>`
   place-items: center;
   padding: 24px;
   background:
-    linear-gradient(180deg, rgba(2, 6, 23, 0.74), rgba(2, 6, 23, 0.94)),
+    linear-gradient(180deg, var(--rb-app-overlay-start), var(--rb-app-overlay-end)),
     url(${({ $image }) => $image});
   background-size: cover;
   background-position: center;
+  color: var(--rb-text);
 `;
 
 export const AuthCard = styled.form`
   width: min(440px, 100%);
   padding: 28px;
   border-radius: 14px;
-  background: rgba(7, 12, 27, 0.92);
-  border: 1px solid rgba(148, 163, 184, 0.16);
-  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.45);
+  background: var(--rb-panel);
+  border: 1px solid var(--rb-border);
+  box-shadow: 0 30px 80px var(--rb-shadow);
+  color: var(--rb-text);
 `;
 
 export const BrandBlock = styled.div`
@@ -71,27 +90,28 @@ export const BrandBlock = styled.div`
   svg {
     width: 42px;
     height: 42px;
-    color: #8b5cf6;
+    color: var(--rb-accent-2);
   }
 
   h1 {
     margin: 8px 0 4px;
+    color: var(--rb-text-strong);
 
     span {
-      color: #00e5ff;
+      color: var(--rb-accent);
     }
   }
 
   p {
     margin: 0;
-    color: rgba(226, 232, 240, 0.64);
+    color: var(--rb-muted);
   }
 `;
 
 export const Label = styled.label`
   display: block;
   margin: 12px 0 7px;
-  color: rgba(226, 232, 240, 0.8);
+  color: var(--rb-muted);
   font-size: 12px;
   font-weight: 850;
 `;
@@ -103,16 +123,20 @@ export const Field = styled.label`
   min-height: 42px;
   padding: 0 12px;
   border-radius: 9px;
-  border: 1px solid rgba(148, 163, 184, 0.14);
-  background: rgba(15, 23, 42, 0.76);
-  color: #00e5ff;
+  border: 1px solid var(--rb-input-border);
+  background: var(--rb-input-bg);
+  color: var(--rb-accent);
 
   input {
     width: 100%;
     border: 0;
     outline: 0;
-    color: #fff;
+    color: var(--rb-text);
     background: transparent;
+  }
+
+  input::placeholder {
+    color: var(--rb-muted-soft);
   }
 `;
 
@@ -121,11 +145,20 @@ export const TextArea = styled.textarea`
   min-height: 98px;
   resize: vertical;
   border-radius: 10px;
-  border: 1px solid rgba(148, 163, 184, 0.14);
+  border: 1px solid var(--rb-input-border);
   padding: 12px;
-  color: #fff;
-  background: rgba(15, 23, 42, 0.76);
+  color: var(--rb-text);
+  background: var(--rb-input-bg);
   outline: 0;
+
+  &::placeholder {
+    color: var(--rb-muted-soft);
+  }
+
+  &:focus {
+    border-color: var(--rb-border-strong);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--rb-accent) 14%, transparent);
+  }
 `;
 
 export const FormLine = styled.div`
@@ -133,11 +166,11 @@ export const FormLine = styled.div`
   justify-content: space-between;
   gap: 10px;
   margin: 12px 0;
-  color: rgba(226, 232, 240, 0.64);
+  color: var(--rb-muted);
   font-size: 12px;
 
   a {
-    color: #c084fc;
+    color: var(--rb-accent-2);
   }
 `;
 
@@ -151,11 +184,25 @@ export const ChoiceGrid = styled.div`
 export const ChoiceButton = styled.button<{ $active?: boolean }>`
   min-height: 48px;
   border-radius: 10px;
-  border: 1px solid ${({ $active }) => ($active ? "#8b5cf6" : "rgba(148, 163, 184, 0.14)")};
-  color: ${({ $active }) => ($active ? "#fff" : "rgba(226, 232, 240, 0.76)")};
-  background: ${({ $active }) => ($active ? "rgba(124, 58, 237, 0.28)" : "rgba(15, 23, 42, 0.76)")};
+  border: 1px solid ${({ $active }) => ($active ? "var(--rb-accent-2)" : "var(--rb-border)")};
+  color: ${({ $active }) => ($active ? "var(--rb-text-inverse)" : "var(--rb-muted)")};
+  background: ${({ $active }) =>
+    $active
+      ? "linear-gradient(135deg, var(--rb-accent-2), var(--rb-accent))"
+      : "var(--rb-panel)"};
   font-weight: 850;
   cursor: pointer;
+  transition:
+    border-color 0.18s ease,
+    background 0.18s ease,
+    color 0.18s ease,
+    transform 0.18s ease;
+
+  &:hover {
+    border-color: var(--rb-border-strong);
+    background: ${({ $active }) => ($active ? undefined : "var(--rb-panel-hover)")};
+    transform: translateY(-1px);
+  }
 `;
 
 export const SuccessBox = styled.div`
@@ -165,17 +212,19 @@ export const SuccessBox = styled.div`
   margin: 12px 0;
   padding: 11px;
   border-radius: 9px;
-  color: #86efac;
-  background: rgba(22, 163, 74, 0.12);
-  border: 1px solid rgba(34, 197, 94, 0.24);
+  color: var(--rb-success);
+  background: color-mix(in srgb, var(--rb-success) 12%, transparent);
+  border: 1px solid color-mix(in srgb, var(--rb-success) 24%, transparent);
 `;
 
 export const NarrowPanel = styled.div`
   width: min(460px, 100%);
   padding: 18px;
   border-radius: 14px;
-  background: rgba(15, 23, 42, 0.74);
-  border: 1px solid rgba(148, 163, 184, 0.12);
+  background: var(--rb-panel);
+  border: 1px solid var(--rb-border);
+  color: var(--rb-text);
+  box-shadow: 0 18px 50px var(--rb-shadow);
 `;
 
 export const ModeratorToolbar = styled.form`

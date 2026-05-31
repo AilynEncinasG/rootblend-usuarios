@@ -1,3 +1,4 @@
+//frontend/src/modules/system/components/NotFoundPanel.tsx
 import { Link } from "react-router-dom";
 import "./NotFoundPanel.css";
 
@@ -74,37 +75,46 @@ function NotFoundIllustration() {
       role="img"
       aria-label="Página no encontrada"
     >
-      <circle cx="190" cy="150" r="96" fill="rgba(168, 85, 247, 0.20)" />
+      <circle
+        cx="190"
+        cy="150"
+        r="96"
+        fill="var(--rb-accent-2)"
+        fillOpacity="0.20"
+      />
 
       <circle
         cx="190"
         cy="150"
         r="70"
-        fill="rgba(15, 23, 42, 0.94)"
-        stroke="rgba(0, 234, 255, 0.45)"
+        fill="var(--rb-panel)"
+        fillOpacity="0.94"
+        stroke="var(--rb-accent)"
+        strokeOpacity="0.45"
         strokeWidth="5"
       />
 
       <path
         d="M138 150C151 119 166 104 190 104C214 104 229 119 242 150C229 181 214 196 190 196C166 196 151 181 138 150Z"
-        fill="rgba(0, 234, 255, 0.14)"
-        stroke="#00eaff"
+        fill="var(--rb-accent)"
+        fillOpacity="0.14"
+        stroke="var(--rb-accent)"
         strokeWidth="5"
       />
 
-      <circle cx="190" cy="150" r="22" fill="#00eaff" />
-      <circle cx="190" cy="150" r="10" fill="#020617" />
+      <circle cx="190" cy="150" r="22" fill="var(--rb-accent)" />
+      <circle cx="190" cy="150" r="10" fill="var(--rb-bg-deep)" />
 
       <path
         d="M109 76L77 44M77 76L109 44"
-        stroke="#fb7185"
+        stroke="var(--rb-danger)"
         strokeWidth="9"
         strokeLinecap="round"
       />
 
       <path
         d="M303 246L271 214M271 246L303 214"
-        stroke="#fb7185"
+        stroke="var(--rb-danger)"
         strokeWidth="9"
         strokeLinecap="round"
       />
@@ -115,8 +125,10 @@ function NotFoundIllustration() {
         width="224"
         height="48"
         rx="24"
-        fill="rgba(2, 6, 23, 0.92)"
-        stroke="rgba(251, 113, 133, 0.46)"
+        fill="var(--rb-panel)"
+        fillOpacity="0.92"
+        stroke="var(--rb-danger)"
+        strokeOpacity="0.46"
         strokeWidth="3"
       />
 
@@ -124,7 +136,7 @@ function NotFoundIllustration() {
         x="190"
         y="269"
         textAnchor="middle"
-        fill="#fecaca"
+        fill="var(--rb-danger)"
         fontSize="22"
         fontWeight="900"
         fontFamily="Arial, sans-serif"
@@ -134,14 +146,16 @@ function NotFoundIllustration() {
 
       <path
         d="M54 126H98M282 126H326M52 176H108M272 176H332"
-        stroke="rgba(0, 234, 255, 0.42)"
+        stroke="var(--rb-accent)"
+        strokeOpacity="0.42"
         strokeWidth="6"
         strokeLinecap="round"
       />
 
       <path
         d="M124 42H171M209 42H256"
-        stroke="rgba(251, 113, 133, 0.44)"
+        stroke="var(--rb-danger)"
+        strokeOpacity="0.44"
         strokeWidth="6"
         strokeLinecap="round"
       />

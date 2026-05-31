@@ -1,3 +1,4 @@
+//frontend/src/modules/streams/components/StreamErrorPanel.tsx
 import { Link } from "react-router-dom";
 import "./StreamErrorPanel.css";
 
@@ -73,7 +74,7 @@ function StreamErrorIllustration() {
       role="img"
       aria-label="Stream no disponible"
     >
-      <circle cx="195" cy="152" r="108" fill="rgba(0, 234, 255, 0.12)" />
+      <circle cx="195" cy="152" r="108" fill="var(--rb-accent)" opacity="0.12" />
 
       <rect
         x="88"
@@ -81,8 +82,9 @@ function StreamErrorIllustration() {
         width="214"
         height="142"
         rx="30"
-        fill="rgba(15, 23, 42, 0.96)"
-        stroke="rgba(0, 234, 255, 0.42)"
+        fill="var(--rb-panel)"
+        stroke="var(--rb-accent)"
+        strokeOpacity="0.42"
         strokeWidth="5"
       />
 
@@ -92,14 +94,15 @@ function StreamErrorIllustration() {
         width="170"
         height="92"
         rx="20"
-        fill="rgba(2, 6, 23, 0.94)"
-        stroke="rgba(251, 113, 133, 0.34)"
+        fill="var(--rb-surface)"
+        stroke="var(--rb-danger)"
+        strokeOpacity="0.34"
         strokeWidth="4"
       />
 
       <path
         d="M137 147H253"
-        stroke="#fb7185"
+        stroke="var(--rb-danger)"
         strokeWidth="9"
         strokeLinecap="round"
         strokeDasharray="14 14"
@@ -107,28 +110,28 @@ function StreamErrorIllustration() {
 
       <path
         d="M148 126L242 168"
-        stroke="#00eaff"
+        stroke="var(--rb-accent)"
         strokeWidth="8"
         strokeLinecap="round"
       />
 
       <path
         d="M242 126L148 168"
-        stroke="#00eaff"
+        stroke="var(--rb-accent)"
         strokeWidth="8"
         strokeLinecap="round"
       />
 
       <path
         d="M156 226H234"
-        stroke="rgba(226, 232, 240, 0.78)"
+        stroke="var(--rb-muted)"
         strokeWidth="9"
         strokeLinecap="round"
       />
 
       <path
         d="M195 220V248"
-        stroke="rgba(226, 232, 240, 0.78)"
+        stroke="var(--rb-muted)"
         strokeWidth="9"
         strokeLinecap="round"
       />
@@ -137,28 +140,31 @@ function StreamErrorIllustration() {
         cx="292"
         cy="72"
         r="38"
-        fill="rgba(127, 29, 29, 0.88)"
-        stroke="#fb7185"
+        fill="var(--rb-danger)"
+        fillOpacity="0.20"
+        stroke="var(--rb-danger)"
         strokeWidth="5"
       />
 
       <path
         d="M276 56L308 88M308 56L276 88"
-        stroke="#fecaca"
+        stroke="var(--rb-danger)"
         strokeWidth="8"
         strokeLinecap="round"
       />
 
       <path
         d="M66 136H46M68 168H34M322 138H350M316 172H358"
-        stroke="rgba(0, 234, 255, 0.42)"
+        stroke="var(--rb-accent)"
+        strokeOpacity="0.42"
         strokeWidth="6"
         strokeLinecap="round"
       />
 
       <path
         d="M84 260H306"
-        stroke="rgba(251, 113, 133, 0.36)"
+        stroke="var(--rb-danger)"
+        strokeOpacity="0.36"
         strokeWidth="8"
         strokeLinecap="round"
       />
@@ -167,7 +173,7 @@ function StreamErrorIllustration() {
         x="195"
         y="286"
         textAnchor="middle"
-        fill="#fecaca"
+        fill="var(--rb-danger)"
         fontSize="17"
         fontWeight="900"
         fontFamily="Arial, sans-serif"

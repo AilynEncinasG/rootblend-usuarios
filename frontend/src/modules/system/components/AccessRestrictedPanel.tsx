@@ -1,3 +1,4 @@
+//frontend/src/modules/system/components/AccessRestrictedPanel.tsx
 import { Link } from "react-router-dom";
 import "./AccessRestrictedPanel.css";
 
@@ -65,7 +66,13 @@ function AccessRestrictedIllustration() {
       role="img"
       aria-label="Acceso restringido"
     >
-      <circle cx="195" cy="152" r="110" fill="rgba(168, 85, 247, 0.18)" />
+      <circle
+        cx="195"
+        cy="152"
+        r="110"
+        fill="var(--rb-accent-secondary, #a855f7)"
+        fillOpacity="0.18"
+      />
 
       <rect
         x="104"
@@ -73,37 +80,41 @@ function AccessRestrictedIllustration() {
         width="182"
         height="128"
         rx="30"
-        fill="rgba(15, 23, 42, 0.96)"
-        stroke="rgba(251, 113, 133, 0.48)"
+        fill="var(--rb-panel, #0f172a)"
+        fillOpacity="0.96"
+        stroke="var(--rb-danger, #fb7185)"
+        strokeOpacity="0.48"
         strokeWidth="5"
       />
 
       <path
         d="M145 122V94C145 66 166 46 195 46C224 46 245 66 245 94V122"
-        stroke="#00eaff"
+        stroke="var(--rb-accent, #00eaff)"
         strokeWidth="15"
         strokeLinecap="round"
       />
 
-      <circle cx="195" cy="176" r="22" fill="#fb7185" />
+      <circle cx="195" cy="176" r="22" fill="var(--rb-danger, #fb7185)" />
 
       <path
         d="M195 196V224"
-        stroke="#fb7185"
+        stroke="var(--rb-danger, #fb7185)"
         strokeWidth="13"
         strokeLinecap="round"
       />
 
       <path
         d="M136 154H254"
-        stroke="rgba(226, 232, 240, 0.20)"
+        stroke="var(--rb-text, #e2e8f0)"
+        strokeOpacity="0.20"
         strokeWidth="6"
         strokeLinecap="round"
       />
 
       <path
         d="M138 232H252"
-        stroke="rgba(0, 234, 255, 0.30)"
+        stroke="var(--rb-accent, #00eaff)"
+        strokeOpacity="0.30"
         strokeWidth="7"
         strokeLinecap="round"
       />
@@ -112,28 +123,31 @@ function AccessRestrictedIllustration() {
         cx="284"
         cy="72"
         r="38"
-        fill="rgba(127, 29, 29, 0.88)"
-        stroke="#fb7185"
+        fill="var(--rb-danger, #fb7185)"
+        fillOpacity="0.20"
+        stroke="var(--rb-danger, #fb7185)"
         strokeWidth="5"
       />
 
       <path
         d="M268 56L300 88M300 56L268 88"
-        stroke="#fecaca"
+        stroke="var(--rb-danger, #fecaca)"
         strokeWidth="8"
         strokeLinecap="round"
       />
 
       <path
         d="M64 124H34M74 162H46M312 134H352M304 176H360"
-        stroke="rgba(0, 234, 255, 0.42)"
+        stroke="var(--rb-accent, #00eaff)"
+        strokeOpacity="0.42"
         strokeWidth="6"
         strokeLinecap="round"
       />
 
       <path
         d="M74 270H316"
-        stroke="rgba(251, 113, 133, 0.36)"
+        stroke="var(--rb-danger, #fb7185)"
+        strokeOpacity="0.36"
         strokeWidth="8"
         strokeLinecap="round"
       />
@@ -142,7 +156,7 @@ function AccessRestrictedIllustration() {
         x="195"
         y="294"
         textAnchor="middle"
-        fill="#fecaca"
+        fill="var(--rb-danger, #fecaca)"
         fontSize="17"
         fontWeight="900"
         fontFamily="Arial, sans-serif"

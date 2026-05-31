@@ -1,3 +1,4 @@
+//frontend/src/components/layout/UserMenu.tsx
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
@@ -22,6 +23,7 @@ import {
 } from "../../modules/auth/utils/authStorage";
 import { getMyChannel, type Canal } from "../../modules/streams/services/streamsService";
 import { logoutUser } from "../../modules/auth/services/authService";
+
 type CreatorRole = "streamer" | "podcaster";
 
 const MenuWrapper = styled.div`
@@ -33,13 +35,20 @@ const AvatarButton = styled.button`
   height: 34px;
   border-radius: 50%;
   border: none;
-  background: linear-gradient(135deg, #00e5ff, #00ff99);
-  color: #071016;
+  background: linear-gradient(135deg, var(--rb-accent), var(--rb-success));
+  color: var(--rb-text-inverse);
   font-weight: 900;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
+  box-shadow: 0 10px 24px color-mix(in srgb, var(--rb-accent) 22%, transparent);
+  transition: 0.18s ease;
+
+  &:hover {
+    filter: brightness(1.06);
+    transform: translateY(-1px);
+  }
 `;
 
 const Dropdown = styled.div`
@@ -47,12 +56,14 @@ const Dropdown = styled.div`
   top: 44px;
   right: 0;
   width: 310px;
-  background: #2c2c38;
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: var(--rb-panel);
+  border: 1px solid var(--rb-border);
   border-radius: 14px;
   padding: 12px;
   z-index: 1000;
-  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.35);
+  box-shadow: 0 18px 45px var(--rb-shadow);
+  color: var(--rb-text);
+  backdrop-filter: blur(18px);
 `;
 
 const UserHeader = styled.div`
@@ -60,7 +71,7 @@ const UserHeader = styled.div`
   gap: 10px;
   align-items: center;
   padding: 6px 6px 12px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  border-bottom: 1px solid var(--rb-border);
   margin-bottom: 8px;
 `;
 
@@ -68,12 +79,13 @@ const HeaderAvatar = styled.div`
   width: 42px;
   height: 42px;
   border-radius: 50%;
-  background: #ffd166;
-  color: #171720;
+  background: color-mix(in srgb, var(--rb-warning) 72%, var(--rb-panel));
+  color: var(--rb-text-strong);
   display: flex;
   align-items: center;
   justify-content: center;
   font-weight: 900;
+  border: 1px solid color-mix(in srgb, var(--rb-warning) 35%, transparent);
 `;
 
 const UserInfo = styled.div`
@@ -81,7 +93,7 @@ const UserInfo = styled.div`
 
   strong {
     display: block;
-    color: #ffffff;
+    color: var(--rb-text-strong);
     font-size: 14px;
     white-space: nowrap;
     overflow: hidden;
@@ -90,7 +102,7 @@ const UserInfo = styled.div`
 
   span {
     display: block;
-    color: rgba(255, 255, 255, 0.55);
+    color: var(--rb-muted-soft);
     font-size: 12px;
     white-space: nowrap;
     overflow: hidden;
@@ -102,20 +114,20 @@ const RoleNotice = styled.div`
   margin: 8px 0;
   padding: 10px;
   border-radius: 12px;
-  background: rgba(0, 229, 255, 0.08);
-  border: 1px solid rgba(0, 229, 255, 0.14);
-  color: rgba(255, 255, 255, 0.82);
+  background: color-mix(in srgb, var(--rb-accent) 8%, transparent);
+  border: 1px solid color-mix(in srgb, var(--rb-accent) 18%, transparent);
+  color: var(--rb-muted);
   font-size: 12px;
   line-height: 1.45;
 
   strong {
-    color: #00e5ff;
+    color: var(--rb-accent);
   }
 `;
 
 const MenuSectionTitle = styled.div`
   padding: 10px 8px 5px;
-  color: rgba(255, 255, 255, 0.42);
+  color: var(--rb-muted-soft);
   font-size: 11px;
   font-weight: 900;
   letter-spacing: 0.08em;
@@ -131,18 +143,25 @@ const MenuLink = styled(Link)`
   display: flex;
   align-items: center;
   gap: 10px;
-  color: #ffffff;
+  color: var(--rb-text);
   text-decoration: none;
   padding: 10px 8px;
   border-radius: 8px;
   font-size: 14px;
+  transition: 0.18s ease;
 
   &:hover {
-    background: rgba(255, 255, 255, 0.07);
+    background: var(--rb-panel-hover);
+    color: var(--rb-text-strong);
   }
 
   svg {
-    color: rgba(255, 255, 255, 0.75);
+    color: var(--rb-muted);
+    transition: 0.18s ease;
+  }
+
+  &:hover svg {
+    color: var(--rb-accent);
   }
 `;
 
@@ -151,7 +170,7 @@ const LogoutButton = styled.button`
   display: flex;
   align-items: center;
   gap: 10px;
-  color: #ff7b85;
+  color: var(--rb-danger);
   background: transparent;
   border: none;
   padding: 10px 8px;
@@ -159,13 +178,14 @@ const LogoutButton = styled.button`
   font-size: 14px;
   cursor: pointer;
   text-align: left;
+  transition: 0.18s ease;
 
   &:hover {
-    background: rgba(255, 79, 94, 0.1);
+    background: color-mix(in srgb, var(--rb-danger) 10%, transparent);
   }
 
   svg {
-    color: #ff7b85;
+    color: var(--rb-danger);
   }
 `;
 
@@ -358,7 +378,6 @@ export default function UserMenu() {
                 <FiShield />Moderadores de mi chat
               </MenuLink>
             )}
-
 
             <MenuSectionTitle>Cuenta</MenuSectionTitle>
             <MenuLink to="/settings" onClick={closeMenu}><FiSettings />Configuracion</MenuLink>

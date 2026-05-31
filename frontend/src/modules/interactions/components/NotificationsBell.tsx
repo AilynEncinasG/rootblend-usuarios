@@ -1,3 +1,4 @@
+//frontend/src/modules/interactions/components/NotificationsBell.tsx
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
@@ -163,17 +164,31 @@ const BellButton = styled.button`
   position: relative;
   width: 42px;
   height: 42px;
-  border: 1px solid rgba(148, 163, 184, 0.22);
+  border: 1px solid var(--rb-border);
   border-radius: 999px;
-  color: #e5e7eb;
-  background: rgba(15, 23, 42, 0.88);
+  color: var(--rb-text);
+  background: var(--rb-panel);
   display: grid;
   place-items: center;
   cursor: pointer;
+  transition: 0.18s ease;
 
   svg {
     width: 18px;
     height: 18px;
+  }
+
+  &:hover {
+    color: var(--rb-text-strong);
+    background: var(--rb-panel-hover);
+    border-color: var(--rb-border-strong);
+    transform: translateY(-1px);
+  }
+
+  &:focus-visible {
+    outline: none;
+    border-color: var(--rb-border-strong);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--rb-accent) 14%, transparent);
   }
 `;
 
@@ -185,12 +200,13 @@ const Badge = styled.span`
   height: 18px;
   padding: 0 5px;
   border-radius: 999px;
-  color: #fff;
-  background: #8b5cf6;
+  color: var(--rb-text-inverse);
+  background: var(--rb-accent-2);
   display: grid;
   place-items: center;
   font-size: 10px;
   font-weight: 900;
+  box-shadow: 0 8px 18px color-mix(in srgb, var(--rb-accent-2) 28%, transparent);
 `;
 
 const Dropdown = styled.div`
@@ -201,9 +217,11 @@ const Dropdown = styled.div`
   width: min(360px, calc(100vw - 30px));
   padding: 14px;
   border-radius: 14px;
-  background: #0f172a;
-  border: 1px solid rgba(0, 229, 255, 0.25);
-  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.46);
+  background: var(--rb-panel);
+  border: 1px solid var(--rb-border-strong);
+  box-shadow: 0 24px 80px var(--rb-shadow);
+  color: var(--rb-text);
+  backdrop-filter: blur(18px);
 `;
 
 const Header = styled.div`
@@ -214,14 +232,19 @@ const Header = styled.div`
   margin-bottom: 10px;
 
   strong {
-    color: #fff;
+    color: var(--rb-text-strong);
     font-size: 16px;
   }
 
   a {
-    color: #00e5ff;
+    color: var(--rb-accent);
     font-size: 12px;
     font-weight: 900;
+    text-decoration: none;
+
+    &:hover {
+      color: var(--rb-text-strong);
+    }
   }
 `;
 
@@ -230,8 +253,12 @@ const StateLine = styled.div`
   display: flex;
   align-items: center;
   gap: 8px;
-  color: rgba(226, 232, 240, 0.72);
+  color: var(--rb-muted);
   font-size: 13px;
+
+  svg {
+    color: var(--rb-accent);
+  }
 `;
 
 const NotificationButton = styled.button<{ $unread: boolean }>`
@@ -243,28 +270,30 @@ const NotificationButton = styled.button<{ $unread: boolean }>`
   border: 0;
   border-radius: 10px;
   text-align: left;
+  color: var(--rb-text);
   background: ${({ $unread }) =>
-    $unread ? "rgba(0, 229, 255, 0.08)" : "transparent"};
+    $unread ? "color-mix(in srgb, var(--rb-accent) 8%, transparent)" : "transparent"};
   cursor: pointer;
+  transition: 0.18s ease;
 
   &:hover {
-    background: rgba(0, 229, 255, 0.12);
+    background: color-mix(in srgb, var(--rb-accent) 12%, transparent);
   }
 
   strong {
-    color: #fff;
+    color: var(--rb-text-strong);
     display: block;
     font-size: 13px;
   }
 
   p {
     margin: 3px 0;
-    color: rgba(226, 232, 240, 0.72);
+    color: var(--rb-muted);
     font-size: 12px;
   }
 
   small {
-    color: rgba(226, 232, 240, 0.48);
+    color: var(--rb-muted-soft);
     font-size: 11px;
   }
 `;
@@ -274,7 +303,7 @@ const Dot = styled.span<{ $unread: boolean }>`
   height: 10px;
   margin-top: 5px;
   border-radius: 999px;
-  background: ${({ $unread }) => ($unread ? "#00e5ff" : "#64748b")};
+  background: ${({ $unread }) => ($unread ? "var(--rb-accent)" : "var(--rb-muted-soft)")};
   box-shadow: ${({ $unread }) =>
-    $unread ? "0 0 18px rgba(0, 229, 255, 0.65)" : "none"};
+    $unread ? "0 0 18px color-mix(in srgb, var(--rb-accent) 65%, transparent)" : "none"};
 `;

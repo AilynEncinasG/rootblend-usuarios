@@ -7,15 +7,20 @@
   display: grid;
   place-items: center;
   text-align: center;
-  border: 1px solid rgba(251, 113, 133, 0.30);
+  border: 1px solid color-mix(in srgb, var(--rb-danger) 30%, transparent);
   background:
-    radial-gradient(circle at 18% 16%, rgba(251, 113, 133, 0.26), transparent 34%),
-    radial-gradient(circle at 82% 20%, rgba(0, 234, 255, 0.16), transparent 32%),
-    radial-gradient(circle at 50% 100%, rgba(168, 85, 247, 0.24), transparent 38%),
-    linear-gradient(135deg, rgba(2, 6, 23, 0.98), rgba(15, 23, 42, 0.94));
+    radial-gradient(circle at 18% 16%, color-mix(in srgb, var(--rb-danger) 26%, transparent), transparent 34%),
+    radial-gradient(circle at 82% 20%, color-mix(in srgb, var(--rb-accent) 16%, transparent), transparent 32%),
+    radial-gradient(circle at 50% 100%, color-mix(in srgb, var(--rb-accent-2) 24%, transparent), transparent 38%),
+    linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--rb-panel) 98%, transparent),
+      color-mix(in srgb, var(--rb-panel-strong) 94%, transparent)
+    );
   box-shadow:
-    0 28px 90px rgba(0, 0, 0, 0.44),
-    inset 0 0 70px rgba(251, 113, 133, 0.06);
+    0 28px 90px var(--rb-shadow),
+    inset 0 0 70px color-mix(in srgb, var(--rb-danger) 6%, transparent);
+  color: var(--rb-text);
 }
 
 .podcast-error-shell::before {
@@ -25,8 +30,8 @@
   background:
     repeating-linear-gradient(
       90deg,
-      rgba(0, 234, 255, 0.025) 0px,
-      rgba(0, 234, 255, 0.025) 2px,
+      color-mix(in srgb, var(--rb-accent) 2.5%, transparent) 0px,
+      color-mix(in srgb, var(--rb-accent) 2.5%, transparent) 2px,
       transparent 2px,
       transparent 26px
     );
@@ -53,9 +58,9 @@
 .podcast-error-badges span {
   padding: 8px 13px;
   border-radius: 999px;
-  color: #fecaca;
-  background: rgba(127, 29, 29, 0.35);
-  border: 1px solid rgba(251, 113, 133, 0.30);
+  color: var(--rb-danger);
+  background: color-mix(in srgb, var(--rb-danger) 12%, transparent);
+  border: 1px solid color-mix(in srgb, var(--rb-danger) 30%, transparent);
   font-size: 12px;
   font-weight: 900;
   letter-spacing: 0.08em;
@@ -74,8 +79,8 @@
   height: 300px;
   border-radius: 999px;
   background:
-    radial-gradient(circle, rgba(251, 113, 133, 0.18), transparent 62%),
-    radial-gradient(circle, rgba(0, 234, 255, 0.12), transparent 74%);
+    radial-gradient(circle, color-mix(in srgb, var(--rb-danger) 18%, transparent), transparent 62%),
+    radial-gradient(circle, color-mix(in srgb, var(--rb-accent) 12%, transparent), transparent 74%);
   filter: blur(10px);
   animation: podcastPulse 3.8s ease-in-out infinite;
 }
@@ -85,7 +90,7 @@
   width: 315px;
   height: 315px;
   border-radius: 999px;
-  border: 1px dashed rgba(251, 113, 133, 0.38);
+  border: 1px dashed color-mix(in srgb, var(--rb-danger) 38%, transparent);
   animation: podcastRotate 18s linear infinite;
 }
 
@@ -99,15 +104,15 @@
 .podcast-error-dot.one {
   top: 25px;
   left: 64px;
-  background: #fb7185;
-  box-shadow: 0 0 24px #fb7185;
+  background: var(--rb-danger);
+  box-shadow: 0 0 24px var(--rb-danger);
 }
 
 .podcast-error-dot.two {
   right: 46px;
   bottom: 66px;
-  background: #00eaff;
-  box-shadow: 0 0 24px #00eaff;
+  background: var(--rb-accent);
+  box-shadow: 0 0 24px var(--rb-accent);
 }
 
 .podcast-error-svg {
@@ -116,14 +121,14 @@
   width: 340px;
   max-width: 100%;
   filter:
-    drop-shadow(0 30px 55px rgba(0, 0, 0, 0.48))
-    drop-shadow(0 0 30px rgba(251, 113, 133, 0.16));
+    drop-shadow(0 30px 55px color-mix(in srgb, var(--rb-shadow) 70%, transparent))
+    drop-shadow(0 0 30px color-mix(in srgb, var(--rb-danger) 16%, transparent));
   animation: podcastFloat 4.4s ease-in-out infinite;
 }
 
 .podcast-error-kicker {
   margin: 0 0 8px;
-  color: #fb7185;
+  color: var(--rb-danger);
   font-size: 13px;
   font-weight: 950;
   letter-spacing: 0.12em;
@@ -135,21 +140,21 @@
   font-size: clamp(38px, 7vw, 76px);
   line-height: 0.92;
   letter-spacing: -0.06em;
-  color: #f8fafc;
+  color: var(--rb-text-strong);
   text-shadow:
-    0 0 22px rgba(251, 113, 133, 0.24),
-    3px 3px 0 rgba(0, 234, 255, 0.14);
+    0 0 22px color-mix(in srgb, var(--rb-danger) 24%, transparent),
+    3px 3px 0 color-mix(in srgb, var(--rb-accent) 14%, transparent);
 }
 
 .podcast-error-copy h1 span {
   display: block;
-  color: #fb7185;
+  color: var(--rb-danger);
 }
 
 .podcast-error-copy > p:last-child {
   max-width: 640px;
   margin: 14px auto 0;
-  color: rgba(226, 232, 240, 0.84);
+  color: var(--rb-muted);
   font-size: 16px;
   line-height: 1.7;
 }
@@ -177,26 +182,33 @@
   transition:
     transform 0.2s ease,
     box-shadow 0.2s ease,
-    border-color 0.2s ease;
+    border-color 0.2s ease,
+    background 0.2s ease,
+    color 0.2s ease;
 }
 
 .podcast-error-actions button {
-  background: linear-gradient(135deg, #fb7185, #a855f7, #00eaff);
-  color: white;
-  box-shadow: 0 18px 40px rgba(251, 113, 133, 0.22);
+  background: linear-gradient(135deg, var(--rb-danger), var(--rb-accent-2), var(--rb-accent));
+  color: var(--rb-text-inverse);
+  box-shadow: 0 18px 40px color-mix(in srgb, var(--rb-danger) 22%, transparent);
 }
 
 .podcast-error-actions a {
-  color: #f8fafc;
-  background: rgba(15, 23, 42, 0.74);
-  border: 1px solid rgba(251, 113, 133, 0.22);
+  color: var(--rb-text);
+  background: var(--rb-panel);
+  border: 1px solid color-mix(in srgb, var(--rb-danger) 22%, transparent);
 }
 
 .podcast-error-actions button:hover,
 .podcast-error-actions a:hover {
   transform: translateY(-2px);
-  box-shadow: 0 20px 44px rgba(251, 113, 133, 0.18);
-  border-color: rgba(251, 113, 133, 0.55);
+  box-shadow: 0 20px 44px color-mix(in srgb, var(--rb-danger) 18%, transparent);
+  border-color: color-mix(in srgb, var(--rb-danger) 55%, transparent);
+}
+
+.podcast-error-actions a:hover {
+  color: var(--rb-text-strong);
+  background: var(--rb-panel-hover);
 }
 
 @keyframes podcastFloat {

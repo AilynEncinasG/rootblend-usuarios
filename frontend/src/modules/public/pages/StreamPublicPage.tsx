@@ -1,3 +1,4 @@
+//frontend/src/modules/public/pages/StreamPublicPage.tsx
 import { useEffect, useMemo, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import {
@@ -33,9 +34,9 @@ function statusLabel(status?: Stream["estado"]) {
 }
 
 function statusColor(status?: Stream["estado"]) {
-  if (status === "en_vivo") return "#ff2d55";
-  if (status === "programado") return "#00eaff";
-  return "#94a3b8";
+  if (status === "en_vivo") return "var(--rb-danger)";
+  if (status === "programado") return "var(--rb-accent)";
+  return "var(--rb-muted-soft)";
 }
 
 function ChannelAvatar({
@@ -52,14 +53,15 @@ function ChannelAvatar({
         height: 72,
         borderRadius: "50%",
         overflow: "hidden",
-        background: "linear-gradient(135deg, #00eaff, #8b5cf6)",
+        background: "linear-gradient(135deg, var(--rb-accent), var(--rb-accent-2))",
         display: "grid",
         placeItems: "center",
-        color: "#020617",
+        color: "var(--rb-text-inverse)",
         fontWeight: 900,
         fontSize: 24,
-        border: "2px solid rgba(0, 234, 255, 0.55)",
+        border: "2px solid var(--rb-border-strong)",
         flex: "0 0 auto",
+        boxShadow: "0 12px 26px color-mix(in srgb, var(--rb-accent) 16%, transparent)",
       }}
     >
       {isImageUrl(image) ? (
@@ -177,6 +179,7 @@ export default function StreamPublicPage() {
           display: "grid",
           gap: 24,
           width: "100%",
+          color: "var(--rb-text)",
         }}
       >
         {loading ? (
@@ -184,17 +187,19 @@ export default function StreamPublicPage() {
             style={{
               borderRadius: 20,
               padding: 22,
-              border: "1px solid rgba(148, 163, 184, 0.16)",
-              background: "rgba(15, 23, 42, 0.74)",
+              border: "1px solid var(--rb-border)",
+              background: "var(--rb-panel)",
+              color: "var(--rb-text)",
               display: "flex",
               alignItems: "center",
               gap: 12,
+              boxShadow: "0 14px 36px var(--rb-shadow)",
             }}
           >
-            <FiRefreshCw />
+            <FiRefreshCw style={{ color: "var(--rb-accent)" }} />
             <div>
-              <strong>Cargando stream</strong>
-              <p style={{ margin: "4px 0 0" }}>
+              <strong style={{ color: "var(--rb-text-strong)" }}>Cargando stream</strong>
+              <p style={{ margin: "4px 0 0", color: "var(--rb-muted)" }}>
                 Consultando información de la transmisión.
               </p>
             </div>
@@ -206,8 +211,9 @@ export default function StreamPublicPage() {
             style={{
               borderRadius: 20,
               padding: 22,
-              border: "1px solid rgba(250, 204, 21, 0.35)",
-              background: "rgba(250, 204, 21, 0.10)",
+              border: "1px solid color-mix(in srgb, var(--rb-warning) 35%, transparent)",
+              background: "color-mix(in srgb, var(--rb-warning) 10%, transparent)",
+              color: "var(--rb-warning)",
               display: "flex",
               alignItems: "center",
               gap: 12,
@@ -215,8 +221,8 @@ export default function StreamPublicPage() {
           >
             <FiAlertTriangle />
             <div>
-              <strong>No se pudo cargar</strong>
-              <p style={{ margin: "4px 0 0" }}>{error}</p>
+              <strong style={{ color: "var(--rb-text-strong)" }}>No se pudo cargar</strong>
+              <p style={{ margin: "4px 0 0", color: "var(--rb-muted)" }}>{error}</p>
             </div>
           </div>
         ) : null}
@@ -226,17 +232,18 @@ export default function StreamPublicPage() {
             style={{
               borderRadius: 28,
               overflow: "hidden",
-              border: "1px solid rgba(0, 234, 255, 0.18)",
-              background: "rgba(2, 6, 23, 0.90)",
-              boxShadow: "0 24px 80px rgba(0,0,0,.34)",
+              border: "1px solid var(--rb-border-strong)",
+              background: "var(--rb-card-bg)",
+              boxShadow: "0 24px 80px var(--rb-shadow)",
+              color: "var(--rb-text)",
             }}
           >
             <div
               style={{
                 minHeight: 430,
                 background: isImageUrl(thumbnail)
-                  ? `linear-gradient(180deg, rgba(2,8,26,.06), rgba(2,8,26,.80)), url(${thumbnail}) center/cover`
-                  : "linear-gradient(135deg, rgba(0, 234, 255, 0.12), rgba(139, 92, 246, 0.14))",
+                  ? `linear-gradient(180deg, color-mix(in srgb, var(--rb-bg-deep) 8%, transparent), color-mix(in srgb, var(--rb-bg-deep) 82%, transparent), url(${thumbnail}) center/cover`
+                  : "linear-gradient(135deg, color-mix(in srgb, var(--rb-accent) 12%, var(--rb-panel)), color-mix(in srgb, var(--rb-accent-2) 14%, var(--rb-panel)))",
                 display: "grid",
                 placeItems: "center",
                 position: "relative",
@@ -257,9 +264,10 @@ export default function StreamPublicPage() {
                     borderRadius: 999,
                     padding: "8px 12px",
                     background: statusColor(stream.estado),
-                    color: stream.estado === "finalizado" ? "#020617" : "#fff",
+                    color: "var(--rb-text-inverse)",
                     fontWeight: 900,
                     fontSize: 12,
+                    boxShadow: "0 10px 22px color-mix(in srgb, var(--rb-shadow) 36%, transparent)",
                   }}
                 >
                   {statusLabel(stream.estado)}
@@ -269,13 +277,15 @@ export default function StreamPublicPage() {
                   style={{
                     borderRadius: 999,
                     padding: "8px 12px",
-                    background: "rgba(15, 23, 42, 0.82)",
-                    color: "#fff",
+                    background: "color-mix(in srgb, var(--rb-panel) 88%, transparent)",
+                    color: "var(--rb-text)",
+                    border: "1px solid var(--rb-border)",
                     fontWeight: 900,
                     fontSize: 12,
                     display: "inline-flex",
                     alignItems: "center",
                     gap: 6,
+                    backdropFilter: "blur(14px)",
                   }}
                 >
                   <FiEye /> {viewerCount} espectadores
@@ -304,10 +314,11 @@ export default function StreamPublicPage() {
                     borderRadius: "50%",
                     display: "grid",
                     placeItems: "center",
-                    background: "rgba(0, 234, 255, 0.16)",
-                    color: "#00eaff",
+                    background: "color-mix(in srgb, var(--rb-accent) 16%, transparent)",
+                    color: "var(--rb-accent)",
                     fontSize: 48,
-                    border: "1px solid rgba(0, 234, 255, 0.30)",
+                    border: "1px solid color-mix(in srgb, var(--rb-accent) 30%, transparent)",
+                    boxShadow: "0 18px 42px color-mix(in srgb, var(--rb-accent) 14%, transparent)",
                   }}
                 >
                   <FiTv />
@@ -320,6 +331,7 @@ export default function StreamPublicPage() {
                 padding: 26,
                 display: "grid",
                 gap: 16,
+                background: "var(--rb-card-bg)",
               }}
             >
               <div
@@ -340,6 +352,7 @@ export default function StreamPublicPage() {
                       margin: 0,
                       fontSize: "clamp(32px, 4vw, 54px)",
                       lineHeight: 1,
+                      color: "var(--rb-text-strong)",
                     }}
                   >
                     {stream.titulo}
@@ -348,7 +361,7 @@ export default function StreamPublicPage() {
                   <p
                     style={{
                       margin: "8px 0 0",
-                      color: "rgba(226, 232, 240, 0.82)",
+                      color: "var(--rb-muted)",
                       fontSize: 15,
                     }}
                   >
@@ -360,7 +373,7 @@ export default function StreamPublicPage() {
               <p
                 style={{
                   margin: 0,
-                  color: "rgba(226, 232, 240, 0.82)",
+                  color: "var(--rb-muted)",
                   maxWidth: 900,
                   fontSize: 16,
                   lineHeight: 1.55,
@@ -374,13 +387,13 @@ export default function StreamPublicPage() {
                   display: "flex",
                   gap: 14,
                   flexWrap: "wrap",
-                  color: "rgba(226, 232, 240, 0.82)",
+                  color: "var(--rb-muted)",
                 }}
               >
                 <Link
                   to={`/channels/${stream.canal.id_canal}`}
                   style={{
-                    color: "#00eaff",
+                    color: "var(--rb-accent)",
                     textDecoration: "none",
                     fontWeight: 900,
                     display: "inline-flex",

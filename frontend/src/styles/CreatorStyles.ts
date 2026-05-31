@@ -1,11 +1,16 @@
+//frontend/src/styles/CreatorStyles.ts
 import styled from "styled-components";
 
 export const CreatorPageLayout = styled.main`
   min-height: calc(100vh - 72px);
   background:
-    radial-gradient(circle at top, rgba(0, 229, 255, 0.08), transparent 32%),
-    #090a12;
-  color: #ffffff;
+    radial-gradient(
+      circle at top,
+      color-mix(in srgb, var(--rb-accent) 11%, transparent),
+      transparent 34%
+    ),
+    linear-gradient(180deg, var(--rb-app-overlay-start), var(--rb-app-overlay-end));
+  color: var(--rb-text);
   padding: 44px 18px;
   display: flex;
   justify-content: center;
@@ -13,11 +18,12 @@ export const CreatorPageLayout = styled.main`
 
 export const CreatorCard = styled.section`
   width: min(900px, 100%);
-  background: #111322;
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: var(--rb-card-bg);
+  border: 1px solid var(--rb-border);
   border-radius: 22px;
   padding: 32px;
-  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.28);
+  box-shadow: 0 18px 45px var(--rb-shadow);
+  color: var(--rb-text);
 `;
 
 export const CreatorHeader = styled.div`
@@ -25,7 +31,7 @@ export const CreatorHeader = styled.div`
   text-align: center;
 
   span {
-    color: #00e5ff;
+    color: var(--rb-accent);
     font-size: 12px;
     font-weight: 900;
     letter-spacing: 0.1em;
@@ -36,12 +42,13 @@ export const CreatorTitle = styled.h1`
   margin: 10px 0;
   font-size: 34px;
   line-height: 1.1;
+  color: var(--rb-text-strong);
 `;
 
 export const CreatorSubtitle = styled.p`
   margin: 0 auto;
   max-width: 680px;
-  color: rgba(255, 255, 255, 0.62);
+  color: var(--rb-muted);
   line-height: 1.5;
 `;
 
@@ -60,44 +67,44 @@ export const CreatorInputGroup = styled.div`
 export const CreatorLabel = styled.label`
   font-size: 14px;
   font-weight: 800;
-  color: rgba(255, 255, 255, 0.88);
+  color: var(--rb-text);
 `;
 
 export const CreatorInput = styled.input`
   height: 46px;
-  background: #0c0e19;
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: var(--rb-input-bg);
+  border: 1px solid var(--rb-input-border);
   border-radius: 12px;
-  color: #ffffff;
+  color: var(--rb-text);
   padding: 0 14px;
   outline: none;
 
   &::placeholder {
-    color: rgba(255, 255, 255, 0.34);
+    color: var(--rb-muted-soft);
   }
 
   &:focus {
-    border-color: #00e5ff;
-    box-shadow: 0 0 0 2px rgba(0, 229, 255, 0.12);
+    border-color: var(--rb-border-strong);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--rb-accent) 14%, transparent);
   }
 `;
 
 export const CreatorTextarea = styled.textarea`
-  background: #0c0e19;
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: var(--rb-input-bg);
+  border: 1px solid var(--rb-input-border);
   border-radius: 12px;
-  color: #ffffff;
+  color: var(--rb-text);
   padding: 14px;
   outline: none;
   resize: vertical;
 
   &::placeholder {
-    color: rgba(255, 255, 255, 0.34);
+    color: var(--rb-muted-soft);
   }
 
   &:focus {
-    border-color: #00e5ff;
-    box-shadow: 0 0 0 2px rgba(0, 229, 255, 0.12);
+    border-color: var(--rb-border-strong);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--rb-accent) 14%, transparent);
   }
 `;
 
@@ -115,31 +122,33 @@ export const CreatorTypeCard = styled.button<{ $active?: boolean }>`
   text-align: left;
   background: ${({ $active }) =>
     $active
-      ? "linear-gradient(135deg, rgba(0, 229, 255, 0.18), rgba(0, 255, 153, 0.08))"
-      : "#0c0e19"};
-  border: 1px solid
-    ${({ $active }) =>
-      $active ? "rgba(0, 229, 255, 0.65)" : "rgba(255, 255, 255, 0.08)"};
+      ? "linear-gradient(135deg, color-mix(in srgb, var(--rb-accent) 18%, var(--rb-panel)), color-mix(in srgb, var(--rb-success) 10%, var(--rb-panel)))"
+      : "var(--rb-panel)"};
+  border: 1px solid ${({ $active }) => ($active ? "var(--rb-border-strong)" : "var(--rb-border)")};
   border-radius: 16px;
   padding: 18px;
-  color: #ffffff;
+  color: var(--rb-text);
   cursor: pointer;
   transition: 0.18s ease;
+  box-shadow: ${({ $active }) =>
+    $active ? "0 14px 32px color-mix(in srgb, var(--rb-accent) 12%, transparent)" : "none"};
 
   &:hover {
     transform: translateY(-2px);
-    border-color: rgba(0, 229, 255, 0.55);
+    border-color: var(--rb-border-strong);
+    background: ${({ $active }) => ($active ? undefined : "var(--rb-card-bg-hover)")};
   }
 `;
 
 export const CreatorTypeTitle = styled.h3`
   margin: 0 0 8px;
   font-size: 20px;
+  color: var(--rb-text-strong);
 `;
 
 export const CreatorTypeDescription = styled.p`
   margin: 0;
-  color: rgba(255, 255, 255, 0.62);
+  color: var(--rb-muted);
   line-height: 1.45;
 `;
 
@@ -147,8 +156,8 @@ export const CreatorButton = styled.button`
   height: 46px;
   border: none;
   border-radius: 12px;
-  background: linear-gradient(135deg, #00e5ff, #00ff99);
-  color: #071016;
+  background: linear-gradient(135deg, var(--rb-accent), var(--rb-success));
+  color: var(--rb-text-inverse);
   font-weight: 900;
   cursor: pointer;
   padding: 0 18px;
@@ -168,33 +177,39 @@ export const CreatorButton = styled.button`
 
 export const CreatorMessage = styled.div<{ $error?: boolean }>`
   background: ${({ $error }) =>
-    $error ? "rgba(255, 79, 94, 0.12)" : "rgba(0, 229, 255, 0.1)"};
+    $error
+      ? "color-mix(in srgb, var(--rb-danger) 12%, transparent)"
+      : "color-mix(in srgb, var(--rb-accent) 10%, transparent)"};
   border: 1px solid
     ${({ $error }) =>
-      $error ? "rgba(255, 79, 94, 0.35)" : "rgba(0, 229, 255, 0.3)"};
-  color: ${({ $error }) => ($error ? "#ff8c97" : "#9df6ff")};
+      $error
+        ? "color-mix(in srgb, var(--rb-danger) 35%, transparent)"
+        : "color-mix(in srgb, var(--rb-accent) 30%, transparent)"};
+  color: ${({ $error }) => ($error ? "var(--rb-danger)" : "var(--rb-accent)")};
   border-radius: 12px;
   padding: 14px;
   font-weight: 700;
 `;
 
 export const CreatorExistingBox = styled.div`
-  background: #0c0e19;
-  border: 1px solid rgba(0, 229, 255, 0.2);
+  background: var(--rb-panel);
+  border: 1px solid var(--rb-border-strong);
   border-radius: 18px;
   padding: 22px;
   display: flex;
   flex-direction: column;
   gap: 10px;
+  color: var(--rb-text);
 
   h3 {
     margin: 0;
     font-size: 22px;
+    color: var(--rb-text-strong);
   }
 
   p {
     margin: 0;
-    color: rgba(255, 255, 255, 0.72);
+    color: var(--rb-muted);
   }
 
   button {

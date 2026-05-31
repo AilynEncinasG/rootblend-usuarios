@@ -1,3 +1,4 @@
+//frontend/src/components/layout/Navbar.tsx
 import { useEffect, useRef, useState } from "react";
 import type { FormEvent } from "react";
 import styled from "styled-components";
@@ -9,25 +10,36 @@ import UserMenu from "./UserMenu";
 import { isAuthenticated } from "../../modules/auth/utils/authStorage";
 
 const SearchForm = styled.form`
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: var(--rb-input-bg);
+  border: 1px solid var(--rb-input-border);
   padding: 8px 15px;
   border-radius: 20px;
   display: flex;
   align-items: center;
   gap: 10px;
   width: 400px;
+  color: var(--rb-muted-soft);
+
+  svg {
+    color: var(--rb-muted-soft);
+    flex-shrink: 0;
+  }
 
   input {
     background: transparent;
     border: none;
-    color: white;
+    color: var(--rb-text);
     outline: none;
     width: 100%;
 
     &::placeholder {
-      color: rgba(255, 255, 255, 0.5);
+      color: var(--rb-muted-soft);
     }
+  }
+
+  &:focus-within {
+    border-color: var(--rb-border-strong);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--rb-accent) 14%, transparent);
   }
 
   @media (max-width: 900px) {
@@ -56,8 +68,8 @@ const AuthLink = styled(Link)<{ $variant?: "primary" | "ghost" }>`
   ${({ $variant }) =>
     $variant === "primary"
       ? `
-        background: linear-gradient(135deg, #00e5ff, #00ff99);
-        color: #071016;
+        background: linear-gradient(135deg, var(--rb-accent), var(--rb-success));
+        color: var(--rb-text-inverse);
 
         &:hover {
           filter: brightness(1.08);
@@ -65,12 +77,13 @@ const AuthLink = styled(Link)<{ $variant?: "primary" | "ghost" }>`
         }
       `
       : `
-        background: rgba(255, 255, 255, 0.06);
-        color: #ffffff;
-        border: 1px solid rgba(255, 255, 255, 0.08);
+        background: var(--rb-panel);
+        color: var(--rb-text);
+        border: 1px solid var(--rb-border);
 
         &:hover {
-          background: rgba(255, 255, 255, 0.1);
+          background: var(--rb-panel-hover);
+          border-color: var(--rb-border-strong);
         }
       `}
 `;
@@ -83,16 +96,19 @@ const BellButton = styled.button`
   width: 38px;
   height: 38px;
   border-radius: 999px;
-  border: 1px solid rgba(255, 255, 255, 0.09);
-  background: rgba(255, 255, 255, 0.055);
-  color: rgba(255, 255, 255, 0.78);
+  border: 1px solid var(--rb-border);
+  background: var(--rb-panel);
+  color: var(--rb-muted);
   display: grid;
   place-items: center;
   cursor: pointer;
   position: relative;
+  transition: 0.18s ease;
 
   &:hover {
-    background: rgba(255, 255, 255, 0.1);
+    background: var(--rb-panel-hover);
+    border-color: var(--rb-border-strong);
+    color: var(--rb-text);
   }
 `;
 
@@ -103,8 +119,8 @@ const NotificationDot = styled.span`
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: #00ff99;
-  box-shadow: 0 0 10px rgba(0, 255, 153, 0.8);
+  background: var(--rb-success);
+  box-shadow: 0 0 10px color-mix(in srgb, var(--rb-success) 72%, transparent);
 `;
 
 const NotificationPanel = styled.div`
@@ -112,12 +128,19 @@ const NotificationPanel = styled.div`
   top: 48px;
   right: 0;
   width: 340px;
-  background: #252532;
-  border: 1px solid rgba(255, 255, 255, 0.09);
+  background: var(--rb-panel);
+  border: 1px solid var(--rb-border);
   border-radius: 16px;
   padding: 14px;
   z-index: 1200;
-  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.45);
+  box-shadow: 0 24px 70px var(--rb-shadow);
+  color: var(--rb-text);
+  backdrop-filter: blur(18px);
+
+  @media (max-width: 480px) {
+    width: min(340px, calc(100vw - 24px));
+    right: -12px;
+  }
 `;
 
 const NotificationHeader = styled.div`
@@ -127,15 +150,19 @@ const NotificationHeader = styled.div`
   margin-bottom: 10px;
 
   strong {
-    color: white;
+    color: var(--rb-text-strong);
     font-size: 14px;
   }
 
   a {
-    color: #00e5ff;
+    color: var(--rb-accent);
     font-size: 12px;
     text-decoration: none;
     font-weight: 800;
+
+    &:hover {
+      color: var(--rb-text-strong);
+    }
   }
 `;
 
@@ -145,11 +172,12 @@ const NotificationItem = styled(Link)`
   gap: 10px;
   padding: 10px;
   border-radius: 12px;
-  color: white;
+  color: var(--rb-text);
   text-decoration: none;
+  transition: 0.18s ease;
 
   &:hover {
-    background: rgba(255, 255, 255, 0.07);
+    background: var(--rb-panel-hover);
   }
 
   .icon {
@@ -158,21 +186,22 @@ const NotificationItem = styled(Link)`
     border-radius: 50%;
     display: grid;
     place-items: center;
-    background: rgba(0, 229, 255, 0.13);
-    color: #00e5ff;
+    background: color-mix(in srgb, var(--rb-accent) 13%, transparent);
+    color: var(--rb-accent);
   }
 
   span {
     display: block;
     font-size: 13px;
     font-weight: 800;
+    color: var(--rb-text-strong);
   }
 
   small {
     display: block;
     margin-top: 3px;
     font-size: 12px;
-    color: rgba(255, 255, 255, 0.58);
+    color: var(--rb-muted-soft);
   }
 `;
 
@@ -259,7 +288,7 @@ export const Navbar = () => {
       </Link>
 
       <SearchForm onSubmit={handleSearch}>
-        <FiSearch color="rgba(255,255,255,0.5)" />
+        <FiSearch />
         <input
           type="text"
           placeholder="Buscar streams, canales, podcasts..."

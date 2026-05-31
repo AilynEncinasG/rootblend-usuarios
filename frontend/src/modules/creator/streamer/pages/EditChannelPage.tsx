@@ -1,3 +1,4 @@
+//frontend/src/modules/creator/streamer/pages/EditChannelPage.tsx
 import {
   type ChangeEvent,
   type FormEvent,
@@ -443,7 +444,7 @@ export default function EditChannelPage() {
                 overflow: "hidden",
                 border: "1px solid rgba(0, 220, 255, 0.20)",
                 background: bannerPreview
-                  ? `linear-gradient(180deg, rgba(2,8,26,.20), rgba(2,8,26,.78)), url(${bannerPreview}) center/cover`
+                  ? `linear-gradient(180deg, color-mix(in srgb, var(--rb-bg-deep) 20%, transparent), color-mix(in srgb, var(--rb-bg-deep) 78%, transparent)), url(${bannerPreview}) center/cover`
                   : "linear-gradient(135deg, rgba(0, 217, 255, 0.16), rgba(127, 86, 217, 0.18))",
                 minHeight: 230,
                 display: "flex",
@@ -475,7 +476,7 @@ export default function EditChannelPage() {
                   <p
                     style={{
                       margin: 0,
-                      color: "#00eaff",
+                      color: "var(--rb-accent)",
                       fontWeight: 800,
                       textTransform: "uppercase",
                     }}

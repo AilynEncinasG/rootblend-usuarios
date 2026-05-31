@@ -1,3 +1,4 @@
+//frontend/src/modules/account/pages/EditProfilePage.tsx
 import {
   type ChangeEvent,
   type FormEvent,
@@ -486,7 +487,7 @@ export default function EditProfilePage() {
           disabled={loading || saving}
         />
 
-        <small style={{ color: "rgba(226, 232, 240, 0.68)" }}>
+        <small style={{ color: "var(--rb-muted)" }}>
           {biografia.length}/{BIO_MAX_LENGTH} caracteres
         </small>
 

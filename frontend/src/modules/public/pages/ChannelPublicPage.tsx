@@ -1,3 +1,4 @@
+//frontend/src/modules/public/pages/ChannelPublicPage.tsx
 import {
   useEffect,
   useMemo,
@@ -82,9 +83,9 @@ function streamStatusLabel(status: Stream["estado"]) {
 }
 
 function streamStatusColor(status: Stream["estado"]) {
-  if (status === "en_vivo") return "#ff2d55";
-  if (status === "programado") return "#00eaff";
-  return "#94a3b8";
+  if (status === "en_vivo") return "var(--rb-danger)";
+  if (status === "programado") return "var(--rb-accent)";
+  return "var(--rb-muted)";
 }
 
 function getChannelTypeName(channel: Canal) {
@@ -125,15 +126,15 @@ function StreamCard({ stream }: { stream: Stream }) {
         style={{
           overflow: "hidden",
           borderRadius: 18,
-          border: "1px solid rgba(148, 163, 184, 0.14)",
-          background: "rgba(15, 23, 42, 0.78)",
-          boxShadow: "0 18px 50px rgba(0,0,0,.22)",
+          border: "1px solid var(--rb-border)",
+          background: "var(--rb-card-bg)",
+          boxShadow: "0 18px 50px var(--rb-shadow)",
         }}
       >
         <div
           style={{
             minHeight: 150,
-            background: `linear-gradient(180deg, rgba(2,8,26,.05), rgba(2,8,26,.62)), url(${image}) center/cover`,
+            background: `linear-gradient(180deg, color-mix(in srgb, var(--rb-bg-deep) 5%, transparent), color-mix(in srgb, var(--rb-bg-deep) 68%, transparent)), url(${image}) center/cover`,
             position: "relative",
           }}
         >
@@ -145,7 +146,7 @@ function StreamCard({ stream }: { stream: Stream }) {
               borderRadius: 999,
               padding: "6px 10px",
               background: streamStatusColor(stream.estado),
-              color: stream.estado === "finalizado" ? "#020617" : "#ffffff",
+              color: stream.estado === "finalizado" ? "var(--rb-text-inverse)" : "var(--rb-media-text, white)",
               fontSize: 11,
               fontWeight: 900,
             }}
@@ -174,7 +175,7 @@ function StreamCard({ stream }: { stream: Stream }) {
           <p
             style={{
               margin: 0,
-              color: "rgba(203, 213, 225, 0.78)",
+              color: "var(--rb-muted)",
               fontSize: 14,
               lineHeight: 1.4,
             }}
@@ -187,7 +188,7 @@ function StreamCard({ stream }: { stream: Stream }) {
               display: "flex",
               justifyContent: "space-between",
               gap: 12,
-              color: "rgba(203, 213, 225, 0.76)",
+              color: "var(--rb-muted-soft)",
               fontSize: 13,
             }}
           >
@@ -220,15 +221,15 @@ function MomentCard({ momento }: { momento: MomentoDestacado }) {
         style={{
           overflow: "hidden",
           borderRadius: 18,
-          border: "1px solid rgba(0, 234, 255, 0.20)",
-          background: "rgba(15, 23, 42, 0.78)",
-          boxShadow: "0 18px 50px rgba(0,0,0,.22)",
+          border: "1px solid var(--rb-border-strong)",
+          background: "var(--rb-card-bg)",
+          boxShadow: "0 18px 50px var(--rb-shadow)",
         }}
       >
         <div
           style={{
             minHeight: 150,
-            background: `linear-gradient(180deg, rgba(2,8,26,.06), rgba(2,8,26,.70)), url(${image}) center/cover`,
+            background: `linear-gradient(180deg, color-mix(in srgb, var(--rb-bg-deep) 6%, transparent), color-mix(in srgb, var(--rb-bg-deep) 72%, transparent)), url(${image}) center/cover`,
             position: "relative",
             display: "grid",
             placeItems: "center",
@@ -241,8 +242,8 @@ function MomentCard({ momento }: { momento: MomentoDestacado }) {
               left: 12,
               borderRadius: 999,
               padding: "6px 10px",
-              background: "#8b5cf6",
-              color: "#ffffff",
+              background: "var(--rb-accent-2)",
+              color: "var(--rb-text-strong)",
               fontSize: 11,
               fontWeight: 900,
             }}
@@ -256,9 +257,9 @@ function MomentCard({ momento }: { momento: MomentoDestacado }) {
               height: 54,
               padding: 14,
               borderRadius: "50%",
-              color: "#00eaff",
-              background: "rgba(2, 6, 23, 0.72)",
-              border: "1px solid rgba(0, 234, 255, 0.40)",
+              color: "var(--rb-accent)",
+              background: "color-mix(in srgb, var(--rb-bg-deep) 74%, transparent)",
+              border: "1px solid var(--rb-border-strong)",
             }}
           />
         </div>
@@ -283,7 +284,7 @@ function MomentCard({ momento }: { momento: MomentoDestacado }) {
           <p
             style={{
               margin: 0,
-              color: "rgba(203, 213, 225, 0.78)",
+              color: "var(--rb-muted)",
               fontSize: 14,
               lineHeight: 1.4,
             }}
@@ -291,7 +292,7 @@ function MomentCard({ momento }: { momento: MomentoDestacado }) {
             {momento.descripcion || "Clip destacado del canal."}
           </p>
 
-          <small style={{ color: "rgba(203, 213, 225, 0.70)" }}>
+          <small style={{ color: "var(--rb-muted-soft)" }}>
             {momento.vistas_count || 0} vistas
             {momento.duracion ? ` · ${momento.duracion}` : ""}
           </small>
@@ -313,15 +314,15 @@ function EmptySection({
   return (
     <div
       style={{
-        border: "1px solid rgba(148, 163, 184, 0.14)",
+        border: "1px solid var(--rb-border)",
         borderRadius: 22,
         padding: 28,
-        background: "rgba(15, 23, 42, 0.70)",
+        background: "var(--rb-panel)",
         display: "grid",
         justifyItems: "center",
         textAlign: "center",
         gap: 10,
-        color: "rgba(226, 232, 240, 0.86)",
+        color: "var(--rb-text)",
       }}
     >
       <div
@@ -331,8 +332,8 @@ function EmptySection({
           display: "grid",
           placeItems: "center",
           borderRadius: 18,
-          background: "rgba(0, 234, 255, 0.10)",
-          color: "#00eaff",
+          background: "color-mix(in srgb, var(--rb-accent) 10%, transparent)",
+          color: "var(--rb-accent)",
           fontSize: 28,
         }}
       >
@@ -560,10 +561,10 @@ export default function ChannelPublicPage() {
         {loading ? (
           <div
             style={{
-              border: "1px solid rgba(148, 163, 184, 0.14)",
+              border: "1px solid var(--rb-border)",
               borderRadius: 22,
               padding: 24,
-              background: "rgba(15, 23, 42, 0.78)",
+              background: "var(--rb-panel)",
               display: "flex",
               gap: 12,
               alignItems: "center",
@@ -588,14 +589,14 @@ export default function ChannelPublicPage() {
                 minHeight: 315,
                 borderRadius: 28,
                 overflow: "hidden",
-                border: "1px solid rgba(0, 234, 255, 0.18)",
+                border: "1px solid var(--rb-border-strong)",
                 background: isImageUrl(channelBanner)
-                  ? `linear-gradient(90deg, rgba(2,8,26,.84), rgba(2,8,26,.32), rgba(2,8,26,.86)), url(${channelBanner}) center/cover`
-                  : `linear-gradient(90deg, rgba(2,8,26,.84), rgba(2,8,26,.40)), url(${brandAssets.channelView}) center/cover`,
+                  ? `linear-gradient(90deg, color-mix(in srgb, var(--rb-bg-deep) 86%, transparent), color-mix(in srgb, var(--rb-bg-deep) 38%, transparent), color-mix(in srgb, var(--rb-bg-deep) 86%, transparent)), url(${channelBanner}) center/cover`
+                  : `linear-gradient(90deg, color-mix(in srgb, var(--rb-bg-deep) 86%, transparent), color-mix(in srgb, var(--rb-bg-deep) 46%, transparent)), url(${brandAssets.channelView}) center/cover`,
                 display: "flex",
                 alignItems: "flex-end",
                 padding: 34,
-                boxShadow: "0 24px 80px rgba(0,0,0,.30)",
+                boxShadow: "0 24px 80px var(--rb-shadow)",
               }}
             >
               <div
@@ -612,11 +613,11 @@ export default function ChannelPublicPage() {
                     height: 118,
                     borderRadius: "50%",
                     overflow: "hidden",
-                    border: "3px solid rgba(0, 234, 255, 0.65)",
-                    background: "linear-gradient(135deg, #00eaff, #8b5cf6)",
+                    border: "3px solid color-mix(in srgb, var(--rb-accent) 65%, transparent)",
+                    background: "linear-gradient(135deg, var(--rb-accent), var(--rb-accent-2))",
                     display: "grid",
                     placeItems: "center",
-                    color: "#020617",
+                    color: "var(--rb-text-inverse)",
                     fontWeight: 900,
                     fontSize: 28,
                     flex: "0 0 auto",
@@ -642,7 +643,7 @@ export default function ChannelPublicPage() {
                   <p
                     style={{
                       margin: 0,
-                      color: "#00eaff",
+                      color: "var(--rb-accent)",
                       fontWeight: 900,
                       textTransform: "uppercase",
                     }}
@@ -663,7 +664,7 @@ export default function ChannelPublicPage() {
                   <p
                     style={{
                       margin: 0,
-                      color: "rgba(226, 232, 240, 0.88)",
+                      color: "var(--rb-muted)",
                       fontSize: 18,
                       maxWidth: 720,
                     }}
@@ -690,9 +691,9 @@ export default function ChannelPublicPage() {
                         minHeight: 44,
                         padding: "0 18px",
                         background: following
-                          ? "linear-gradient(135deg, #22c55e, #16a34a)"
-                          : "linear-gradient(135deg, #00eaff, #22c55e)",
-                        color: "#020617",
+                          ? "linear-gradient(135deg, var(--rb-success), color-mix(in srgb, var(--rb-success) 78%, var(--rb-bg-deep)))"
+                          : "linear-gradient(135deg, var(--rb-accent), var(--rb-success))",
+                        color: "var(--rb-text-inverse)",
                         fontWeight: 900,
                         cursor: interactionLoading ? "not-allowed" : "pointer",
                         opacity: interactionLoading ? 0.7 : 1,
@@ -708,14 +709,14 @@ export default function ChannelPublicPage() {
                       type="button"
                       disabled={!following || interactionLoading}
                       style={{
-                        border: "1px solid rgba(0, 234, 255, 0.45)",
+                        border: "1px solid var(--rb-border-strong)",
                         borderRadius: 14,
                         minHeight: 44,
                         padding: "0 18px",
                         background: following
-                          ? "rgba(0, 234, 255, 0.16)"
-                          : "rgba(15, 23, 42, 0.72)",
-                        color: following ? "#ffffff" : "rgba(226,232,240,.55)",
+                          ? "color-mix(in srgb, var(--rb-accent) 16%, transparent)"
+                          : "var(--rb-panel)",
+                        color: following ? "var(--rb-text-strong)" : "var(--rb-muted-soft)",
                         fontWeight: 900,
                         cursor: following ? "default" : "not-allowed",
                         display: "inline-flex",
@@ -732,14 +733,14 @@ export default function ChannelPublicPage() {
                       onClick={toggleSubscription}
                       disabled={interactionLoading}
                       style={{
-                        border: "1px solid rgba(168, 85, 247, 0.45)",
+                        border: "1px solid color-mix(in srgb, var(--rb-accent-2) 45%, transparent)",
                         borderRadius: 14,
                         minHeight: 44,
                         padding: "0 18px",
                         background: subscribed
-                          ? "rgba(34, 197, 94, 0.26)"
-                          : "rgba(88, 28, 135, 0.30)",
-                        color: "#ffffff",
+                          ? "color-mix(in srgb, var(--rb-success) 26%, transparent)"
+                          : "color-mix(in srgb, var(--rb-accent-2) 30%, transparent)",
+                        color: "var(--rb-text-strong)",
                         fontWeight: 900,
                         cursor: interactionLoading ? "not-allowed" : "pointer",
                         opacity: interactionLoading ? 0.7 : 1,
@@ -756,7 +757,7 @@ export default function ChannelPublicPage() {
                     <p
                       style={{
                         margin: "12px 0 0",
-                        color: "#00eaff",
+                        color: "var(--rb-accent)",
                         fontWeight: 850,
                       }}
                     >
@@ -862,10 +863,10 @@ export default function ChannelPublicPage() {
 }
 
 const metricStyle: CSSProperties = {
-  border: "1px solid rgba(148, 163, 184, 0.14)",
+  border: "1px solid var(--rb-border)",
   borderRadius: 18,
   padding: 18,
-  background: "rgba(15, 23, 42, 0.74)",
+  background: "var(--rb-card-bg)",
   display: "grid",
   gap: 6,
 };

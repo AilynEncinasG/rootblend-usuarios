@@ -1,5 +1,7 @@
+//frontend/src/shared/styles/media.ts
 import styled from "styled-components";
 import { LiveBadge } from "./cards";
+
 export const PlayerPanel = styled.section`
   margin-bottom: 20px;
 `;
@@ -9,12 +11,17 @@ export const VideoFrame = styled.div<{ $image: string }>`
   min-height: 470px;
   border-radius: 10px;
   overflow: hidden;
-  border: 1px solid rgba(148, 163, 184, 0.14);
+  border: 1px solid var(--rb-border);
   background:
-    linear-gradient(180deg, rgba(2, 6, 23, 0.05), rgba(2, 6, 23, 0.26)),
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--rb-bg-deep) 5%, transparent),
+      color-mix(in srgb, var(--rb-bg-deep) 32%, transparent)
+    ),
     url(${({ $image }) => $image});
   background-size: cover;
   background-position: center;
+  box-shadow: 0 16px 42px color-mix(in srgb, var(--rb-shadow) 36%, transparent);
 
   > ${LiveBadge} {
     position: absolute;
@@ -37,21 +44,23 @@ export const VideoControls = styled.div`
   gap: 12px;
   padding: 9px 12px;
   border-radius: 10px;
-  background: rgba(2, 6, 23, 0.72);
+  background: color-mix(in srgb, var(--rb-bg-deep) 72%, transparent);
+  border: 1px solid color-mix(in srgb, var(--rb-border) 70%, transparent);
+  backdrop-filter: blur(12px);
 `;
 
 export const Progress = styled.div`
   flex: 1;
   height: 5px;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.17);
+  background: color-mix(in srgb, #ffffff 17%, transparent);
   overflow: hidden;
 
   span {
     display: block;
     width: 42%;
     height: 100%;
-    background: #00e5ff;
+    background: var(--rb-accent);
   }
 `;
 
@@ -61,6 +70,7 @@ export const StreamInfo = styled.div`
   gap: 14px;
   align-items: center;
   padding: 14px 0;
+  color: var(--rb-text);
 
   @media (max-width: 900px) {
     grid-template-columns: 1fr;
@@ -71,11 +81,12 @@ export const InfoMain = styled.div`
   h1 {
     margin: 0 0 5px;
     font-size: 24px;
+    color: var(--rb-text-strong);
   }
 
   p {
     margin: 0;
-    color: rgba(226, 232, 240, 0.68);
+    color: var(--rb-muted);
   }
 `;
 
@@ -92,9 +103,9 @@ export const MetaTag = styled.span`
   align-items: center;
   padding: 0 10px;
   border-radius: 999px;
-  color: #dffaff;
-  background: rgba(0, 229, 255, 0.12);
-  border: 1px solid rgba(0, 229, 255, 0.16);
+  color: var(--rb-chip-text);
+  background: var(--rb-chip-bg);
+  border: 1px solid var(--rb-border-strong);
   font-size: 12px;
   font-weight: 850;
 `;
@@ -104,17 +115,19 @@ export const ChatBox = styled.div`
   display: flex;
   flex-direction: column;
   border-radius: 12px;
-  background: rgba(15, 23, 42, 0.74);
-  border: 1px solid rgba(148, 163, 184, 0.12);
+  background: var(--rb-card-bg);
+  border: 1px solid var(--rb-border);
+  color: var(--rb-text);
+  box-shadow: 0 14px 36px color-mix(in srgb, var(--rb-shadow) 36%, transparent);
 `;
 
 export const ChatStatus = styled.div`
   margin: 0 12px 10px;
   padding: 9px 10px;
   border-radius: 9px;
-  color: rgba(226, 232, 240, 0.76);
-  background: rgba(0, 229, 255, 0.08);
-  border: 1px solid rgba(0, 229, 255, 0.14);
+  color: var(--rb-muted);
+  background: color-mix(in srgb, var(--rb-accent) 8%, transparent);
+  border: 1px solid color-mix(in srgb, var(--rb-accent) 14%, transparent);
   font-size: 12px;
   line-height: 1.4;
 `;
@@ -138,7 +151,7 @@ export const ChatBubble = styled.div`
 
   p {
     margin: 3px 0 0;
-    color: rgba(226, 232, 240, 0.84);
+    color: var(--rb-text);
     font-size: 13px;
     line-height: 1.4;
   }
@@ -153,8 +166,8 @@ export const ChatName = styled.div<{ $color: string }>`
   font-weight: 950;
 
   span {
-    color: #04111f;
-    background: #00e5ff;
+    color: var(--rb-text-inverse);
+    background: var(--rb-accent);
     border-radius: 4px;
     padding: 1px 4px;
     font-size: 9px;
@@ -162,7 +175,7 @@ export const ChatName = styled.div<{ $color: string }>`
 
   time {
     margin-left: auto;
-    color: rgba(226, 232, 240, 0.42);
+    color: var(--rb-muted-soft);
     font-weight: 600;
   }
 `;
@@ -175,9 +188,10 @@ export const ChatActionMenu = styled.div`
   width: 210px;
   padding: 8px;
   border-radius: 10px;
-  background: rgba(7, 12, 27, 0.98);
-  border: 1px solid rgba(148, 163, 184, 0.16);
-  box-shadow: 0 18px 44px rgba(0, 0, 0, 0.4);
+  background: var(--rb-panel);
+  border: 1px solid var(--rb-border);
+  box-shadow: 0 18px 44px var(--rb-shadow);
+  color: var(--rb-text);
 
   button {
     width: 100%;
@@ -187,17 +201,18 @@ export const ChatActionMenu = styled.div`
     gap: 8px;
     border: 0;
     border-radius: 8px;
-    color: rgba(226, 232, 240, 0.86);
+    color: var(--rb-text);
     background: transparent;
     cursor: pointer;
     font-size: 12px;
     font-weight: 800;
     text-align: left;
+    transition: 0.18s ease;
   }
 
   button:hover {
-    background: rgba(255, 255, 255, 0.07);
-    color: #fff;
+    background: var(--rb-panel-hover);
+    color: var(--rb-text-strong);
   }
 `;
 
@@ -206,31 +221,56 @@ export const ChatForm = styled.form`
   grid-template-columns: 1fr 38px;
   gap: 8px;
   padding: 10px;
-  border-top: 1px solid rgba(148, 163, 184, 0.12);
+  border-top: 1px solid var(--rb-border);
 
   input {
     min-height: 36px;
-    border: 1px solid rgba(148, 163, 184, 0.12);
+    border: 1px solid var(--rb-input-border);
     border-radius: 8px;
     padding: 0 11px;
-    color: #fff;
-    background: rgba(2, 6, 23, 0.78);
+    color: var(--rb-text);
+    background: var(--rb-input-bg);
     outline: 0;
+
+    &::placeholder {
+      color: var(--rb-muted-soft);
+    }
+
+    &:focus {
+      border-color: var(--rb-border-strong);
+      box-shadow: 0 0 0 3px color-mix(in srgb, var(--rb-accent) 14%, transparent);
+    }
   }
 
   button {
     border: 0;
     border-radius: 8px;
-    color: #03111c;
-    background: #8b5cf6;
+    color: var(--rb-text-inverse);
+    background: var(--rb-accent-2);
+    cursor: pointer;
+    transition: 0.18s ease;
+  }
+
+  button:hover:not(:disabled) {
+    filter: brightness(1.08);
+  }
+
+  button:disabled {
+    opacity: 0.62;
+    cursor: not-allowed;
   }
 `;
 
 export const LoginNotice = styled.div`
   padding: 12px;
-  border-top: 1px solid rgba(148, 163, 184, 0.12);
-  color: rgba(226, 232, 240, 0.68);
+  border-top: 1px solid var(--rb-border);
+  color: var(--rb-muted);
   font-size: 13px;
+
+  a {
+    color: var(--rb-accent);
+    font-weight: 850;
+  }
 `;
 
 export const ServicePill = styled.span<{ $status: string }>`
@@ -240,8 +280,24 @@ export const ServicePill = styled.span<{ $status: string }>`
   min-height: 28px;
   border-radius: 999px;
   padding: 0 10px;
-  color: ${({ $status }) => ($status === "Operativo" ? "#86efac" : $status === "Degradado" ? "#fde68a" : "#fecdd3")};
-  background: ${({ $status }) => ($status === "Operativo" ? "rgba(22, 163, 74, 0.14)" : $status === "Degradado" ? "rgba(202, 138, 4, 0.18)" : "rgba(220, 38, 38, 0.18)")};
+  color: ${({ $status }) =>
+    $status === "Operativo"
+      ? "var(--rb-success)"
+      : $status === "Degradado"
+        ? "var(--rb-warning)"
+        : "var(--rb-danger)"};
+  background: ${({ $status }) =>
+    $status === "Operativo"
+      ? "color-mix(in srgb, var(--rb-success) 14%, transparent)"
+      : $status === "Degradado"
+        ? "color-mix(in srgb, var(--rb-warning) 18%, transparent)"
+        : "color-mix(in srgb, var(--rb-danger) 18%, transparent)"};
+  border: 1px solid ${({ $status }) =>
+    $status === "Operativo"
+      ? "color-mix(in srgb, var(--rb-success) 22%, transparent)"
+      : $status === "Degradado"
+        ? "color-mix(in srgb, var(--rb-warning) 26%, transparent)"
+        : "color-mix(in srgb, var(--rb-danger) 26%, transparent)"};
   font-size: 12px;
   font-weight: 850;
 `;
@@ -255,6 +311,8 @@ export const AudioBar = styled.div`
   gap: 12px;
   padding: 12px;
   border-radius: 12px;
-  background: rgba(2, 6, 23, 0.92);
-  border: 1px solid rgba(0, 229, 255, 0.22);
+  background: var(--rb-panel);
+  border: 1px solid var(--rb-border-strong);
+  color: var(--rb-text);
+  box-shadow: 0 16px 42px color-mix(in srgb, var(--rb-shadow) 44%, transparent);
 `;

@@ -1,3 +1,4 @@
+//frontend/src/modules/public/components/ChannelNotFoundPanel.tsx
 import { Link } from "react-router-dom";
 import "./ChannelNotFoundPanel.css";
 
@@ -7,7 +8,10 @@ type ChannelNotFoundPanelProps = {
 
 export function ChannelNotFoundPanel({ error }: ChannelNotFoundPanelProps) {
   return (
-    <section className="error-shell">
+    <section
+      className="error-shell"
+      aria-label={error || "No se encontró la cuenta"}
+    >
       <div className="error-card">
         <div className="error-badges">
             <span className="error-badge">ERROR 404</span>
@@ -33,22 +37,24 @@ export function ChannelNotFoundPanel({ error }: ChannelNotFoundPanelProps) {
             >
             <path
                 d="M69 246C78 193 116 160 180 160C244 160 282 193 291 246C293 260 282 272 268 272H92C78 272 67 260 69 246Z"
-                fill="rgba(255, 241, 242, 0.94)"
+                fill="var(--rb-panel-strong)"
             />
-            <circle cx="180" cy="126" r="66" fill="rgba(255, 241, 242, 0.96)" />
+            <circle cx="180" cy="126" r="66" fill="var(--rb-panel-strong)" />
             <path
                 d="M109 128C91 113 82 94 85 74C111 73 131 83 145 102"
-                fill="rgba(248, 113, 113, 0.95)"
+                fill="var(--rb-danger)"
+                fillOpacity="0.92"
             />
             <path
                 d="M251 128C269 113 278 94 275 74C249 73 229 83 215 102"
-                fill="rgba(248, 113, 113, 0.95)"
+                fill="var(--rb-danger)"
+                fillOpacity="0.92"
             />
-            <circle cx="155" cy="121" r="7" fill="#020617" />
-            <circle cx="205" cy="121" r="7" fill="#020617" />
+            <circle cx="155" cy="121" r="7" fill="var(--rb-bg-deep)" />
+            <circle cx="205" cy="121" r="7" fill="var(--rb-bg-deep)" />
             <path
                 d="M158 150C171 140 189 140 202 150"
-                stroke="#020617"
+                stroke="var(--rb-bg-deep)"
                 strokeWidth="7"
                 strokeLinecap="round"
             />
@@ -56,13 +62,14 @@ export function ChannelNotFoundPanel({ error }: ChannelNotFoundPanelProps) {
                 cx="272"
                 cy="72"
                 r="38"
-                fill="rgba(127, 29, 29, 0.86)"
-                stroke="#fb7185"
+                fill="var(--rb-danger)"
+                fillOpacity="0.20"
+                stroke="var(--rb-danger)"
                 strokeWidth="5"
             />
             <path
                 d="M256 56L288 88M288 56L256 88"
-                stroke="#fecaca"
+                stroke="var(--rb-danger)"
                 strokeWidth="8"
                 strokeLinecap="round"
             />
@@ -72,14 +79,15 @@ export function ChannelNotFoundPanel({ error }: ChannelNotFoundPanelProps) {
                 width="256"
                 height="44"
                 rx="22"
-                fill="rgba(2, 6, 23, 0.92)"
-                stroke="rgba(248, 113, 113, 0.42)"
+                fill="var(--rb-panel)"
+                stroke="var(--rb-danger)"
+                strokeOpacity="0.42"
             />
             <text
                 x="180"
                 y="276"
                 textAnchor="middle"
-                fill="#fecaca"
+                fill="var(--rb-danger)"
                 fontSize="15"
                 fontWeight="900"
                 fontFamily="Arial, sans-serif"

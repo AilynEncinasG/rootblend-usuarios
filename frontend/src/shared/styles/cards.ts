@@ -1,3 +1,4 @@
+//frontend/src/shared/styles/cards.ts
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 
@@ -10,12 +11,20 @@ export const CardGrid = styled.div`
 export const ContentCard = styled(Link)`
   overflow: hidden;
   border-radius: 10px;
-  background: rgba(15, 23, 42, 0.76);
-  border: 1px solid rgba(148, 163, 184, 0.12);
-  box-shadow: 0 16px 34px rgba(0, 0, 0, 0.24);
+  color: var(--rb-text);
+  background: var(--rb-card-bg);
+  border: 1px solid var(--rb-border);
+  box-shadow: 0 16px 34px var(--rb-shadow);
+  transition:
+    transform 0.18s ease,
+    border-color 0.18s ease,
+    background 0.18s ease,
+    box-shadow 0.18s ease;
 
   &:hover {
-    border-color: rgba(0, 229, 255, 0.38);
+    background: var(--rb-card-bg-hover);
+    border-color: var(--rb-border-strong);
+    box-shadow: 0 18px 42px var(--rb-shadow);
     transform: translateY(-2px);
   }
 `;
@@ -24,7 +33,7 @@ export const Thumb = styled.div<{ $image: string }>`
   position: relative;
   aspect-ratio: 16 / 9;
   background:
-    linear-gradient(180deg, rgba(2, 6, 23, 0.05), rgba(2, 6, 23, 0.45)),
+    linear-gradient(180deg, color-mix(in srgb, black 5%, transparent), color-mix(in srgb, black 45%, transparent)),
     url(${({ $image }) => $image});
   background-size: cover;
   background-position: center;
@@ -35,7 +44,7 @@ export const LiveBadge = styled.span`
   align-items: center;
   border-radius: 5px;
   padding: 4px 7px;
-  color: #fff;
+  color: var(--rb-media-text, white);
   background: #ef123f;
   font-size: 10px;
   font-weight: 950;
@@ -50,7 +59,7 @@ export const ViewBadge = styled.span`
   gap: 5px;
   padding: 5px 8px;
   border-radius: 999px;
-  background: rgba(2, 6, 23, 0.76);
+  background: color-mix(in srgb, black 76%, transparent);
   color: #f8fbff;
   font-size: 11px;
   font-weight: 850;
@@ -62,7 +71,7 @@ export const CardBody = styled.div`
 
 export const CardTitle = styled.h3`
   margin: 0 0 7px;
-  color: #fff;
+  color: var(--rb-text-strong);
   font-size: 14px;
   line-height: 1.25;
 `;
@@ -72,7 +81,7 @@ export const MetaLine = styled.div`
   align-items: center;
   gap: 7px;
   min-width: 0;
-  color: rgba(226, 232, 240, 0.82);
+  color: var(--rb-muted);
   font-size: 12px;
   font-weight: 800;
 `;
@@ -81,12 +90,12 @@ export const VerifiedDot = styled.span`
   width: 7px;
   height: 7px;
   border-radius: 50%;
-  background: #00e5ff;
+  background: var(--rb-accent);
 `;
 
 export const Muted = styled.p`
   margin: 4px 0 0;
-  color: rgba(226, 232, 240, 0.62);
+  color: var(--rb-muted-soft);
   font-size: 12px;
 `;
 
@@ -104,8 +113,30 @@ export const PodcastTile = styled(Link)`
   min-height: 86px;
   padding: 10px;
   border-radius: 10px;
-  background: linear-gradient(135deg, rgba(15, 23, 42, 0.86), rgba(88, 28, 135, 0.24));
-  border: 1px solid rgba(148, 163, 184, 0.12);
+  color: var(--rb-text);
+  background:
+    linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--rb-card-bg) 92%, transparent),
+      color-mix(in srgb, var(--rb-accent-2) 14%, var(--rb-panel))
+    );
+  border: 1px solid var(--rb-border);
+  box-shadow: 0 14px 34px color-mix(in srgb, var(--rb-shadow) 70%, transparent);
+  transition:
+    transform 0.18s ease,
+    border-color 0.18s ease,
+    background 0.18s ease;
+
+  &:hover {
+    background:
+      linear-gradient(
+        135deg,
+        var(--rb-card-bg-hover),
+        color-mix(in srgb, var(--rb-accent-2) 18%, var(--rb-panel))
+      );
+    border-color: var(--rb-border-strong);
+    transform: translateY(-2px);
+  }
 `;
 
 export const PodcastCover = styled.div<{ $image: string }>`
@@ -116,11 +147,11 @@ export const PodcastCover = styled.div<{ $image: string }>`
   align-items: center;
   justify-content: center;
   background:
-    linear-gradient(180deg, rgba(2, 6, 23, 0.08), rgba(2, 6, 23, 0.42)),
+    linear-gradient(180deg, color-mix(in srgb, black 8%, transparent), color-mix(in srgb, black 42%, transparent)),
     url(${({ $image }) => $image});
   background-size: cover;
   background-position: center;
-  color: #fff;
+  color: var(--rb-media-text, white);
 `;
 
 export const CategoryGrid = styled.div`
@@ -138,12 +169,24 @@ export const CategoryCard = styled(Link)<{ $image: string }>`
   padding: 16px;
   border-radius: 12px;
   overflow: hidden;
-  border: 1px solid rgba(148, 163, 184, 0.13);
+  color: var(--rb-media-text, white);
+  border: 1px solid color-mix(in srgb, var(--rb-border-strong) 70%, transparent);
   background:
-    linear-gradient(180deg, rgba(2, 6, 23, 0.08), rgba(2, 6, 23, 0.82)),
+    linear-gradient(180deg, color-mix(in srgb, black 8%, transparent), color-mix(in srgb, black 82%, transparent)),
     url(${({ $image }) => $image});
   background-size: cover;
   background-position: center;
+  box-shadow: 0 16px 40px color-mix(in srgb, var(--rb-shadow) 76%, transparent);
+  transition:
+    transform 0.18s ease,
+    border-color 0.18s ease,
+    box-shadow 0.18s ease;
+
+  &:hover {
+    border-color: var(--rb-border-strong);
+    box-shadow: 0 18px 46px var(--rb-shadow);
+    transform: translateY(-2px);
+  }
 
   span {
     font-size: 18px;
@@ -152,7 +195,7 @@ export const CategoryCard = styled(Link)<{ $image: string }>`
 
   small {
     margin-top: 4px;
-    color: rgba(226, 232, 240, 0.72);
+    color: var(--rb-media-muted, color-mix(in srgb, white 82%, transparent));
   }
 `;
 
@@ -164,12 +207,13 @@ export const ChannelHero = styled.section<{ $image: string }>`
   margin-bottom: 22px;
   padding: 22px;
   border-radius: 12px;
+  color: var(--rb-media-text, white);
   background:
-    linear-gradient(180deg, rgba(2, 6, 23, 0.08), rgba(2, 6, 23, 0.86)),
+    linear-gradient(180deg, color-mix(in srgb, black 8%, transparent), color-mix(in srgb, black 86%, transparent)),
     url(${({ $image }) => $image});
   background-size: cover;
   background-position: center;
-  border: 1px solid rgba(0, 229, 255, 0.22);
+  border: 1px solid color-mix(in srgb, var(--rb-accent) 42%, transparent);
 
   h1,
   h2,
@@ -179,7 +223,7 @@ export const ChannelHero = styled.section<{ $image: string }>`
 
   p {
     margin-top: 6px;
-    color: rgba(226, 232, 240, 0.74);
+    color: var(--rb-media-muted, color-mix(in srgb, white 82%, transparent));
   }
 `;
 
@@ -200,11 +244,13 @@ export const InfoGrid = styled.div`
 export const Panel = styled.div`
   padding: 16px;
   border-radius: 12px;
-  background: rgba(15, 23, 42, 0.72);
-  border: 1px solid rgba(148, 163, 184, 0.12);
+  color: var(--rb-text);
+  background: var(--rb-panel);
+  border: 1px solid var(--rb-border);
+  box-shadow: 0 16px 40px color-mix(in srgb, var(--rb-shadow) 60%, transparent);
 
   p {
-    color: rgba(226, 232, 240, 0.68);
+    color: var(--rb-muted);
     line-height: 1.6;
   }
 `;
@@ -217,7 +263,7 @@ export const PanelHeader = styled.div`
   margin-bottom: 12px;
 
   a {
-    color: #00e5ff;
+    color: var(--rb-accent);
     font-size: 12px;
     font-weight: 850;
   }
@@ -236,7 +282,17 @@ export const SideListItem = styled(Link)`
   align-items: center;
   padding: 9px;
   border-radius: 10px;
-  background: rgba(255, 255, 255, 0.03);
+  color: var(--rb-text);
+  background: var(--rb-panel-hover);
+  border: 1px solid transparent;
+  transition:
+    background 0.18s ease,
+    border-color 0.18s ease;
+
+  &:hover {
+    background: var(--rb-card-bg-hover);
+    border-color: var(--rb-border);
+  }
 
   span {
     font-size: 13px;
@@ -244,7 +300,7 @@ export const SideListItem = styled(Link)`
   }
 
   small {
-    color: #00e5ff;
+    color: var(--rb-accent);
     font-weight: 800;
   }
 `;
@@ -259,23 +315,26 @@ export const MetricGrid = styled.div`
 export const MetricCard = styled.div`
   padding: 14px;
   border-radius: 12px;
-  background: rgba(15, 23, 42, 0.74);
-  border: 1px solid rgba(148, 163, 184, 0.12);
+  color: var(--rb-text);
+  background: var(--rb-card-bg);
+  border: 1px solid var(--rb-border);
+  box-shadow: 0 14px 34px color-mix(in srgb, var(--rb-shadow) 60%, transparent);
 
   span,
   small {
-    color: rgba(226, 232, 240, 0.64);
+    color: var(--rb-muted-soft);
     font-size: 12px;
   }
 
   strong {
     display: block;
     margin: 6px 0 3px;
+    color: var(--rb-text-strong);
     font-size: 27px;
   }
 
   small {
-    color: #22c55e;
+    color: var(--rb-success);
     font-weight: 850;
   }
 `;
@@ -286,19 +345,20 @@ export const EpisodeRow = styled.div`
   align-items: center;
   gap: 10px;
   padding: 10px 0;
-  border-bottom: 1px solid rgba(148, 163, 184, 0.1);
+  color: var(--rb-text);
+  border-bottom: 1px solid var(--rb-border);
 
   button {
     width: 28px;
     height: 28px;
     border: 0;
     border-radius: 50%;
-    color: #03111c;
-    background: #00e5ff;
+    color: var(--rb-text-inverse);
+    background: var(--rb-accent);
   }
 
   small {
-    color: rgba(226, 232, 240, 0.62);
+    color: var(--rb-muted-soft);
   }
 `;
 
@@ -307,14 +367,16 @@ export const ProfileHeader = styled.div`
   align-items: center;
   gap: 14px;
   margin-bottom: 16px;
+  color: var(--rb-text);
 
   h1 {
     margin: 0;
+    color: var(--rb-text-strong);
   }
 
   p {
     margin: 4px 0 0;
-    color: rgba(226, 232, 240, 0.62);
+    color: var(--rb-muted-soft);
   }
 `;
 
@@ -325,10 +387,14 @@ export const MenuLine = styled(Link)`
   min-height: 42px;
   padding: 0 12px;
   border-radius: 9px;
-  color: rgba(226, 232, 240, 0.84);
+  color: var(--rb-muted);
+  transition:
+    background 0.18s ease,
+    color 0.18s ease;
 
   &:hover {
-    background: rgba(255, 255, 255, 0.06);
+    color: var(--rb-text);
+    background: var(--rb-panel-hover);
   }
 `;
 
@@ -338,7 +404,8 @@ export const NotificationRow = styled.div<{ $accent: string }>`
   align-items: center;
   gap: 12px;
   padding: 12px 0;
-  border-bottom: 1px solid rgba(148, 163, 184, 0.1);
+  color: var(--rb-text);
+  border-bottom: 1px solid var(--rb-border);
 
   > svg {
     color: ${({ $accent }) => $accent};
@@ -349,8 +416,12 @@ export const NotificationRow = styled.div<{ $accent: string }>`
     display: block;
   }
 
+  strong {
+    color: var(--rb-text-strong);
+  }
+
   small {
-    color: rgba(226, 232, 240, 0.58);
+    color: var(--rb-muted-soft);
     margin-top: 4px;
   }
 `;
@@ -365,8 +436,9 @@ export const ProgressSteps = styled.div`
     padding: 9px;
     border-radius: 999px;
     text-align: center;
-    color: #00e5ff;
-    background: rgba(0, 229, 255, 0.1);
+    color: var(--rb-chip-text);
+    background: var(--rb-chip-bg);
+    border: 1px solid color-mix(in srgb, var(--rb-accent) 22%, transparent);
     font-size: 12px;
     font-weight: 850;
   }
@@ -376,14 +448,15 @@ export const ChannelDataPanel = styled.div`
   margin-top: 16px;
   padding: 18px;
   border-radius: 18px;
-  background: rgba(15, 23, 42, 0.72);
-  border: 1px solid rgba(148, 163, 184, 0.14);
-  color: rgba(226, 232, 240, 0.78);
+  background: var(--rb-panel);
+  border: 1px solid var(--rb-border);
+  color: var(--rb-muted);
   line-height: 1.65;
+  box-shadow: 0 18px 48px color-mix(in srgb, var(--rb-shadow) 58%, transparent);
 
   strong {
     display: block;
-    color: #ffffff;
+    color: var(--rb-text-strong);
     font-size: 16px;
     margin-bottom: 10px;
   }
@@ -393,7 +466,7 @@ export const ChannelDataPanel = styled.div`
   }
 
   b {
-    color: #00e5ff;
+    color: var(--rb-accent);
   }
 `;
 
@@ -410,8 +483,10 @@ export const CreatorLayout = styled.div`
 export const CreatorSidebar = styled.aside`
   padding: 10px;
   border-radius: 12px;
-  background: rgba(15, 23, 42, 0.62);
-  border: 1px solid rgba(148, 163, 184, 0.12);
+  color: var(--rb-text);
+  background: var(--rb-panel);
+  border: 1px solid var(--rb-border);
+  box-shadow: 0 14px 36px color-mix(in srgb, var(--rb-shadow) 56%, transparent);
   height: max-content;
 `;
 
@@ -432,9 +507,14 @@ export const ChartPanel = styled.div`
   margin-bottom: 22px;
   border-radius: 12px;
   background:
-    linear-gradient(180deg, rgba(139, 92, 246, 0.12), rgba(0, 229, 255, 0.06)),
-    rgba(15, 23, 42, 0.74);
-  border: 1px solid rgba(148, 163, 184, 0.12);
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--rb-accent-2) 12%, transparent),
+      color-mix(in srgb, var(--rb-accent) 6%, transparent)
+    ),
+    var(--rb-card-bg);
+  border: 1px solid var(--rb-border);
+  box-shadow: 0 18px 48px color-mix(in srgb, var(--rb-shadow) 58%, transparent);
 
   span {
     position: absolute;
@@ -443,8 +523,8 @@ export const ChartPanel = styled.div`
     bottom: 55px;
     height: 110px;
     border-radius: 50%;
-    border-top: 4px solid #8b5cf6;
-    filter: drop-shadow(0 0 14px rgba(139, 92, 246, 0.9));
+    border-top: 4px solid var(--rb-accent-2);
+    filter: drop-shadow(0 0 14px color-mix(in srgb, var(--rb-accent-2) 78%, transparent));
   }
 `;
 
@@ -456,12 +536,12 @@ export const UploadZone = styled.div`
   gap: 5px;
   margin: 12px 0;
   border-radius: 12px;
-  border: 1px dashed rgba(139, 92, 246, 0.8);
-  color: #d8b4fe;
-  background: rgba(88, 28, 135, 0.18);
+  border: 1px dashed color-mix(in srgb, var(--rb-accent-2) 78%, var(--rb-border));
+  color: var(--rb-accent-2);
+  background: color-mix(in srgb, var(--rb-accent-2) 14%, var(--rb-panel));
 
   small {
-    color: rgba(226, 232, 240, 0.58);
+    color: var(--rb-muted-soft);
   }
 `;
 
@@ -469,8 +549,10 @@ export const FormCard = styled.form`
   width: min(760px, 100%);
   padding: 20px;
   border-radius: 14px;
-  background: rgba(15, 23, 42, 0.74);
-  border: 1px solid rgba(148, 163, 184, 0.12);
+  color: var(--rb-text);
+  background: var(--rb-panel);
+  border: 1px solid var(--rb-border);
+  box-shadow: 0 18px 48px color-mix(in srgb, var(--rb-shadow) 58%, transparent);
 `;
 
 export const ToggleLine = styled.label`
@@ -479,7 +561,7 @@ export const ToggleLine = styled.label`
   align-items: center;
   gap: 14px;
   min-height: 44px;
-  color: rgba(226, 232, 240, 0.82);
+  color: var(--rb-muted);
 `;
 
 export const PermissionLine = styled.div`
@@ -487,5 +569,6 @@ export const PermissionLine = styled.div`
   align-items: center;
   gap: 8px;
   padding: 12px 0;
-  border-bottom: 1px solid rgba(148, 163, 184, 0.1);
+  color: var(--rb-text);
+  border-bottom: 1px solid var(--rb-border);
 `;

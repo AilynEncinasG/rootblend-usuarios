@@ -1,3 +1,4 @@
+//frontend/src/modules/creator/streamer/pages/HighlightEditPage.tsx
 import { type FormEvent, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import {
@@ -518,8 +519,9 @@ export default function HighlightEditPage() {
                     style={{
                       minHeight: 220,
                       borderRadius: 22,
-                      border: "1px solid rgba(0, 234, 255, 0.18)",
-                      background: `linear-gradient(180deg, rgba(2,8,26,.12), rgba(2,8,26,.66)), url(${thumbnailUrl.trim()}) center/cover`,
+                      border: "1px solid var(--rb-border-strong)",
+                      background: `linear-gradient(180deg, color-mix(in srgb, var(--rb-bg-deep) 8%, transparent), color-mix(in srgb, var(--rb-bg-deep) 58%, transparent)), url(${thumbnailUrl.trim()}) center/cover`,
+                      boxShadow: "0 16px 40px color-mix(in srgb, var(--rb-shadow) 42%, transparent)",
                     }}
                   />
                 ) : null}
@@ -562,7 +564,7 @@ export default function HighlightEditPage() {
                 placeItems: "center",
                 padding: 24,
                 background:
-                  "radial-gradient(circle at top, rgba(0, 234, 255, 0.12), transparent 34%), rgba(2, 6, 23, 0.78)",
+                  "radial-gradient(circle at top, color-mix(in srgb, var(--rb-accent) 12%, transparent), transparent 34%), color-mix(in srgb, var(--rb-bg-deep) 78%, transparent)",
                 backdropFilter: "blur(10px)",
               }}
             >
@@ -574,10 +576,10 @@ export default function HighlightEditPage() {
                 style={{
                   width: "min(520px, 100%)",
                   borderRadius: 24,
-                  border: "1px solid rgba(248, 113, 113, 0.38)",
+                  border: "1px solid color-mix(in srgb, var(--rb-danger) 38%, transparent)",
                   background:
-                    "linear-gradient(145deg, rgba(15, 23, 42, 0.98), rgba(45, 18, 82, 0.94))",
-                  boxShadow: "0 28px 90px rgba(0, 0, 0, 0.55)",
+                    "linear-gradient(145deg, var(--rb-panel), color-mix(in srgb, var(--rb-danger) 10%, var(--rb-panel)))",
+                  boxShadow: "0 28px 90px var(--rb-shadow)",
                   overflow: "hidden",
                 }}
               >
@@ -595,9 +597,9 @@ export default function HighlightEditPage() {
                       borderRadius: 18,
                       display: "grid",
                       placeItems: "center",
-                      color: "#fecaca",
-                      background: "rgba(248, 113, 113, 0.14)",
-                      border: "1px solid rgba(248, 113, 113, 0.35)",
+                      color: "var(--rb-danger)",
+                      background: "color-mix(in srgb, var(--rb-danger) 14%, transparent)",
+                      border: "1px solid color-mix(in srgb, var(--rb-danger) 35%, transparent)",
                       fontSize: 26,
                     }}
                   >
@@ -608,7 +610,7 @@ export default function HighlightEditPage() {
                     <p
                       style={{
                         margin: "0 0 6px",
-                        color: "#fb7185",
+                        color: "var(--rb-danger)",
                         fontWeight: 900,
                         textTransform: "uppercase",
                         fontSize: 12,
@@ -632,12 +634,12 @@ export default function HighlightEditPage() {
                     <p
                       style={{
                         margin: "12px 0 0",
-                        color: "rgba(226, 232, 240, 0.78)",
+                        color: "var(--rb-muted)",
                         lineHeight: 1.5,
                       }}
                     >
                       Se eliminara el clip destacado{" "}
-                      <strong style={{ color: "#ffffff" }}>
+                      <strong style={{ color: "var(--rb-text-strong)" }}>
                         {titulo || "seleccionado"}
                       </strong>
                       . Ya no aparecera en tu panel, en el canal publico ni en
@@ -652,8 +654,8 @@ export default function HighlightEditPage() {
                     gridTemplateColumns: "1fr 1fr",
                     gap: 12,
                     padding: 18,
-                    borderTop: "1px solid rgba(148, 163, 184, 0.12)",
-                    background: "rgba(2, 6, 23, 0.34)",
+                    borderTop: "1px solid var(--rb-border)",
+                    background: "color-mix(in srgb, var(--rb-panel) 54%, transparent)",
                   }}
                 >
                   <button
@@ -663,9 +665,9 @@ export default function HighlightEditPage() {
                     style={{
                       minHeight: 48,
                       borderRadius: 14,
-                      border: "1px solid rgba(0, 234, 255, 0.32)",
-                      background: "rgba(15, 23, 42, 0.72)",
-                      color: "#ffffff",
+                      border: "1px solid var(--rb-border-strong)",
+                      background: "var(--rb-panel)",
+                      color: "var(--rb-text)",
                       fontWeight: 900,
                       cursor: deleting ? "not-allowed" : "pointer",
                     }}
@@ -681,11 +683,11 @@ export default function HighlightEditPage() {
                       minHeight: 48,
                       borderRadius: 14,
                       border: 0,
-                      background: "linear-gradient(135deg, #fb7185, #e11d48)",
-                      color: "#ffffff",
+                      background: "linear-gradient(135deg, var(--rb-danger), color-mix(in srgb, var(--rb-danger) 74%, #7f1d1d))",
+                      color: "var(--rb-text-inverse)",
                       fontWeight: 900,
                       cursor: deleting ? "not-allowed" : "pointer",
-                      boxShadow: "0 14px 34px rgba(225, 29, 72, 0.28)",
+                      boxShadow: "0 14px 34px color-mix(in srgb, var(--rb-danger) 28%, transparent)",
                     }}
                   >
                     {deleting ? "Eliminando..." : "Si, eliminar"}

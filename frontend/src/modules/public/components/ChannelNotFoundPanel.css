@@ -7,15 +7,20 @@
   display: grid;
   place-items: center;
   text-align: center;
-  border: 1px solid rgba(248, 113, 113, 0.34);
+  border: 1px solid color-mix(in srgb, var(--rb-danger) 34%, transparent);
   background:
-    radial-gradient(circle at 20% 15%, rgba(239, 68, 68, 0.34), transparent 30%),
-    radial-gradient(circle at 80% 20%, rgba(168, 85, 247, 0.22), transparent 32%),
-    radial-gradient(circle at 50% 100%, rgba(0, 234, 255, 0.12), transparent 36%),
-    linear-gradient(135deg, rgba(15, 23, 42, 0.96), rgba(24, 24, 27, 0.94));
+    radial-gradient(circle at 20% 15%, color-mix(in srgb, var(--rb-danger) 34%, transparent), transparent 30%),
+    radial-gradient(circle at 80% 20%, color-mix(in srgb, var(--rb-accent-2) 22%, transparent), transparent 32%),
+    radial-gradient(circle at 50% 100%, color-mix(in srgb, var(--rb-accent) 12%, transparent), transparent 36%),
+    linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--rb-panel) 96%, transparent),
+      color-mix(in srgb, var(--rb-panel-strong) 94%, transparent)
+    );
   box-shadow:
-    0 28px 90px rgba(0, 0, 0, 0.45),
-    inset 0 0 60px rgba(239, 68, 68, 0.08);
+    0 28px 90px var(--rb-shadow),
+    inset 0 0 60px color-mix(in srgb, var(--rb-danger) 8%, transparent);
+  color: var(--rb-text);
 }
 
 .error-shell::before {
@@ -23,11 +28,11 @@
   position: absolute;
   inset: -2px;
   background:
-    linear-gradient(90deg, transparent, rgba(248, 113, 113, 0.55), transparent),
+    linear-gradient(90deg, transparent, color-mix(in srgb, var(--rb-danger) 55%, transparent), transparent),
     repeating-linear-gradient(
       0deg,
-      rgba(255, 255, 255, 0.025) 0px,
-      rgba(255, 255, 255, 0.025) 1px,
+      color-mix(in srgb, var(--rb-text) 2.5%, transparent) 0px,
+      color-mix(in srgb, var(--rb-text) 2.5%, transparent) 1px,
       transparent 1px,
       transparent 7px
     );
@@ -42,7 +47,7 @@
   width: 420px;
   height: 420px;
   border-radius: 999px;
-  background: rgba(248, 113, 113, 0.12);
+  background: color-mix(in srgb, var(--rb-danger) 12%, transparent);
   filter: blur(70px);
   bottom: -210px;
   left: 50%;
@@ -72,14 +77,14 @@
   gap: 8px;
   padding: 8px 13px;
   border-radius: 999px;
-  background: rgba(127, 29, 29, 0.42);
-  border: 1px solid rgba(248, 113, 113, 0.36);
-  color: #fecaca;
+  background: color-mix(in srgb, var(--rb-danger) 14%, transparent);
+  border: 1px solid color-mix(in srgb, var(--rb-danger) 36%, transparent);
+  color: var(--rb-danger);
   font-size: 12px;
   font-weight: 900;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  box-shadow: 0 0 24px rgba(239, 68, 68, 0.16);
+  box-shadow: 0 0 24px color-mix(in srgb, var(--rb-danger) 16%, transparent);
 }
 
 .error-visual {
@@ -95,14 +100,14 @@
   width: 310px;
   height: 310px;
   border-radius: 999px;
-  border: 1px dashed rgba(248, 113, 113, 0.38);
+  border: 1px dashed color-mix(in srgb, var(--rb-danger) 38%, transparent);
   animation: ailynRotate 18s linear infinite;
 }
 
 .error-orbit.two {
   width: 250px;
   height: 250px;
-  border-color: rgba(0, 234, 255, 0.22);
+  border-color: color-mix(in srgb, var(--rb-accent) 22%, transparent);
   animation-duration: 12s;
   animation-direction: reverse;
 }
@@ -112,8 +117,8 @@
   width: 11px;
   height: 11px;
   border-radius: 999px;
-  background: #fb7185;
-  box-shadow: 0 0 24px #fb7185;
+  background: var(--rb-danger);
+  box-shadow: 0 0 24px var(--rb-danger);
 }
 
 .error-dot.one {
@@ -124,8 +129,8 @@
 .error-dot.two {
   right: 38px;
   bottom: 58px;
-  background: #00eaff;
-  box-shadow: 0 0 24px #00eaff;
+  background: var(--rb-accent);
+  box-shadow: 0 0 24px var(--rb-accent);
 }
 
 .error-svg {
@@ -134,8 +139,8 @@
   width: 310px;
   max-width: 100%;
   filter:
-    drop-shadow(0 28px 50px rgba(0, 0, 0, 0.45))
-    drop-shadow(0 0 28px rgba(239, 68, 68, 0.18));
+    drop-shadow(0 28px 50px color-mix(in srgb, var(--rb-shadow) 68%, transparent))
+    drop-shadow(0 0 28px color-mix(in srgb, var(--rb-danger) 18%, transparent));
   animation: ailynFloat 4.2s ease-in-out infinite;
 }
 
@@ -146,21 +151,21 @@
   line-height: 0.92;
   font-weight: 1000;
   letter-spacing: -0.06em;
-  color: #fff1f2;
+  color: var(--rb-text-strong);
   text-shadow:
-    0 0 18px rgba(248, 113, 113, 0.38),
-    3px 3px 0 rgba(239, 68, 68, 0.26);
+    0 0 18px color-mix(in srgb, var(--rb-danger) 28%, transparent),
+    3px 3px 0 color-mix(in srgb, var(--rb-danger) 18%, transparent);
 }
 
 .error-title span {
   display: block;
-  color: #fb7185;
+  color: var(--rb-danger);
 }
 
 .error-text {
   margin: 0;
   max-width: 610px;
-  color: rgba(226, 232, 240, 0.86);
+  color: var(--rb-muted);
   font-size: 16px;
   line-height: 1.7;
 }
@@ -186,26 +191,33 @@
   transition:
     transform 0.2s ease,
     box-shadow 0.2s ease,
-    border-color 0.2s ease;
+    border-color 0.2s ease,
+    background 0.2s ease,
+    color 0.2s ease;
 }
 
 .error-primary {
-  background: linear-gradient(135deg, #fb7185, #ef4444, #a855f7);
-  color: white;
-  box-shadow: 0 18px 40px rgba(239, 68, 68, 0.28);
+  background: linear-gradient(135deg, var(--rb-danger), var(--rb-accent-2));
+  color: var(--rb-text-inverse);
+  box-shadow: 0 18px 40px color-mix(in srgb, var(--rb-danger) 28%, transparent);
 }
 
 .error-secondary {
-  color: #fff1f2;
-  background: rgba(15, 23, 42, 0.72);
-  border: 1px solid rgba(248, 113, 113, 0.25);
+  color: var(--rb-text);
+  background: var(--rb-panel);
+  border: 1px solid color-mix(in srgb, var(--rb-danger) 25%, transparent);
 }
 
 .error-primary:hover,
 .error-secondary:hover {
   transform: translateY(-2px);
-  box-shadow: 0 22px 46px rgba(239, 68, 68, 0.22);
-  border-color: rgba(248, 113, 113, 0.55);
+  box-shadow: 0 22px 46px color-mix(in srgb, var(--rb-danger) 22%, transparent);
+  border-color: color-mix(in srgb, var(--rb-danger) 55%, transparent);
+}
+
+.error-secondary:hover {
+  color: var(--rb-text-strong);
+  background: var(--rb-panel-hover);
 }
 
 @keyframes ailynFloat {

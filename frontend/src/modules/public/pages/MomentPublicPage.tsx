@@ -1,3 +1,4 @@
+//frontend/src/modules/public/pages/MomentPublicPage.tsx
 import { useEffect, useMemo, useState, type CSSProperties } from "react";
 import { Link, useParams } from "react-router-dom";
 import {
@@ -115,13 +116,14 @@ function ChannelAvatar({ momento }: { momento: MomentoDestacado }) {
         height: 64,
         borderRadius: "50%",
         overflow: "hidden",
-        background: "linear-gradient(135deg, #00eaff, #8b5cf6)",
-        border: "2px solid rgba(0, 234, 255, 0.55)",
+        background: "linear-gradient(135deg, var(--rb-accent), var(--rb-accent-2))",
+        border: "2px solid var(--rb-border-strong)",
         display: "grid",
         placeItems: "center",
-        color: "#020617",
+        color: "var(--rb-text-inverse)",
         fontWeight: 900,
         flex: "0 0 auto",
+        boxShadow: "0 12px 26px color-mix(in srgb, var(--rb-accent) 16%, transparent)",
       }}
     >
       {isImageUrl(channelPhoto) ? (
@@ -219,7 +221,7 @@ export default function MomentPublicPage() {
 
   return (
     <RootShell active="streams">
-      <div style={{ display: "grid", gap: 22 }}>
+      <div style={{ display: "grid", gap: 22, color: "var(--rb-text)" }}>
         <Link
           to={channelId ? `/channels/${channelId}` : "/streams"}
           style={{
@@ -227,7 +229,7 @@ export default function MomentPublicPage() {
             display: "inline-flex",
             alignItems: "center",
             gap: 8,
-            color: "#00eaff",
+            color: "var(--rb-accent)",
             textDecoration: "none",
             fontWeight: 900,
           }}
@@ -237,20 +239,28 @@ export default function MomentPublicPage() {
 
         {loading ? (
           <div style={noticeStyle}>
-            <FiRefreshCw />
+            <FiRefreshCw style={{ color: "var(--rb-accent)" }} />
             <div>
-              <strong>Cargando momento</strong>
-              <p>Consultando el clip destacado.</p>
+              <strong style={{ color: "var(--rb-text-strong)" }}>
+                Cargando momento
+              </strong>
+              <p style={{ margin: "4px 0 0", color: "var(--rb-muted)" }}>
+                Consultando el clip destacado.
+              </p>
             </div>
           </div>
         ) : null}
 
         {error ? (
           <div style={warningStyle}>
-            <FiAlertTriangle />
+            <FiAlertTriangle style={{ color: "var(--rb-warning)" }} />
             <div>
-              <strong>No se pudo cargar</strong>
-              <p>{error}</p>
+              <strong style={{ color: "var(--rb-text-strong)" }}>
+                No se pudo cargar
+              </strong>
+              <p style={{ margin: "4px 0 0", color: "var(--rb-muted)" }}>
+                {error}
+              </p>
             </div>
           </div>
         ) : null}
@@ -261,9 +271,9 @@ export default function MomentPublicPage() {
               style={{
                 borderRadius: 26,
                 overflow: "hidden",
-                border: "1px solid rgba(0, 234, 255, 0.18)",
+                border: "1px solid var(--rb-border-strong)",
                 background: "#000",
-                boxShadow: "0 26px 90px rgba(0,0,0,.34)",
+                boxShadow: "0 26px 90px var(--rb-shadow)",
               }}
             >
               {youtubeEmbedUrl ? (
@@ -302,10 +312,12 @@ export default function MomentPublicPage() {
               style={{
                 display: "grid",
                 gap: 18,
-                border: "1px solid rgba(148, 163, 184, 0.14)",
+                border: "1px solid var(--rb-border)",
                 borderRadius: 24,
                 padding: 22,
-                background: "rgba(15, 23, 42, 0.78)",
+                background: "var(--rb-card-bg)",
+                boxShadow: "0 18px 48px var(--rb-shadow)",
+                color: "var(--rb-text)",
               }}
             >
               <div style={{ display: "flex", gap: 16, alignItems: "center" }}>
@@ -315,7 +327,7 @@ export default function MomentPublicPage() {
                   <p
                     style={{
                       margin: 0,
-                      color: "#00eaff",
+                      color: "var(--rb-accent)",
                       textTransform: "uppercase",
                       fontWeight: 900,
                       fontSize: 12,
@@ -329,6 +341,7 @@ export default function MomentPublicPage() {
                       margin: "4px 0",
                       fontSize: "clamp(32px, 4vw, 56px)",
                       lineHeight: 1,
+                      color: "var(--rb-text-strong)",
                     }}
                   >
                     {momento.titulo}
@@ -337,7 +350,7 @@ export default function MomentPublicPage() {
                   <p
                     style={{
                       margin: 0,
-                      color: "rgba(226,232,240,.82)",
+                      color: "var(--rb-muted)",
                       fontWeight: 800,
                     }}
                   >
@@ -349,7 +362,7 @@ export default function MomentPublicPage() {
               <p
                 style={{
                   margin: 0,
-                  color: "rgba(226,232,240,.86)",
+                  color: "var(--rb-muted)",
                   fontSize: 16,
                   lineHeight: 1.55,
                 }}
@@ -390,23 +403,25 @@ export default function MomentPublicPage() {
 }
 
 const noticeStyle: CSSProperties = {
-  border: "1px solid rgba(0, 234, 255, 0.25)",
+  border: "1px solid color-mix(in srgb, var(--rb-accent) 25%, transparent)",
   borderRadius: 20,
   padding: 18,
-  background: "rgba(0, 234, 255, 0.08)",
+  background: "color-mix(in srgb, var(--rb-accent) 8%, transparent)",
   display: "flex",
   gap: 12,
   alignItems: "center",
+  color: "var(--rb-text)",
 };
 
 const warningStyle: CSSProperties = {
-  border: "1px solid rgba(250, 204, 21, 0.35)",
+  border: "1px solid color-mix(in srgb, var(--rb-warning) 35%, transparent)",
   borderRadius: 20,
   padding: 18,
-  background: "rgba(250, 204, 21, 0.10)",
+  background: "color-mix(in srgb, var(--rb-warning) 10%, transparent)",
   display: "flex",
   gap: 12,
   alignItems: "center",
+  color: "var(--rb-text)",
 };
 
 const pillStyle: CSSProperties = {
@@ -415,8 +430,8 @@ const pillStyle: CSSProperties = {
   gap: 7,
   borderRadius: 999,
   padding: "8px 12px",
-  background: "rgba(15, 23, 42, 0.82)",
-  border: "1px solid rgba(148, 163, 184, 0.16)",
-  color: "rgba(226,232,240,.86)",
+  background: "var(--rb-chip-bg)",
+  border: "1px solid var(--rb-border-strong)",
+  color: "var(--rb-chip-text)",
   fontWeight: 800,
 };

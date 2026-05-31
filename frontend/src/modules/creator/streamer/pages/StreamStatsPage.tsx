@@ -1,3 +1,4 @@
+//frontend/src/modules/creator/streamer/pages/StreamStatsPage.tsx
 import { useEffect, useMemo, useState, type CSSProperties } from "react";
 import {
   FiActivity,
@@ -503,7 +504,7 @@ export default function StreamerStatsPage() {
                   <div
                     style={{
                       ...streamThumbStyle,
-                      background: `linear-gradient(180deg, rgba(2,8,26,.08), rgba(2,8,26,.72)), url(${getThumbnail(
+                      background: `linear-gradient(180deg, color-mix(in srgb, var(--rb-bg-deep) 8%, transparent), color-mix(in srgb, var(--rb-bg-deep) 72%, transparent)), url(${getThumbnail(
                         stream,
                       )}) center/cover`,
                     }}
@@ -545,9 +546,9 @@ function MetricCard({
   return (
     <article style={metricCardStyle}>
       <div style={metricIconStyle}>{icon}</div>
-      <span>{label}</span>
-      <strong>{value}</strong>
-      <small>{detail}</small>
+      <span style={{ color: "var(--rb-muted)", fontWeight: 800 }}>{label}</span>
+      <strong style={{ color: "var(--rb-text-strong)", fontSize: 26 }}>{value}</strong>
+      <small style={{ color: "var(--rb-muted-soft)" }}>{detail}</small>
     </article>
   );
 }
@@ -555,9 +556,9 @@ function MetricCard({
 function EmptyBox({ title, text }: { title: string; text: string }) {
   return (
     <div style={emptyBoxStyle}>
-      <FiBarChart2 />
-      <strong>{title}</strong>
-      <p>{text}</p>
+      <FiBarChart2 style={{ color: "var(--rb-accent)" }} />
+      <strong style={{ color: "var(--rb-text-strong)" }}>{title}</strong>
+      <p style={{ margin: 0, color: "var(--rb-muted)" }}>{text}</p>
     </div>
   );
 }
@@ -565,17 +566,20 @@ function EmptyBox({ title, text }: { title: string; text: string }) {
 const pageStyle: CSSProperties = {
   display: "grid",
   gap: 22,
+  color: "var(--rb-text)",
 };
 
 const heroStyle: CSSProperties = {
   minHeight: 210,
   padding: 34,
   borderRadius: 22,
-  border: "1px solid rgba(0, 234, 255, 0.20)",
-  background: `linear-gradient(90deg, rgba(2,8,26,.82), rgba(2,8,26,.40)), url(${brandAssets.streamView}) center/cover`,
+  border: "1px solid var(--rb-border-strong)",
+  background: `linear-gradient(90deg, color-mix(in srgb, var(--rb-panel) 90%, transparent), color-mix(in srgb, var(--rb-panel) 46%, transparent)), url(${brandAssets.streamView}) center/cover`,
   display: "flex",
   alignItems: "center",
   gap: 24,
+  boxShadow: "0 18px 48px var(--rb-shadow)",
+  color: "var(--rb-text)",
 };
 
 const avatarStyle: CSSProperties = {
@@ -584,55 +588,57 @@ const avatarStyle: CSSProperties = {
   borderRadius: "50%",
   display: "grid",
   placeItems: "center",
-  color: "#020617",
-  background: "linear-gradient(135deg, #00eaff, #8b5cf6)",
+  color: "var(--rb-text-inverse)",
+  background: "linear-gradient(135deg, var(--rb-accent), var(--rb-accent-2))",
   fontSize: 28,
   fontWeight: 950,
+  boxShadow: "0 14px 32px color-mix(in srgb, var(--rb-accent) 18%, transparent)",
 };
 
 const eyebrowStyle: CSSProperties = {
   margin: 0,
-  color: "#00eaff",
+  color: "var(--rb-accent)",
   fontSize: 13,
   fontWeight: 950,
 };
 
 const titleStyle: CSSProperties = {
   margin: "6px 0",
-  color: "#ffffff",
+  color: "var(--rb-text-strong)",
   fontSize: "clamp(32px, 4vw, 48px)",
   lineHeight: 1,
 };
 
 const subtitleStyle: CSSProperties = {
   margin: 0,
-  color: "rgba(226, 232, 240, 0.78)",
+  color: "var(--rb-muted)",
   fontSize: 16,
 };
 
 const alertStyle: CSSProperties = {
   padding: 16,
   borderRadius: 16,
-  border: "1px solid rgba(0, 234, 255, 0.20)",
-  background: "rgba(0, 234, 255, 0.08)",
-  color: "#dffcff",
+  border: "1px solid color-mix(in srgb, var(--rb-accent) 24%, transparent)",
+  background: "color-mix(in srgb, var(--rb-accent) 8%, transparent)",
+  color: "var(--rb-text)",
   display: "flex",
   alignItems: "center",
   gap: 12,
+  boxShadow: "0 12px 30px color-mix(in srgb, var(--rb-shadow) 34%, transparent)",
 };
 
 const warningStyle: CSSProperties = {
   ...alertStyle,
-  border: "1px solid rgba(250, 204, 21, 0.35)",
-  background: "rgba(250, 204, 21, 0.10)",
+  border: "1px solid color-mix(in srgb, var(--rb-warning) 36%, transparent)",
+  background: "color-mix(in srgb, var(--rb-warning) 10%, transparent)",
 };
 
 const pillStyle: CSSProperties = {
   marginLeft: "auto",
   padding: "6px 10px",
   borderRadius: 999,
-  color: "#020617",
-  background: "#00eaff",
+  color: "var(--rb-text-inverse)",
+  background: "var(--rb-accent)",
   fontSize: 12,
   fontWeight: 950,
 };
@@ -647,10 +653,12 @@ const metricCardStyle: CSSProperties = {
   minHeight: 130,
   padding: 18,
   borderRadius: 18,
-  border: "1px solid rgba(148, 163, 184, 0.14)",
-  background: "rgba(15, 23, 42, 0.76)",
+  border: "1px solid var(--rb-border)",
+  background: "var(--rb-card-bg)",
   display: "grid",
   gap: 6,
+  color: "var(--rb-text)",
+  boxShadow: "0 14px 36px color-mix(in srgb, var(--rb-shadow) 42%, transparent)",
 };
 
 const metricIconStyle: CSSProperties = {
@@ -659,15 +667,18 @@ const metricIconStyle: CSSProperties = {
   borderRadius: 12,
   display: "grid",
   placeItems: "center",
-  color: "#00eaff",
-  background: "rgba(0, 234, 255, 0.10)",
+  color: "var(--rb-accent)",
+  background: "color-mix(in srgb, var(--rb-accent) 10%, transparent)",
+  border: "1px solid color-mix(in srgb, var(--rb-accent) 18%, transparent)",
 };
 
 const panelStyle: CSSProperties = {
   padding: 20,
   borderRadius: 20,
-  border: "1px solid rgba(148, 163, 184, 0.14)",
-  background: "rgba(15, 23, 42, 0.74)",
+  border: "1px solid var(--rb-border)",
+  background: "var(--rb-panel)",
+  color: "var(--rb-text)",
+  boxShadow: "0 16px 42px color-mix(in srgb, var(--rb-shadow) 40%, transparent)",
 };
 
 const sectionStyle: CSSProperties = {
@@ -680,17 +691,18 @@ const panelHeaderStyle: CSSProperties = {
   alignItems: "center",
   gap: 16,
   marginBottom: 18,
+  color: "var(--rb-text)",
 };
 
 const panelTitleStyle: CSSProperties = {
   margin: 0,
-  color: "#ffffff",
+  color: "var(--rb-text-strong)",
   fontSize: 22,
 };
 
 const panelSubtitleStyle: CSSProperties = {
   margin: "4px 0 0",
-  color: "rgba(226, 232, 240, 0.64)",
+  color: "var(--rb-muted)",
 };
 
 const chartListStyle: CSSProperties = {
@@ -701,24 +713,27 @@ const chartListStyle: CSSProperties = {
 const chartRowStyle: CSSProperties = {
   display: "grid",
   gap: 8,
+  color: "var(--rb-text)",
 };
 
 const chartInfoStyle: CSSProperties = {
   display: "grid",
   gap: 3,
+  color: "var(--rb-muted)",
 };
 
 const barTrackStyle: CSSProperties = {
   height: 12,
   borderRadius: 999,
   overflow: "hidden",
-  background: "rgba(148, 163, 184, 0.16)",
+  background: "color-mix(in srgb, var(--rb-muted-soft) 18%, transparent)",
+  border: "1px solid color-mix(in srgb, var(--rb-border) 70%, transparent)",
 };
 
 const barFillStyle: CSSProperties = {
   height: "100%",
   borderRadius: 999,
-  background: "linear-gradient(90deg, #00eaff, #8b5cf6)",
+  background: "linear-gradient(90deg, var(--rb-accent), var(--rb-accent-2))",
 };
 
 const streamGridStyle: CSSProperties = {
@@ -730,8 +745,10 @@ const streamGridStyle: CSSProperties = {
 const streamCardStyle: CSSProperties = {
   borderRadius: 18,
   overflow: "hidden",
-  border: "1px solid rgba(148, 163, 184, 0.14)",
-  background: "rgba(15, 23, 42, 0.76)",
+  border: "1px solid var(--rb-border)",
+  background: "var(--rb-card-bg)",
+  color: "var(--rb-text)",
+  boxShadow: "0 14px 34px color-mix(in srgb, var(--rb-shadow) 38%, transparent)",
 };
 
 const streamThumbStyle: CSSProperties = {
@@ -745,16 +762,18 @@ const liveBadgeStyle: CSSProperties = {
   left: 10,
   padding: "5px 9px",
   borderRadius: 999,
-  color: "#ffffff",
-  background: "#ff2d55",
+  color: "var(--rb-text-inverse)",
+  background: "var(--rb-danger)",
   fontSize: 11,
   fontWeight: 950,
+  boxShadow: "0 8px 18px color-mix(in srgb, var(--rb-danger) 26%, transparent)",
 };
 
 const streamBodyStyle: CSSProperties = {
   padding: 14,
   display: "grid",
   gap: 6,
+  color: "var(--rb-text)",
 };
 
 const emptyBoxStyle: CSSProperties = {
@@ -763,5 +782,5 @@ const emptyBoxStyle: CSSProperties = {
   placeItems: "center",
   textAlign: "center",
   gap: 8,
-  color: "rgba(226, 232, 240, 0.72)",
+  color: "var(--rb-muted)",
 };

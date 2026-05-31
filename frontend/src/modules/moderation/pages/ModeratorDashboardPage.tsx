@@ -1,3 +1,4 @@
+//frontend/src/modules/moderation/pages/ModeratorDashboardPage.tsx
 import { useEffect, useMemo, useState } from "react";
 import {
   FiAlertTriangle,
@@ -433,7 +434,7 @@ export default function ModeratorDashboardPage() {
                       <p
                         style={{
                           color: isDeleted
-                            ? "rgba(248, 113, 113, 0.88)"
+                            ? "var(--rb-danger)"
                             : undefined,
                           fontStyle: isDeleted ? "italic" : undefined,
                         }}

@@ -1,16 +1,4 @@
-/*
-  Estilos legacy de ROOTBLEND.
-
-  Archivo generado por phase12-safe-create-legacy-styled.cjs.
-
-  IMPORTANTE:
-  - Este archivo copia los styled-components originales.
-  - No elimina nada del legacy.
-  - No debe exportarse desde shared/styles/index.ts todavía para evitar conflictos
-    con layout.ts, buttons.ts, cards.ts, forms.ts, media.ts y feedback.ts.
-  - Se usará después cuando extraigamos componentes/páginas reales.
-*/
-
+//frontend/src/shared/styles/legacyStyled.ts
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { brandAssets } from "../mock/rootblendMock";
@@ -128,9 +116,9 @@ export const DropdownPanel = styled.div<{ $wide?: boolean }>`
   max-width: calc(100vw - 24px);
   padding: 12px;
   border-radius: 12px;
-  background: rgba(7, 12, 27, 0.98);
-  border: 1px solid rgba(0, 229, 255, 0.22);
-  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.44);
+  background: var(--rb-panel);
+  border: 1px solid var(--rb-border-strong);
+  box-shadow: 0 24px 70px var(--rb-shadow);
 `;
 
 export const DropdownHeader = styled.div`
@@ -157,7 +145,7 @@ export const DropdownItem = styled(Link)`
   border-radius: 10px;
 
   &:hover {
-    background: rgba(255, 255, 255, 0.06);
+    background: var(--rb-panel-hover);
   }
 
   strong,
@@ -205,12 +193,12 @@ export const DropdownMenuLink = styled(Link)`
   min-height: 40px;
   padding: 0 10px;
   border-radius: 9px;
-  color: rgba(226, 232, 240, 0.86);
+  color: var(--rb-text);
   font-size: 13px;
   font-weight: 850;
 
   &:hover {
-    background: rgba(255, 255, 255, 0.06);
+    background: var(--rb-panel-hover);
     color: var(--rb-text);
   }
 `;
@@ -222,7 +210,7 @@ export const UnreadDot = styled.span`
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: #a855f7;
+  background: var(--rb-accent-2);
   box-shadow: 0 0 12px rgba(168, 85, 247, 0.9);
 `;
 
@@ -247,38 +235,60 @@ interface SidebarProps {
 }
 
 export const Sidebar = styled.aside<SidebarProps>`
-  /* --- ESTILOS PARA ESCRITORIO (Base) --- */
-  position: sticky;
+   position: sticky;
   top: 64px;
   height: calc(100vh - 64px);
   padding: 18px 14px;
-  background: rgba(4, 10, 24, 0.9);
-  border-right: 1px solid rgba(148, 163, 184, 0.11);
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--rb-panel) 96%, transparent),
+      color-mix(in srgb, var(--rb-panel-strong) 98%, transparent)
+    );
+  border-right: 1px solid var(--rb-border);
+  color: var(--rb-text);
   overflow-y: auto;
+  box-shadow: inset -1px 0 0 color-mix(in srgb, var(--rb-border) 70%, transparent);
+
+  [data-theme="light"] &,
+  html[data-theme="light"] &,
+  body[data-theme="light"] &,
+  .light &,
+  .theme-light & {
+    background:
+      linear-gradient(
+        180deg,
+        rgba(255, 255, 255, 0.9),
+        rgba(239, 246, 255, 0.94)
+      );
+    border-right: 1px solid rgba(15, 23, 42, 0.12);
+    color: #0f172a;
+    box-shadow: inset -1px 0 0 rgba(15, 23, 42, 0.08);
+  }
 
   @media (max-width: 768px), (max-height: 500px) {
     position: fixed;
     top: 0;
-    right: 0; 
+    right: 0;
     width: 280px;
     height: 100vh;
-    background: #0f0f0f;
+    background: var(--rb-panel-strong);
     z-index: 9999;
     padding: 20px;
-
-    transform: ${({ $isOpen }) => ($isOpen ? 'translateX(0)' : 'translateX(100%)')};
+    transform: ${({ $isOpen }) => ($isOpen ? "translateX(0)" : "translateX(100%)")};
     transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    
     display: flex;
     flex-direction: column;
-    box-shadow: -10px 0 30px rgba(0, 0, 0, 0.8);
+    box-shadow: -10px 0 30px var(--rb-shadow);
     overflow-y: auto;
 
-    span, strong, small {
+    span,
+    strong,
+    small {
       display: inline-block !important;
       visibility: visible !important;
       opacity: 1 !important;
-      color: rgba(226, 232, 240, 0.9) !important;
+      color: inherit !important;
     }
   }
 `;
@@ -289,10 +299,18 @@ export const SidebarSection = styled.div`
 
 export const SidebarTitle = styled.h3`
   margin: 0 0 12px;
-  color: rgba(226, 232, 240, 0.62);
+  color: var(--rb-muted-soft);
   font-size: 11px;
   text-transform: uppercase;
-  letter-spacing: 0;
+  letter-spacing: 0.08em;
+
+  [data-theme="light"] &,
+  html[data-theme="light"] &,
+  body[data-theme="light"] &,
+  .light &,
+  .theme-light & {
+    color: rgba(15, 23, 42, 0.56);
+  }
 `;
 
 export const SidebarEmptyText = styled.p`
@@ -301,6 +319,14 @@ export const SidebarEmptyText = styled.p`
   color: var(--rb-muted-soft);
   font-size: 12px;
   line-height: 1.45;
+
+  [data-theme="light"] &,
+  html[data-theme="light"] &,
+  body[data-theme="light"] &,
+  .light &,
+  .theme-light & {
+    color: rgba(15, 23, 42, 0.58);
+  }
 `;
 
 export const SidebarLink = styled(Link)<{ $active?: boolean }>`
@@ -310,27 +336,67 @@ export const SidebarLink = styled(Link)<{ $active?: boolean }>`
   min-height: 36px;
   margin-bottom: 6px;
   padding: 8px 10px;
-  border-radius: 10px;
-  color: ${({ $active }) => ($active ? "#04111f" : "rgba(226, 232, 240, 0.78)")};
-  background: ${({ $active }) => ($active ? "linear-gradient(135deg, #00e5ff, #22c55e)" : "transparent")};
+  border-radius: 12px;
+  color: ${({ $active }) => ($active ? "var(--rb-text-inverse)" : "var(--rb-muted)")};
+  background: ${({ $active }) =>
+    $active
+      ? "linear-gradient(135deg, var(--rb-accent), var(--rb-success))"
+      : "transparent"};
+  border: 1px solid ${({ $active }) => ($active ? "var(--rb-border-strong)" : "transparent")};
   font-size: 13px;
   font-weight: 800;
   text-decoration: none;
+  transition:
+    background 0.18s ease,
+    color 0.18s ease,
+    border-color 0.18s ease,
+    transform 0.18s ease,
+    box-shadow 0.18s ease;
 
   &:hover {
-    background: rgba(255, 255, 255, 0.07);
-    color: var(--rb-text);
+    background: var(--rb-panel-hover);
+    color: var(--rb-text-strong);
+    border-color: var(--rb-border);
+    transform: translateX(2px);
+  }
+
+  [data-theme="light"] &,
+  html[data-theme="light"] &,
+  body[data-theme="light"] &,
+  .light &,
+  .theme-light & {
+    color: ${({ $active }) => ($active ? "#ffffff" : "var(--rb-accent)")};
+    background: ${({ $active }) =>
+      $active
+        ? "linear-gradient(135deg, #0284c7, #22c55e)"
+        : "transparent"};
+    border-color: ${({ $active }) => ($active ? "rgba(2, 132, 199, 0.32)" : "transparent")};
+    box-shadow: ${({ $active }) =>
+      $active ? "0 10px 24px rgba(2, 132, 199, 0.18)" : "none"};
+  }
+
+  [data-theme="light"] &:hover,
+  html[data-theme="light"] &:hover,
+  body[data-theme="light"] &:hover,
+  .light &:hover,
+  .theme-light &:hover {
+    background: ${({ $active }) =>
+      $active
+        ? "linear-gradient(135deg, #0284c7, #22c55e)"
+        : "rgba(2, 132, 199, 0.08)"};
+    color: ${({ $active }) => ($active ? "#ffffff" : "var(--rb-accent)")};
+    border-color: rgba(2, 132, 199, 0.2);
   }
 
   @media (max-width: 1180px) {
     span {
-      display: none; 
+      display: none;
     }
   }
 
   @media (max-width: 768px), (max-height: 500px) {
     span {
-      display: block !important; 
+      display: block !important;
       color: inherit;
     }
   }
@@ -343,11 +409,35 @@ export const ChannelMini = styled(Link)`
   gap: 10px;
   padding: 8px;
   border-radius: 12px;
-  text-decoration: none; 
-  color: inherit;
+  text-decoration: none;
+  color: var(--rb-text);
+  border: 1px solid transparent;
+  transition:
+    background 0.18s ease,
+    border-color 0.18s ease,
+    transform 0.18s ease;
 
   &:hover {
-    background: rgba(255, 255, 255, 0.06);
+    background: var(--rb-panel-hover);
+    border-color: var(--rb-border);
+    transform: translateX(2px);
+  }
+
+  [data-theme="light"] &,
+  html[data-theme="light"] &,
+  body[data-theme="light"] &,
+  .light &,
+  .theme-light & {
+    color: #0f172a;
+  }
+
+  [data-theme="light"] &:hover,
+  html[data-theme="light"] &:hover,
+  body[data-theme="light"] &:hover,
+  .light &:hover,
+  .theme-light &:hover {
+    background: rgba(2, 132, 199, 0.08);
+    border-color: rgba(2, 132, 199, 0.18);
   }
 
   @media (max-width: 1180px) {
@@ -360,11 +450,11 @@ export const ChannelMini = styled(Link)`
   }
 
   @media (max-width: 768px), (max-height: 500px) {
-    grid-template-columns: 34px 1fr auto !important; 
+    grid-template-columns: 34px 1fr auto !important;
 
     div,
     span {
-      display: block !important; 
+      display: block !important;
     }
   }
 `;
@@ -381,12 +471,29 @@ export const MiniText = styled.div`
   }
 
   strong {
+    color: var(--rb-text-strong);
     font-size: 13px;
   }
 
   small {
     color: var(--rb-muted-soft);
     font-size: 11px;
+  }
+
+  [data-theme="light"] & strong,
+  html[data-theme="light"] & strong,
+  body[data-theme="light"] & strong,
+  .light & strong,
+  .theme-light & strong {
+    color: #0f172a;
+  }
+
+  [data-theme="light"] & small,
+  html[data-theme="light"] & small,
+  body[data-theme="light"] & small,
+  .light & small,
+  .theme-light & small {
+    color: rgba(15, 23, 42, 0.58);
   }
 `;
 
@@ -406,7 +513,7 @@ export const MainArea = styled.main`
 `;
 
 export const RightRail = styled.aside`
-  border-left: 1px solid rgba(148, 163, 184, 0.1);
+  border-left: 1px solid var(--rb-border);
   background: rgba(4, 10, 24, 0.7);
   padding: 16px;
 `;
@@ -461,10 +568,10 @@ export const HeroMedia = styled.div<{ $image: string }>`
   border-radius: 12px;
   overflow: hidden;
   border: 1px solid rgba(0, 229, 255, 0.32);
-  background: linear-gradient(180deg, rgba(2, 6, 23, 0.1), rgba(2, 6, 23, 0.78)), url(${({ $image }) => $image});
+  background: linear-gradient(180deg, color-mix(in srgb, var(--rb-bg-deep) 10%, transparent), color-mix(in srgb, var(--rb-bg-deep) 78%, transparent)), url(${({ $image }) => $image});
   background-size: cover;
   background-position: center;
-  box-shadow: 0 0 45px rgba(124, 58, 237, 0.28);
+  box-shadow: 0 0 45px color-mix(in srgb, var(--rb-accent-2) 24%, transparent);
 `;
 
 export const FeaturedFlag = styled.span`
@@ -473,7 +580,7 @@ export const FeaturedFlag = styled.span`
   left: 18px;
   padding: 7px 10px;
   border-radius: 8px;
-  color: #021016;
+  color: var(--rb-text-inverse);
   background: var(--rb-accent);
   font-size: 11px;
   font-weight: 950;
@@ -492,7 +599,7 @@ export const HeroOverlay = styled.div`
 
   p {
     margin: 0;
-    color: rgba(255, 255, 255, 0.76);
+    color: var(--rb-text-strong);
   }
 `;
 
@@ -519,25 +626,32 @@ export const PrimaryLink = styled(Link)`
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-height: 40px;
+  gap: 8px;
+  min-height: 38px;
   padding: 0 16px;
   border: 0;
   border-radius: 8px;
-  color: var(--rb-text-inverse);
+  color: #ffffff;
   background: linear-gradient(135deg, var(--rb-accent), var(--rb-success));
-  font-weight: 850;
+  font-weight: 950;
   font-size: 13px;
-  text-decoration: none;
-  flex: 1;
   cursor: pointer;
+  text-decoration: none;
+  box-shadow: 0 10px 24px color-mix(in srgb, var(--rb-accent) 22%, transparent);
+  transition:
+    transform 0.18s ease,
+    filter 0.18s ease,
+    box-shadow 0.18s ease;
 
-  @media (max-width: 768px) {
-    flex: initial;
-    min-height: 32px;
-    padding: 0 10px;
-    font-size: 11.5px;
-    font-weight: 700;
-    border-radius: 6px;
+  &:hover {
+    color: #ffffff;
+    filter: brightness(1.05);
+    transform: translateY(-1px);
+    box-shadow: 0 14px 30px color-mix(in srgb, var(--rb-accent) 28%, transparent);
+  }
+
+  &:visited {
+    color: #ffffff;
   }
 `;
 
@@ -602,9 +716,9 @@ export const DangerLink = styled(Link)`
   min-height: 38px;
   padding: 0 16px;
   border-radius: 8px;
-  border: 1px solid rgba(248, 113, 113, 0.45);
-  color: #fecdd3;
-  background: rgba(127, 29, 29, 0.24);
+  border: 1px solid color-mix(in srgb, var(--rb-danger) 45%, transparent);
+  color: var(--rb-danger);
+  background: color-mix(in srgb, var(--rb-danger) 16%, transparent);
   font-weight: 850;
   font-size: 13px;
 `;
@@ -618,15 +732,29 @@ export const PrimaryButton = styled.button`
   padding: 0 16px;
   border: 0;
   border-radius: 8px;
-  color: var(--rb-text-inverse);
+  color: #ffffff;
   background: linear-gradient(135deg, var(--rb-accent), var(--rb-success));
   font-weight: 950;
   font-size: 13px;
   cursor: pointer;
+  box-shadow: 0 10px 24px color-mix(in srgb, var(--rb-accent) 22%, transparent);
+  transition:
+    transform 0.18s ease,
+    filter 0.18s ease,
+    box-shadow 0.18s ease;
+
+  &:hover {
+    color: #ffffff;
+    filter: brightness(1.05);
+    transform: translateY(-1px);
+    box-shadow: 0 14px 30px color-mix(in srgb, var(--rb-accent) 28%, transparent);
+  }
 
   &:disabled {
-    opacity: 0.55;
+    opacity: 0.65;
     cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
   }
 `;
 
@@ -671,9 +799,9 @@ export const DangerButton = styled.button`
   min-height: 38px;
   padding: 0 16px;
   border-radius: 8px;
-  border: 1px solid rgba(248, 113, 113, 0.45);
-  color: #fecdd3;
-  background: rgba(127, 29, 29, 0.24);
+  border: 1px solid color-mix(in srgb, var(--rb-danger) 45%, transparent);
+  color: var(--rb-danger);
+  background: color-mix(in srgb, var(--rb-danger) 16%, transparent);
   font-weight: 850;
   font-size: 13px;
   cursor: pointer;
@@ -689,8 +817,8 @@ export const IconRound = styled.button`
   align-items: center;
   justify-content: center;
   color: var(--rb-text);
-  background: rgba(15, 23, 42, 0.72);
-  border: 1px solid rgba(148, 163, 184, 0.16);
+  background: var(--rb-panel);
+  border: 1px solid var(--rb-border);
   cursor: pointer;
 `;
 
@@ -703,7 +831,7 @@ export const UserPill = styled.button`
   border-radius: 999px;
   color: var(--rb-text);
   background: var(--rb-panel);
-  border: 1px solid rgba(148, 163, 184, 0.16);
+  border: 1px solid var(--rb-border);
   font-size: 13px;
   font-weight: 800;
   cursor: pointer;
@@ -721,14 +849,14 @@ export const Avatar = styled.div<{ $large?: boolean; $small?: boolean }>`
   align-items: center;
   justify-content: center;
   flex: 0 0 auto;
-  color: #04111f;
-  background: linear-gradient(135deg, #00e5ff, #8b5cf6);
+  color: var(--rb-text-inverse);
+  background: linear-gradient(135deg, var(--rb-accent), var(--rb-accent-2));
   font-size: ${({ $large, $small }) => ($large ? "28px" : $small ? "10px" : "12px")};
   font-weight: 950;
-  border: 3px solid rgba(255, 255, 255, 0.18);
+  border: 3px solid var(--rb-border);
   box-shadow:
-    0 16px 38px rgba(0, 0, 0, 0.28),
-    0 0 28px rgba(0, 229, 255, 0.16);
+    0 16px 38px var(--rb-shadow),
+    0 0 28px color-mix(in srgb, var(--rb-accent) 16%, transparent);
 
   img {
     width: 100%;
@@ -743,9 +871,9 @@ export const PromoPanel = styled.div`
   padding: 24px; 
   border-radius: 12px;
   background:
-    linear-gradient(135deg, rgba(0, 229, 255, 0.16), rgba(124, 58, 237, 0.13)),
-    rgba(15, 23, 42, 0.72);
-  border: 1px solid rgba(0, 229, 255, 0.22);
+    linear-gradient(135deg, color-mix(in srgb, var(--rb-accent) 16%, transparent), color-mix(in srgb, var(--rb-accent-2) 13%, transparent)),
+    var(--rb-panel);
+  border: 1px solid var(--rb-border-strong);
 
   display: flex;
   flex-direction: column;
@@ -757,11 +885,11 @@ export const PromoPanel = styled.div`
 
   strong {
     font-size: 16px; 
-    color: #ffffff;
+    color: var(--rb-text-strong);
   }
 
   p {
-    color: rgba(226, 232, 240, 0.68);
+    color: var(--rb-muted);
     font-size: 12px;
     line-height: 1.5;
     margin: 0; 
@@ -783,8 +911,8 @@ export const FilterChip = styled.button<{ $active?: boolean }>`
   border-radius: 999px;
   padding: 0 13px;
   white-space: nowrap;
-  color: ${({ $active }) => ($active ? "#021016" : "rgba(226, 232, 240, 0.82)")};
-  background: ${({ $active }) => ($active ? "#00e5ff" : "rgba(148, 163, 184, 0.12)")};
+  color: ${({ $active }) => ($active ? "var(--rb-text-inverse)" : "var(--rb-muted)")};
+  background: ${({ $active }) => ($active ? "var(--rb-accent)" : "var(--rb-chip-bg)")};
   font-size: 12px;
   font-weight: 850;
 `;
@@ -843,7 +971,7 @@ export const Thumb = styled.div<{ $image: string }>`
   position: relative;
   aspect-ratio: 16 / 9;
   background:
-    linear-gradient(180deg, rgba(2, 6, 23, 0.05), rgba(2, 6, 23, 0.45)),
+    linear-gradient(180deg, color-mix(in srgb, var(--rb-bg-deep) 5%, transparent), color-mix(in srgb, var(--rb-bg-deep) 45%, transparent)),
     url(${({ $image }) => $image});
   background-size: cover;
   background-position: center;
@@ -855,7 +983,7 @@ export const LiveBadge = styled.span`
   border-radius: 5px;
   padding: 4px 7px;
   color: var(--rb-text);
-  background: #ef123f;
+  background: var(--rb-danger);
   font-size: 10px;
   font-weight: 950;
 `;
@@ -869,8 +997,8 @@ export const ViewBadge = styled.span`
   gap: 5px;
   padding: 5px 8px;
   border-radius: 999px;
-  background: rgba(2, 6, 23, 0.76);
-  color: #f8fbff;
+  background: var(--rb-panel-strong);
+  color: var(--rb-text-strong);
   font-size: 11px;
   font-weight: 850;
 `;
@@ -971,7 +1099,7 @@ export const PodcastCover = styled.div<{ $image: string }>`
   align-items: center;
   justify-content: center;
   background:
-    linear-gradient(180deg, rgba(2, 6, 23, 0.08), rgba(2, 6, 23, 0.42)),
+    linear-gradient(180deg, color-mix(in srgb, var(--rb-bg-deep) 8%, transparent), color-mix(in srgb, var(--rb-bg-deep) 42%, transparent)),
     url(${({ $image }) => $image});
   background-size: cover;
   background-position: center;
@@ -984,10 +1112,10 @@ export const RoundButton = styled.button`
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid rgba(255, 255, 255, 0.18);
+  border: 1px solid var(--rb-border);
   border-radius: 50%;
   color: var(--rb-text);
-  background: rgba(15, 23, 42, 0.78);
+  background: var(--rb-card-bg);
   cursor: pointer;
 `;
 
@@ -1002,7 +1130,7 @@ export const PageHeading = styled.div`
 
   p {
     margin: 0;
-    color: rgba(226, 232, 240, 0.66);
+    color: var(--rb-muted-soft);
     line-height: 1.6;
   }
 `;
@@ -1025,7 +1153,7 @@ export const InputWrap = styled.label`
   min-height: 42px;
   padding: 0 14px;
   border-radius: 10px;
-  border: 1px solid rgba(148, 163, 184, 0.14);
+  border: 1px solid var(--rb-border);
   background: var(--rb-panel);
 
   input {
@@ -1074,12 +1202,12 @@ export const CategoryCard = styled(Link)<{ $image: string }>`
   padding: 24px;
   border-radius: 16px;
   overflow: hidden;
-  border: 1px solid rgba(148, 163, 184, 0.13);
+  border: 1px solid var(--rb-border);
   text-decoration: none;
   color: white;
   
   background: 
-    linear-gradient(180deg, rgba(2, 6, 23, 0) 0%, rgba(2, 6, 23, 0.9) 100%),
+    linear-gradient(180deg, color-mix(in srgb, var(--rb-bg-deep) 0%, transparent) 0%, color-mix(in srgb, var(--rb-bg-deep) 90%, transparent) 100%),
     url(${({ $image }) => $image});
   background-size: cover;
   background-position: center;
@@ -1090,7 +1218,7 @@ export const CategoryCard = styled(Link)<{ $image: string }>`
   &:hover {
     transform: scale(1.02);
     border-color: rgba(0, 229, 255, 0.5); 
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 10px 20px var(--rb-shadow);
   }
 
   span {
@@ -1103,7 +1231,7 @@ export const CategoryCard = styled(Link)<{ $image: string }>`
   small {
     margin-top: 6px;
     font-size: 14px;
-    color: rgba(226, 232, 240, 0.85);
+    color: var(--rb-text);
     font-weight: 500;
   }
 `;
@@ -1117,11 +1245,11 @@ export const ChannelHero = styled.section<{ $image: string }>`
   padding: 22px;
   border-radius: 12px;
   background:
-    linear-gradient(180deg, rgba(2, 6, 23, 0.08), rgba(2, 6, 23, 0.86)),
+    linear-gradient(180deg, color-mix(in srgb, var(--rb-bg-deep) 8%, transparent), color-mix(in srgb, var(--rb-bg-deep) 86%, transparent)),
     url(${({ $image }) => $image});
   background-size: cover;
   background-position: center;
-  border: 1px solid rgba(0, 229, 255, 0.22);
+  border: 1px solid var(--rb-border-strong);
 
   h1,
   h2,
@@ -1131,7 +1259,7 @@ export const ChannelHero = styled.section<{ $image: string }>`
 
   p {
     margin-top: 6px;
-    color: rgba(226, 232, 240, 0.74);
+    color: var(--rb-muted);
   }
 `;
 
@@ -1151,9 +1279,9 @@ export const VideoFrame = styled.div<{ $image: string }>`
   min-height: 470px;
   border-radius: 10px;
   overflow: hidden;
-  border: 1px solid rgba(148, 163, 184, 0.14);
+  border: 1px solid var(--rb-border);
   background:
-    linear-gradient(180deg, rgba(2, 6, 23, 0.05), rgba(2, 6, 23, 0.26)),
+    linear-gradient(180deg, color-mix(in srgb, var(--rb-bg-deep) 5%, transparent), color-mix(in srgb, var(--rb-bg-deep) 26%, transparent)),
     url(${({ $image }) => $image});
   background-size: cover;
   background-position: center;
@@ -1186,7 +1314,7 @@ export const Progress = styled.div`
   flex: 1;
   height: 5px;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.17);
+  background: color-mix(in srgb, var(--rb-accent) 14%, var(--rb-panel));
   overflow: hidden;
 
   span {
@@ -1217,7 +1345,7 @@ export const InfoMain = styled.div`
 
   p {
     margin: 0;
-    color: rgba(226, 232, 240, 0.68);
+    color: var(--rb-muted);
   }
 `;
 
@@ -1411,7 +1539,7 @@ export const ChatBox = styled.div`
   flex-direction: column;
   border-radius: 12px;
   background: var(--rb-panel);
-  border: 1px solid rgba(148, 163, 184, 0.12);
+  border: 1px solid var(--rb-border);
 `;
 
 export const HeaderActionGroup = styled.div`
@@ -1420,7 +1548,7 @@ export const HeaderActionGroup = styled.div`
   gap: 8px;
 
   a {
-    color: rgba(226, 232, 240, 0.74);
+    color: var(--rb-muted);
   }
 `;
 
@@ -1428,7 +1556,7 @@ export const ChatStatus = styled.div`
   margin: 0 12px 10px;
   padding: 9px 10px;
   border-radius: 9px;
-  color: rgba(226, 232, 240, 0.76);
+  color: var(--rb-muted);
   background: rgba(0, 229, 255, 0.08);
   border: 1px solid rgba(0, 229, 255, 0.14);
   font-size: 12px;
@@ -1454,7 +1582,7 @@ export const ChatBubble = styled.div`
 
   p {
     margin: 3px 0 0;
-    color: rgba(226, 232, 240, 0.84);
+    color: var(--rb-text);
     font-size: 13px;
     line-height: 1.4;
   }
@@ -1469,7 +1597,7 @@ export const ChatName = styled.div<{ $color: string }>`
   font-weight: 950;
 
   span {
-    color: #04111f;
+    color: var(--rb-text-inverse);
     background: var(--rb-accent);
     border-radius: 4px;
     padding: 1px 4px;
@@ -1478,7 +1606,7 @@ export const ChatName = styled.div<{ $color: string }>`
 
   time {
     margin-left: auto;
-    color: rgba(226, 232, 240, 0.42);
+    color: var(--rb-muted-soft);
     font-weight: 600;
   }
 `;
@@ -1486,10 +1614,10 @@ export const ChatName = styled.div<{ $color: string }>`
 export const ChatActionButton = styled.button`
   width: 28px;
   height: 28px;
-  border: 1px solid rgba(148, 163, 184, 0.12);
+  border: 1px solid var(--rb-border);
   border-radius: 8px;
   color: var(--rb-muted);
-  background: rgba(2, 6, 23, 0.56);
+  background: var(--rb-panel-strong);
   cursor: pointer;
 
   &:hover {
@@ -1506,9 +1634,9 @@ export const ChatActionMenu = styled.div`
   width: 210px;
   padding: 8px;
   border-radius: 10px;
-  background: rgba(7, 12, 27, 0.98);
-  border: 1px solid rgba(148, 163, 184, 0.16);
-  box-shadow: 0 18px 44px rgba(0, 0, 0, 0.4);
+  background: var(--rb-panel);
+  border: 1px solid var(--rb-border);
+  box-shadow: 0 18px 44px var(--rb-shadow);
 
   button {
     width: 100%;
@@ -1518,7 +1646,7 @@ export const ChatActionMenu = styled.div`
     gap: 8px;
     border: 0;
     border-radius: 8px;
-    color: rgba(226, 232, 240, 0.86);
+    color: var(--rb-text);
     background: transparent;
     cursor: pointer;
     font-size: 12px;
@@ -1527,7 +1655,7 @@ export const ChatActionMenu = styled.div`
   }
 
   button:hover {
-    background: rgba(255, 255, 255, 0.07);
+    background: var(--rb-panel-hover);
     color: var(--rb-text);
   }
 `;
@@ -1537,30 +1665,30 @@ export const ChatForm = styled.form`
   grid-template-columns: 1fr 38px;
   gap: 8px;
   padding: 10px;
-  border-top: 1px solid rgba(148, 163, 184, 0.12);
+  border-top: 1px solid var(--rb-border);
 
   input {
     min-height: 36px;
-    border: 1px solid rgba(148, 163, 184, 0.12);
+    border: 1px solid var(--rb-border);
     border-radius: 8px;
     padding: 0 11px;
     color: var(--rb-text);
-    background: rgba(2, 6, 23, 0.78);
+    background: var(--rb-input-bg);
     outline: 0;
   }
 
   button {
     border: 0;
     border-radius: 8px;
-    color: #03111c;
-    background: #8b5cf6;
+    color: var(--rb-text-inverse);
+    background: var(--rb-accent-2);
   }
 `;
 
 export const LoginNotice = styled.div`
   padding: 12px;
-  border-top: 1px solid rgba(148, 163, 184, 0.12);
-  color: rgba(226, 232, 240, 0.68);
+  border-top: 1px solid var(--rb-border);
+  color: var(--rb-muted);
   font-size: 13px;
 `;
 
@@ -1577,7 +1705,7 @@ export const SideListItem = styled(Link)`
   align-items: center;
   padding: 9px;
   border-radius: 10px;
-  background: rgba(255, 255, 255, 0.03);
+  background: color-mix(in srgb, var(--rb-panel-hover) 58%, transparent);
 
   span {
     font-size: 13px;
@@ -1593,7 +1721,7 @@ export const SideListItem = styled(Link)`
 export const Divider = styled.hr`
   width: 100%;
   border: 0;
-  border-top: 1px solid rgba(148, 163, 184, 0.12);
+  border-top: 1px solid var(--rb-border);
   margin: 12px 0;
 `;
 
@@ -1604,8 +1732,8 @@ export const ServicePill = styled.span<{ $status: string }>`
   min-height: 28px;
   border-radius: 999px;
   padding: 0 10px;
-  color: ${({ $status }) => ($status === "Operativo" ? "#86efac" : $status === "Degradado" ? "#fde68a" : "#fecdd3")};
-  background: ${({ $status }) => ($status === "Operativo" ? "rgba(22, 163, 74, 0.14)" : $status === "Degradado" ? "rgba(202, 138, 4, 0.18)" : "rgba(220, 38, 38, 0.18)")};
+  color: ${({ $status }) => ($status === "Operativo" ? "var(--rb-success)" : $status === "Degradado" ? "var(--rb-warning)" : "var(--rb-danger)")};
+  background: ${({ $status }) => ($status === "Operativo" ? "color-mix(in srgb, var(--rb-success) 14%, transparent)" : $status === "Degradado" ? "color-mix(in srgb, var(--rb-warning) 18%, transparent)" : "color-mix(in srgb, var(--rb-danger) 18%, transparent)")};
   font-size: 12px;
   font-weight: 850;
 `;
@@ -1651,8 +1779,8 @@ export const AudioBar = styled.div`
   gap: 12px;
   padding: 12px;
   border-radius: 12px;
-  background: rgba(2, 6, 23, 0.92);
-  border: 1px solid rgba(0, 229, 255, 0.22);
+  background: var(--rb-panel-strong);
+  border: 1px solid var(--rb-border-strong);
 `;
 
 export const EpisodeRow = styled.div`
@@ -1661,19 +1789,19 @@ export const EpisodeRow = styled.div`
   align-items: center;
   gap: 10px;
   padding: 10px 0;
-  border-bottom: 1px solid rgba(148, 163, 184, 0.1);
+  border-bottom: 1px solid var(--rb-border);
 
   button {
     width: 28px;
     height: 28px;
     border: 0;
     border-radius: 50%;
-    color: #03111c;
+    color: var(--rb-text-inverse);
     background: var(--rb-accent);
   }
 
   small {
-    color: rgba(226, 232, 240, 0.62);
+    color: var(--rb-muted-soft);
   }
 `;
 
@@ -1683,7 +1811,7 @@ export const AuthScreen = styled.main<{ $image: string }>`
   place-items: center;
   padding: 24px;
   background:
-    linear-gradient(180deg, rgba(2, 6, 23, 0.74), rgba(2, 6, 23, 0.94)),
+    linear-gradient(180deg, color-mix(in srgb, var(--rb-bg-deep) 74%, transparent), color-mix(in srgb, var(--rb-bg-deep) 94%, transparent)),
     url(${({ $image }) => $image});
   background-size: cover;
   background-position: center;
@@ -1756,7 +1884,7 @@ export const BrandBlock = styled.div`
 
   p {
     margin: 0;
-    color: rgba(226, 232, 240, 0.64);
+    color: var(--rb-muted-soft);
     font-size: 13px;
     line-height: 1.6; 
   }
@@ -1882,7 +2010,7 @@ export const Field = styled.div`
     padding: 0 16px;
     border: 0;
     border-radius: 13px;
-    color: #ffffff;
+    color: var(--rb-text-strong);
     background:
       linear-gradient(
         135deg,
@@ -1894,7 +2022,7 @@ export const Field = styled.div`
     cursor: pointer;
     box-shadow:
       0 12px 28px color-mix(in srgb, var(--rb-accent) 24%, transparent),
-      inset 0 1px 0 rgba(255, 255, 255, 0.26);
+      inset 0 1px 0 color-mix(in srgb, var(--rb-text-strong) 20%, transparent);
     transition:
       transform 0.18s ease,
       box-shadow 0.18s ease,
@@ -1906,7 +2034,7 @@ export const Field = styled.div`
     filter: brightness(1.08) saturate(1.08);
     box-shadow:
       0 16px 34px color-mix(in srgb, var(--rb-accent-2) 30%, transparent),
-      inset 0 1px 0 rgba(255, 255, 255, 0.32);
+      inset 0 1px 0 color-mix(in srgb, var(--rb-text-strong) 24%, transparent);
   }
 
   input[type="file"]::file-selector-button:active {
@@ -1985,11 +2113,11 @@ export const FormLine = styled.div`
   justify-content: space-between;
   gap: 10px;
   margin: 12px 0;
-  color: rgba(226, 232, 240, 0.64);
+  color: var(--rb-muted-soft);
   font-size: 12px;
 
   a {
-    color: #c084fc;
+    color: var(--rb-accent-2);
   }
 `;
 
@@ -2003,9 +2131,9 @@ export const ChoiceGrid = styled.div`
 export const ChoiceButton = styled.button<{ $active?: boolean }>`
   min-height: 48px;
   border-radius: 10px;
-  border: 1px solid ${({ $active }) => ($active ? "#8b5cf6" : "rgba(148, 163, 184, 0.14)")};
-  color: ${({ $active }) => ($active ? "#fff" : "rgba(226, 232, 240, 0.76)")};
-  background: ${({ $active }) => ($active ? "rgba(124, 58, 237, 0.28)" : "rgba(15, 23, 42, 0.76)")};
+  border: 1px solid ${({ $active }) => ($active ? "var(--rb-border-strong)" : "var(--rb-border)")};
+  color: ${({ $active }) => ($active ? "var(--rb-text-strong)" : "var(--rb-muted)")};
+  background: ${({ $active }) => ($active ? "color-mix(in srgb, var(--rb-accent-2) 22%, var(--rb-panel))" : "var(--rb-panel)")};
   font-weight: 850;
   cursor: pointer;
 `;
@@ -2017,9 +2145,9 @@ export const SuccessBox = styled.div`
   margin: 12px 0;
   padding: 11px;
   border-radius: 9px;
-  color: #86efac;
-  background: rgba(22, 163, 74, 0.12);
-  border: 1px solid rgba(34, 197, 94, 0.24);
+  color: var(--rb-success);
+  background: color-mix(in srgb, var(--rb-success) 12%, transparent);
+  border: 1px solid color-mix(in srgb, var(--rb-success) 24%, transparent);
 `;
 
 export const NarrowPanel = styled.div`
@@ -2027,7 +2155,7 @@ export const NarrowPanel = styled.div`
   padding: 18px;
   border-radius: 14px;
   background: var(--rb-panel);
-  border: 1px solid rgba(148, 163, 184, 0.12);
+  border: 1px solid var(--rb-border);
 `;
 
 export const ProfileHeader = styled.div`
@@ -2040,9 +2168,9 @@ export const ProfileHeader = styled.div`
   margin: 8px 0 18px;
   border-radius: 18px;
   background:
-    radial-gradient(circle at top, rgba(139, 92, 246, 0.16), transparent 42%),
-    rgba(2, 6, 23, 0.28);
-  border: 1px solid rgba(148, 163, 184, 0.12);
+    radial-gradient(circle at top, color-mix(in srgb, var(--rb-accent-2) 16%, transparent), transparent 42%),
+    var(--rb-panel);
+  border: 1px solid var(--rb-border);
   text-align: center;
 `;
 
@@ -2066,7 +2194,7 @@ export const ProfileHeroInfo = styled.div`
     width: 100%;
     max-width: 680px;
     margin: 0;
-    color: rgba(226, 232, 240, 0.86);
+    color: var(--rb-text);
     font-size: clamp(0.95rem, 2vw, 1.05rem);
     line-height: 1.65;
     overflow-wrap: anywhere;
@@ -2091,10 +2219,10 @@ export const MenuLine = styled(Link)`
   min-height: 42px;
   padding: 0 12px;
   border-radius: 9px;
-  color: rgba(226, 232, 240, 0.84);
+  color: var(--rb-text);
 
   &:hover {
-    background: rgba(255, 255, 255, 0.06);
+    background: var(--rb-panel-hover);
   }
 `;
 
@@ -2104,7 +2232,7 @@ export const NotificationRow = styled.div<{ $accent: string }>`
   align-items: center;
   gap: 12px;
   padding: 12px 0;
-  border-bottom: 1px solid rgba(148, 163, 184, 0.1);
+  border-bottom: 1px solid var(--rb-border);
 
   > svg {
     color: ${({ $accent }) => $accent};
@@ -2142,14 +2270,14 @@ export const ChannelDataPanel = styled.div`
   margin-top: 16px;
   padding: 18px;
   border-radius: 18px;
-  background: rgba(15, 23, 42, 0.72);
-  border: 1px solid rgba(148, 163, 184, 0.14);
-  color: rgba(226, 232, 240, 0.78);
+  background: var(--rb-panel);
+  border: 1px solid var(--rb-border);
+  color: var(--rb-muted);
   line-height: 1.65;
 
   strong {
     display: block;
-    color: #ffffff;
+    color: var(--rb-text-strong);
     font-size: 16px;
     margin-bottom: 10px;
   }
@@ -2176,8 +2304,8 @@ export const CreatorLayout = styled.div`
 export const CreatorSidebar = styled.aside`
   padding: 10px;
   border-radius: 12px;
-  background: rgba(15, 23, 42, 0.62);
-  border: 1px solid rgba(148, 163, 184, 0.12);
+  background: var(--rb-panel);
+  border: 1px solid var(--rb-border);
   height: max-content;
 `;
 
@@ -2210,9 +2338,9 @@ export const ChartPanel = styled.div`
   margin-bottom: 22px;
   border-radius: 12px;
   background:
-    linear-gradient(180deg, rgba(139, 92, 246, 0.12), rgba(0, 229, 255, 0.06)),
-    rgba(15, 23, 42, 0.74);
-  border: 1px solid rgba(148, 163, 184, 0.12);
+    linear-gradient(180deg, color-mix(in srgb, var(--rb-accent-2) 12%, transparent), color-mix(in srgb, var(--rb-accent) 6%, transparent)),
+    var(--rb-panel);
+  border: 1px solid var(--rb-border);
 
   span {
     position: absolute;
@@ -2221,8 +2349,8 @@ export const ChartPanel = styled.div`
     bottom: 55px;
     height: 110px;
     border-radius: 50%;
-    border-top: 4px solid #8b5cf6;
-    filter: drop-shadow(0 0 14px rgba(139, 92, 246, 0.9));
+    border-top: 4px solid var(--rb-accent-2);
+    filter: drop-shadow(0 0 14px color-mix(in srgb, var(--rb-accent-2) 72%, transparent));
   }
 `;
 
@@ -2234,9 +2362,9 @@ export const UploadZone = styled.div`
   gap: 5px;
   margin: 12px 0;
   border-radius: 12px;
-  border: 1px dashed rgba(139, 92, 246, 0.8);
-  color: #d8b4fe;
-  background: rgba(88, 28, 135, 0.18);
+  border: 1px dashed color-mix(in srgb, var(--rb-accent-2) 70%, var(--rb-border));
+  color: var(--rb-accent-2);
+  background: color-mix(in srgb, var(--rb-accent-2) 14%, var(--rb-panel));
 
   small {
     color: var(--rb-muted-soft);
@@ -2357,7 +2485,7 @@ export const ToggleLine = styled.label`
     background: var(--rb-text);
     box-shadow:
       0 8px 18px color-mix(in srgb, var(--rb-shadow) 70%, transparent),
-      inset 0 1px 0 rgba(255, 255, 255, 0.42);
+      inset 0 1px 0 color-mix(in srgb, var(--rb-text-strong) 28%, transparent);
     transition:
       transform 0.22s ease,
       background 0.22s ease;
@@ -2394,14 +2522,14 @@ export const ToggleLine = styled.label`
 
   input[type="checkbox"]:checked::before {
     transform: translateX(28px);
-    background: #ffffff;
+    background: var(--rb-text-strong);
   }
 
   input[type="checkbox"]:checked::after {
     content: "SÍ";
     right: auto;
     left: 10px;
-    color: #ffffff;
+    color: var(--rb-text-strong);
   }
 
   input[type="checkbox"]:focus-visible {
@@ -2512,9 +2640,9 @@ export const SkeletonCard = styled.div`
   height: 190px;
   border-radius: 12px;
   background:
-    linear-gradient(90deg, rgba(148, 163, 184, 0.08), rgba(148, 163, 184, 0.18), rgba(148, 163, 184, 0.08));
+    linear-gradient(90deg, color-mix(in srgb, var(--rb-border) 35%, transparent), color-mix(in srgb, var(--rb-border-strong) 50%, transparent), color-mix(in srgb, var(--rb-border) 35%, transparent));
   background-size: 200% 100%;
-  border: 1px solid rgba(148, 163, 184, 0.1);
+  border: 1px solid var(--rb-border);
   animation: shimmer 1.5s infinite linear;
 
   @keyframes shimmer {
@@ -2554,7 +2682,7 @@ export const StateIcon = styled.div`
   border-radius: 28px;
   color: var(--rb-accent);
   background: rgba(0, 229, 255, 0.1);
-  border: 1px solid rgba(0, 229, 255, 0.2);
+  border: 1px solid var(--rb-border-strong);
 
   svg {
     width: 44px;
@@ -2572,11 +2700,11 @@ export const DialogCard = styled.div`
   text-align: center;
   padding: 24px;
   border-radius: 14px;
-  background: rgba(15, 23, 42, 0.88);
-  border: 1px solid rgba(148, 163, 184, 0.14);
+  background: var(--rb-panel);
+  border: 1px solid var(--rb-border);
 
   p {
-    color: rgba(226, 232, 240, 0.68);
+    color: var(--rb-muted);
   }
 `;
 
@@ -2587,9 +2715,9 @@ export const DangerIcon = styled.div`
   align-items: center;
   justify-content: center;
   border-radius: 50%;
-  color: #fecdd3;
-  background: rgba(220, 38, 38, 0.14);
-  border: 1px solid rgba(248, 113, 113, 0.28);
+  color: var(--rb-danger);
+  background: color-mix(in srgb, var(--rb-danger) 14%, transparent);
+  border: 1px solid color-mix(in srgb, var(--rb-danger) 28%, transparent);
 
   svg {
     width: 36px;
@@ -2603,10 +2731,10 @@ export const ServiceRow = styled.div`
   gap: 10px;
   align-items: center;
   padding: 10px 0;
-  border-bottom: 1px solid rgba(148, 163, 184, 0.1);
+  border-bottom: 1px solid var(--rb-border);
 
   small {
-    color: rgba(226, 232, 240, 0.62);
+    color: var(--rb-muted-soft);
   }
 
   @media (max-width: 760px) {
@@ -2622,12 +2750,12 @@ export const Table = styled.table`
   th,
   td {
     padding: 10px;
-    border-bottom: 1px solid rgba(148, 163, 184, 0.1);
+    border-bottom: 1px solid var(--rb-border);
     text-align: left;
   }
 
   th {
-    color: rgba(226, 232, 240, 0.62);
+    color: var(--rb-muted-soft);
     font-size: 11px;
     text-transform: uppercase;
   }
@@ -2638,5 +2766,5 @@ export const PermissionLine = styled.div`
   align-items: center;
   gap: 8px;
   padding: 12px 0;
-  border-bottom: 1px solid rgba(148, 163, 184, 0.1);
+  border-bottom: 1px solid var(--rb-border);
 `;

@@ -1,3 +1,4 @@
+//frontend/src/modules/creator/streamer/pages/LiveControlPage.tsx
 import { toBrowserReachableUrl } from "../../../../shared/utils/networkUrl";
 import { useEffect, useMemo, useState } from "react";
 import {
@@ -584,16 +585,16 @@ export default function LiveControlPage() {
 const PreviewPanel = styled.div<{ $live: boolean }>`
   min-height: 260px;
   border-radius: 18px;
-  border: 1px solid rgba(0, 229, 255, 0.18);
+  border: 1px solid var(--rb-border-strong);
   background:
     linear-gradient(
       180deg,
-      rgba(15, 23, 42, 0.78),
-      rgba(2, 6, 23, 0.95)
+      color-mix(in srgb, var(--rb-panel) 78%, transparent),
+      color-mix(in srgb, var(--rb-bg-deep) 95%, transparent)
     ),
     radial-gradient(
       circle at top,
-      rgba(0, 229, 255, ${({ $live }) => ($live ? "0.16" : "0.05")}),
+      color-mix(in srgb, var(--rb-accent) ${({ $live }) => ($live ? "16%" : "5%")}, transparent),
       transparent 40%
     );
   display: grid;
@@ -604,18 +605,18 @@ const PreviewPanel = styled.div<{ $live: boolean }>`
   margin-bottom: 14px;
 
   strong {
-    color: #f8fafc;
+    color: var(--rb-text-strong);
     font-size: 1.2rem;
   }
 
   span {
-    color: #94a3b8;
+    color: var(--rb-muted-soft);
     margin-top: 6px;
   }
 `;
 
 const PreviewIcon = styled.div`
-  color: #00e5ff;
+  color: var(--rb-accent);
   font-size: 30px;
   margin-bottom: 8px;
 `;
@@ -625,12 +626,12 @@ const FakePlayerBar = styled.div`
   left: 18px;
   right: 18px;
   bottom: 12px;
-  border-top: 1px solid rgba(148, 163, 184, 0.16);
+  border-top: 1px solid var(--rb-border);
   padding-top: 9px;
   display: flex;
   align-items: center;
   gap: 12px;
-  color: #64748b;
+  color: var(--rb-muted-soft);
 
   small {
     margin-right: auto;
@@ -639,8 +640,8 @@ const FakePlayerBar = styled.div`
 
 const InfoPanel = styled.section`
   border-radius: 16px;
-  border: 1px solid rgba(148, 163, 184, 0.16);
-  background: rgba(15, 23, 42, 0.72);
+  border: 1px solid var(--rb-border);
+  background: var(--rb-panel);
   padding: 16px;
   margin-top: 14px;
 `;
@@ -653,7 +654,7 @@ const PanelHeader = styled.div`
   margin-bottom: 12px;
 
   strong {
-    color: #f8fafc;
+    color: var(--rb-text-strong);
   }
 `;
 
@@ -665,11 +666,11 @@ const DataRow = styled.div`
   padding: 7px 0;
 
   span {
-    color: #94a3b8;
+    color: var(--rb-muted-soft);
   }
 
   strong {
-    color: #f8fafc;
+    color: var(--rb-text-strong);
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -684,19 +685,19 @@ const DataRowSimple = styled.div`
   padding: 7px 0;
 
   span {
-    color: #94a3b8;
+    color: var(--rb-muted-soft);
   }
 
   strong {
-    color: #f8fafc;
+    color: var(--rb-text-strong);
   }
 `;
 
 const SmallButton = styled.button`
-  border: 1px solid rgba(0, 229, 255, 0.35);
+  border: 1px solid var(--rb-border-strong);
   border-radius: 10px;
-  background: rgba(2, 6, 23, 0.42);
-  color: #f8fafc;
+  background: var(--rb-panel);
+  color: var(--rb-text);
   padding: 8px 10px;
   font: inherit;
   font-weight: 800;
@@ -704,6 +705,13 @@ const SmallButton = styled.button`
   align-items: center;
   gap: 6px;
   cursor: pointer;
+  transition: 0.18s ease;
+
+  &:hover:not(:disabled) {
+    background: var(--rb-panel-hover);
+    border-color: var(--rb-accent);
+    color: var(--rb-text-strong);
+  }
 
   &:disabled {
     opacity: 0.45;
@@ -712,14 +720,21 @@ const SmallButton = styled.button`
 `;
 
 const SmallLink = styled.a`
-  border: 1px solid rgba(0, 229, 255, 0.35);
+  border: 1px solid var(--rb-border-strong);
   border-radius: 10px;
-  background: rgba(2, 6, 23, 0.42);
-  color: #00e5ff;
+  background: var(--rb-panel);
+  color: var(--rb-accent);
   padding: 8px 10px;
   font-weight: 800;
   display: inline-flex;
   align-items: center;
   gap: 6px;
   text-decoration: none;
+  transition: 0.18s ease;
+
+  &:hover {
+    background: var(--rb-panel-hover);
+    border-color: var(--rb-accent);
+    color: var(--rb-text-strong);
+  }
 `;

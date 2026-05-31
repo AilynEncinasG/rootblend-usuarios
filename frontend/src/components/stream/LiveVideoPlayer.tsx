@@ -1,3 +1,4 @@
+//frontend/src/components/stream/LiveVideoPlayer.tsx
 import Hls from "hls.js";
 import { useCallback, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
@@ -455,7 +456,8 @@ const PlayerFrame = styled.div`
   aspect-ratio: 16 / 9;
   border-radius: 16px;
   background: #020617;
-  border: 1px solid rgba(0, 229, 255, 0.18);
+  border: 1px solid var(--rb-border-strong);
+  box-shadow: 0 16px 44px var(--rb-shadow);
 
   video {
     width: 100%;
@@ -476,31 +478,33 @@ const PlayerOverlay = styled.div<{ $danger?: boolean }>`
   gap: 12px;
   padding: 24px;
   text-align: center;
-  color: ${({ $danger }) => ($danger ? "#fecdd3" : "#e8fbff")};
-  background: rgba(2, 6, 23, 0.72);
+  color: ${({ $danger }) => ($danger ? "var(--rb-danger)" : "var(--rb-text)")};
+  background: color-mix(in srgb, var(--rb-bg-deep) 76%, transparent);
   pointer-events: auto;
+  backdrop-filter: blur(3px);
 
   svg {
     width: 34px;
     height: 34px;
-    color: ${({ $danger }) => ($danger ? "#fb7185" : "#00e5ff")};
+    color: ${({ $danger }) => ($danger ? "var(--rb-danger)" : "var(--rb-accent)")};
   }
 
   strong {
     font-size: 20px;
+    color: var(--rb-text-strong);
   }
 
   span {
     max-width: 520px;
-    color: rgba(226, 232, 240, 0.72);
+    color: var(--rb-muted);
     line-height: 1.5;
   }
 `;
 
 const OverlayButton = styled.button`
-  border: 1px solid rgba(0, 229, 255, 0.55);
-  background: linear-gradient(135deg, #00e5ff, #22c55e);
-  color: #031018;
+  border: 1px solid var(--rb-border-strong);
+  background: linear-gradient(135deg, var(--rb-accent), var(--rb-success));
+  color: var(--rb-text-inverse);
   border-radius: 12px;
   padding: 10px 14px;
   display: inline-flex;
@@ -508,6 +512,12 @@ const OverlayButton = styled.button`
   gap: 8px;
   font-weight: 950;
   cursor: pointer;
+  transition: 0.18s ease;
+
+  &:hover {
+    filter: brightness(1.08);
+    transform: translateY(-1px);
+  }
 
   svg {
     width: 18px;
@@ -525,12 +535,13 @@ const LiveBadge = styled.div`
   gap: 7px;
   border-radius: 999px;
   padding: 8px 11px;
-  background: rgba(244, 63, 94, 0.92);
-  color: #fff;
+  background: var(--rb-danger);
+  color: #ffffff;
   font-size: 12px;
   font-weight: 950;
   pointer-events: none;
   z-index: 3;
+  box-shadow: 0 10px 24px color-mix(in srgb, var(--rb-danger) 26%, transparent);
 
   svg {
     width: 14px;
@@ -544,13 +555,19 @@ const QualitySelect = styled.select`
   bottom: 14px;
   z-index: 4;
   min-width: 96px;
-  border: 1px solid rgba(0, 229, 255, 0.35);
+  border: 1px solid var(--rb-border-strong);
   border-radius: 999px;
   padding: 7px 10px;
-  color: #e8fbff;
-  background: rgba(15, 23, 42, 0.9);
+  color: var(--rb-text);
+  background: color-mix(in srgb, var(--rb-panel) 92%, transparent);
   font-size: 12px;
   font-weight: 850;
+  outline: none;
+  backdrop-filter: blur(12px);
+
+  &:focus {
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--rb-accent) 16%, transparent);
+  }
 `;
 
 const BufferBadge = styled.div`
@@ -562,17 +579,19 @@ const BufferBadge = styled.div`
   gap: 7px;
   border-radius: 999px;
   padding: 8px 11px;
-  background: rgba(15, 23, 42, 0.88);
-  color: #e8fbff;
-  border: 1px solid rgba(0, 229, 255, 0.25);
+  background: color-mix(in srgb, var(--rb-panel) 90%, transparent);
+  color: var(--rb-text);
+  border: 1px solid var(--rb-border-strong);
   font-size: 12px;
   font-weight: 900;
   pointer-events: none;
   z-index: 3;
+  backdrop-filter: blur(12px);
 
   svg {
     width: 14px;
     height: 14px;
+    color: var(--rb-accent);
     animation: spin 0.9s linear infinite;
   }
 

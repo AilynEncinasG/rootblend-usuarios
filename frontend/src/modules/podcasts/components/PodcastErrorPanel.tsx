@@ -1,3 +1,4 @@
+//frontend/src/modules/podcasts/components/PodcastErrorPanel.tsx
 import { Link } from "react-router-dom";
 import "./PodcastErrorPanel.css";
 
@@ -68,7 +69,7 @@ function PodcastErrorIllustration() {
       role="img"
       aria-label="Podcast no disponible"
     >
-      <circle cx="190" cy="150" r="104" fill="rgba(168, 85, 247, 0.18)" />
+      <circle cx="190" cy="150" r="104" fill="var(--rb-accent-2)" opacity="0.18" />
 
       <rect
         x="116"
@@ -76,38 +77,40 @@ function PodcastErrorIllustration() {
         width="148"
         height="148"
         rx="42"
-        fill="rgba(15, 23, 42, 0.96)"
-        stroke="rgba(251, 113, 133, 0.48)"
+        fill="var(--rb-panel)"
+        stroke="var(--rb-danger)"
+        strokeOpacity="0.48"
         strokeWidth="5"
       />
 
       <path
         d="M142 158C142 130 162 108 190 108C218 108 238 130 238 158"
-        stroke="#00eaff"
+        stroke="var(--rb-accent)"
         strokeWidth="13"
         strokeLinecap="round"
       />
 
-      <rect x="126" y="152" width="28" height="58" rx="14" fill="#fb7185" />
-      <rect x="226" y="152" width="28" height="58" rx="14" fill="#fb7185" />
+      <rect x="126" y="152" width="28" height="58" rx="14" fill="var(--rb-danger)" />
+      <rect x="226" y="152" width="28" height="58" rx="14" fill="var(--rb-danger)" />
 
       <path
         d="M172 164V198M190 150V212M208 164V198"
-        stroke="#f8fafc"
+        stroke="var(--rb-text-strong)"
         strokeWidth="10"
         strokeLinecap="round"
       />
 
       <path
         d="M104 254H276"
-        stroke="rgba(0, 234, 255, 0.42)"
+        stroke="var(--rb-accent)"
+        strokeOpacity="0.42"
         strokeWidth="8"
         strokeLinecap="round"
       />
 
       <path
         d="M124 254C132 230 146 230 154 254C162 278 176 278 184 254C192 230 206 230 214 254C222 278 236 278 244 254"
-        stroke="#fb7185"
+        stroke="var(--rb-danger)"
         strokeWidth="7"
         strokeLinecap="round"
       />
@@ -116,21 +119,23 @@ function PodcastErrorIllustration() {
         cx="282"
         cy="78"
         r="36"
-        fill="rgba(127, 29, 29, 0.88)"
-        stroke="#fb7185"
+        fill="var(--rb-danger)"
+        fillOpacity="0.20"
+        stroke="var(--rb-danger)"
         strokeWidth="5"
       />
 
       <path
         d="M267 63L297 93M297 63L267 93"
-        stroke="#fecaca"
+        stroke="var(--rb-danger)"
         strokeWidth="8"
         strokeLinecap="round"
       />
 
       <path
         d="M62 118H98M60 158H88M284 178H326M292 214H336"
-        stroke="rgba(251, 113, 133, 0.46)"
+        stroke="var(--rb-danger)"
+        strokeOpacity="0.46"
         strokeWidth="6"
         strokeLinecap="round"
       />
@@ -139,7 +144,7 @@ function PodcastErrorIllustration() {
         x="190"
         y="282"
         textAnchor="middle"
-        fill="#fecaca"
+        fill="var(--rb-danger)"
         fontSize="17"
         fontWeight="900"
         fontFamily="Arial, sans-serif"

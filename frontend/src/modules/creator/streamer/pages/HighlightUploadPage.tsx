@@ -1,3 +1,4 @@
+//frontend/src/modules/creator/streamer/pages/HighlightUploadPage.tsx
 import { type ChangeEvent, type FormEvent, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
@@ -492,8 +493,9 @@ export default function HighlightUploadPage() {
                 style={{
                   minHeight: 220,
                   borderRadius: 22,
-                  border: "1px solid rgba(0, 234, 255, 0.18)",
-                  background: `linear-gradient(180deg, rgba(2,8,26,.12), rgba(2,8,26,.66)), url(${previewImage}) center/cover`,
+                  border: "1px solid var(--rb-border-strong)",
+                  background: `linear-gradient(180deg, color-mix(in srgb, var(--rb-bg-deep) 8%, transparent), color-mix(in srgb, var(--rb-bg-deep) 58%, transparent)), url(${previewImage}) center/cover`,
+                  boxShadow: "0 16px 40px color-mix(in srgb, var(--rb-shadow) 42%, transparent)",
                 }}
               />
             ) : null}
@@ -512,7 +514,7 @@ export default function HighlightUploadPage() {
                   border: 0,
                   outline: 0,
                   background: "transparent",
-                  color: "#fff",
+                  color: "var(--rb-text)",
                   fontWeight: 800,
                 }}
               >

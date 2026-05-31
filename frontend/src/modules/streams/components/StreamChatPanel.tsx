@@ -1,3 +1,4 @@
+//frontend/src/modules/streams/components/StreamChatPanel.tsx
 import { type FormEvent, useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
@@ -872,10 +873,12 @@ const ChatBox = styled.aside`
   min-height: 560px;
   display: flex;
   flex-direction: column;
-  background: rgba(15, 23, 42, 0.84);
-  border: 1px solid rgba(148, 163, 184, 0.14);
+  background: var(--rb-card-bg);
+  border: 1px solid var(--rb-border);
   border-radius: 14px;
   overflow: hidden;
+  color: var(--rb-text);
+  box-shadow: 0 16px 44px var(--rb-shadow);
 `;
 
 const Header = styled.div`
@@ -885,7 +888,8 @@ const Header = styled.div`
   justify-content: space-between;
   align-items: center;
   gap: 10px;
-  border-bottom: 1px solid rgba(148, 163, 184, 0.12);
+  border-bottom: 1px solid var(--rb-border);
+  background: color-mix(in srgb, var(--rb-panel) 72%, transparent);
 
   div {
     display: grid;
@@ -893,13 +897,13 @@ const Header = styled.div`
   }
 
   small {
-    color: rgba(226, 232, 240, 0.52);
+    color: var(--rb-muted-soft);
     font-size: 11px;
     font-weight: 700;
   }
 
   span {
-    color: #00e5ff;
+    color: var(--rb-accent);
     font-size: 12px;
     font-weight: 850;
     white-space: nowrap;
@@ -910,28 +914,29 @@ const Feedback = styled.div`
   margin: 10px;
   padding: 10px;
   border-radius: 10px;
-  color: #a7f3d0;
-  background: rgba(20, 184, 166, 0.12);
-  border: 1px solid rgba(20, 184, 166, 0.22);
+  color: var(--rb-success);
+  background: color-mix(in srgb, var(--rb-success) 12%, transparent);
+  border: 1px solid color-mix(in srgb, var(--rb-success) 24%, transparent);
   font-size: 12px;
 `;
 
 const ClearChatButton = styled.button`
   margin: 0 10px 10px;
   height: 36px;
-  border: 1px solid rgba(239, 68, 68, 0.32);
+  border: 1px solid color-mix(in srgb, var(--rb-danger) 34%, transparent);
   border-radius: 10px;
-  color: #fecaca;
-  background: rgba(239, 68, 68, 0.1);
+  color: var(--rb-danger);
+  background: color-mix(in srgb, var(--rb-danger) 10%, transparent);
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
   font-weight: 850;
   cursor: pointer;
+  transition: 0.18s ease;
 
   &:hover {
-    background: rgba(239, 68, 68, 0.18);
+    background: color-mix(in srgb, var(--rb-danger) 16%, transparent);
   }
 `;
 
@@ -942,9 +947,9 @@ const WarningBox = styled.div`
   align-items: center;
   gap: 8px;
   border-radius: 10px;
-  color: #fecaca;
-  background: rgba(239, 68, 68, 0.12);
-  border: 1px solid rgba(239, 68, 68, 0.28);
+  color: var(--rb-danger);
+  background: color-mix(in srgb, var(--rb-danger) 12%, transparent);
+  border: 1px solid color-mix(in srgb, var(--rb-danger) 28%, transparent);
   font-size: 12px;
 `;
 
@@ -953,11 +958,12 @@ const Messages = styled.div`
   min-height: 0;
   overflow: auto;
   padding: 10px;
+  background: color-mix(in srgb, var(--rb-bg) 35%, transparent);
 `;
 
 const EmptyState = styled.div`
   padding: 18px 10px;
-  color: rgba(226, 232, 240, 0.58);
+  color: var(--rb-muted-soft);
   text-align: center;
   font-size: 13px;
 `;
@@ -976,10 +982,11 @@ const Avatar = styled.div`
   border-radius: 50%;
   display: grid;
   place-items: center;
-  color: #03111c;
-  background: #00e5ff;
+  color: var(--rb-text-inverse);
+  background: linear-gradient(135deg, var(--rb-accent), var(--rb-accent-2));
   font-size: 11px;
   font-weight: 950;
+  box-shadow: 0 8px 18px color-mix(in srgb, var(--rb-accent) 18%, transparent);
 `;
 
 const Bubble = styled.div`
@@ -987,13 +994,13 @@ const Bubble = styled.div`
 
   p {
     margin: 3px 0 0;
-    color: rgba(226, 232, 240, 0.82);
+    color: var(--rb-text);
     line-height: 1.35;
     overflow-wrap: anywhere;
   }
 
   .deleted-message {
-    color: rgba(248, 113, 113, 0.82);
+    color: var(--rb-danger);
     font-style: italic;
   }
 `;
@@ -1002,13 +1009,13 @@ const Name = styled.div`
   display: flex;
   align-items: center;
   gap: 6px;
-  color: #fff;
+  color: var(--rb-text-strong);
   font-weight: 850;
   font-size: 13px;
 
   time {
     margin-left: auto;
-    color: rgba(226, 232, 240, 0.46);
+    color: var(--rb-muted-soft);
     font-size: 11px;
     font-weight: 500;
   }
@@ -1017,18 +1024,20 @@ const Name = styled.div`
 const Badge = styled.span`
   padding: 2px 5px;
   border-radius: 6px;
-  color: #03111c;
-  background: #22c55e;
+  color: var(--rb-text-inverse);
+  background: var(--rb-success);
   font-size: 10px;
+  font-weight: 900;
 `;
 
 const DeletedBadge = styled.span`
   padding: 2px 5px;
   border-radius: 6px;
-  color: #fecaca;
-  background: rgba(239, 68, 68, 0.12);
-  border: 1px solid rgba(239, 68, 68, 0.22);
+  color: var(--rb-danger);
+  background: color-mix(in srgb, var(--rb-danger) 12%, transparent);
+  border: 1px solid color-mix(in srgb, var(--rb-danger) 24%, transparent);
   font-size: 10px;
+  font-weight: 800;
 `;
 
 const MenuButton = styled.button`
@@ -1036,9 +1045,15 @@ const MenuButton = styled.button`
   height: 28px;
   border: 0;
   border-radius: 8px;
-  color: #e2e8f0;
+  color: var(--rb-muted);
   background: transparent;
   cursor: pointer;
+  transition: 0.18s ease;
+
+  &:hover {
+    color: var(--rb-text-strong);
+    background: var(--rb-panel-hover);
+  }
 `;
 
 const ActionMenu = styled.div`
@@ -1049,9 +1064,10 @@ const ActionMenu = styled.div`
   width: 202px;
   padding: 6px;
   border-radius: 10px;
-  background: #111827;
-  border: 1px solid rgba(148, 163, 184, 0.18);
-  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.4);
+  background: var(--rb-panel);
+  border: 1px solid var(--rb-border);
+  box-shadow: 0 18px 40px var(--rb-shadow);
+  color: var(--rb-text);
 
   button {
     width: 100%;
@@ -1061,14 +1077,16 @@ const ActionMenu = styled.div`
     padding: 8px;
     border: 0;
     border-radius: 8px;
-    color: #e5e7eb;
+    color: var(--rb-text);
     background: transparent;
     cursor: pointer;
     text-align: left;
+    transition: 0.18s ease;
   }
 
   button:hover {
-    background: rgba(0, 229, 255, 0.1);
+    background: color-mix(in srgb, var(--rb-accent) 10%, transparent);
+    color: var(--rb-text-strong);
   }
 `;
 
@@ -1077,16 +1095,27 @@ const ChatForm = styled.form`
   grid-template-columns: 1fr 38px;
   gap: 8px;
   padding: 10px;
-  border-top: 1px solid rgba(148, 163, 184, 0.12);
+  border-top: 1px solid var(--rb-border);
+  background: color-mix(in srgb, var(--rb-panel) 74%, transparent);
 
   input {
     min-width: 0;
     height: 38px;
-    border: 1px solid rgba(148, 163, 184, 0.16);
+    border: 1px solid var(--rb-input-border);
     border-radius: 10px;
-    color: #fff;
-    background: rgba(2, 6, 23, 0.78);
+    color: var(--rb-text);
+    background: var(--rb-input-bg);
     padding: 0 10px;
+    outline: none;
+
+    &::placeholder {
+      color: var(--rb-muted-soft);
+    }
+
+    &:focus {
+      border-color: var(--rb-border-strong);
+      box-shadow: 0 0 0 3px color-mix(in srgb, var(--rb-accent) 14%, transparent);
+    }
   }
 
   input:disabled {
@@ -1097,9 +1126,15 @@ const ChatForm = styled.form`
   button {
     border: 0;
     border-radius: 10px;
-    color: #03111c;
-    background: #00e5ff;
+    color: var(--rb-text-inverse);
+    background: var(--rb-accent);
     cursor: pointer;
+    transition: 0.18s ease;
+  }
+
+  button:hover:not(:disabled) {
+    filter: brightness(1.08);
+    transform: translateY(-1px);
   }
 
   button:disabled {
@@ -1109,7 +1144,7 @@ const ChatForm = styled.form`
 
   small {
     grid-column: 1 / -1;
-    color: rgba(226, 232, 240, 0.52);
+    color: var(--rb-muted-soft);
     font-size: 11px;
     text-align: right;
   }
@@ -1119,14 +1154,16 @@ const LoginNotice = styled.div`
   padding: 12px;
   display: grid;
   gap: 8px;
-  color: rgba(226, 232, 240, 0.72);
-  border-top: 1px solid rgba(148, 163, 184, 0.12);
+  color: var(--rb-muted);
+  border-top: 1px solid var(--rb-border);
+  background: color-mix(in srgb, var(--rb-panel) 72%, transparent);
 
   a {
-    color: #00e5ff;
+    color: var(--rb-accent);
     font-weight: 850;
   }
 `;
+
 const ModalBackdrop = styled.div`
   position: fixed;
   inset: 0;
@@ -1134,7 +1171,7 @@ const ModalBackdrop = styled.div`
   display: grid;
   place-items: center;
   padding: 18px;
-  background: rgba(2, 6, 23, 0.72);
+  background: color-mix(in srgb, var(--rb-bg-deep) 72%, transparent);
   backdrop-filter: blur(6px);
 `;
 
@@ -1142,37 +1179,47 @@ const ModalCard = styled.div`
   width: min(420px, 100%);
   padding: 18px;
   border-radius: 18px;
-  color: #e5e7eb;
-  background: #111827;
-  border: 1px solid rgba(148, 163, 184, 0.18);
-  box-shadow: 0 28px 80px rgba(0, 0, 0, 0.48);
+  color: var(--rb-text);
+  background: var(--rb-panel);
+  border: 1px solid var(--rb-border);
+  box-shadow: 0 28px 80px var(--rb-shadow);
 
   h2 {
     margin: 10px 0 8px;
-    color: #fff;
+    color: var(--rb-text-strong);
   }
 
   p {
     margin: 0 0 14px;
-    color: rgba(226, 232, 240, 0.72);
+    color: var(--rb-muted);
     line-height: 1.5;
   }
 
   label {
     display: grid;
     gap: 7px;
-    color: rgba(226, 232, 240, 0.76);
+    color: var(--rb-muted);
     font-size: 13px;
     font-weight: 800;
   }
 
   input {
     height: 40px;
-    border: 1px solid rgba(148, 163, 184, 0.18);
+    border: 1px solid var(--rb-input-border);
     border-radius: 10px;
-    color: #fff;
-    background: rgba(2, 6, 23, 0.72);
+    color: var(--rb-text);
+    background: var(--rb-input-bg);
     padding: 0 10px;
+    outline: none;
+
+    &::placeholder {
+      color: var(--rb-muted-soft);
+    }
+
+    &:focus {
+      border-color: var(--rb-border-strong);
+      box-shadow: 0 0 0 3px color-mix(in srgb, var(--rb-accent) 14%, transparent);
+    }
   }
 `;
 
@@ -1186,14 +1233,17 @@ const DurationGrid = styled.div`
 const DurationButton = styled.button<{ $active: boolean }>`
   height: 38px;
   border-radius: 10px;
-  border: 1px solid
-    ${({ $active }) =>
-      $active ? "rgba(0, 229, 255, 0.85)" : "rgba(148, 163, 184, 0.18)"};
-  color: ${({ $active }) => ($active ? "#03111c" : "#e5e7eb")};
-  background: ${({ $active }) =>
-    $active ? "#00e5ff" : "rgba(15, 23, 42, 0.92)"};
+  border: 1px solid ${({ $active }) => ($active ? "var(--rb-border-strong)" : "var(--rb-border)")};
+  color: ${({ $active }) => ($active ? "var(--rb-text-inverse)" : "var(--rb-text)")};
+  background: ${({ $active }) => ($active ? "var(--rb-accent)" : "var(--rb-panel)")};
   font-weight: 850;
   cursor: pointer;
+  transition: 0.18s ease;
+
+  &:hover {
+    border-color: var(--rb-border-strong);
+    background: ${({ $active }) => ($active ? "var(--rb-accent)" : "var(--rb-panel-hover)")};
+  }
 `;
 
 const ModalActions = styled.div`
@@ -1206,32 +1256,45 @@ const ModalActions = styled.div`
 const CancelButton = styled.button`
   height: 40px;
   border-radius: 10px;
-  border: 1px solid rgba(148, 163, 184, 0.18);
-  color: #e5e7eb;
+  border: 1px solid var(--rb-border);
+  color: var(--rb-text);
   background: transparent;
   font-weight: 850;
   cursor: pointer;
+  transition: 0.18s ease;
+
+  &:hover {
+    background: var(--rb-panel-hover);
+    border-color: var(--rb-border-strong);
+  }
 `;
 
 const ConfirmButton = styled.button`
   height: 40px;
   border: 0;
   border-radius: 10px;
-  color: #03111c;
-  background: #00e5ff;
+  color: var(--rb-text-inverse);
+  background: var(--rb-accent);
   font-weight: 900;
   cursor: pointer;
+  transition: 0.18s ease;
+
+  &:hover {
+    filter: brightness(1.08);
+  }
 `;
+
 const DangerConfirmButton = styled.button`
   height: 40px;
   border: 0;
   border-radius: 10px;
-  color: #fff;
-  background: #ef4444;
+  color: var(--rb-text-inverse);
+  background: var(--rb-danger);
   font-weight: 900;
   cursor: pointer;
+  transition: 0.18s ease;
 
   &:hover {
-    background: #dc2626;
+    filter: brightness(0.92);
   }
 `;
