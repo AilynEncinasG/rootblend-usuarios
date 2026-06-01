@@ -111,3 +111,17 @@ services:
     depends_on:
       mysql-local:
         condition: service_healthy
+
+  estadisticas-donation-events-consumer:
+    environment:
+      DB_ENGINE: django.db.backends.mysql
+      DB_NAME: rootblend_estadisticas
+      DB_USER: root
+      DB_PASSWORD: root
+      DB_HOST: mysql-local
+      DB_PORT: "3306"
+    depends_on:
+      mysql-local:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy

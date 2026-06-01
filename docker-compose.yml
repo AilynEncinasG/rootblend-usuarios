@@ -329,6 +329,26 @@ services:
       start_period: 20s
     restart: unless-stopped  
 
+  estadisticas-donation-events-consumer:
+    build:
+      context: ./services/estadisticas-service
+    container_name: rootblend-estadisticas-donation-events-consumer
+    env_file:
+      - ./services/estadisticas-service/.env
+    environment:
+      RABBITMQ_HOST: rabbitmq
+      RABBITMQ_PORT: "5672"
+      RABBITMQ_USER: rootblend
+      RABBITMQ_PASSWORD: rootblend123
+      RABBITMQ_VHOST: /
+      RABBITMQ_EXCHANGE: rootblend.events
+      RABBITMQ_DONATION_STATS_QUEUE: rootblend.stats.donations
+    command: python manage.py consume_donation_events
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+    restart: unless-stopped
+
   gateway:
     build:
       context: ./gateway
