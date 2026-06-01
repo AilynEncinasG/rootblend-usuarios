@@ -51,6 +51,8 @@ import {
   StreamCard,
 } from "../../public/utils/publicLegacyHelpers";
 import StreamChatPanel from "../components/StreamChatPanel";
+import StreamDonationOverlay from "../components/StreamDonationOverlay";
+import StreamDonationWidget from "../components/StreamDonationWidget";
 import {
   followChannel,
   getChannelInteractionState,
@@ -321,18 +323,19 @@ export default function StreamDetailPage() {
     setInteractionFeedback("");
 
     try {
-        const payload = {
-          id_canal: backendStream.canal.id_canal,
-          nombre_canal: backendStream.canal.nombre_canal,
-          tipo_canal:
-            typeof backendStream.canal.tipo_canal === "string"
-              ? backendStream.canal.tipo_canal
-              : backendStream.canal.tipo_canal?.nombre_tipo || "streamer",
-          estado_transmision: (
-            backendStream.estado === "en_vivo" ? "online" : "offline"
-          ) as "online" | "offline",
-          id_usuario_propietario: backendStream.canal.id_usuario_propietario || null,
-        };
+      const payload = {
+        id_canal: backendStream.canal.id_canal,
+        nombre_canal: backendStream.canal.nombre_canal,
+        tipo_canal:
+          typeof backendStream.canal.tipo_canal === "string"
+            ? backendStream.canal.tipo_canal
+            : backendStream.canal.tipo_canal?.nombre_tipo || "streamer",
+        estado_transmision: (
+          backendStream.estado === "en_vivo" ? "online" : "offline"
+        ) as "online" | "offline",
+        id_usuario_propietario:
+          backendStream.canal.id_usuario_propietario || null,
+      };
 
       const state = following
         ? await unfollowChannel(backendStream.canal.id_canal)
@@ -359,19 +362,21 @@ export default function StreamDetailPage() {
     setInteractionFeedback("");
 
     try {
-        const payload = {
-          id_canal: backendStream.canal.id_canal,
-          nombre_canal: backendStream.canal.nombre_canal,
-          tipo_canal:
-            typeof backendStream.canal.tipo_canal === "string"
-              ? backendStream.canal.tipo_canal
-              : backendStream.canal.tipo_canal?.nombre_tipo || "streamer",
-          estado_transmision: (
-            backendStream.estado === "en_vivo" ? "online" : "offline"
-          ) as "online" | "offline",
-          tipo_plan: "mensual",
-          id_usuario_propietario: backendStream.canal.id_usuario_propietario || null,
-        };
+      const payload = {
+        id_canal: backendStream.canal.id_canal,
+        nombre_canal: backendStream.canal.nombre_canal,
+        tipo_canal:
+          typeof backendStream.canal.tipo_canal === "string"
+            ? backendStream.canal.tipo_canal
+            : backendStream.canal.tipo_canal?.nombre_tipo || "streamer",
+        estado_transmision: (
+          backendStream.estado === "en_vivo" ? "online" : "offline"
+        ) as "online" | "offline",
+        tipo_plan: "mensual",
+        id_usuario_propietario:
+          backendStream.canal.id_usuario_propietario || null,
+      };
+
       const state = subscribed
         ? await unsubscribeChannel(backendStream.canal.id_canal)
         : await subscribeChannel(payload);
@@ -423,21 +428,23 @@ export default function StreamDetailPage() {
   const signalStatus = backendStream.signal_status || "sin_senal";
   const signalLabel = getSignalStatusLabel(signalStatus);
   const hasSignal = signalStatus === "conectado";
+  const donationStreamId = Number(backendStream.id_stream);
+  const donationChannelId = Number(backendStream.canal.id_canal);
 
   return (
     <RootShell
       active="streams"
       rightPanel={
-        isLive ? (
-          <StreamChatPanel
-            streamId={backendStream.id_stream}
-            channelId={backendStream.canal.id_canal}
-            allowInput={loggedIn}
-            isLive={isLive}
-          />
-        ) : undefined
+        <StreamChatPanel
+          streamId={backendStream.id_stream}
+          channelId={backendStream.canal.id_canal}
+          allowInput={loggedIn}
+          isLive={isLive}
+        />
       }
     >
+      <StreamDonationOverlay idStream={donationStreamId} />
+
       {!loggedIn && isLive && (
         <AlertPanel>
           <FiLock />
@@ -559,6 +566,13 @@ export default function StreamDetailPage() {
           </ButtonRow>
 
           {interactionFeedback && <MetaTag>{interactionFeedback}</MetaTag>}
+
+          {donationStreamId > 0 && donationChannelId > 0 ? (
+            <StreamDonationWidget
+              idStream={donationStreamId}
+              idCanal={donationChannelId}
+            />
+          ) : null}
         </StreamInfo>
       </PlayerPanel>
 

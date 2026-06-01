@@ -10,6 +10,13 @@ export type ChatMessage = {
   deleted?: boolean;
   deletedAt?: number;
   deletedBy?: string;
+
+  tipo?: "normal" | "donation";
+  donationType?: "flash" | "screen" | "epic";
+  donationAmount?: number;
+  donationCurrency?: string;
+  donationAlertId?: number;
+  donationOrderId?: number;
 };
 
 export type ChatModerator = {

@@ -1,10 +1,15 @@
 from django.urls import path
 
 from .views import (
+    CreateDonationOrderView,
     CreatorPaymentConfigView,
     HealthView,
+    MarkDonationAlertShownView,
+    PaymentOrderStatusView,
     PaymentsSummaryView,
     PublicChannelDonationConfigView,
+    SimulatePaidOrderView,
+    StreamDonationAlertsView,
     VersionView,
 )
 
@@ -31,5 +36,60 @@ urlpatterns = [
         "channels/<int:id_canal>/donation-config/",
         PublicChannelDonationConfigView.as_view(),
         name="public_channel_donation_config",
+    ),
+
+    path(
+        "streams/<int:id_stream>/donations/order",
+        CreateDonationOrderView.as_view(),
+        name="create_donation_order_no_slash",
+    ),
+    path(
+        "streams/<int:id_stream>/donations/order/",
+        CreateDonationOrderView.as_view(),
+        name="create_donation_order",
+    ),
+
+    path(
+        "orders/<int:id_order>/status",
+        PaymentOrderStatusView.as_view(),
+        name="payment_order_status_no_slash",
+    ),
+    path(
+        "orders/<int:id_order>/status/",
+        PaymentOrderStatusView.as_view(),
+        name="payment_order_status",
+    ),
+
+    path(
+        "orders/<int:id_order>/simulate-paid",
+        SimulatePaidOrderView.as_view(),
+        name="simulate_paid_order_no_slash",
+    ),
+    path(
+        "orders/<int:id_order>/simulate-paid/",
+        SimulatePaidOrderView.as_view(),
+        name="simulate_paid_order",
+    ),
+
+    path(
+        "streams/<int:id_stream>/donation-alerts",
+        StreamDonationAlertsView.as_view(),
+        name="stream_donation_alerts_no_slash",
+    ),
+    path(
+        "streams/<int:id_stream>/donation-alerts/",
+        StreamDonationAlertsView.as_view(),
+        name="stream_donation_alerts",
+    ),
+
+    path(
+        "alerts/<int:id_alert>/mark-shown",
+        MarkDonationAlertShownView.as_view(),
+        name="mark_donation_alert_shown_no_slash",
+    ),
+    path(
+        "alerts/<int:id_alert>/mark-shown/",
+        MarkDonationAlertShownView.as_view(),
+        name="mark_donation_alert_shown",
     ),
 ]

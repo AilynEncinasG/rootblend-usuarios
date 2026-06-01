@@ -1,10 +1,11 @@
 //frontend/src/modules/streams/components/StreamChatPanel.tsx
-import { type FormEvent, useEffect, useMemo, useState } from "react";
+import { type FormEvent, useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import {
   FiAlertTriangle,
   FiEye,
+  FiGift,
   FiLock,
   FiMoreVertical,
   FiSend,
@@ -138,6 +139,20 @@ function getNumericUserId(value: string | number | undefined | null) {
   return parsed;
 }
 
+function getDonationChatLabel(type?: string) {
+  if (type === "flash") return "DONACIÓN FLASH";
+  if (type === "screen") return "DONACIÓN PANTALLA";
+  if (type === "epic") return "DONACIÓN ÉPICA";
+  return "DONACIÓN";
+}
+
+function getDonationMessagePrefix(type?: string) {
+  if (type === "flash") return "⚡";
+  if (type === "screen") return "🖥️";
+  if (type === "epic") return "🌟";
+  return "💙";
+}
+
 async function notifyModerationTarget(payload: {
   targetUserId: string;
   channelId: string | number;
@@ -197,12 +212,99 @@ export default function StreamChatPanel({
   const [lastSentAt, setLastSentAt] = useState(0);
   const [pendingMute, setPendingMute] = useState<PendingMute | null>(null);
   const [pendingBlock, setPendingBlock] = useState<PendingBlock | null>(null);
+  const sentDonationChatIdsRef = useRef<Set<number>>(new Set());
   const loggedIn = isAuthenticated();
   const currentUser = useMemo(() => getCurrentUser(), []);
   const userIsModerator = isUserModerator(moderators, currentUser);
   const canModerate = isOwner || userIsModerator;
   const currentSanction = getUserSanction(sanctions, currentUser);
+  useEffect(() => {
+  function handleDonationPaid(event: Event) {
+    const customEvent = event as CustomEvent<{
+      order?: {
+        id_order?: number;
+        monto?: number;
+        moneda?: string;
+        nombre_viewer?: string | null;
+      };
+      donation?: {
+        id_donation?: number;
+        id_stream?: number;
+        id_canal?: number;
+        nombre_viewer?: string | null;
+        donation_type?: "flash" | "screen" | "epic";
+        monto?: number;
+        moneda?: string;
+        mensaje?: string | null;
+      };
+      alert?: {
+        id_alert?: number;
+        id_stream?: number;
+        id_canal?: number;
+        alert_type?: "flash" | "screen" | "epic";
+        title?: string;
+        message?: string | null;
+      };
+    }>;
 
+    const order = customEvent.detail?.order;
+    const donation = customEvent.detail?.donation;
+    const alert = customEvent.detail?.alert;
+
+    if (!alert?.id_alert) {
+      return;
+    }
+
+    if (Number(alert.id_stream) !== Number(streamId)) {
+      return;
+    }
+
+    if (sentDonationChatIdsRef.current.has(Number(alert.id_alert))) {
+      return;
+    }
+
+    sentDonationChatIdsRef.current.add(Number(alert.id_alert));
+
+    const donationType = alert.alert_type || donation?.donation_type || "flash";
+    const amount = Number(donation?.monto ?? order?.monto ?? 0);
+    const currency = donation?.moneda || order?.moneda || "BOB";
+    const viewerName =
+      donation?.nombre_viewer || order?.nombre_viewer || currentUser.name;
+    const donationMessage =
+      alert.message || donation?.mensaje || "Gracias por apoyar el directo.";
+
+    const chatMessage = {
+      usuarioId: `donation-${alert.id_alert}`,
+      nombre: viewerName,
+      mensaje: `${getDonationMessagePrefix(donationType)} donó ${amount.toFixed(
+        2,
+      )} ${currency}: ${donationMessage}`,
+      timestamp: Date.now(),
+      badge: getDonationChatLabel(donationType),
+      tipo: "donation" as const,
+      donationType,
+      donationAmount: amount,
+      donationCurrency: currency,
+      donationAlertId: Number(alert.id_alert),
+      donationOrderId: order?.id_order,
+    };
+
+    sendChatMessage(streamId, chatMessage)
+      .then(() => {
+        setFeedback("Donación publicada también en el chat.");
+      })
+      .catch((error) => {
+        console.error("DONATION_CHAT_MESSAGE_ERROR", error);
+        setFeedback("La donación se confirmó, pero no se pudo publicar en el chat.");
+      });
+  }
+
+  window.addEventListener("rootblend-donation-paid", handleDonationPaid);
+
+  return () => {
+    window.removeEventListener("rootblend-donation-paid", handleDonationPaid);
+  };
+}, [currentUser.name, streamId]);
   const cleanText = text.trim();
   const messageTooLong = cleanText.length > MAX_CHAT_MESSAGE_LENGTH;
 
@@ -619,8 +721,9 @@ async function confirmMuteUser() {
             message,
           );
 
+const isDonationMessage = message.data.tipo === "donation";
           return (
-            <MessageRow key={message.id}>
+            <MessageRow key={message.id} $donation={isDonationMessage}>
               <Avatar>{message.data.nombre.slice(0, 2).toUpperCase()}</Avatar>
 
               <Bubble>
@@ -630,6 +733,17 @@ async function confirmMuteUser() {
                   {(message.data.badge || messageUserIsModerator) && (
                     <Badge>{message.data.badge || "MOD"}</Badge>
                   )}
+                
+                {isDonationMessage && (
+                  <DonationBadge>
+                    <FiGift />
+                    {message.data.donationAmount
+                      ? `${message.data.donationAmount.toFixed(2)} ${
+                          message.data.donationCurrency || "BOB"
+                        }`
+                      : "Apoyo"}
+                  </DonationBadge>
+                )}
 
                   {message.data.deleted && (
                     <DeletedBadge>Eliminado</DeletedBadge>
@@ -638,7 +752,14 @@ async function confirmMuteUser() {
                   <time>{formatMessageTime(message.data.timestamp)}</time>
                 </Name>
 
-                <p className={message.data.deleted ? "deleted-message" : ""}>
+                <p
+                  className={[
+                    message.data.deleted ? "deleted-message" : "",
+                    isDonationMessage ? "donation-message" : "",
+                  ]
+                    .filter(Boolean)
+                    .join(" ")}
+                >
                   {message.data.mensaje}
                 </p>
               </Bubble>
@@ -968,12 +1089,26 @@ const EmptyState = styled.div`
   font-size: 13px;
 `;
 
-const MessageRow = styled.div`
+const MessageRow = styled.div<{ $donation?: boolean }>`
   position: relative;
   display: grid;
   grid-template-columns: 32px 1fr 28px;
   gap: 8px;
-  padding: 8px 0;
+  padding: ${({ $donation }) => ($donation ? "10px 8px" : "8px 0")};
+  margin: ${({ $donation }) => ($donation ? "6px 0" : "0")};
+  border-radius: ${({ $donation }) => ($donation ? "14px" : "0")};
+  background: ${({ $donation }) =>
+    $donation
+      ? "linear-gradient(135deg, color-mix(in srgb, var(--rb-accent) 18%, transparent), color-mix(in srgb, var(--rb-accent-2) 14%, transparent))"
+      : "transparent"};
+  border: ${({ $donation }) =>
+    $donation
+      ? "1px solid color-mix(in srgb, var(--rb-accent) 34%, transparent)"
+      : "0"};
+  box-shadow: ${({ $donation }) =>
+    $donation
+      ? "0 18px 40px color-mix(in srgb, var(--rb-accent) 12%, transparent)"
+      : "none"};
 `;
 
 const Avatar = styled.div`
@@ -997,6 +1132,11 @@ const Bubble = styled.div`
     color: var(--rb-text);
     line-height: 1.35;
     overflow-wrap: anywhere;
+  }
+
+  .donation-message {
+    color: var(--rb-text-strong);
+    font-weight: 850;
   }
 
   .deleted-message {
@@ -1028,6 +1168,19 @@ const Badge = styled.span`
   background: var(--rb-success);
   font-size: 10px;
   font-weight: 900;
+`;
+
+const DonationBadge = styled.span`
+  padding: 2px 7px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--rb-text-inverse);
+  background: linear-gradient(135deg, var(--rb-accent), var(--rb-accent-2));
+  font-size: 10px;
+  font-weight: 950;
+  box-shadow: 0 8px 18px color-mix(in srgb, var(--rb-accent) 18%, transparent);
 `;
 
 const DeletedBadge = styled.span`
