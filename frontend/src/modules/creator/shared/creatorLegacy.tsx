@@ -3,6 +3,7 @@ import { type FormEvent, type ReactNode, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import {
   FiActivity,
+  FiDollarSign,
   FiAlertTriangle,
   FiCheckCircle,
   FiEdit3,
@@ -194,6 +195,13 @@ export function CreatorNav() {
         label="Estadísticas"
         icon={<FiActivity />}
         activeMatch={["/creator/streamer/stats"]}
+      />
+
+      <CreatorSideLink
+        to="/creator/streamer/payments"
+        label="Pagos"
+        icon={<FiDollarSign />}
+        activeMatch={["/creator/streamer/payments", "/creator/payments"]}
       />
 
       <CreatorSideLink

@@ -296,6 +296,39 @@ services:
         condition: service_started
     restart: unless-stopped
 
+  pagos-service:
+    build:
+      context: ./services/pagos-service
+    container_name: rootblend-pagos-service
+    env_file:
+      - ./services/pagos-service/.env
+    environment:
+      DEBUG: "True"
+      SECRET_KEY: "dev-rootblend-pagos-secret-key"
+      ALLOWED_HOSTS: "*"
+      PAYMENT_PROVIDER: "mock"
+      PAYMENT_CURRENCY: "BOB"
+      PAYMENT_MIN_AMOUNT: "1"
+      PAYMENT_MAX_AMOUNT: "150"
+      FRONTEND_URL: "http://localhost:5173"
+      PUBLIC_API_BASE_URL: "http://localhost:8080/api"
+      RABBITMQ_ENABLED: "true"
+      RABBITMQ_HOST: "rabbitmq"
+      RABBITMQ_PORT: "5672"
+      RABBITMQ_USER: "rootblend"
+      RABBITMQ_PASSWORD: "rootblend123"
+      RABBITMQ_VHOST: "/"
+      RABBITMQ_EXCHANGE: "rootblend.events"
+    ports:
+      - "8005:8005"
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://127.0.0.1:8005/api/health/ || exit 1"]
+      interval: 20s
+      timeout: 10s
+      retries: 5
+      start_period: 20s
+    restart: unless-stopped  
+
   gateway:
     build:
       context: ./gateway
@@ -308,6 +341,7 @@ services:
       - estadisticas-service
       - podcasts-service
       - interacciones-service
+      - pagos-service
     healthcheck:
       test: ["CMD-SHELL", "wget -qO- http://127.0.0.1/api/usuarios-health/ >/dev/null 2>&1 || exit 1"]
       interval: 20s

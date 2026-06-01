@@ -99,3 +99,15 @@ services:
         condition: service_healthy
       rabbitmq:
         condition: service_healthy
+
+  pagos-service:
+    environment:
+      DB_ENGINE: django.db.backends.mysql
+      DB_NAME: rootblend_pagos
+      DB_USER: root
+      DB_PASSWORD: root
+      DB_HOST: mysql-local
+      DB_PORT: "3306"
+    depends_on:
+      mysql-local:
+        condition: service_healthy

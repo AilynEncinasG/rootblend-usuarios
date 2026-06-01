@@ -55,7 +55,7 @@ import PodcastStatsPage from "../modules/creator/podcaster/pages/PodcastStatsPag
 import PodcastHistoryPage from "../modules/creator/podcaster/pages/PodcastHistoryPage";
 import EditEpisodePage from "../modules/creator/podcaster/pages/EditEpisodePage";
 import DeleteEpisodePage from "../modules/creator/podcaster/pages/DeleteEpisodePage";
-
+import CreatorPaymentsPage from "../modules/creator/streamer/pages/CreatorPaymentsPage";
 import InteractionsPage from "../modules/interactions/pages/InteractionsPage";
 
 import LoadingDemoPage from "../modules/system/pages/LoadingDemoPage";
@@ -570,6 +570,22 @@ export function AppRouter() {
         element={
           <StreamerRoute>
             <StreamStatsPage />
+          </StreamerRoute>
+        }
+      />
+      <Route
+        path="/creator/streamer/payments"
+        element={
+          <StreamerRoute>
+            <CreatorPaymentsPage />
+          </StreamerRoute>
+        }
+      />
+      <Route
+        path="/creator/payments"
+        element={
+          <StreamerRoute>
+            <CreatorPaymentsPage />
           </StreamerRoute>
         }
       />
