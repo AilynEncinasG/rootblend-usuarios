@@ -29,6 +29,7 @@ def serialize_profile(perfil):
         "id_perfil": perfil.id_perfil if perfil else None,
         "nombre_visible": perfil.nombre_visible if perfil else None,
         "foto_perfil": perfil.foto_perfil if perfil else None,
+        "banner_perfil": perfil.banner_perfil if perfil else None,
         "biografia": perfil.biografia if perfil else None,
         "fecha_nacimiento": (
             perfil.fecha_nacimiento.isoformat()
@@ -48,19 +49,78 @@ def build_public_media_url(saved_path):
     return media_path
 
 
-def delete_old_local_profile_image(foto_perfil_url):
-    if not foto_perfil_url:
+def delete_old_local_profile_image(image_url):
+    if not image_url:
         return
 
     marker = "/media/"
 
-    if marker not in foto_perfil_url:
+    if marker not in image_url:
         return
 
-    old_path = foto_perfil_url.split(marker, 1)[1]
+    old_path = image_url.split(marker, 1)[1]
 
     if old_path and default_storage.exists(old_path):
         default_storage.delete(old_path)
+
+
+def validate_uploaded_image(archivo, field_name, max_size_mb=5):
+    if not archivo:
+        return (
+            False,
+            error_response(
+                message="No se recibio ninguna imagen.",
+                errors={field_name: ["Selecciona una imagen para subir."]},
+                status=400,
+            ),
+            "",
+        )
+
+    max_size = max_size_mb * 1024 * 1024
+
+    if archivo.size > max_size:
+        return (
+            False,
+            error_response(
+                message="La imagen es demasiado grande.",
+                errors={field_name: [f"La imagen no debe superar los {max_size_mb} MB."]},
+                status=400,
+            ),
+            "",
+        )
+
+    extension = os.path.splitext(archivo.name)[1].lower()
+    allowed_extensions = {".jpg", ".jpeg", ".png", ".webp", ".gif"}
+
+    if extension not in allowed_extensions:
+        return (
+            False,
+            error_response(
+                message="Formato de imagen no permitido.",
+                errors={
+                    field_name: [
+                        "Solo se permiten imagenes JPG, JPEG, PNG, WEBP o GIF."
+                    ]
+                },
+                status=400,
+            ),
+            "",
+        )
+
+    content_type = getattr(archivo, "content_type", "") or ""
+
+    if content_type and not content_type.startswith("image/"):
+        return (
+            False,
+            error_response(
+                message="El archivo seleccionado no parece ser una imagen.",
+                errors={field_name: ["Selecciona un archivo de imagen valido."]},
+                status=400,
+            ),
+            "",
+        )
+
+    return True, None, extension
 
 
 @method_decorator(csrf_exempt, name="dispatch")
@@ -133,6 +193,9 @@ class UpdateProfileView(View):
         if "foto_perfil" in serializer.data:
             perfil.foto_perfil = serializer.data["foto_perfil"] or None
 
+        if "banner_perfil" in serializer.data:
+            perfil.banner_perfil = serializer.data["banner_perfil"] or None
+
         if "biografia" in serializer.data:
             perfil.biografia = serializer.data["biografia"] or None
 
@@ -179,45 +242,14 @@ class UploadProfilePhotoView(View):
             )
 
         archivo = request.FILES.get("foto_perfil") or request.FILES.get("file")
+        is_valid, validation_response, extension = validate_uploaded_image(
+            archivo,
+            "foto_perfil",
+            max_size_mb=3,
+        )
 
-        if not archivo:
-            return error_response(
-                message="No se recibio ninguna imagen.",
-                errors={"foto_perfil": ["Selecciona una imagen para subir."]},
-                status=400,
-            )
-
-        max_size = 3 * 1024 * 1024
-
-        if archivo.size > max_size:
-            return error_response(
-                message="La imagen es demasiado grande.",
-                errors={"foto_perfil": ["La imagen no debe superar los 3 MB."]},
-                status=400,
-            )
-
-        extension = os.path.splitext(archivo.name)[1].lower()
-        allowed_extensions = {".jpg", ".jpeg", ".png", ".webp", ".gif"}
-
-        if extension not in allowed_extensions:
-            return error_response(
-                message="Formato de imagen no permitido.",
-                errors={
-                    "foto_perfil": [
-                        "Solo se permiten imagenes JPG, JPEG, PNG, WEBP o GIF."
-                    ]
-                },
-                status=400,
-            )
-
-        content_type = getattr(archivo, "content_type", "") or ""
-
-        if content_type and not content_type.startswith("image/"):
-            return error_response(
-                message="El archivo seleccionado no parece ser una imagen.",
-                errors={"foto_perfil": ["Selecciona un archivo de imagen valido."]},
-                status=400,
-            )
+        if not is_valid:
+            return validation_response
 
         perfil = get_or_create_profile(usuario)
 
@@ -236,6 +268,54 @@ class UploadProfilePhotoView(View):
             message="Foto de perfil subida correctamente.",
             data={
                 "foto_perfil": public_url,
+                "perfil": serialize_profile(perfil),
+            },
+            status=200,
+        )
+
+
+@method_decorator(csrf_exempt, name="dispatch")
+class UploadProfileBannerView(View):
+    def post(self, request):
+        usuario = get_authenticated_user(request)
+
+        if not usuario:
+            return error_response(
+                message="Usuario no autenticado.",
+                errors={"auth": ["Debes iniciar sesion para subir un banner."]},
+                status=401,
+            )
+
+        archivo = request.FILES.get("banner_perfil") or request.FILES.get("file")
+        is_valid, validation_response, extension = validate_uploaded_image(
+            archivo,
+            "banner_perfil",
+            max_size_mb=5,
+        )
+
+        if not is_valid:
+            return validation_response
+
+        perfil = get_or_create_profile(usuario)
+
+        delete_old_local_profile_image(perfil.banner_perfil)
+
+        safe_extension = extension if extension else ".png"
+        filename = (
+            f"perfiles/banners/usuario_{usuario.id_usuario}_{uuid4().hex}"
+            f"{safe_extension}"
+        )
+
+        saved_path = default_storage.save(filename, archivo)
+        public_url = build_public_media_url(saved_path)
+
+        perfil.banner_perfil = public_url
+        perfil.save()
+
+        return success_response(
+            message="Banner de perfil subido correctamente.",
+            data={
+                "banner_perfil": public_url,
                 "perfil": serialize_profile(perfil),
             },
             status=200,

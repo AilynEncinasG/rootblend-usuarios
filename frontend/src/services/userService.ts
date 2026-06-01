@@ -168,6 +168,7 @@ export type MeResponse = {
     id_perfil: number | null;
     nombre_visible: string | null;
     foto_perfil: string | null;
+    banner_perfil: string | null;
     biografia: string | null;
     fecha_nacimiento: string | null;
   };
@@ -188,6 +189,11 @@ export type UploadProfilePhotoResponse = {
   perfil: MeResponse["perfil"];
 };
 
+export type UploadProfileBannerResponse = {
+  banner_perfil: string;
+  perfil: MeResponse["perfil"];
+};
+
 export function getMe() {
   return request<MeResponse>("/users/me/", {
     auth: true,
@@ -197,6 +203,7 @@ export function getMe() {
 export function updateProfile(data: {
   nombre_visible?: string;
   foto_perfil?: string;
+  banner_perfil?: string;
   biografia?: string;
   fecha_nacimiento?: string;
 }) {
@@ -215,6 +222,16 @@ export function uploadProfilePhoto(file: File) {
 
   return uploadRequest<UploadProfilePhotoResponse>(
     "/users/me/profile/photo/",
+    formData
+  );
+}
+
+export function uploadProfileBanner(file: File) {
+  const formData = new FormData();
+  formData.append("banner_perfil", file);
+
+  return uploadRequest<UploadProfileBannerResponse>(
+    "/users/me/profile/banner/",
     formData
   );
 }

@@ -5,6 +5,7 @@ class ProfileUpdateSerializer:
     allowed_fields = [
         "nombre_visible",
         "foto_perfil",
+        "banner_perfil",
         "biografia",
         "fecha_nacimiento",
     ]
@@ -36,5 +37,23 @@ class ProfileUpdateSerializer:
 
         if "nombre_visible" in self.data and not self.data["nombre_visible"]:
             self.errors["nombre_visible"] = ["El nombre_visible no puede estar vacio."]
+
+        if "foto_perfil" in self.data and self.data["foto_perfil"]:
+            if not isinstance(self.data["foto_perfil"], str):
+                self.errors["foto_perfil"] = ["La foto_perfil debe ser texto."]
+            elif len(self.data["foto_perfil"]) > 1000:
+                self.errors["foto_perfil"] = ["La URL de foto es demasiado larga."]
+
+        if "banner_perfil" in self.data and self.data["banner_perfil"]:
+            if not isinstance(self.data["banner_perfil"], str):
+                self.errors["banner_perfil"] = ["El banner_perfil debe ser texto."]
+            elif len(self.data["banner_perfil"]) > 1000:
+                self.errors["banner_perfil"] = ["La URL del banner es demasiado larga."]
+
+        if "biografia" in self.data and self.data["biografia"]:
+            if not isinstance(self.data["biografia"], str):
+                self.errors["biografia"] = ["La biografia debe ser texto."]
+            elif len(self.data["biografia"]) > 250:
+                self.errors["biografia"] = ["La biografia no puede superar 250 caracteres."]
 
         return len(self.errors) == 0

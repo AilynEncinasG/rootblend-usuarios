@@ -1,4 +1,3 @@
-//frontend/src/modules/account/pages/EditProfilePage.tsx
 import {
   type ChangeEvent,
   type FormEvent,
@@ -23,6 +22,7 @@ import { RootShell } from "../../../shared/layout";
 import {
   getMe,
   updateProfile,
+  uploadProfileBanner,
   uploadProfilePhoto,
 } from "../../../services/userService";
 import { formatApiError } from "../../../shared/utils/rootblendHelpers";
@@ -73,6 +73,7 @@ function updateStoredProfileUser(data: {
   estado?: string;
   nombre_visible?: string;
   foto_perfil?: string | null;
+  banner_perfil?: string | null;
 }) {
   const mainKeys = ["auth_user", "rootblend_user"];
   const optionalKeys = ["user"];
@@ -125,18 +126,23 @@ export default function EditProfilePage() {
   const [correo, setCorreo] = useState("");
   const [nombreVisible, setNombreVisible] = useState("");
   const [fotoPerfil, setFotoPerfil] = useState("");
+  const [bannerPerfil, setBannerPerfil] = useState("");
   const [biografia, setBiografia] = useState("");
   const [fechaNacimiento, setFechaNacimiento] = useState("");
 
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const [previewLocal, setPreviewLocal] = useState("");
+  const [selectedPhotoFile, setSelectedPhotoFile] = useState<File | null>(null);
+  const [selectedBannerFile, setSelectedBannerFile] = useState<File | null>(null);
+  const [photoPreviewLocal, setPhotoPreviewLocal] = useState("");
+  const [bannerPreviewLocal, setBannerPreviewLocal] = useState("");
 
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
 
-  const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const photoInputRef = useRef<HTMLInputElement | null>(null);
+  const bannerInputRef = useRef<HTMLInputElement | null>(null);
+
   const BIO_MAX_LENGTH = 250;
 
   function getMaxBirthDateForAge(minAge: number) {
@@ -152,7 +158,7 @@ export default function EditProfilePage() {
 
   const maxBirthDate = getMaxBirthDateForAge(15);
 
-  function handleBirthDateChange(event: React.ChangeEvent<HTMLInputElement>) {
+  function handleBirthDateChange(event: ChangeEvent<HTMLInputElement>) {
     const nextDate = event.target.value;
 
     if (!nextDate) {
@@ -168,7 +174,7 @@ export default function EditProfilePage() {
     setFechaNacimiento(nextDate);
   }
 
-  function handleBiographyChange(event: React.ChangeEvent<HTMLTextAreaElement>) {
+  function handleBiographyChange(event: ChangeEvent<HTMLTextAreaElement>) {
     const nextValue = event.target.value;
 
     if (nextValue.length <= BIO_MAX_LENGTH) {
@@ -199,12 +205,14 @@ export default function EditProfilePage() {
           result.data.usuario.correo.split("@")[0] ||
           "";
         const nextFoto = result.data.perfil.foto_perfil || "";
+        const nextBanner = result.data.perfil.banner_perfil || "";
         const nextBiografia = result.data.perfil.biografia || "";
         const nextFechaNacimiento = result.data.perfil.fecha_nacimiento || "";
 
         setCorreo(nextCorreo);
         setNombreVisible(nextNombre);
         setFotoPerfil(nextFoto);
+        setBannerPerfil(nextBanner);
         setBiografia(nextBiografia);
         setFechaNacimiento(nextFechaNacimiento);
 
@@ -214,6 +222,7 @@ export default function EditProfilePage() {
           estado: result.data.usuario.estado,
           nombre_visible: nextNombre,
           foto_perfil: nextFoto || null,
+          banner_perfil: nextBanner || null,
         });
       } catch (error) {
         console.error("PROFILE_EDIT_LOAD_ERROR", error);
@@ -236,22 +245,36 @@ export default function EditProfilePage() {
   }, []);
 
   useEffect(() => {
-    if (!selectedFile) {
-      setPreviewLocal("");
+    if (!selectedPhotoFile) {
+      setPhotoPreviewLocal("");
       return;
     }
 
-    const objectUrl = URL.createObjectURL(selectedFile);
-    setPreviewLocal(objectUrl);
+    const objectUrl = URL.createObjectURL(selectedPhotoFile);
+    setPhotoPreviewLocal(objectUrl);
 
     return () => {
       URL.revokeObjectURL(objectUrl);
     };
-  }, [selectedFile]);
+  }, [selectedPhotoFile]);
+
+  useEffect(() => {
+    if (!selectedBannerFile) {
+      setBannerPreviewLocal("");
+      return;
+    }
+
+    const objectUrl = URL.createObjectURL(selectedBannerFile);
+    setBannerPreviewLocal(objectUrl);
+
+    return () => {
+      URL.revokeObjectURL(objectUrl);
+    };
+  }, [selectedBannerFile]);
 
   const avatarPreview = useMemo(() => {
-    if (previewLocal) {
-      return previewLocal;
+    if (photoPreviewLocal) {
+      return photoPreviewLocal;
     }
 
     if (isImageUrl(fotoPerfil)) {
@@ -259,15 +282,37 @@ export default function EditProfilePage() {
     }
 
     return "";
-  }, [fotoPerfil, previewLocal]);
+  }, [fotoPerfil, photoPreviewLocal]);
 
-  function handleFileChange(event: ChangeEvent<HTMLInputElement>) {
+  const bannerPreview = useMemo(() => {
+    if (bannerPreviewLocal) {
+      return bannerPreviewLocal;
+    }
+
+    if (isImageUrl(bannerPerfil)) {
+      return bannerPerfil;
+    }
+
+    return "";
+  }, [bannerPerfil, bannerPreviewLocal]);
+
+  function handlePhotoFileChange(event: ChangeEvent<HTMLInputElement>) {
     const file = event.target.files?.[0] ?? null;
 
-    setSelectedFile(file);
+    setSelectedPhotoFile(file);
 
     if (file) {
       setFotoPerfil("");
+    }
+  }
+
+  function handleBannerFileChange(event: ChangeEvent<HTMLInputElement>) {
+    const file = event.target.files?.[0] ?? null;
+
+    setSelectedBannerFile(file);
+
+    if (file) {
+      setBannerPerfil("");
     }
   }
 
@@ -275,11 +320,23 @@ export default function EditProfilePage() {
     const nextUrl = event.target.value;
 
     setFotoPerfil(nextUrl);
-    setSelectedFile(null);
-    setPreviewLocal("");
+    setSelectedPhotoFile(null);
+    setPhotoPreviewLocal("");
 
-    if (fileInputRef.current) {
-      fileInputRef.current.value = "";
+    if (photoInputRef.current) {
+      photoInputRef.current.value = "";
+    }
+  }
+
+  function handleBannerUrlChange(event: ChangeEvent<HTMLInputElement>) {
+    const nextUrl = event.target.value;
+
+    setBannerPerfil(nextUrl);
+    setSelectedBannerFile(null);
+    setBannerPreviewLocal("");
+
+    if (bannerInputRef.current) {
+      bannerInputRef.current.value = "";
     }
   }
 
@@ -302,9 +359,10 @@ export default function EditProfilePage() {
 
     try {
       let finalPhotoUrl = fotoPerfil.trim();
+      let finalBannerUrl = bannerPerfil.trim();
 
-      if (selectedFile) {
-        const uploadResult = await uploadProfilePhoto(selectedFile);
+      if (selectedPhotoFile) {
+        const uploadResult = await uploadProfilePhoto(selectedPhotoFile);
 
         if (!uploadResult.success || !uploadResult.data) {
           setError(
@@ -318,17 +376,37 @@ export default function EditProfilePage() {
 
         finalPhotoUrl = uploadResult.data.foto_perfil;
         setFotoPerfil(finalPhotoUrl);
-        setSelectedFile(null);
+        setSelectedPhotoFile(null);
+      }
+
+      if (selectedBannerFile) {
+        const uploadResult = await uploadProfileBanner(selectedBannerFile);
+
+        if (!uploadResult.success || !uploadResult.data) {
+          setError(
+            formatApiError(
+              uploadResult.errors,
+              uploadResult.message || "No se pudo subir el banner de perfil."
+            )
+          );
+          return;
+        }
+
+        finalBannerUrl = uploadResult.data.banner_perfil;
+        setBannerPerfil(finalBannerUrl);
+        setSelectedBannerFile(null);
       }
 
       const payload: {
         nombre_visible?: string;
         foto_perfil?: string;
+        banner_perfil?: string;
         biografia?: string;
         fecha_nacimiento?: string;
       } = {
         nombre_visible: nombreVisible.trim(),
         foto_perfil: finalPhotoUrl,
+        banner_perfil: finalBannerUrl,
         biografia: biografia.trim(),
         fecha_nacimiento: fechaNacimiento || "",
       };
@@ -347,16 +425,20 @@ export default function EditProfilePage() {
 
       const backendPhoto =
         result.data?.perfil?.foto_perfil || finalPhotoUrl || "";
+      const backendBanner =
+        result.data?.perfil?.banner_perfil || finalBannerUrl || "";
       const backendName =
         result.data?.perfil?.nombre_visible || nombreVisible.trim();
 
       setNombreVisible(backendName);
       setFotoPerfil(backendPhoto);
+      setBannerPerfil(backendBanner);
 
       updateStoredProfileUser({
         correo,
         nombre_visible: backendName,
         foto_perfil: backendPhoto || null,
+        banner_perfil: backendBanner || null,
       });
 
       setSuccessMessage("Perfil actualizado correctamente.");
@@ -378,8 +460,8 @@ export default function EditProfilePage() {
         <PageHeading>
           <h1>Editar perfil</h1>
           <p>
-            Actualiza tu información pública. Puedes subir una imagen desde tu
-            computadora o usar una URL externa.
+            Actualiza tu información pública. Puedes subir una foto y un banner
+            desde tu computadora o usar URL externa.
           </p>
         </PageHeading>
 
@@ -410,17 +492,57 @@ export default function EditProfilePage() {
         ) : null}
 
         <ProfileHeader>
-          <Avatar $large>
-            {avatarPreview ? (
-              <img src={avatarPreview} alt={nombreVisible || "Usuario"} />
-            ) : (
-              getInitials(nombreVisible || correo || "Usuario")
-            )}
-          </Avatar>
+          <div
+            style={{
+              width: "100%",
+              minHeight: 210,
+              position: "relative",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              borderRadius: 18,
+              overflow: "hidden",
+              border: "1px solid var(--rb-border-strong)",
+              background: bannerPreview
+                ? `linear-gradient(180deg, rgba(2, 6, 18, 0.15), rgba(2, 6, 18, 0.78)), url(${bannerPreview})`
+                : "radial-gradient(circle at top, color-mix(in srgb, var(--rb-accent-2) 18%, transparent), transparent 42%), var(--rb-panel)",
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+              boxShadow:
+                "0 22px 60px color-mix(in srgb, var(--rb-shadow) 70%, transparent)",
+            }}
+          >
+            <div
+              style={{
+                position: "absolute",
+                inset: 0,
+                backdropFilter: bannerPreview ? "blur(1px)" : "none",
+              }}
+            />
 
-          <GhostButton>
-            Vista previa
-          </GhostButton>
+            <div
+              style={{
+                position: "relative",
+                zIndex: 2,
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                gap: 12,
+              }}
+            >
+              <Avatar $large>
+                {avatarPreview ? (
+                  <img src={avatarPreview} alt={nombreVisible || "Usuario"} />
+                ) : (
+                  getInitials(nombreVisible || correo || "Usuario")
+                )}
+              </Avatar>
+
+              <GhostButton type="button">
+                Vista previa
+              </GhostButton>
+            </div>
+          </div>
         </ProfileHeader>
 
         <Label>Nombre visible</Label>
@@ -440,18 +562,18 @@ export default function EditProfilePage() {
         <Field>
           <FiUpload />
           <input
-            ref={fileInputRef}
+            ref={photoInputRef}
             type="file"
             accept="image/png,image/jpeg,image/jpg,image/webp,image/gif"
-            onChange={handleFileChange}
+            onChange={handlePhotoFileChange}
             disabled={loading || saving}
           />
         </Field>
 
-        {selectedFile ? (
+        {selectedPhotoFile ? (
           <SuccessBox>
             <FiImage />
-            Imagen seleccionada: {selectedFile.name}
+            Imagen seleccionada: {selectedPhotoFile.name}
           </SuccessBox>
         ) : null}
 
@@ -462,6 +584,36 @@ export default function EditProfilePage() {
             value={fotoPerfil}
             onChange={handlePhotoUrlChange}
             placeholder="https://ejemplo.com/mi-foto.png"
+            disabled={loading || saving}
+          />
+        </Field>
+
+        <Label>Subir banner desde tu computadora</Label>
+        <Field>
+          <FiUpload />
+          <input
+            ref={bannerInputRef}
+            type="file"
+            accept="image/png,image/jpeg,image/jpg,image/webp,image/gif"
+            onChange={handleBannerFileChange}
+            disabled={loading || saving}
+          />
+        </Field>
+
+        {selectedBannerFile ? (
+          <SuccessBox>
+            <FiImage />
+            Banner seleccionado: {selectedBannerFile.name}
+          </SuccessBox>
+        ) : null}
+
+        <Label>O usar URL de banner / portada</Label>
+        <Field>
+          <FiFile />
+          <input
+            value={bannerPerfil}
+            onChange={handleBannerUrlChange}
+            placeholder="https://ejemplo.com/mi-banner.png"
             disabled={loading || saving}
           />
         </Field>

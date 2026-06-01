@@ -86,6 +86,7 @@ export default function ProfilePage() {
     nombre_visible?: string;
     estado?: string;
     foto_perfil?: string | null;
+    banner_perfil?: string | null;
   } | null;
 
   useEffect(() => {
@@ -147,6 +148,15 @@ export default function ProfilePage() {
     storedUser?.foto_perfil ||
     null;
 
+  const bannerPerfil =
+    profileData?.perfil.banner_perfil ||
+    storedUser?.banner_perfil ||
+    null;
+
+  const heroImage = isImageUrl(bannerPerfil)
+    ? String(bannerPerfil)
+    : brandAssets.channelView;
+
   const bio =
     profileData?.perfil.biografia ||
     "Aún no tienes una biografía configurada. Edita tu perfil para personalizar tu presentación pública.";
@@ -177,7 +187,7 @@ export default function ProfilePage() {
         </AlertPanel>
       )}
 
-      <ChannelHero $image={brandAssets.channelView}>
+      <ChannelHero $image={heroImage}>
         <Avatar $large>
           {isImageUrl(fotoPerfil) ? (
             <img
@@ -227,7 +237,6 @@ export default function ProfilePage() {
       </MetricGrid>
 
       <InfoGrid>
-
         <Panel>
           <PanelHeader>
             <strong>
@@ -241,7 +250,10 @@ export default function ProfilePage() {
             <strong>{displayName}</strong>
 
             <span>Foto de perfil</span>
-            <strong>{fotoPerfil || "Sin foto configurada"}</strong>
+            <strong>{fotoPerfil ? "Configurada" : "Sin foto configurada"}</strong>
+
+            <span>Banner / portada</span>
+            <strong>{bannerPerfil ? "Configurado" : "Sin banner configurado"}</strong>
 
             <span>Fecha de nacimiento</span>
             <strong>
@@ -290,6 +302,9 @@ export default function ProfilePage() {
 
             <span>Foto</span>
             <strong>{fotoPerfil ? "Configurada" : "Pendiente"}</strong>
+
+            <span>Banner</span>
+            <strong>{bannerPerfil ? "Configurado" : "Pendiente"}</strong>
 
             <span>Fecha nacimiento</span>
             <strong>{fechaNacimiento ? "Configurada" : "Pendiente"}</strong>
