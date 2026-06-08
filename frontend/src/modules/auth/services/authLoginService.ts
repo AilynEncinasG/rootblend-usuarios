@@ -14,6 +14,13 @@ export type LoginUser = {
 };
 
 export type LoginResponse = {
+  data?: {
+    access_token?: string;
+    refresh_token?: string;
+    token_type?: string;
+    expires_in?: number;
+    usuario?: LoginUser;
+  };
   access_token?: string;
   refresh_token?: string;
   access?: string;
@@ -24,10 +31,16 @@ export type LoginResponse = {
   detail?: string;
   message?: string;
   error?: string;
+  errors?: Record<string, string[] | string>;
 };
 
 const API_BASE_URL =
-  import.meta.env.VITE_API_BASE_URL || "http://localhost:8080";
+  import.meta.env.VITE_API_BASE_URL ||
+  (typeof window !== "undefined"
+    ? window.location.origin === "http://localhost:5173"
+      ? "http://localhost:8080"
+      : window.location.origin
+    : "http://localhost:8080");
 
 function getErrorMessage(body: unknown, fallback: string) {
   if (!body || typeof body !== "object") {
@@ -39,6 +52,17 @@ function getErrorMessage(body: unknown, fallback: string) {
   if (typeof data.detail === "string") return data.detail;
   if (typeof data.message === "string") return data.message;
   if (typeof data.error === "string") return data.error;
+
+  const errors = data.errors;
+  if (errors && typeof errors === "object") {
+    const firstError = Object.values(errors as Record<string, unknown>)[0];
+    if (Array.isArray(firstError) && firstError.length > 0) {
+      return String(firstError[0]);
+    }
+    if (typeof firstError === "string") {
+      return firstError;
+    }
+  }
 
   const firstValue = Object.values(data)[0];
 
@@ -63,11 +87,20 @@ export async function loginUser(payload: LoginPayload): Promise<LoginResponse> {
     body: JSON.stringify(payload),
   });
 
-  const body = await response.json().catch(() => null);
+  const text = await response.text();
+  let body: unknown = null;
+
+  if (text) {
+    try {
+      body = JSON.parse(text);
+    } catch {
+      body = { message: text };
+    }
+  }
 
   if (!response.ok) {
     throw new Error(
-      getErrorMessage(body, "No se pudo iniciar sesión. Revisa tus credenciales.")
+      getErrorMessage(body, "No se pudo iniciar sesión. Revisa tus credenciales."),
     );
   }
 
@@ -75,12 +108,15 @@ export async function loginUser(payload: LoginPayload): Promise<LoginResponse> {
 }
 
 export function saveLoginSession(response: LoginResponse, fallbackEmail: string) {
+  const payload = response.data || response;
+
   const accessToken =
-    response.access_token || response.access || response.token || "";
+    payload.access_token || response.access || response.token || "";
 
-  const refreshToken = response.refresh_token || response.refresh || "";
+  const refreshToken = payload.refresh_token || response.refresh || "";
 
-  const user = response.user ||
+  const user = payload.usuario ||
+    response.user ||
     response.usuario || {
       correo: fallbackEmail,
       nombre_visible: fallbackEmail,

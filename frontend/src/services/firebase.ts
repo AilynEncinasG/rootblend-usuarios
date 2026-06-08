@@ -29,20 +29,34 @@ export const database = getDatabase(app);
 export const firebaseAuth = getAuth(app);
 
 let authPromise: Promise<void> | null = null;
-let anonymousAuthDisabled = false;
+let anonymousAuthFailed = false;
+
+function shouldUseFirebaseAuth() {
+  const value = String(import.meta.env.VITE_FIREBASE_USE_AUTH || "false")
+    .trim()
+    .toLowerCase();
+
+  return value === "true" || value === "1" || value === "yes";
+}
 
 /**
- * Intenta autenticar con Firebase Anonymous Auth.
+ * El chat de ROOT BLEND usa Realtime Database.
  *
- * IMPORTANTE:
- * Para la demo del proyecto, las reglas de Realtime Database permiten escritura pública.
- * Por eso, si Firebase Auth falla por API key inválida, Anonymous Auth desactivado
- * o configuración incompleta, NO bloqueamos el chat.
+ * Para la demo/local, las reglas de Firebase permiten escritura pública en
+ * stream_chats y channel_moderators. Por eso NO obligamos a iniciar sesión
+ * anónima, porque una API KEY incorrecta o Anonymous Auth desactivado rompe
+ * el envío de mensajes.
  *
- * Esto evita que el chat muera cuando Realtime Database sí está funcionando.
+ * Si luego quieres activar seguridad con Anonymous Auth, agrega en frontend/.env:
+ * VITE_FIREBASE_USE_AUTH=true
+ * y usa una API KEY válida del mismo proyecto Firebase.
  */
 export async function ensureFirebaseAuth() {
-  if (anonymousAuthDisabled) {
+  if (!shouldUseFirebaseAuth()) {
+    return;
+  }
+
+  if (anonymousAuthFailed) {
     return;
   }
 
@@ -55,10 +69,10 @@ export async function ensureFirebaseAuth() {
       .then(() => undefined)
       .catch((error) => {
         authPromise = null;
-        anonymousAuthDisabled = true;
+        anonymousAuthFailed = true;
 
         console.warn(
-          "Firebase Auth anónimo falló. Se continuará usando Realtime Database sin autenticación porque las reglas permiten escritura pública para la demo.",
+          "Firebase Auth anónimo falló. El chat continuará usando Realtime Database sin autenticación porque las reglas de demo permiten escritura pública.",
           error,
         );
 

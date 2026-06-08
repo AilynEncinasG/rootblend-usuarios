@@ -1,4 +1,37 @@
 services:
+  # En modo local NO sincronizamos con la nube automáticamente.
+  # Así el sistema usa solamente MySQL local y evita sobrescribir datos durante la demo.
+  db-sync-cloud-to-local:
+    profiles:
+      - cloud-sync
+
+  db-sync-auto-cloud-to-local:
+    profiles:
+      - cloud-sync
+
+  db-sync-local-to-cloud:
+    profiles:
+      - cloud-sync
+
+  db-init-local:
+    image: mysql:8.0
+    container_name: rootblend-db-init-local
+    depends_on:
+      mysql-local:
+        condition: service_healthy
+    command: >
+      sh -c "
+      mysql -hmysql-local -uroot -proot -e '
+      CREATE DATABASE IF NOT EXISTS rootblend_usuarios CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+      CREATE DATABASE IF NOT EXISTS rootblend_canales_streaming CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+      CREATE DATABASE IF NOT EXISTS rootblend_estadisticas CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+      CREATE DATABASE IF NOT EXISTS rootblend_podcasts CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+      CREATE DATABASE IF NOT EXISTS rootblend_interacciones CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+      CREATE DATABASE IF NOT EXISTS rootblend_pagos CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+      '
+      "
+    restart: "no"
+
   usuarios-service:
     environment:
       DB_ENGINE: django.db.backends.mysql
@@ -10,6 +43,10 @@ services:
     depends_on:
       mysql-local:
         condition: service_healthy
+      db-init-local:
+        condition: service_completed_successfully
+    command: >
+      sh -c "python manage.py migrate --noinput && python manage.py runserver 0.0.0.0:8000"
 
   canales-streaming-service:
     environment:
@@ -22,8 +59,12 @@ services:
     depends_on:
       mysql-local:
         condition: service_healthy
+      db-init-local:
+        condition: service_completed_successfully
       rabbitmq:
         condition: service_healthy
+    command: >
+      sh -c "python manage.py migrate --noinput && python manage.py runserver 0.0.0.0:8001"
 
   estadisticas-service:
     environment:
@@ -36,8 +77,12 @@ services:
     depends_on:
       mysql-local:
         condition: service_healthy
+      db-init-local:
+        condition: service_completed_successfully
       rabbitmq:
         condition: service_healthy
+    command: >
+      sh -c "python manage.py migrate --noinput && python manage.py runserver 0.0.0.0:8002"
 
   podcasts-service:
     environment:
@@ -51,10 +96,14 @@ services:
     depends_on:
       mysql-local:
         condition: service_healthy
+      db-init-local:
+        condition: service_completed_successfully
       rabbitmq:
         condition: service_healthy
       canales-streaming-service:
         condition: service_started
+    command: >
+      sh -c "php artisan migrate --force && php artisan serve --host=0.0.0.0 --port=8003"
 
   interacciones-service:
     environment:
@@ -68,8 +117,12 @@ services:
     depends_on:
       mysql-local:
         condition: service_healthy
+      db-init-local:
+        condition: service_completed_successfully
       rabbitmq:
         condition: service_healthy
+    command: >
+      sh -c "php artisan migrate --force && php artisan serve --host=0.0.0.0 --port=8004"
 
   estadisticas-events-consumer:
     environment:
@@ -82,8 +135,12 @@ services:
     depends_on:
       mysql-local:
         condition: service_healthy
+      db-init-local:
+        condition: service_completed_successfully
       rabbitmq:
         condition: service_healthy
+      estadisticas-service:
+        condition: service_started
 
   interacciones-events-consumer:
     environment:
@@ -97,8 +154,12 @@ services:
     depends_on:
       mysql-local:
         condition: service_healthy
+      db-init-local:
+        condition: service_completed_successfully
       rabbitmq:
         condition: service_healthy
+      interacciones-service:
+        condition: service_started
 
   pagos-service:
     environment:
@@ -111,6 +172,12 @@ services:
     depends_on:
       mysql-local:
         condition: service_healthy
+      db-init-local:
+        condition: service_completed_successfully
+      rabbitmq:
+        condition: service_healthy
+    command: >
+      sh -c "python manage.py migrate --noinput && python manage.py runserver 0.0.0.0:8005"
 
   estadisticas-donation-events-consumer:
     environment:
@@ -123,5 +190,20 @@ services:
     depends_on:
       mysql-local:
         condition: service_healthy
+      db-init-local:
+        condition: service_completed_successfully
       rabbitmq:
         condition: service_healthy
+      estadisticas-service:
+        condition: service_started
+
+  gateway:
+    # IMPORTANTE: gateway NO debe depender de frontend.
+    # En docker-compose.yml el frontend ya depende de gateway.
+    # Si ambos dependen entre sí, Docker marca: frontend -> gateway -> frontend.
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1/health >/dev/null 2>&1 || exit 1"]
+      interval: 20s
+      timeout: 10s
+      retries: 5
+      start_period: 20s
