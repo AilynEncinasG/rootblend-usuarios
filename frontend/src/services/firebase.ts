@@ -29,8 +29,23 @@ export const database = getDatabase(app);
 export const firebaseAuth = getAuth(app);
 
 let authPromise: Promise<void> | null = null;
+let anonymousAuthDisabled = false;
 
+/**
+ * Intenta autenticar con Firebase Anonymous Auth.
+ *
+ * IMPORTANTE:
+ * Para la demo del proyecto, las reglas de Realtime Database permiten escritura pública.
+ * Por eso, si Firebase Auth falla por API key inválida, Anonymous Auth desactivado
+ * o configuración incompleta, NO bloqueamos el chat.
+ *
+ * Esto evita que el chat muera cuando Realtime Database sí está funcionando.
+ */
 export async function ensureFirebaseAuth() {
+  if (anonymousAuthDisabled) {
+    return;
+  }
+
   if (firebaseAuth.currentUser) {
     return;
   }
@@ -40,7 +55,14 @@ export async function ensureFirebaseAuth() {
       .then(() => undefined)
       .catch((error) => {
         authPromise = null;
-        throw error;
+        anonymousAuthDisabled = true;
+
+        console.warn(
+          "Firebase Auth anónimo falló. Se continuará usando Realtime Database sin autenticación porque las reglas permiten escritura pública para la demo.",
+          error,
+        );
+
+        return undefined;
       });
   }
 
